@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.filmfellows.cinemates.domain.reservation.model.mapper.ReservationMapper">
+    <select id="showReservationPage" resultType="Reservation">
+        SELECT * FROM RESERVATION_TBL r JOIN CINEMA_TBL c USING(CINEMA_NO) JOIN MOVIE_TBL m USING(MOVIE_CODE) JOIN SCREEN_TBL s USING(SCREEN_NO) JOIN SHOWTIME_TBL sh USING(SHOWTIME_NO);
+    </select>
+    <insert id="insertReservationInfo">
+        INSERT INTO RESERVATION_TBL VALUES(#{reservationNo},#{reservationVisitor},#{reservationSeat},#{paymentMethod},DEFAULT,#{movieNo},#{memberId},#{screenNo},#{showTimeNo},#{cinemaNo})
+    </insert>
+</mapper>

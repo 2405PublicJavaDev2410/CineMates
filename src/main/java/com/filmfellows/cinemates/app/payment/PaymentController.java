@@ -30,15 +30,11 @@ public class PaymentController {
         this.iamportClient = new IamportClient(apiKey, apiSecret);
     }
 
-    @GetMapping("/payTest")
+    @GetMapping("/payment")
     public String gopay() {
         return "pages/payment/inipay";
     }
 
-    @GetMapping("/cancel")
-    public String cancelpay() {
-        return "cancel";
-    }
 
     @PostMapping("/validation/{imp_uid}")
     @ResponseBody
