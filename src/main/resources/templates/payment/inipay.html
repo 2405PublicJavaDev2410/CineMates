@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+	integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+</head>
+<body>
+	<button th:onclick="requestPay()">결제하기</button>
+	<button th:onClick="cancelPay();">취소하기</button>
+	<script>
+		var IMP = window.IMP;
+		IMP.init('imp68486865'); // 아임포트 가맹점 식별코드
+
+		function requestPay() {
+			IMP.request_pay({
+				pg : 'html5_inicis.INIpayTest', // KG이니시스
+				pay_method : 'card',
+				merchant_uid : 'merchant_' + new Date().getTime(),
+				name : '주문명:결제테스트',
+				amount : 100,
+				buyer_email : 'iamport@siot.do',
+				buyer_name : '구매자이름',
+				buyer_tel : '010-1234-5678',
+			/* 			buyer_addr : '서울특별시 강남구 삼성동',
+			 buyer_postcode : '123-456' */
+			}, function(rsp) {
+				console.log("완료")
+				if (rsp.success) {
+					$.ajax({
+						url : "/validation/" + rsp.imp_uid,
+						type : "POST",
+						contentType : "application/json",
+						data : JSON.stringify({
+							imp_uid : rsp.imp_uid,
+							merchant_uid : rsp.merchant_uid,
+						})
+					}).done(function(data) {
+						alert("결제가 완료되었습니다!");
+						console.log(data);
+					
+						var buyerInfo = {
+							"imp_uid" : rsp.imp_uid,
+							"merchant_uid" : rsp.merchant_uid,
+							"name" : rsp.name,
+							"amount" : parseInt(rsp.paid_amount, 10),
+							"buyer_email" : rsp.buyer_email,
+							"buyer_name" : rsp.buyer_name,
+							"buyer_tel" : rsp.buyer_tel
+						};
+	
+						$.ajax({
+							url : "/save_buyerInfo",
+							type : "POST",
+							contentType : "application/json",
+							data : JSON.stringify(buyerInfo),
+							success : function(response) {
+								console.log("결제정보 저장 완료");
+							},
+							error : function(xhr, status, error) {
+								console.error("결제정보 저장 실패:", error);
+								console.error("응답 내용:", xhr.responseText);
+							}
+						});
+					});
+				} else {
+					alert("결제에 실패하였습니다. " + rsp.error_msg);
+					console.error("응답 내용:", xhr.responseText);
+				}
+			});
+		}
+		function cancelPay() {
+			$.ajax({
+				// 예: http://www.myservice.com/payments/cancel
+				url : "/cancel/" + rsp.imp_uid,
+				type : "POST",
+				contentType : "application/json",
+				data : JSON.stringify({
+					merchant_uid : "merchant_1727417862892", // 예: ORD20180131-0000011
+					cancel_request_amount : 2000, // 환불금액
+					reason : "테스트 결제 환불",// 환불사유
+					refund_holder : "홍길동",
+					refund_bank : "88"
+				}),
+				  "dataType": "json"
+			})
+			.done(function(data) {
+				alert("취소가 완료되었습니다!");
+				console.log(data);
+		});
+		}
+	</script>
+</body>
+</html>
