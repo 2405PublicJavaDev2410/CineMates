@@ -6,14 +6,16 @@ import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-
+@Controller
 public class PaymentController {
-
+    @Autowired
     private PaymentService paymentService;
 
     private final IamportClient iamportClient;
@@ -23,18 +25,21 @@ public class PaymentController {
     @Value("${IMP_API_SECRETKEY}")
     String apiSecret;
 
-    public PaymentController() {
+    public PaymentController(PaymentService paymentService) {
+        this.paymentService = paymentService;
         this.iamportClient = new IamportClient(apiKey, apiSecret);
     }
 
     @GetMapping("/payTest")
     public String gopay() {
-        return "payment/inipay";
+        return "pages/payment/inipay";
     }
+
     @GetMapping("/cancel")
     public String cancelpay() {
         return "cancel";
     }
+
     @PostMapping("/validation/{imp_uid}")
     @ResponseBody
     public IamportResponse<Payment> validateIamport(@PathVariable String imp_uid)
@@ -53,15 +58,11 @@ public class PaymentController {
         return ResponseEntity.ok("결제정보 저장 완");
     }
 
-    @PostMapping("/cancel/{imp_uid}")
+    @GetMapping("/payments/cancel/{imp_uid}")
     public ResponseEntity<String> cancelPayment(@PathVariable String imp_uid)
             throws IamportResponseException, IOException {
         System.out.println("Cancel: " + imp_uid);
         IamportResponse<Payment> response = paymentService.cancelPayment(imp_uid);
         return ResponseEntity.ok("취소 완!");
-    }
-
-    public IamportClient getIamportClient() {
-        return iamportClient;
     }
 }

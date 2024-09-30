@@ -1,6 +1,7 @@
 package com.filmfellows.cinemates.domain.payment.model.service;
 
 import com.filmfellows.cinemates.domain.payment.model.mapper.PaymentMapper;
+import com.filmfellows.cinemates.domain.payment.model.vo.CancelRequest;
 import com.filmfellows.cinemates.domain.payment.model.vo.PaymentInfo;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.request.CancelData;
@@ -9,12 +10,18 @@ import com.siot.IamportRestClient.response.Payment;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+@Configuration
+@Service
 public class PaymentService {
+
     private IamportClient iamportClient;
 
     private PaymentInfo paymentInfo;
-
+    private CancelRequest cancelRequest;
     @Value("${IMP_API_KEY}")
     String apiKey;
     @Value("${IMP_API_SECRETKEY}")
@@ -58,9 +65,5 @@ public class PaymentService {
             e.printStackTrace();
             return null;
         }
-    }
-
-    public void setPmapper(PaymentMapper pmapper) {
-        this.pmapper = pmapper;
     }
 }
