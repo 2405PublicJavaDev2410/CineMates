@@ -1,0 +1,183 @@
+main {
+    text-align: center;
+    margin: 0 auto;
+    width: 1200px;
+    height: 900px;
+}
+
+/* 타이틀 */
+
+h3 {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 34px;
+    font-weight: 400;
+    padding-top: 40px;
+}
+
+h4 {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-style: normal;
+    font-weight: 550;
+    font-size: 20px;
+    /* padding-bottom: 10px; */
+}
+
+hr {
+    width: 900px;
+    border: 2px solid black;
+    margin: 0 auto 10px;
+}
+
+.detail-area {
+    width: 80%;
+    height: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+}
+
+/* 영화 */
+
+.detail-left {
+    width: 450px;
+    height: 100%;
+    float: left;
+}
+
+.poster {
+    border: 1px solid black;
+    width: 400px;
+    height: 400px;
+}
+
+/* 정보 입력란 */
+.detail-right {
+    width: 450px;
+    height: 100%;
+    float: left;
+}
+
+label {
+    float: left;
+    margin-bottom: 5px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+select {
+    /* width: 49%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: 'Noto Sans KR', sans-serif; */
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+.rating {
+    margin-right: 3px;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+.add-Trailer {
+    border: 1px solid black;
+    padding: 15px;
+}
+
+.remove-trailer-input {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.remove-stillcut-input {
+    display: flex;
+    justify-content: space-between;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: #3399ff;
+}
+
+.trailer-container {
+    margin-bottom: 10px;
+}
+
+/* 버튼*/
+.remove-input-Btn {
+    width: 60px;
+    height: 30px;
+    background-color: #007fff;
+    color: white;
+    border: none;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 18px;
+    /* border-radius: 30px; */
+    cursor: pointer;
+    /* margin: 0 10px; */
+}
+
+.addStillcut,
+.addTrailer {
+    width: 120px;
+    height: 30px;
+    background-color: #007fff;
+    color: white;
+    border: none;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 18px;
+    /* border-radius: 30px; */
+    cursor: pointer;
+    /* margin: 0 10px; */
+}
+
+.buttons {
+    width: 100px;
+    height: 40px;
+    background-color: #007fff;
+    color: white;
+    border: none;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 18px;
+    /* border-radius: 30px; */
+    cursor: pointer;
+    margin: 30px 10px;
+}
+
+button:hover {
+    background-color: #3399ff;
+}
+
+.cancel {
+    background-color: #454545;
+}
+
+.cancel:hover {
+    background-color: #808080;
+}

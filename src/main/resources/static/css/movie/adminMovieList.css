@@ -1,0 +1,111 @@
+@font-face {
+    font-family: 'BMDOHYEON';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMDOHYEON.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/*.main-container {*/
+/*    margin: 20px;*/
+/*    border-radius: 5px;*/
+/*    max-width: 1100px;*/
+/*    margin: 0 auto;*/
+/*}*/
+
+/* 화면 타이틀 */
+h1 {
+    font-family: 'BMDOHYEON', sans-serif;
+    padding-bottom: 50px;
+    padding-top: 20px;
+    text-align: center;
+}
+
+/* 검색과 글쓰기 섹션 */
+.search-register-container {
+    display: flex;
+    justify-content: center;
+}
+
+.search-section {
+    display: flex;
+}
+
+.register-section {
+    display: inline-flex;
+    margin-left: 25px;
+    font-size: 0.9em;
+}
+
+.search-section select,
+.search-section input[type='text'],
+.search-section button {
+    padding: 8px;
+    margin-left: 5px;
+}
+
+.search-section select {
+    width: 80px;
+}
+
+.search-section input[type='text'] {
+    width: 350px;
+}
+
+.search-btn {
+    background-color: #233245;
+     border-radius: 5px;
+    height: 38px;
+    width: 60px;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+/* 글쓰기 버튼 */
+.register-btn {
+    background-color: #d54946;
+    color: white;
+    text-align: center;
+     border-radius: 5px;
+    height: 38px;
+    width: 80px;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.common-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.common-table th,
+.common-table td {
+    padding: 12px;
+    text-align: center;
+    font-family: 'Noto Sans KR';
+    border: none;
+}
+
+.common-table th {
+    background-color: #ffffff;
+    font-size: 16px;
+    border-bottom: 2px solid #d54946;
+}
+
+.common-table td {
+    font-size: 14px;
+}
+
+.common-table tr {
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.common-table tr:hover {
+    background-color: #e2e2e26c;
+}
