@@ -12,10 +12,12 @@
         <style th:inline="css" type="text/css">
             .createChat-main{
                 width: 100%;
+                height: 800px;
                 background-color: #ececec;
                 display: flex;
                 flex-direction: row;
                 justify-content: center;
+                user-select:none;
             }
             .list-title{
                 width: 100%;
@@ -31,22 +33,31 @@
             .movie-list-container{
                 width: 50%;
                 height: 100%;
+                background-color:#ececec;
             }
             .region-list-container{
                 width: 25%;
                 height: 100%;
+                background-color: white;
             }
             .cinema-list-container{
                 width: 25%;
                 height: 100%;
+                background-color:#ececec;
             }
 
             .movie-item-content{
                 display: flex;
-                margin-top: 30px;
-                margin-left: 30px;
-                margin-right: 30px;
+                /*margin: 15px;*/
                 position: relative;
+                /*border: 3px solid #EA4E4A;*/
+                padding: 15px;
+                cursor: pointer;
+            }
+            .selectedMovie{
+                border: 3px solid #EA4E4A;
+                padding:12px;
+                background-color:white;
             }
 
             .movie-img{
@@ -56,10 +67,198 @@
                 background-color:gray;
                 margin-right: 20px;
             }
+
+            .check-icon{
+                opacity: 0;
+                position: absolute;
+                right: 10px;
+                top: 10px;
+                color: #EA4E4A;
+                font-size: 30px
+            }
+            .check-icon.checked{
+                opacity: 1;
+            }
+
+
+            /*지역선택*/
+               .regionBox{
+                   font-size: 20px;
+                   width: 100%;
+                   height: 70px;
+                   line-height: 70px;
+                   cursor: pointer;
+                   padding-left: 20px;
+                   position: relative;
+               }
+               .checkedRegion{
+                   border: 3px solid #EA4E4A;
+                   background-color:#ececec;
+                   color: #EA4E4A;
+                   font-weight: bold;
+               }
+               .region-check-icon{
+                   opacity: 0;
+                   position: absolute;
+                   right: 20px;
+                   top: -4px;
+                   color: #EA4E4A;
+                   font-size: 30px;
+               }
+               .region-check-icon.checked{
+                   opacity: 1;
+               }
+
+
+            /* 극장선택 */
+            .cinemaBox{
+                font-size: 20px;
+                width: 100%;
+                height: 70px;
+                line-height: 70px;
+                cursor: pointer;
+                padding-left: 20px;
+                position: relative;
+            }
+            .checkedCinema{
+                border: 3px solid #EA4E4A;
+                background-color:#ececec;
+                color: #EA4E4A;
+                font-weight: bold;
+            }
+            .cinema-check-icon{
+                opacity: 0;
+                position: absolute;
+                right: 20px;
+                top: -4px;
+                color: #EA4E4A;
+                font-size: 30px;
+            }
+            .cinema-check-icon.checked{
+                opacity: 1;
+            }
         </style>
 
         <!-- inline JS 영역-->
         <script th:inline="javascript" type="text/javascript">
+            // 영화 리스트 선택
+                // 전체 체크 해제
+            function unSelectedAll(){
+                let movieSelectedItem = document.querySelectorAll('.movie-item-content');
+                let checkedIcon = document.querySelectorAll('.check-icon');
+
+                movieSelectedItem.forEach((item)=>{
+                    item.classList.remove("selectedMovie");
+                });
+                checkedIcon.forEach((item)=>{
+                    item.classList.remove("checked");
+                });
+            }
+
+                // onclick function 체크되면 체크박스 생성
+            function selectMovie(div){
+                if(div.classList.contains("selectedMovie")){
+                    unSelectedAll(); // 전체 체크 해제 - 영화
+                    unSelectedRegion(); // 전체 체크 해제 - 지역
+                    unSelectedCinema(); // 전체 체크 해제 - 극장
+                    div.classList.remove("selectedMovie");
+                    div.children[2].classList.remove('checked');
+                }else{
+                    unSelectedAll(); // 전체 체크 해제 - 영화
+                    unSelectedRegion(); // 전체 체크 해제 - 지역
+                    unSelectedCinema(); // 전체 체크 해제 - 극장
+                    div.classList.add("selectedMovie");
+                    div.children[2].classList.add('checked');
+                }
+            }
+
+            // 지역 선택
+                // 전체 체크 해제 - 지역
+            function unSelectedRegion(){
+                let regionBoxAll = document.querySelectorAll('.regionBox');
+                let regionCheckedIcon = document.querySelectorAll('.region-check-icon');
+
+                regionBoxAll.forEach((item)=>{
+                    item.classList.remove("checkedRegion");
+                });
+                regionCheckedIcon.forEach((item)=>{
+                    item.classList.remove("checked");
+                });
+            }
+                // onclick function 체크되면 체크박스 생성 - 지역
+            function selectRegion(div){
+                let movieAll = document.querySelectorAll('.movie-item-content');
+                let count = 0;
+                movieAll.forEach(item => {
+                    if(item.classList.contains('selectedMovie')){
+                        count++;
+                    }
+                })
+                if(count <= 0){
+                    alert('영화를 먼저 선택해주세요!');
+                }else{
+                    if(div.classList.contains("checkedRegion")){
+                        unSelectedRegion(); // 전체 체크 해제 - 지역
+                        unSelectedCinema(); // 전체 체크 해제 - 극장
+                        div.classList.remove("checkedRegion");
+                        div.children[1].classList.remove('checked');
+                    }else{
+                        unSelectedRegion(); // 전체 체크 해제 - 지역
+                        unSelectedCinema(); // 전체 체크 해제 - 극장
+                        div.classList.add("checkedRegion");
+                        div.children[1].classList.add('checked');
+                    }
+                }
+
+            }
+
+            // 전체 체크 해제 - 극장
+            function unSelectedCinema(){
+                let cinemaBoxAll = document.querySelectorAll('.cinemaBox');
+                let cinemaCheckedIcon = document.querySelectorAll('.cinema-check-icon');
+
+                cinemaBoxAll.forEach((item)=>{
+                    item.classList.remove("checkedCinema");
+                });
+
+                cinemaCheckedIcon.forEach((item)=>{
+                    item.classList.remove("checked");
+                });
+            }
+
+            // onclick function 체크되면 체크박스 생성 - 극장
+            function selectCinema(div){
+                let regionAll = document.querySelectorAll('.regionBox');
+                let count = 0;
+                regionAll.forEach(item => {
+                    if(item.classList.contains('checkedRegion')){
+                        count++;
+                    }
+                })
+                if(count <= 0){
+                    alert('지역을 먼저 선택해주세요!');
+                }else {
+                    if (div.classList.contains("checkedCinema")) {
+                        unSelectedCinema(); // 전체 체크 해제
+                        div.classList.remove("checkedCinema");
+                        div.children[1].classList.remove('checked');
+                    } else {
+                        unSelectedCinema(); // 전체 체크 해제
+                        div.classList.add("checkedCinema");
+                        div.children[1].classList.add('checked');
+                    }
+                }
+            }
+
+
+
+            // 로드 후 실행
+            window.addEventListener('load', ()=>{
+
+            });
+
+
+
         </script>
 
     </head>
@@ -69,7 +268,7 @@
                 <div class="list-title" style="border-right:1px solid gray;">영화선택</div>
                 <div class="movie-list-content">
 <!--                    moive 리스트 가져오기-->
-                    <div class="movie-item-content">
+                    <div class="movie-item-content" id="content1" onclick="selectMovie(this);">
                         <div class="movie-img">
                             <img src="" alt="영화이미지">
                         </div>
@@ -86,19 +285,100 @@
                                 <span style="font-size: 16px" th:text="'개봉일 2024.09.13'"></span>
                             </div>
                         </div>
-                        <div style="position: absolute; right: 10px; top: 10px; color: #5037b8; font-size: 30px">
+                        <div class="check-icon">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                    </div>
+                    <div class="movie-item-content" id="content2" onclick="selectMovie(this)">
+                        <div class="movie-img">
+                            <img src="" alt="영화이미지">
+                        </div>
+                        <div style="display: flex; flex-direction: column; justify-content: center">
+                            <div style="font-size: 27px; font-weight: bold; height: 60%">
+                                <span>15세</span>
+                                <span>베테랑2</span>
+                            </div>
+                            <div>
+                                <span>시계</span>
+                                <span style="font-size: 20px">118분</span>
+                            </div>
+                            <div>
+                                <span style="font-size: 16px" th:text="'개봉일 2024.09.13'"></span>
+                            </div>
+                        </div>
+                        <div class="check-icon">
                             <i class="fa-solid fa-check"></i>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="region-list-container">
                 <div class="list-title">지역선택</div>
-                <div></div>
+                <div class="regionBox" onclick="selectRegion(this)">
+                    <span th:text="'서울()'"></span>
+                    <div class="region-check-icon">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                </div>
+                <div class="regionBox" onclick="selectRegion(this)">
+                    <span th:text="'경기/인천()'"></span>
+                    <div class="region-check-icon">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                </div>
+                <div class="regionBox" onclick="selectRegion(this)">
+                    <span th:text="'충청/대전()'"></span>
+                    <div class="region-check-icon">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                </div>
+                <div class="regionBox" onclick="selectRegion(this)">
+                    <span th:text="'전라/광주()'"></span>
+                    <div class="region-check-icon">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                </div>
+                <div class="regionBox" onclick="selectRegion(this)">
+                    <span th:text="'경북/대구()'"></span>
+                    <div class="region-check-icon">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                </div>
+                <div class="regionBox" onclick="selectRegion(this)">
+                    <span th:text="'경남/부산/울산()'"></span>
+                    <div class="region-check-icon">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                </div>
+                <div class="regionBox" onclick="selectRegion(this)">
+                    <span th:text="'강원()'"></span>
+                    <div class="region-check-icon">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                </div>
+                <div class="regionBox" onclick="selectRegion(this)">
+                    <span th:text="'제주()'"></span>
+                    <div class="region-check-icon">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                </div>
             </div>
+
             <div class="cinema-list-container">
-                <div class="list-title"style="border-left:1px solid gray;">극장선택</div>
-                <div></div>
+                <div class="list-title" style="border-left:1px solid gray;">극장선택</div>
+                <div class="cinemaBox" onclick="selectCinema(this)">
+                    <span th:text="'가산디지털'"></span>
+                    <div class="cinema-check-icon">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                </div>
+                <div class="cinemaBox" onclick="selectCinema(this)">
+                    <span th:text="'가산디지털'"></span>
+                    <div class="cinema-check-icon">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -106,9 +386,11 @@
         <form action="/chat/create" method="post">
     <!--        카테고리 -> 이미 선택하고 들어옴-->
     <!--        영화선택-->
+            <input type="hidden" name="movieNo" value="">
     <!--        지역선택-->
+            <input type="hidden" name="cinemaLocationCode" value="">
     <!--        극장선택-->
-
+            <input type="hidden" name="cinemaNo" value="">
 
 
 
