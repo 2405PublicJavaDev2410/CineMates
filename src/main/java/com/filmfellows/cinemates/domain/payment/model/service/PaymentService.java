@@ -3,6 +3,7 @@ package com.filmfellows.cinemates.domain.payment.model.service;
 import com.filmfellows.cinemates.domain.payment.model.mapper.PaymentMapper;
 import com.filmfellows.cinemates.domain.payment.model.vo.CancelRequest;
 import com.filmfellows.cinemates.domain.payment.model.vo.PaymentInfo;
+import com.filmfellows.cinemates.domain.reservation.model.vo.ReservationDTO;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.request.CancelData;
 import com.siot.IamportRestClient.response.IamportResponse;
@@ -14,6 +15,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
+
 @Configuration
 @Service
 public class PaymentService {
@@ -21,7 +24,6 @@ public class PaymentService {
     private IamportClient iamportClient;
 
     private PaymentInfo paymentInfo;
-    private CancelRequest cancelRequest;
     @Value("${IMP_API_KEY}")
     String apiKey;
     @Value("${IMP_API_SECRETKEY}")
@@ -65,5 +67,9 @@ public class PaymentService {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public List<ReservationDTO> searchPayment(ReservationDTO rDto) {
+        return pmapper.searchPayment(rDto);
     }
 }

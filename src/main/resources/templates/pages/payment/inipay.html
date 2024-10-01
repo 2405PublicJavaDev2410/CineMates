@@ -12,16 +12,27 @@
 <body>
 	<button th:onclick="requestPay()">결제하기</button>
 	<button th:onClick="cancelPay()">취소하기</button>
+
 	<script>
+
 		var IMP = window.IMP;
 		IMP.init('imp68486865'); // 아임포트 가맹점 식별코드
 
 		function requestPay() {
+			var reservationData = {
+				reservationNo: /*[[${rDTO.reservationNo}]]*/ '',
+				reservationVisitor: /*[[${rDTO.reservationVisitor}]]*/ 0,
+				reservationSeat: /*[[${rDTO.reservationSeat}]]*/ '',
+				reservationDate: /*[[${rDTO.reservationDate}]]*/ '',
+				memberId: /*[[${rDTO.memberId}]]*/ '',
+				cinemaName: /*[[${rDTO.cinemaName}]]*/ '',
+				screenName: /*[[${rDTO.screenName}]]*/ ''
+			};
 			IMP.request_pay({
 				pg : 'html5_inicis.INIpayTest', // KG이니시스
 				pay_method : 'card',
 				merchant_uid : 'merchant_' + new Date().getTime(),
-				name : '주문명:결제테스트',
+				goodsname : reservationData.cinemaName,
 				amount : 100,
 				buyer_email : 'iamport@siot.do',
 				buyer_name : '구매자이름',
@@ -52,12 +63,24 @@
 							"buyer_name" : rsp.buyer_name,
 							"buyer_tel" : rsp.buyer_tel
 						};
+						var reserveInfo ={
+							"reservationNo" : rsp.reservationNo,
+							"reservationVisitor" : rsp.reservationVisitor,
+							"reservationSeat" : rsp.reservationSeat,
+							"reservationDate" : rsp.reservationDate,
+							"memberId" : rsp.memberId,
+							"cinemaName" : rsp.cinemaName,
+							"screenName" : rsp.screenName
+						}
 	
 						$.ajax({
 							url : "/save_buyerInfo",
 							type : "POST",
 							contentType : "application/json",
-							data : JSON.stringify(buyerInfo),
+							data : JSON.stringify({
+								buyerInfo: buyerInfo,
+								reserveInfo : reserveInfo
+							}),
 							success : function(response) {
 								console.log("결제정보 저장 완료");
 							},

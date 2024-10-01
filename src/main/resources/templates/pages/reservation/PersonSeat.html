@@ -1,11 +1,115 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head >
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
     <meta charset="UTF-8">
-    <title>Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>영화 좌석 예매 시스템</title>
+    <style>
+        .seat {
+            width: 30px;
+            height: 30px;
+            margin: 3px;
+            display: inline-block;
+            text-align: center;
+            line-height: 30px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+
+        .selected {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .reserved {
+            background-color: #f44336;
+            color: white;
+            cursor: not-allowed;
+        }
+    </style>
 </head>
 <body>
+<h1>영화 좌석 예매 시스템</h1>
+
+    <span>
+        <input type='button' onclick='count("plus")' value='+'/>
+        <input type='button' onclick='count("minus")' value='-'/>
+        <div id="result">0</div>
+    </span>
+
+    <div id="seatMap"></div>
+    <button onclick="reserveSelectedSeats()">선택한 좌석 예약</button>
+    <button onclick="cancelReservation()">예약 취소</button>
+    <p id="message"></p>
+<form action="/paymentReady" method="POST">
+    <button type="submit">예약하기</button>
+    <input type="hidden" name="reservationNo" th:value="${rDTO.reservationNo}">
+    <input type="hidden"  id="countInput" name="reservationVisitor" th:value="${rDTO.reservationVisitor}">
+</form>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    let visitorCount = /*[[${rDTO.reservationVisitor}]]*/ 0;
+    const reservationVisitor = document.getElementById('result');
+    const countInput = document.getElementById('countInput');
+    function count(type) {
+        // 더하기/빼기
+        if (type === "plus") {
+            visitorCount++;
+        } else if (type === "minus" && visitorCount > 0) {
+            visitorCount--;
+        }
+        // 현재 화면에 표시된 값
+        reservationVisitor.innerText = visitorCount;
+        countInput.value = visitorCount;
+
+        // 결과 출력
+        reservationVisitor.innerText = visitorCount;
+    }
 
 
+    const rows = 5;
+    const seatsPerRow = 10;
+    const seats = Array(rows * seatsPerRow).fill(false);
+    let selectedSeats = [];
+
+    function initializeSeatMap() {
+        const seatMap = document.getElementById('seatMap');
+        for (let i = 0; i < seats.length; i++) {
+            const seat = document.createElement('div');
+            seat.className = 'seat';
+            seat.innerText = i + 1;
+            seat.onclick = () => toggleSeat(i);
+            seatMap.appendChild(seat);
+            if ((i + 1) % seatsPerRow === 0) {
+                seatMap.appendChild(document.createElement('br'));
+            }
+        }
+    }
+
+    function toggleSeat(index) {
+        if (seats[index]) return; // 이미 예약된 좌석은 선택 불가
+        const maxSeats = parseInt(document.getElementById('result').innerText);
+        const seatElement = document.getElementsByClassName('seat')[index];
+
+        if (selectedSeats.includes(index)) {
+            selectedSeats = selectedSeats.filter(seatIndex => seatIndex !== index);
+            seatElement.classList.remove('selected');
+        } else if (selectedSeats.length < maxSeats) {
+            selectedSeats.push(index);
+            seatElement.classList.add('selected');
+        } else {
+            setMessage(`최대 ${maxSeats}개의 좌석만 선택할 수 있습니다.`);
+            return;
+        }
+    }
+
+
+    function setMessage(msg) {
+        document.getElementById('message').innerText = msg;
+    }
+
+    initializeSeatMap();
+</script>
 </body>
 </html>

@@ -5,8 +5,12 @@
     <title>Test</title>
 </head>
 <body>
-    <tr th:each="Reservation: ${rList}" >
-        <td th:text="${Reservation.cinemaName}"></td>
-    </tr>
+    <form action="/Ticketing/PersonSeat" method="POST">
+        <tr th:each="Reservation: ${rList}" >
+            <td th:text="${Reservation.cinemaName}"></td>
+        </tr>
+
+        <button>이동</button>
+    </form>
 </body>
 </html>

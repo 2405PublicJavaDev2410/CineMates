@@ -16,4 +16,5 @@ public class PaymentInfo {
     private String buyer_name;
     private String buyer_tel;
     private String name;
+    private String goodsname;
 }

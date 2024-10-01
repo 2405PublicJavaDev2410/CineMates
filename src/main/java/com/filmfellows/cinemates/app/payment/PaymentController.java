@@ -2,6 +2,7 @@ package com.filmfellows.cinemates.app.payment;
 
 import com.filmfellows.cinemates.domain.payment.model.service.PaymentService;
 import com.filmfellows.cinemates.domain.payment.model.vo.PaymentInfo;
+import com.filmfellows.cinemates.domain.reservation.model.vo.ReservationDTO;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.response.IamportResponse;
@@ -10,14 +11,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
+
 @Controller
 public class PaymentController {
     @Autowired
     private PaymentService paymentService;
-
+    @Autowired
+    private ReservationDTO rDto;
     private final IamportClient iamportClient;
 
     @Value("${IMP_API_KEY}")
@@ -30,8 +35,16 @@ public class PaymentController {
         this.iamportClient = new IamportClient(apiKey, apiSecret);
     }
 
-    @GetMapping("/payment")
-    public String gopay() {
+    @PostMapping("/paymentReady")
+    public String readyTogoPay(@ModelAttribute("ReservationDTO") ReservationDTO rDTO , Model model){
+        System.out.println("paymentReady" + rDTO);
+        model.addAttribute("rDTO", rDTO);
+        return "redirect:/payment?reservationNo="+ rDTO.getReservationNo();
+    }
+
+    @GetMapping ("/payment")
+    public String showPayForm(@ModelAttribute ReservationDTO rDTO , Model model) {
+        model.addAttribute("rDTO", rDTO);
         return "pages/payment/inipay";
     }
 
