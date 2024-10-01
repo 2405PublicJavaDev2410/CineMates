@@ -3,6 +3,7 @@ package com.filmfellows.cinemates.domain.payment.model.service;
 import com.filmfellows.cinemates.domain.payment.model.mapper.PaymentMapper;
 import com.filmfellows.cinemates.domain.payment.model.vo.CancelRequest;
 import com.filmfellows.cinemates.domain.payment.model.vo.PaymentInfo;
+import com.filmfellows.cinemates.domain.reservation.model.mapper.ReservationMapper;
 import com.filmfellows.cinemates.domain.reservation.model.vo.ReservationDTO;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.request.CancelData;
@@ -13,9 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 @Configuration
 @Service
@@ -36,6 +39,8 @@ public class PaymentService {
 
     @Autowired
     private PaymentMapper pmapper;
+    @Autowired
+    private ReservationMapper rmapper;
 
     public void saveBuyerInfo(PaymentInfo paymentInfo) {
         if (paymentInfo.getAmount() == null) {
@@ -71,5 +76,10 @@ public class PaymentService {
 
     public List<ReservationDTO> searchPayment(ReservationDTO rDto) {
         return pmapper.searchPayment(rDto);
+    }
+    @Transactional
+    public void saveBuyerAndOrderInfo(Map<String, Object> buyerInfo, Map<String, Object> reserveInfo) {
+        pmapper.insertPaymentInfo2(buyerInfo);
+        rmapper.insertReservationInfo2(reserveInfo);
     }
 }

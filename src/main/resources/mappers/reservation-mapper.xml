@@ -16,4 +16,8 @@
     <insert id="insertReservationInfo">
         INSERT INTO RESERVATION_TBL VALUES(#{reservationNo},#{reservationVisitor},#{reservationSeat},#{paymentMethod},DEFAULT,#{movieNo},#{memberId},#{screenNo},#{showTimeNo},#{cinemaNo})
     </insert>
+
+    <insert id="insertReservationInfo2">
+        INSERT INTO RESERVATION_TBL VALUES(#{reservationNo},#{reservationVisitor},#{reservationSeat},DEFAULT,#{movieNo},#{memberId},#{screenNo},#{showTimeNo},#{cinemaNo},#{titleKor},#{screenName},#{cinemaName})
+    </insert>
 </mapper>

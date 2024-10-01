@@ -6,6 +6,7 @@ import com.siot.IamportRestClient.response.Payment;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Mapper
@@ -13,4 +14,6 @@ public interface PaymentMapper {
         void insertPaymentInfo(PaymentInfo paymentInfo);
 
         List<ReservationDTO> searchPayment(ReservationDTO rDto);
+
+    void insertPaymentInfo2(Map<String, Object> buyerInfo);
 }

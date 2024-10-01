@@ -45,6 +45,7 @@
     <button type="submit">예약하기</button>
     <input type="hidden" name="reservationNo" th:value="${rDTO.reservationNo}">
     <input type="hidden"  id="countInput" name="reservationVisitor" th:value="${rDTO.reservationVisitor}">
+    <input type="hidden" id="selectedSeatsInput" name="reservationSeat" th:value="${rDTO.reservationSeat}">
 </form>
 
 <script th:inline="javascript">
@@ -52,6 +53,12 @@
     let visitorCount = /*[[${rDTO.reservationVisitor}]]*/ 0;
     const reservationVisitor = document.getElementById('result');
     const countInput = document.getElementById('countInput');
+    const selectedSeatsInput = document.getElementById('selectedSeatsInput');
+    const rows = 5;
+    const seatsPerRow = 10;
+    const seats = Array(rows * seatsPerRow).fill(false);
+    let selectedSeats = [];
+
     function count(type) {
         // 더하기/빼기
         if (type === "plus") {
@@ -68,10 +75,6 @@
     }
 
 
-    const rows = 5;
-    const seatsPerRow = 10;
-    const seats = Array(rows * seatsPerRow).fill(false);
-    let selectedSeats = [];
 
     function initializeSeatMap() {
         const seatMap = document.getElementById('seatMap');
@@ -89,7 +92,7 @@
 
     function toggleSeat(index) {
         if (seats[index]) return; // 이미 예약된 좌석은 선택 불가
-        const maxSeats = parseInt(document.getElementById('result').innerText);
+        const maxSeats = parseInt(reservationVisitor.innerText);
         const seatElement = document.getElementsByClassName('seat')[index];
 
         if (selectedSeats.includes(index)) {
@@ -102,8 +105,12 @@
             setMessage(`최대 ${maxSeats}개의 좌석만 선택할 수 있습니다.`);
             return;
         }
+        updateSelectedSeatsInput();
     }
-
+    function updateSelectedSeatsInput() {
+        selectedSeatsInput.value = selectedSeats.map(index => index + 1).join(',');
+        setMessage(`선택된 좌석: ${selectedSeatsInput.value}`);
+    }
 
     function setMessage(msg) {
         document.getElementById('message').innerText = msg;

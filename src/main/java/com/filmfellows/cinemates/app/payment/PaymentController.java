@@ -7,6 +7,7 @@ import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -16,13 +17,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class PaymentController {
     @Autowired
     private PaymentService paymentService;
     @Autowired
-    private ReservationDTO rDto;
+    private ReservationDTO rDTO;
     private final IamportClient iamportClient;
 
     @Value("${IMP_API_KEY}")
@@ -36,15 +38,18 @@ public class PaymentController {
     }
 
     @PostMapping("/paymentReady")
-    public String readyTogoPay(@ModelAttribute("ReservationDTO") ReservationDTO rDTO , Model model){
+    public String readyTogoPay(@ModelAttribute("ReservationDTO") ReservationDTO rDTO , Model model, HttpSession session) {
         System.out.println("paymentReady" + rDTO);
+        session.setAttribute("rDTO",rDTO);
         model.addAttribute("rDTO", rDTO);
         return "redirect:/payment?reservationNo="+ rDTO.getReservationNo();
     }
 
     @GetMapping ("/payment")
-    public String showPayForm(@ModelAttribute ReservationDTO rDTO , Model model) {
-        model.addAttribute("rDTO", rDTO);
+    public String showPayForm(@ModelAttribute ReservationDTO rDTO , Model model,HttpSession session) {
+        ReservationDTO DTO = (ReservationDTO)session.getAttribute("rDTO");
+        System.out.println("showPayForm" + DTO);
+        model.addAttribute("rDTO", DTO);
         return "pages/payment/inipay";
     }
 
@@ -59,11 +64,17 @@ public class PaymentController {
 
     @PostMapping("/save_buyerInfo")
     @ResponseBody
-    public ResponseEntity<String> saveBuyerInfo(@RequestBody PaymentInfo paymentInfo) {
-        System.out.println("Controller 지나감");
-        System.out.println("Amount: " + paymentInfo.getAmount());
-        System.out.println("PaymentInfo: " + paymentInfo);
-        paymentService.saveBuyerInfo(paymentInfo);
+    public ResponseEntity<String> saveBuyerInfo(
+            @RequestBody Map<String, Object> data
+//            @RequestBody PaymentInfo paymentInfo
+    ) {
+//        System.out.println("PaymentInfo: " + paymentInfo);
+        Map<String, Object> buyerInfo = (Map<String, Object>) data.get("buyerInfo");
+        Map<String, Object> reserveInfo = (Map<String, Object>) data.get("reserveInfo");
+//        paymentService.saveBuyerInfo(paymentInfo);
+        System.out.println("saveBuyerInfo" + buyerInfo);
+        System.out.println("saveBuyerInfo2" + reserveInfo);
+        paymentService.saveBuyerAndOrderInfo(buyerInfo,reserveInfo);
         return ResponseEntity.ok("결제정보 저장 완");
     }
 

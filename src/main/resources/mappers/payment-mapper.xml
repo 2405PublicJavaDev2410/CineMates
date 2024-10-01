@@ -5,7 +5,11 @@
 <mapper namespace="com.filmfellows.cinemates.domain.payment.model.mapper.PaymentMapper">
 
     <insert id="insertPaymentInfo">
-        INSERT INTO PAYMENT_TBL VALUES (#{imp_uid},#{merchant_uid},#{amount},DEFAULT,#{buyer_email},#{buyer_name},#{buyer_tel},#{name})
+        INSERT INTO PAYMENT_TBL (IMP_UID, MERCHANT_UID, AMOUNT, STATUS,BUYER_EMAIL, BUYER_NAME, BUYER_TEL, NAME) VALUES (#{imp_uid},#{merchant_uid},#{amount},DEFAULT,#{buyer_email},#{buyer_name},#{buyer_tel},#{name})
     </insert>
+    <insert id="insertPaymentInfo2">
+        INSERT INTO PAYMENT_TBL (IMP_UID, MERCHANT_UID, AMOUNT, STATUS,BUYER_EMAIL, BUYER_NAME, BUYER_TEL, NAME) VALUES (#{imp_uid},#{merchant_uid},#{amount},DEFAULT,#{buyer_email},#{buyer_name},#{buyer_tel},#{name})
+    </insert>
+
 
 </mapper>
