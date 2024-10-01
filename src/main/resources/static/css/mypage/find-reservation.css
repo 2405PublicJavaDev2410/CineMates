@@ -17,17 +17,24 @@
     float: left;
     margin: 0 auto;
 }
-.search-booking-form {
+.search-reserve-form {
     font-family: 'NEXON Lv1 Gothic OTF', serif;
     margin-left: 40px;
     padding: 20px;
 }
-#booking-title {
+#reserve-title {
     font-family: 'GmarketSansMedium', serif;
     font-size: 28px;
     font-weight: bold;
 }
-#booking-search-section label {
+#reserve-search-section {
+    padding: 30px 20px;
+    height: 140px;
+    background-color: #ececec;
+    border-radius: 10px;
+    margin-bottom: 40px;
+}
+#reserve-search-section label {
     display: block;
     margin-bottom: 12px;
     font-size: 18px;
@@ -37,13 +44,13 @@
     padding: 10px;
     float: left;
 }
-#booking-search-btn {
+#reserve-search-btn {
     display: block;
-    width: 100px;
+    width: 90px;
     height: 45px;
     padding: 10px 10px;
     margin-left: 10px;
-    border-radius: 10px;
+    border-radius: 5px;
     letter-spacing: 1px;
     background-color: #464646;
     border: 2px solid #464646;
@@ -54,7 +61,7 @@
     cursor: pointer;
     float: left;
 }
-#booking-search-btn:hover {
+#reserve-search-btn:hover {
     background-color: #242424;
     border: 2px solid #242424;
     color: white;

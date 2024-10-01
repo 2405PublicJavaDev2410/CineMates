@@ -6,30 +6,36 @@
     padding: 100px 0;
     margin: 0 auto;
     flex-direction: row;
-    width: 100%;
+    width: 90%;
     flex: 1 1 auto;
 }
 
 /*메인 CSS*/
 #main-container {
-    width: 900px;
+    width: 800px;
     float: left;
     margin: 0 auto;
 }
 .remove-form {
     font-family: 'NEXON Lv1 Gothic OTF', serif;
     margin-left: 40px;
-    padding: 20px;
+    padding: 20px 0 20px 20px;
 }
 #remove-title {
     font-family: 'GmarketSansMedium', serif;
     font-size: 28px;
     font-weight: bold;
 }
+#remove-info {
+    margin-bottom: 10px;
+    padding: 30px 20px;
+    background-color: #ececec;
+    border-radius: 10px;
+}
 #remove-info pre {
     font-family: 'NEXON Lv1 Gothic OTF', serif;
     font-size: 14px;
-    letter-spacing: 1px;
+    /*letter-spacing: 1px;*/
 }
 #red-text {
     color: red;
@@ -57,7 +63,7 @@
     width: 100px;
     height: 48px;
     padding: 10px 10px;
-    margin-right: 80px;
+    margin-right: 20px;
     border-radius: 10px;
     letter-spacing: 1px;
     background-color: #464646;

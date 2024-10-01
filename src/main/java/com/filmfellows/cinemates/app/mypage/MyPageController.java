@@ -16,41 +16,45 @@ public class MyPageController {
      * 담당자 : 엄태운
      * 관련기능 : 예매내역 페이지 이동
      */
-    @GetMapping("/my-page/booking-list")
+    @GetMapping("/my-page/find-reservation")
     public String showMyReservation() {
-        return "mypage/booking-list";
+        return "mypage/find-reservation";
     }
 
     /**
      * 담당자 : 엄태운
      * 관련기능 : 구매내역 페이지 이동
      */
+    @GetMapping("/my-page/order-list")
     public String showMyOrder() {
-        return "";
+        return "mypage/order-list";
     }
 
     /**
      * 담당자 : 엄태운
      * 관련기능 : 문의내역 페이지 이동
      */
+    @GetMapping("/my-page/qna-list")
     public String showMyQna() {
-        return "";
+        return "mypage/qna-list";
     }
 
     /**
      * 담당자 : 엄태운
      * 관련기능 : 문의 상세조회 페이지 이동
      */
+    @GetMapping("/my-page/qna-detail")
     public String showQnaDetail() {
-        return "";
+        return "mypage/qna-detail";
     }
 
     /**
      * 담당자 : 엄태운
      * 관련기능 : 문의 등록 페이지 이동
      */
+    @GetMapping("/my-page/qna-register")
     public String showRegisterQna() {
-        return "";
+        return "mypage/register-qna";
     }
 
     /**

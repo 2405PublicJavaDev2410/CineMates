@@ -1,93 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        @font-face {
-            font-family: 'GmarketSansMedium';
-            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
-            font-weight: normal;
-            font-style: normal;
-        }
-        @font-face {
-            font-family: 'NEXON Lv1 Gothic OTF';
-            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv1 Gothic OTF.woff') format('woff');
-            font-weight: normal;
-            font-style: normal;
-        }
-        .my-sidebar {
-            width: 220px;
-            background-color: #f8f8f8;
-            border: 2px solid #ddd;
-            border-radius: 25px;
-            margin: 0 auto;
-        }
-        #my-title {
-            width: 100%;
-            height: 70px;
-            background-color: #233245;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 23px 23px 0 0;
-        }
-        #my-title p {
-            font-family: 'GmarketSansMedium', serif;
-            text-align: center;
-            font-weight: 500;
-            font-size: 1.6em;
-        }
-        .my-sideList ul {
-            list-style-type: none;
-            padding: 10px 10px;
-            font-family: 'NEXON Lv1 Gothic OTF', serif;
-        }
-        .my-sideList li {
-            margin: 15px 0;
-        }
-        .my-sideList a {
-            text-decoration: none;
-            color: black;
-            font-size: 18px;
-            padding: 8px 12px;
-            display: block;
-            border-radius: 5px;
-        }
-        .my-sideList a:hover {
-            background-color: #D54946;
-            color: #fff;
-            transition: background-color 0.3s;
-        }
-        .my-sideList .withdrawal {
-            color: red;
-        }
-        .my-sideList a.withdrawal:hover {
-            background-color: #466288;
-            color: white;
-        }
-    </style>
-</head>
-<body>
-<aside class="my-sidebar">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<aside th:fragment="my-sidebar" class="my-sidebar">
     <div class="my-sideList">
         <div id="my-title">
             <p>마이 페이지</p>
         </div>
         <ul>
-            <li><a href="#" class="normal-link">예매내역</a></li>
-            <li><a href="#" class="normal-link">상품 구매내역</a></li>
-            <li><a href="#" class="normal-link">1:1 문의내역</a></li>
-            <li><a href="#" class="normal-link">회원정보 수정</a></li>
-            <li><a href="#" class="withdrawal">회원탈퇴</a></li>
+            <li><a href="/my-page/find-reservation" class="normal-link" id="side-menu-1">예매내역</a></li>
+            <li><a href="/my-page/order-list" class="normal-link" id="side-menu-2">상품 구매내역</a></li>
+            <li><a href="/my-page/qna-list" class="normal-link" id="side-menu-3">1:1 문의내역</a></li>
+            <li><a href="/my-page/update" class="normal-link" id="side-menu-4">회원정보 수정</a></li>
+            <li><a href="/my-page/remove" class="withdrawal" id="side-menu-5">회원탈퇴</a></li>
         </ul>
     </div>
 </aside>
-</body>
-</html>

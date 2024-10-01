@@ -43,18 +43,18 @@ public class MemberController {
      * 담당자 : 엄태운
      * 관련기능 : 회원정보수정 페이지 이동
      */
-    @GetMapping("/member/update")
+    @GetMapping("/my-page/update")
     public String showModifyMember() {
-        return "member/update";
+        return "mypage/update";
     }
 
     /**
      * 담당자 : 엄태운
      * 관련기능 : 회원탈퇴 페이지 이동
      */
-    @GetMapping("/member/remove")
+    @GetMapping("/my-page/remove")
     public String showRemoveMember() {
-        return "member/remove";
+        return "mypage/remove";
     }
 
     /**

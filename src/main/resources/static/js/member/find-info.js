@@ -10,19 +10,24 @@ findPwdBtn.addEventListener('click', selectFindPwd);
 function selectFindId() {
     findIdForm.style.display = 'block';
     findPwdForm.style.display = 'none';
-    findIdBtn.classList.add('selected');
     findIdBtn.classList.remove('unselected');
-    findPwdBtn.classList.add('unselected');
+    findIdBtn.classList.add('selected');
     findPwdBtn.classList.remove('selected');
+    findPwdBtn.classList.add('unselected');
 };
 function selectFindPwd() {
     findPwdForm.style.display = 'block';
     findIdForm.style.display = 'none';
-    findPwdBtn.classList.add('selected');
     findPwdBtn.classList.remove('unselected');
-    findIdBtn.classList.add('unselected');
+    findPwdBtn.classList.add('selected');
     findIdBtn.classList.remove('selected');
+    findIdBtn.classList.add('unselected');
 };
+
+// 로그인 페이지로 이동 버튼 클릭 시
+function goToLogin() {
+    location.href = '/member/login';
+}
 
 // 페이지 로드 시 "아이디 찾기" 버튼 클릭 상태로 설정
 window.onload = function() {
