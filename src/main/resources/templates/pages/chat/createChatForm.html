@@ -7,6 +7,12 @@
       layout:fragment="Content">
     <head>
         <script src="https://kit.fontawesome.com/7d4169cb69.js" crossorigin="anonymous"></script>
+        <!-- 태그 라이브러리 다운-->
+        <!-- 소스 다운 -->
+        <script src="https://unpkg.com/@yaireo/tagify"></script>
+        <!-- 폴리필 (구버젼 브라우저 지원) -->
+        <script src="https://unpkg.com/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+        <link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
         <title>채팅방 개설</title>
         <!-- inline CSS 영역-->
         <style th:inline="css" type="text/css">
@@ -33,17 +39,19 @@
             .movie-list-container{
                 width: 50%;
                 height: 100%;
-                background-color:#ececec;
+                background-color:white;
             }
             .region-list-container{
                 width: 25%;
                 height: 100%;
+                /*background-color: #ececec;*/
                 background-color: white;
             }
             .cinema-list-container{
                 width: 25%;
                 height: 100%;
-                background-color:#ececec;
+                /*background-color:#ececec;*/
+                background-color: white;
             }
 
             .movie-item-content{
@@ -59,7 +67,9 @@
                 padding:12px;
                 background-color:white;
             }
-
+            .selectedMovie .movie-title{
+                color: #EA4E4A;
+            }
             .movie-img{
                 width: 150px;
                 height: 200px;
@@ -93,7 +103,7 @@
                }
                .checkedRegion{
                    border: 3px solid #EA4E4A;
-                   background-color:#ececec;
+                   /*background-color:#ececec;*/
                    color: #EA4E4A;
                    font-weight: bold;
                }
@@ -122,7 +132,7 @@
             }
             .checkedCinema{
                 border: 3px solid #EA4E4A;
-                background-color:#ececec;
+                /*background-color:#ececec;*/
                 color: #EA4E4A;
                 font-weight: bold;
             }
@@ -137,10 +147,42 @@
             .cinema-check-icon.checked{
                 opacity: 1;
             }
+
+        /*  채팅방 정보  */
+            .chatRoom-info{
+                font-size: 25px;
+                width: 80%;
+                margin: 0 auto;
+            }
+            .charRoom-info-nameBox{
+                display: flex;
+                border-bottom:2px solid gray;
+                height: 50px;
+                margin-bottom: 10px;
+            }
+            .charRoom-info-nameBox input{
+                font-size: 25px;
+                border: none;
+                width: 93%;
+                outline: none;
+                padding-left: 17px;
+            }
+            .charRoom-info-nameBox:focus-within{
+                border-bottom:2px solid black;
+            }
+
+        /*   태그 css*/
+            .tagify{
+                border: none;
+                border-bottom: 2px solid gray;
+                min-width:100%;
+                font-size: 20px;
+            }
         </style>
 
         <!-- inline JS 영역-->
         <script th:inline="javascript" type="text/javascript">
+
             // 영화 리스트 선택
                 // 전체 체크 해제
             function unSelectedAll(){
@@ -250,11 +292,26 @@
                 }
             }
 
+            // 채팅방 정보
+            function changeLengthCount(){
+                let nameLength = document.querySelector('input[name=roomName]').value.length;
+                if(nameLength <= 30){
+                    document.querySelector('.roomName-length').innerHTML = nameLength;
+                }
+            }
 
 
             // 로드 후 실행
             window.addEventListener('load', ()=>{
+            /////////태그 js
+                const input = document.querySelector('input[name=boardTagName]');
+                let tagify = new Tagify(input); // Tagify 초기화
 
+                // 태그가 추가되면 이벤트 발생
+                tagify.on('add', function() {
+                    console.log(tagify.value); // 입력된 태그 정보 객체(배열)
+                    console.log(tagify.value[0].value) // 태그 배열 0번째 객체의 value값 -> 입력한 태그
+                })
             });
 
 
@@ -275,7 +332,7 @@
                         <div style="display: flex; flex-direction: column; justify-content: center">
                             <div style="font-size: 27px; font-weight: bold; height: 60%">
                                 <span>15세</span>
-                                <span>베테랑2</span>
+                                <span class="movie-title">베테랑2</span>
                             </div>
                             <div>
                                 <span>시계</span>
@@ -380,8 +437,23 @@
                     </div>
                 </div>
             </div>
-        </div>
 
+
+
+        </div>
+        <div>채팅방 정보 입력</div>
+        <div class="chatRoom-info">
+            <div class="charRoom-info-nameBox">
+                <input type="text" name="roomName" placeholder="채팅방 이름을 입력해 주세요" maxlength="30" oninput="changeLengthCount();">
+                <div style="color: gray;">
+                    <span class="roomName-length">0</span>
+                    <span>/30</span>
+                </div>
+            </div>
+            <label>
+                <input type="text" name="boardTagName" placeholder="해시태그로 채팅방을 소개해보세요">
+            </label>
+        </div>
 
         <form action="/chat/create" method="post">
     <!--        카테고리 -> 이미 선택하고 들어옴-->
