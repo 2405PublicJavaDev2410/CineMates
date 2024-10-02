@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.filmfellows.cinemates.domain.chat.model.mapper.ChatMapper">
+    <select id="selectMovieAll" resultType="ChatRoomMovie">
+        SELECT * FROM MOVIE_TBL WHERE SCREENING_STATUS = 'NOW SHOWING'
+    </select>
+
+    <select id="selectCinemaByRegion" resultType="string">
+        SELECT CINEMA_NAME FROM CINEMA_TBL WHERE CINEMA_ADDRESS LIKE '%'||#{region}||'%'
+    </select>
+</mapper>

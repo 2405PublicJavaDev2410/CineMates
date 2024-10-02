@@ -14,5 +14,6 @@ import java.sql.Timestamp;
 public class ChatRoom {
     private Integer roomNo;
     private String roomName;
+    private String roomCategory;
     private Timestamp roomDate;
 }
