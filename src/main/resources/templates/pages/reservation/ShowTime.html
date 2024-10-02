@@ -11,10 +11,10 @@
 </head>
 <body>
 <form action="/Ticketing/PersonSeat" method="POST">
-    <div id="Korea-region-list">
-        <ul>
+    <div>
+        <ul id="Korea-region-list">
             <li>
-                <a href="" data-cinema-address="서울">서울</a>
+                <a href="#none" data-cinema-address="서울">서울</a>
             </li>
             <li>
                 <a href="#none" data-cinema-address="경기/인천">경기/인천</a>
@@ -38,8 +38,8 @@
                 <a href="#none" data-cinema-address="제주">제주</a>
             </li>
         </ul>
-        <ul id="cinema-List">
-        </ul>
+        <ul id="cinema-List"></ul>
+        <ul id="movie-List"></ul>
     </div>
 
     <button>이동</button>
@@ -58,9 +58,9 @@
                 success: function(response) {
                     var cinemaList = $('#cinema-List');
                     cinemaList.empty();  // 기존 목록을 비웁니다
-
+                    
                     $.each(response, function(index, cinema) {
-                        cinemaList.append('<li>'+cinema+'</li>');
+                        cinemaList.append('<li>'+'<a>'+cinema+'</a>'+'</li>');
                     });
                     console.log("잘 전달 됨");
                 },
