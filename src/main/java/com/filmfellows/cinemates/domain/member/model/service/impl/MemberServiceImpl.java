@@ -28,7 +28,7 @@ public class MemberServiceImpl implements MemberService {
         if(uploadFile != null) {
             String fileName = uploadFile.getOriginalFilename();
             String fileRename = Util.fileRename(fileName);
-            String filePath = "/cimenates/member/";
+            String filePath = "/cinemates/member/";
             uploadFile.transferTo(new File("C:/uploadFile/member/" + fileRename));
             ProfileImg profileImg = new ProfileImg();
             profileImg.setFileName(fileName);

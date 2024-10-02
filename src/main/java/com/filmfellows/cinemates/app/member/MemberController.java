@@ -65,9 +65,11 @@ public class MemberController {
         String birthDate = convertTimestampToString(member.getBirthDate());
         model.addAttribute("member", member);
         model.addAttribute("birthDate", birthDate);
-        model.addAttribute("profileImg", profileImg);
+        if(profileImg != null) {
+            log.info(profileImg.toString());
+            model.addAttribute("profileImg", profileImg);
+        }
         log.info(birthDate);
-        log.info(profileImg.toString());
         return "pages/mypage/update";
     }
 

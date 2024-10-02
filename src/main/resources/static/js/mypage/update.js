@@ -1,6 +1,7 @@
 document.getElementById('profileImg').addEventListener('change', function(event) {
     const file = event.target.files[0];
     const thumbnail = document.getElementById('profile-thumbnail');
+    const thumbnailContainer = document.getElementById('thumbnail-container');
     const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
 
     if (file) {
@@ -8,7 +9,9 @@ document.getElementById('profileImg').addEventListener('change', function(event)
         if (!allowedTypes.includes(file.type)) {
             alert('JPG, PNG, GIF 형식의 이미지만 업로드할 수 있습니다.');
             event.target.value = '';
+            thumbnail.src = '';
             thumbnail.style.display = 'none';
+            thumbnailContainer.style.display = 'none';
             return;
         }
 
@@ -17,14 +20,16 @@ document.getElementById('profileImg').addEventListener('change', function(event)
         reader.onload = function (e) {
             thumbnail.src = e.target.result;
             thumbnail.style.display = 'block';
+            thumbnailContainer.style.display = 'block';
         }
         reader.readAsDataURL(file);
     } else {
         // 파일이 없을 경우 썸네일 숨기기
         thumbnail.src = '';
         thumbnail.style.display = 'none';
+        thumbnailContainer.style.display = 'none';
     }
-})
+});
 
 const pwIcon = document.querySelector('.pwIcon');
 const pwInput = document.querySelector('#memberPw');

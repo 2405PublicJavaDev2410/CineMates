@@ -45,7 +45,7 @@
 
                 <div class="input-group">
                     <label>이메일</label>
-                    <input type="text" class="common-input-box" id="email" name="email" placeholder="이메일 주소">
+                    <span th:text="${member.email}"></span>
                 </div>
 
                 <div class="input-group">
@@ -59,8 +59,11 @@
                     <input type="file" id="profileImg" name="profileImg" accept="image/*">
                 </div>
                 <div id="thumbnail-container">
-                    <img id="profile-thumbnail" alt="사진 미리보기" style="display: none;">
-                </div><br><br>
+                    <img id="profile-thumbnail" alt="사진 미리보기"
+                         th:src="@{${profileImg != null ? profileImg.filePath + profileImg.fileRename : ''}}"
+                         th:style="${profileImg != null ? 'display: block;' : 'display: none;'}">
+                </div>
+                <br><br>
                 <button type="button" class="common-primary-btn">회원 정보 수정</button>
             </form>
         </div>
