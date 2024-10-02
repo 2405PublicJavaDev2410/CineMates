@@ -6,7 +6,6 @@ import com.filmfellows.cinemates.domain.member.model.service.MemberService;
 import com.filmfellows.cinemates.domain.member.model.vo.Member;
 import com.filmfellows.cinemates.domain.member.model.vo.ProfileImg;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,13 +40,38 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public int updateMember(Member member) {
+    public int updateMember(Member member, MultipartFile reloadFile) throws IllegalStateException, IOException {
+        int result = mMapper.updateMember(member);
+        if(reloadFile != null && !reloadFile.isEmpty()) {
+            String fileName = reloadFile.getOriginalFilename();
+            String fileRename = Util.fileRename(fileName);
+            String filePath = "/cinemates/member/";
+            ProfileImg profileImg = new ProfileImg();
+            reloadFile.transferTo(new File("C:/uploadFile/member/" + fileRename));
+            // profileImg 객체에 새로운 정보 저장
+            profileImg.setFileName(fileName);
+            profileImg.setFileRename(fileRename);
+            profileImg.setFilePath(filePath);
+            profileImg.setMemberId(member.getMemberId());
+            // originProfileImg 객체에 기존 정보 저장
+            ProfileImg originProfileImg = mMapper.selectOneProfileImgById(member.getMemberId());
+            if(originProfileImg != null) {
+                // 로컬저장소 내 기존 파일 삭제
+                File mFile = new File("C:/uploadFile/member/" + originProfileImg.getFileRename());
+                mFile.delete();
+                // 기존 데이터가 있으면 업데이트
+                result = mMapper.updateProfileImg(profileImg);
+            }else {
+                // 기존 데이터가 없으면 새로 저장
+                result = mMapper.insertProfileImg(profileImg);
+            }
+        }
         return 0;
     }
 
     @Override
     public int deleteMember(Member member) {
-        return 0;
+        return mMapper.deleteMember(member);
     }
 
     @Override
@@ -73,11 +97,11 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Member findMemberId(String name, String email) {
-        return null;
+        return mMapper.selectOneByNameAndEmail(name, email);
     }
 
     @Override
-    public Member findMemberPw(String name, String email) {
+    public Member findMemberPw(String memberId, String email) {
         return null;
     }
 }

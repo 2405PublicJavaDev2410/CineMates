@@ -5,6 +5,11 @@
         SELECT * FROM MEMBER_TBL
         WHERE MEMBER_ID = #{memberId}
     </select>
+    <select id="selectOneByNameAndEmail">
+        SELECT * FROM MEMBER_TBL
+        WHERE NAME = #{name}
+        AND EMAIL = #{email}
+    </select>
     <select id="selectOneProfileImgById" resultType="ProfileImg">
         SELECT * FROM PROFILE_IMG_TBL
         WHERE MEMBER_ID = #{memberId}
@@ -13,8 +18,26 @@
         INSERT INTO MEMBER_TBL (MEMBER_ID, MEMBER_PW, NAME, BIRTH_DATE, EMAIL, PHONE)
         VALUES (#{memberId}, #{memberPw}, #{name}, #{birthDate}, #{email}, #{phone})
     </insert>
+    <update id="updateMember">
+        UPDATE MEMBER_TBL
+        <set>
+            <if test="memberPw != null"> MEMBER_PW = #{memberPw}, </if>
+            <if test="phone != null"> PHONE = #{phone} </if>
+        </set>
+        WHERE MEMBER_ID = #{memberId}
+    </update>
+    <update id="deleteMember">
+        UPDATE MEMBER_TBL
+        SET DELETE_YN = 'Y'
+        WHERE MEMBER_ID = #{memberId}
+    </update>
     <insert id="insertProfileImg">
         INSERT INTO PROFILE_IMG_TBL
-        VALUES(SEQ_PROFILE_IMG_NO.NEXTVAL, #{fileName}, #{fileRename}, #{filePath}, #{memberId})
+        VALUES (SEQ_PROFILE_IMG_NO.NEXTVAL, #{fileName}, #{fileRename}, #{filePath}, #{memberId})
     </insert>
+    <update id="updateProfileImg">
+        UPDATE PROFILE_IMG_TBL
+        SET FILE_NAME = #{fileName}, FILE_RENAME = #{fileRename}, FILE_PATH = #{filePath}
+        WHERE MEMBER_ID = #{memberId}
+    </update>
 </mapper>

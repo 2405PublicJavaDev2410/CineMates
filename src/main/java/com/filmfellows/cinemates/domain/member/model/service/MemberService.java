@@ -8,12 +8,12 @@ import java.io.IOException;
 
 public interface MemberService {
     int insertMember(Member member, MultipartFile uploadFile) throws IllegalStateException, IOException;
-    int updateMember(Member member);
+    int updateMember(Member member, MultipartFile reloadFile) throws IllegalStateException, IOException;
     int deleteMember(Member member);
     Member loginMember(Member member);
     Member getOneMember(String memberId);
     ProfileImg getOneProfileImg(String memberId);
     Member findMemberId(String name, String email);
-    Member findMemberPw(String name, String email);
+    Member findMemberPw(String memberId, String email);
 
 }

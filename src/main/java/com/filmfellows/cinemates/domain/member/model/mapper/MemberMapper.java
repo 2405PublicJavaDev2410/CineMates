@@ -10,8 +10,9 @@ public interface MemberMapper {
     int updateMember(Member member);
     int deleteMember(Member member);
     int insertProfileImg(ProfileImg profileImg);
+    int updateProfileImg(ProfileImg profileImg);
     Member selectOneById(String memberId);
     ProfileImg selectOneProfileImgById(String memberId);
-    Member selectOneByName(String memberName);
-
+    Member selectOneByNameAndEmail(String name, String email);
+    Member selectOneByIdAndEmail(String memberId, String email);
 }

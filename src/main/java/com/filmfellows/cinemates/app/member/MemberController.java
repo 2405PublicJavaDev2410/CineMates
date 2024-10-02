@@ -1,7 +1,6 @@
 package com.filmfellows.cinemates.app.member;
 
-import com.filmfellows.cinemates.app.member.dto.LoginRequest;
-import com.filmfellows.cinemates.app.member.dto.RegisterRequest;
+import com.filmfellows.cinemates.app.member.dto.*;
 import com.filmfellows.cinemates.domain.member.model.service.MemberService;
 import com.filmfellows.cinemates.domain.member.model.vo.Member;
 import com.filmfellows.cinemates.domain.member.model.vo.ProfileImg;
@@ -17,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Controller
@@ -69,7 +67,6 @@ public class MemberController {
             log.info(profileImg.toString());
             model.addAttribute("profileImg", profileImg);
         }
-        log.info(birthDate);
         return "pages/mypage/update";
     }
 
@@ -78,7 +75,10 @@ public class MemberController {
      * 관련기능 : 회원탈퇴 페이지 이동
      */
     @GetMapping("/my-page/remove")
-    public String showRemoveMember() {
+    public String showRemoveMember(HttpSession session, Model model) {
+        String memberId = session.getAttribute("memberId").toString();
+        Member member = mService.getOneMember(memberId);
+        model.addAttribute("member", member);
         return "pages/mypage/remove";
     }
 
@@ -88,23 +88,23 @@ public class MemberController {
      */
     @PostMapping("/register")
     public String insertMember(@ModelAttribute @Valid RegisterRequest registerRequest,
-            @RequestParam(value="profileImg", required=false) MultipartFile profileImg )
+            @RequestParam(value="profileImg", required=false) MultipartFile profileImg)
             throws IllegalStateException, IOException {
 //        if(registerRequest.getMemberPw().equals(registerRequest.getCheckPassword())) {
-            Member member = new Member();
-            member.setMemberId(registerRequest.getMemberId());
-            member.setMemberPw(registerRequest.getMemberPw());
-            member.setName(registerRequest.getName());
-            member.setBirthDate(convertStringToTimestamp(String.valueOf(registerRequest.getBirthDate())));
-            member.setEmail(registerRequest.getEmail());
-            member.setPhone(registerRequest.getPhone());
-            log.info(member.toString());
-            // 프로필 이미지 파일이 있는 경우에만 처리
-            int result = mService.insertMember(member,
-                    (profileImg != null && !profileImg.isEmpty() ? profileImg : null));
-            if(result == 0) {
-                throw new IllegalStateException();
-            }
+        Member member = new Member();
+        member.setMemberId(registerRequest.getMemberId());
+        member.setMemberPw(registerRequest.getMemberPw());
+        member.setName(registerRequest.getName());
+        member.setBirthDate(convertStringToTimestamp(String.valueOf(registerRequest.getBirthDate())));
+        member.setEmail(registerRequest.getEmail());
+        member.setPhone(registerRequest.getPhone());
+        log.info(member.toString());
+        // 프로필 이미지 파일이 있는 경우에만 처리
+        int result = mService.insertMember(member,
+                (profileImg != null && !profileImg.isEmpty() ? profileImg : null));
+        if(result == 0) {
+            throw new IllegalStateException();
+        }
 //            }
         return "redirect:/login";
     }
@@ -113,16 +113,34 @@ public class MemberController {
      * 담당자 : 엄태운
      * 관련기능 : 회원정보 수정
      */
-    public int updateMember() {
-        return 0;
+    @PostMapping("/modify")
+    public String updateMember(@ModelAttribute @Valid ModifyRequest modifyRequest,
+            @RequestParam(value="profileImg", required=false)  MultipartFile profileImg,
+            HttpSession session) throws IOException {
+        String memberId = session.getAttribute("memberId").toString();
+        Member member = mService.getOneMember(memberId);
+        member.setMemberPw(modifyRequest.getMemberPw());
+        member.setPhone(modifyRequest.getPhone());
+        int result = mService.updateMember(member, profileImg);
+        return "redirect:/my-page/update";
     }
 
     /**
      * 담당자 : 엄태운
      * 관련기능 : 회원정보 삭제
      */
-    public int deleteMember() {
-        return 0;
+    @PostMapping("/remove")
+    public String deleteMember(@ModelAttribute @Valid RemoveRequest removeRequest,
+           HttpSession session) {
+        String memberId = session.getAttribute("memberId").toString();
+        removeRequest.setMemberId(memberId);
+        Member member = mService.getOneMember(memberId);
+        if(memberId.equals(removeRequest.getMemberId()) && member.getMemberPw().equals(removeRequest.getMemberPw())) {
+            log.info(member.toString());
+            int result = mService.deleteMember(member);
+            session.invalidate();
+        }
+        return "redirect:/";
     }
 
     /**
@@ -181,15 +199,19 @@ public class MemberController {
      * 담당자 : 엄태운
      * 관련기능 : 아이디 찾기
      */
-    public String findMemberId() {
-        return "";
+    @PostMapping("/find-id")
+    public FindIdResponse findMemberId(@ModelAttribute @Valid FindIdRequest findIdRequest) {
+        Member member = mService.findMemberId(findIdRequest.getName(), findIdRequest.getEmail());
+        return new FindIdResponse();
     }
 
     /**
      * 담당자 : 엄태운
      * 관련기능 : 비밀번호 찾기
      */
+    @PostMapping("/find-pw")
     public String findMemberPw() {
+
         return "";
     }
 

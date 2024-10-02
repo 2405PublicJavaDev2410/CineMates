@@ -92,13 +92,14 @@
     width: 140px;
     height: 140px;
     object-fit: cover;
-    border-radius: 10%;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    box-shadow: 0 0 7px rgba(0, 0, 0, 0.2);
 }
 .common-primary-btn {
-    width: 575px;
-    letter-spacing: 1px;
-    margin: 10px 0;
+    width: 140px;
+    margin-left: 240px;
+    font-size: 16px;
+    letter-spacing: 0;
 }
 .common-primary-btn:hover {
     background-color: #E12C25;
