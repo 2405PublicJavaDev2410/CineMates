@@ -1,0 +1,131 @@
+.my-page-container {
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 100px 0;
+    margin: 0 auto;
+    flex-direction: row;
+    width: 90%;
+    flex: 1 1 auto;
+}
+
+/* 메인 CSS */
+#main-container {
+    width: 800px;
+    min-height: 400px;
+    float: left;
+    margin: 0 auto;
+}
+.search-order-form {
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+    margin-left: 40px;
+    padding: 20px 0 20px 20px;
+}
+#period-group {
+    padding: 30px 20px;
+    height: 200px;
+    background-color: #ececec;
+    border-radius: 10px;
+}
+#order-title {
+    font-family: 'GmarketSansMedium', serif;
+    font-size: 28px;
+    font-weight: bold;
+}
+.form-group {
+    margin-bottom: 15px;
+}
+.form-group label {
+    display: block;
+    font-size: 18px;
+    margin-bottom: 5px;
+    padding-left: 3px;
+}
+.form-group input, .form-group button {
+    padding: 5px;
+}
+.form-group input[type=date] {
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+    padding: 7px;
+    font-size: 15px;
+}
+.period-buttons {
+    margin-top: 20px;
+}
+.period-buttons button {
+    margin-right: 5px;
+    padding: 7px 14px;
+    letter-spacing: 1px;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: white;
+    border: 2px solid #ccc;
+    color: #000;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, border 0.3s ease;
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+}
+.period-buttons .active {
+    background-color: #EA4E4A;
+    color: white;
+    border: 2px solid #EA4E4A;
+}
+#period-search-btn {
+    cursor: pointer;
+    padding: 5px 10px;
+    height: 39px;
+    margin-left: 10px;
+    border-radius: 5px;
+    letter-spacing: 1px;
+    background-color: #464646;
+    border: 2px solid #464646;
+    color: white;
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+    transition: border 0.3s ease, background-color 0.3s ease;
+}
+#period-search-btn:hover {
+    background-color: #242424;
+    border: 2px solid #242424;
+}
+/* 테이블 */
+#result-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    letter-spacing: 1px;
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+}
+#result-table thead th {
+    background-color: #464646;
+    color: #ffffff;
+    text-align: center;
+    padding: 12px;
+    font-size: 16px;
+}
+#result-table tbody td {
+    padding: 12px;
+    font-size: 14px;
+    border-bottom: 1px solid #dddddd;
+}
+.product-link {
+    cursor: pointer;
+}
+.product-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    margin-right: 10px;
+}
+.product-name {
+    flex: 1;
+}
+.product-link:hover .product-name {
+    text-decoration: underline;
+}
+#result-body {
+    text-align: center;
+}
+#result-body tr:nth-child(even) {
+    background-color: #f8f8f8;
+}

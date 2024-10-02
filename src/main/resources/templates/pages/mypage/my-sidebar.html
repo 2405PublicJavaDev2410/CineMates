@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<aside th:fragment="my-sidebar" class="my-sidebar">
+    <div class="my-sideList">
+        <div id="my-title">
+            <p>마이 페이지</p>
+        </div>
+        <ul>
+            <li><a href="/my-page/find-reservation" class="normal-link" id="side-menu-1">예매내역</a></li>
+            <li><a href="/my-page/order-list"       class="normal-link" id="side-menu-2">상품 구매내역</a></li>
+            <li><a href="/my-page/qna-list"         class="normal-link" id="side-menu-3">1:1 문의내역</a></li>
+            <li><a href="/my-page/update"           class="normal-link" id="side-menu-4">회원정보 수정</a></li>
+            <li><a href="/my-page/remove"           class="withdrawal"  id="side-menu-5">회원탈퇴</a></li>
+        </ul>
+    </div>
+</aside>
