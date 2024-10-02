@@ -26,7 +26,7 @@ function selectFindPwd() {
 
 // 로그인 페이지로 이동 버튼 클릭 시
 function goToLogin() {
-    location.href = '/member/login';
+    location.href = '/login';
 }
 
 // 페이지 로드 시 "아이디 찾기" 버튼 클릭 상태로 설정

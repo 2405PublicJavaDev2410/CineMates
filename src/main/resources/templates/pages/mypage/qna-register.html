@@ -8,7 +8,7 @@
 <link href="/css/mypage/my-sidebar.css" rel="stylesheet">
 <div class="my-page-container">
     <!-- 사이드바 -->
-    <div th:replace="~{mypage/my-sidebar :: my-sidebar}"></div>
+    <div th:replace="~{pages/mypage/my-sidebar :: my-sidebar}"></div>
     <!-- 메인 -->
     <main id="main-container">
         <div class="new-qna-form">
@@ -27,7 +27,7 @@
             </div>
             <div class="input-group" id="new-qna-middle">
                 <label>내용</label>
-                <textarea rows="10" cols="76" style="resize: none;" id="qna-content" name="content"></textarea>
+                <textarea rows="10" cols="74" style="resize: none;" id="qna-content" name="content"></textarea>
             </div>
             <div class="input-group file-group" id="new-qna-bottom">
                 <label>첨부파일</label>

@@ -18,7 +18,7 @@ public class MyPageController {
      */
     @GetMapping("/my-page/find-reservation")
     public String showMyReservation() {
-        return "mypage/find-reservation";
+        return "pages/mypage/find-reservation";
     }
 
     /**
@@ -27,7 +27,7 @@ public class MyPageController {
      */
     @GetMapping("/my-page/order-list")
     public String showMyOrder() {
-        return "mypage/order-list";
+        return "pages/mypage/order-list";
     }
 
     /**
@@ -36,7 +36,7 @@ public class MyPageController {
      */
     @GetMapping("/my-page/qna-list")
     public String showMyQna() {
-        return "mypage/qna-list";
+        return "pages/mypage/qna-list";
     }
 
     /**
@@ -45,7 +45,7 @@ public class MyPageController {
      */
     @GetMapping("/my-page/qna-detail")
     public String showQnaDetail() {
-        return "mypage/qna-detail";
+        return "pages/mypage/qna-detail";
     }
 
     /**
@@ -54,7 +54,7 @@ public class MyPageController {
      */
     @GetMapping("/my-page/qna-register")
     public String showRegisterQna() {
-        return "mypage/register-qna";
+        return "pages/mypage/qna-register";
     }
 
     /**

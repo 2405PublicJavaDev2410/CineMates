@@ -12,7 +12,7 @@
         <div id="signup-form">
             <h1>회원가입</h1>
             <br><br>
-            <form action="/member/register" method="post" enctype="multipart/form-data">
+            <form action="/register" method="post" enctype="multipart/form-data">
                 <div class="input-group">
                     <label>아이디<span class="asterisk"> *</span></label>
                     <input type="text" class="common-input-box" id="memberId" name="memberId" placeholder="아이디">
@@ -26,13 +26,13 @@
 
                 <div class="input-group pwd-group">
                     <label>비밀번호 확인<span class="asterisk"> *</span></label>
-                    <input type="password" class="common-input-box" id="passwordCheck" placeholder="비밀번호 확인">
+                    <input type="password" class="common-input-box" id="checkPassword" name="checkPassword" placeholder="비밀번호 확인">
                     <i class="fi fi-rs-eye toggle-password cpwIcon"></i>
                 </div>
 
                 <div class="input-group">
                     <label>이름<span class="asterisk"> *</span></label>
-                    <input type="text" class="common-input-box" name="userName" placeholder="이름">
+                    <input type="text" class="common-input-box" name="name" placeholder="이름">
                 </div>
 
                 <div class="input-group">
@@ -69,7 +69,7 @@
                 <div id="thumbnail-container">
                     <img id="profile-thumbnail" alt="사진 미리보기" style="display: none;">
                 </div><br><br>
-                <button type="button" class="common-primary-btn">가입 완료</button>
+                <button class="common-primary-btn">가입 완료</button>
             </form>
         </div>
     </div>

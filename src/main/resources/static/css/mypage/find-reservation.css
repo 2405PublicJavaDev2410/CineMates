@@ -29,6 +29,7 @@
 }
 #reserve-search-section {
     padding: 30px 20px;
+    width: 740px;
     height: 140px;
     background-color: #ececec;
     border-radius: 10px;
@@ -66,15 +67,12 @@
     border: 2px solid #242424;
     color: white;
 }
-.hide {
-    display: none;
-}
-#movie-info, #error-message {
-    display: none;
+.info-group, .error-group {
+    width: 740px;
 }
 #info-table {
     width: 100%;
-    padding: 0 10px 0 20px;
+    padding: 0 10px 0 30px;
 }
 #info-table th {
     text-align: right;
@@ -83,14 +81,12 @@
     padding: 5px 10px;
 }
 #movie-info, #error-message {
-    display: none;
     margin-top: 10px;
     border-radius: 10px;
     border: 1px solid #ddd;
     font-size: 16px;
 }
 #movie-info {
-    display: flex;
     padding: 10px 20px;
 }
 #thumbnail-area {
