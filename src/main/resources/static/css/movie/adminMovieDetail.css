@@ -2,30 +2,18 @@ main {
     text-align: center;
     margin: 0 auto;
     width: 1200px;
-    height: 900px;
 }
 
 /* 타이틀 */
 
-h3 {
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 34px;
-    font-weight: 400;
-    padding-top: 40px;
+h1 {
+    font-family: 'GmarketSansMedium', sans-serif;
+    margin: 30px 30px;
 }
 
-h4 {
-    font-family: 'Noto Sans KR', sans-serif;
-    font-style: normal;
-    font-weight: 550;
-    font-size: 20px;
-    /* padding-bottom: 10px; */
-}
-
-hr {
-    width: 900px;
-    border: 2px solid black;
-    margin: 0 auto 10px;
+h2 {
+    font-family: 'GmarketSansMedium', sans-serif;
+    margin: 20px 20px;
 }
 
 .detail-area {
@@ -45,9 +33,10 @@ hr {
 }
 
 .poster {
-    border: 1px solid black;
-    width: 400px;
-    height: 400px;
+    /*border: 1px solid #ddd;*/
+    /*width: 400px;*/
+    /*height: 400px;*/
+    margin-top: 75px;
 }
 
 /* 정보 입력란 */
@@ -60,16 +49,18 @@ hr {
 label {
     float: left;
     margin-bottom: 5px;
+    font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
 }
 
 input {
     width: 100%;
     padding: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 13px;
     border: 1px solid #ddd;
-    border-radius: 4px;
+    /*border-radius: 4px;*/
     box-sizing: border-box;
-    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
 }
 
 select {
@@ -82,11 +73,12 @@ select {
     font-family: 'Noto Sans KR', sans-serif; */
     width: 100%;
     padding: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 13px;
     border: 1px solid #ddd;
-    border-radius: 4px;
+    /*border-radius: 4px;*/
     box-sizing: border-box;
-    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
 }
 
 .rating {
@@ -96,11 +88,12 @@ select {
 textarea {
     width: 100%;
     padding: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 13px;
     border: 1px solid #ddd;
-    border-radius: 4px;
+    /*border-radius: 4px;*/
     box-sizing: border-box;
-    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
 }
 
 .add-Trailer {
@@ -122,7 +115,7 @@ input:focus,
 textarea:focus,
 select:focus {
     outline: none;
-    border-color: #3399ff;
+    border-color: #EA4E4A;
 }
 
 .trailer-container {
@@ -131,47 +124,49 @@ select:focus {
 
 /* 버튼*/
 .remove-input-Btn {
-    width: 60px;
+    width: 50px;
     height: 30px;
-    background-color: #007fff;
+    background-color: #464646;
     color: white;
     border: none;
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 18px;
-    /* border-radius: 30px; */
+    font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
+    font-size: 12px;
+    /*border-radius: 15px;*/
     cursor: pointer;
-    /* margin: 0 10px; */
 }
 
 .addStillcut,
 .addTrailer {
     width: 120px;
-    height: 30px;
-    background-color: #007fff;
+    height: 40px;
+    background-color: #464646;
     color: white;
     border: none;
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 18px;
-    /* border-radius: 30px; */
+    font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
+    font-size: 16px;
+    /*border-radius: 15px;*/
     cursor: pointer;
-    /* margin: 0 10px; */
 }
 
 .buttons {
     width: 100px;
     height: 40px;
-    background-color: #007fff;
+    background-color: #EA4E4A;
     color: white;
     border: none;
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
     font-size: 18px;
-    /* border-radius: 30px; */
+    /*border-radius: 15px;*/
     cursor: pointer;
     margin: 30px 10px;
 }
 
+.buttons:hover {
+    background-color: #E12C25;
+}
+
 button:hover {
-    background-color: #3399ff;
+    background-color: #242424;
 }
 
 .cancel {
@@ -179,5 +174,5 @@ button:hover {
 }
 
 .cancel:hover {
-    background-color: #808080;
+    background-color: #242424;
 }

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.filmfellows.cinemates.domain.movie.model.mapper.MovieMapper">
+    <resultMap id="movieDetailResultMap" type="MovieInfoResponse">
+        <id property="movieNo" column="MOVIE_NO"/>
+        <result property="title" column="TITLE"/>
+        <result property="posterUrl" column="POSTER_URL"/>
+        <result property="releaseDate" column="RELEASE_DATE"/>
+        <result property="runningTime" column="RUNNING_TIME"/>
+        <result property="rating" column="RATING"/>
+        <result property="synopsis" column="SYNOPSIS"/>
+        <result property="director" column="DIRECTOR"/>
+        <result property="actors" column="ACTORS"/>
+        <result property="genre" column="GENRE"/>
+        <result property="productionCountry" column="PRODUCTION_COUNTRY"/>
+        <result property="screeningStatus" column="SCREENING_STATUS"/>
+
+        <collection property="stillcuts" ofType="com.filmfellows.cinemates.app.movie.dto.MovieInfoResponse$MovieStillcut">
+            <id property="stillcutNo" column="STILLCUT_NO"/>
+            <result property="stillcutUrl" column="STILLCUT_URL"/>
+        </collection>
+
+        <collection property="trailers" ofType="com.filmfellows.cinemates.app.movie.dto.MovieInfoResponse$MovieTrailer">
+            <id property="trailerNo" column="TRAILER_NO"/>
+            <result property="trailerType" column="TRAILER_TYPE"/>
+            <result property="trailerThumbnailUrl" column="TRAILER_THUMBNAIL_URL"/>
+            <result property="trailerUrl" column="TRAILER_URL"/>
+        </collection>
+    </resultMap>
+
+    <!-- 영화 정보 조회 -->
+    <select id="selectMovieDetail" resultMap="movieDetailResultMap">
+        SELECT
+            m.MOVIE_NO,
+            m.TITLE,
+            m.POSTER_URL,
+            m.RELEASE_DATE,
+            m.RUNNING_TIME,
+            m.RATING,
+            m.SYNOPSIS,
+            m.DIRECTOR,
+            m.ACTORS,
+            m.GENRE,
+            m.PRODUCTION_COUNTRY,
+            m.SCREENING_STATUS,
+            s.STILLCUT_NO,
+            s.STILLCUT_URL,
+            t.TRAILER_NO,
+            t.TRAILER_TYPE,
+            t.TRAILER_THUMBNAIL_URL,
+            t.TRAILER_URL
+        FROM
+            MOVIE_TBL m
+                LEFT JOIN MOVIE_STILLCUT_TBL s ON m.MOVIE_NO = s.MOVIE_NO
+                LEFT JOIN MOVIE_TRAILER_TBL t ON m.MOVIE_NO = t.MOVIE_NO
+        WHERE m.MOVIE_NO = #{movieNo}
+        ORDER BY
+            m.MOVIE_NO, s.STILLCUT_NO, t.TRAILER_NO
+
+    <!-- 영화 리스트 조회 -->
+    </select>
+    <select id="selectMovieList" resultType="Movie">
+        SELECT MOVIE_NO, TITLE, RELEASE_DATE, SCREENING_STATUS FROM MOVIE_TBL
+    </select>
+
+<!--    &lt;!&ndash; 영화 정보 업데이트 &ndash;&gt;-->
+<!--    <update id="updateMovieInfo" parameterType="MovieInfoResponse">-->
+<!--        UPDATE MOVIE_TBL-->
+<!--        SET-->
+<!--            TITLE = #{title},-->
+<!--            POSTER_URL = #{posterUrl},-->
+<!--            RELEASE_DATE = #{releaseDate},-->
+<!--            RUNNING_TIME = #{runningTime},-->
+<!--            RATING = #{rating},-->
+<!--            SYNOPSIS = #{synopsis},-->
+<!--            DIRECTOR = #{director},-->
+<!--            ACTORS = #{actors},-->
+<!--            GENRE = #{genre},-->
+<!--            PRODUCTION_COUNTRY = #{productionCountry},-->
+<!--            SCREENING_STATUS = #{screeningStatus}-->
+<!--        WHERE MOVIE_NO = #{movieNo}-->
+<!--    </update>-->
+
+<!--    &lt;!&ndash; 스틸컷 업데이트 &ndash;&gt;-->
+<!--    <update id="updateMovieStillcut" parameterType="com.filmfellows.cinemates.app.movie.dto.MovieInfoResponse$MovieStillcut">-->
+<!--        UPDATE MOVIE_STILLCUT_TBL-->
+<!--        SET-->
+<!--            STILLCUT_URL = #{stillcutUrl}-->
+<!--        WHERE STILLCUT_NO = #{stillcutNo} AND MOVIE_NO = #{movieNo}-->
+<!--    </update>-->
+
+<!--    &lt;!&ndash; 새로운 스틸컷 삽입 &ndash;&gt;-->
+<!--    <insert id="insertMovieStillcut" parameterType="com.filmfellows.cinemates.app.movie.dto.MovieInfoResponse$MovieStillcut">-->
+<!--        INSERT INTO MOVIE_STILLCUT_TBL (STILLCUT_URL)-->
+<!--        VALUES (#{stillcutUrl})-->
+<!--    </insert>-->
+
+<!--    &lt;!&ndash; 스틸컷 삭제 &ndash;&gt;-->
+<!--    <delete id="deleteMovieStillcut">-->
+<!--        DELETE FROM MOVIE_STILLCUT_TBL-->
+<!--        WHERE MOVIE_NO = #{movieNo} AND STILLCUT_NO NOT IN-->
+<!--        <foreach item="stillcut" collection="stillcuts" open="(" separator="," close=")">-->
+<!--            #{stillcut.stillcutNo}-->
+<!--        </foreach>-->
+<!--    </delete>-->
+
+<!--    &lt;!&ndash; 트레일러 업데이트 &ndash;&gt;-->
+<!--    <update id="updateMovieTrailer" parameterType="com.filmfellows.cinemates.app.movie.dto.MovieInfoResponse$MovieTrailer">-->
+<!--        UPDATE MOVIE_TRAILER_TBL-->
+<!--        SET-->
+<!--            TRAILER_TYPE = #{trailerType},-->
+<!--            TRAILER_THUMBNAIL_URL = #{trailerThumbnailUrl},-->
+<!--            TRAILER_URL = #{trailerUrl}-->
+<!--        WHERE TRAILER_NO = #{trailerNo} AND MOVIE_NO = #{movieNo}-->
+<!--    </update>-->
+
+<!--    &lt;!&ndash; 새로운 트레일러 삽입 &ndash;&gt;-->
+<!--    <insert id="insertMovieTrailer" parameterType="com.filmfellows.cinemates.app.movie.dto.MovieInfoResponse$MovieTrailer">-->
+<!--        INSERT INTO MOVIE_TRAILER_TBL (TRAILER_TYPE, TRAILER_THUMBNAIL_URL, TRAILER_URL)-->
+<!--        VALUES (#{trailerType}, #{trailerThumbnailUrl}, #{trailerUrl})-->
+<!--    </insert>-->
+
+<!--    &lt;!&ndash; 트레일러 삭제 &ndash;&gt;-->
+<!--    <delete id="deleteMovieTrailer">-->
+<!--        DELETE FROM MOVIE_TRAILER_TBL-->
+<!--        WHERE MOVIE_NO = #{movieNo} AND TRAILER_NO NOT IN-->
+<!--        <foreach item="trailer" collection="trailers" open="(" separator="," close=")">-->
+<!--            #{trailer.trailerNo}-->
+<!--        </foreach>-->
+<!--    </delete>-->
+
+</mapper>
