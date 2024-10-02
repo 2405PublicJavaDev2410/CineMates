@@ -25,4 +25,12 @@ public interface ReservationService {
      * @return List<Integer>
      */
     List<ReservationDTO> showReservedSeats();
+
+    /**
+     * 상영관 조회
+     *
+     * @param Address
+     * @return List<ReservationDTO>
+     */
+    List<String> selectCinemas(String Address);
 }

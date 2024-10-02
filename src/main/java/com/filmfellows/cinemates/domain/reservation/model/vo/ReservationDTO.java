@@ -23,14 +23,14 @@ public class ReservationDTO {
 
     //Movie - 영화
     private Integer movieNo;
-    private String titleKor;
-    private String titleEng;
+    private String title;
     private String filename;
     private String fileRename;
 
     //Cinema - 극장
     private String cinemaName;
     private Integer cinemaNo;
+    private String cinemaAddress;
 
     //screen - 상영관
     private String screenName;

@@ -12,8 +12,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -23,6 +26,8 @@ public class ReservationController {
 
     @Autowired
     ReservationService rService;
+    @Autowired
+    private ReservationDTO reservationDTO;
 
     private static String generateRandomString(int length) {
         StringBuilder builder = new StringBuilder();
@@ -32,6 +37,7 @@ public class ReservationController {
         }
         return builder.toString();
     }
+
     @GetMapping("/Ticketing")
     public String showShowTimePage(Model model, HttpSession session) {
 //        String memberId = (String)session.getAttribute("memberId");
@@ -40,22 +46,33 @@ public class ReservationController {
 //        }
         List<ReservationDTO> rList = rService.showReservationPage();
 
-        model.addAttribute("rList",rList);
+        model.addAttribute("rList", rList);
         return "pages/reservation/Showtime";
     }
+
     @PostMapping("/Ticketing/PersonSeat")
-    public String showPersonSeatPage(@ModelAttribute ReservationDTO rDTO,Model model) {
+    public String showPersonSeatPage(@ModelAttribute ReservationDTO rDTO, Model model) {
 
         String randomString = generateRandomString(10);
         rDTO.setReservationNo(randomString);
         System.out.println(rDTO);
         List<ReservationDTO> rList = rService.showReservedSeats();
         System.out.println(rList);
-        model.addAttribute("rList",rList);
-        model.addAttribute("rDTO",rDTO);
+        model.addAttribute("rList", rList);
+        model.addAttribute("rDTO", rDTO);
         return "pages/reservation/PersonSeat";
     }
-//    public String searchPersonSeat(Model model){
-//        return "pages/reservation/PersonSeat";
-//    }
+
+    @GetMapping("/getCinemas")
+    public ResponseEntity<List<String>> selectCinemas(@RequestParam String cinemaAddress) {
+        List<String> addresses = Arrays.asList(cinemaAddress.split("/"));
+        List<String> allCinemas = new ArrayList<>();
+        for(String address : addresses) {
+            List<String> cinemas = rService.selectCinemas(address);
+            allCinemas.addAll(cinemas);
+            System.out.println(cinemas);
+       }
+        return ResponseEntity.ok(allCinemas);
+    }
+
 }

@@ -15,4 +15,6 @@ public interface ReservationMapper {
     void insertReservationInfo2(Map<String, Object> reserveInfo);
 
     List<ReservationDTO> showReservedSeats();
+
+    List<String> selectCinemas(String address);
 }

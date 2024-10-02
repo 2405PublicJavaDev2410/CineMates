@@ -4,24 +4,28 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.filmfellows.cinemates.domain.reservation.model.mapper.ReservationMapper">
     <select id="showReservationPage" resultType="ReservationDTO">
-        SELECT
-            *
-        FROM
-            RESERVATION_TBL
-                JOIN CINEMA_TBL USING(CINEMA_NO)
-                JOIN MOVIE_TBL USING(MOVIE_NO)
-                JOIN SCREEN_TBL USING(SCREEN_NO)
-                JOIN SHOWTIME_TBL USING(SHOWTIME_NO)
+        SELECT *
+        FROM RESERVATION_TBL
+                 JOIN CINEMA_TBL USING (CINEMA_NO)
+                 JOIN MOVIE_TBL USING (MOVIE_NO)
+                 JOIN SCREEN_TBL USING (SCREEN_NO)
+                 JOIN SHOWTIME_TBL USING (SHOWTIME_NO)
     </select>
     <insert id="insertReservationInfo">
-        INSERT INTO RESERVATION_TBL VALUES(#{reservationNo},#{reservationVisitor},#{reservationSeat},#{paymentMethod},DEFAULT,#{movieNo},#{memberId},#{screenNo},#{showTimeNo},#{cinemaNo})
-    </insert>
-
-    <insert id="insertReservationInfo2">
-        INSERT INTO RESERVATION_TBL VALUES(#{reservationNo},#{reservationVisitor},#{reservationSeat},DEFAULT,#{movieNo},#{memberId},#{screenNo},#{showTimeNo},#{cinemaNo},#{titleKor},#{screenName},#{cinemaName})
+        INSERT INTO RESERVATION_TBL
+        VALUES (#{reservationNo}, #{reservationVisitor}, #{reservationSeat}, #{paymentMethod}, DEFAULT, #{movieNo},
+                #{memberId}, #{screenNo}, #{showTimeNo}, #{cinemaNo})
     </insert>
 
     <select id="showReservedSeats" resultType="ReservationDTO">
-        select RESERVATION_SEAT from RESERVATION_TBL
+        select RESERVATION_SEAT
+        from RESERVATION_TBL
+    </select>
+
+    <!-- 상영관 출력  -->
+    <select id="selectCinemas" resultType="String">
+        SELECT CINEMA_NAME
+        FROM CINEMA_TBL
+        WHERE CINEMA_ADDRESS LIKE '%'||#{cinemaAddress}||'%'
     </select>
 </mapper>
