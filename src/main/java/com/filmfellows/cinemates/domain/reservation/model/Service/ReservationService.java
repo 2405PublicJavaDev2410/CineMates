@@ -18,4 +18,11 @@ public interface ReservationService {
      * @return ReservationDTO
      */
     int insertReservationInfo(ReservationDTO rDTO);
+
+    /**
+     * 예약 좌석 조회하기
+     *
+     * @return List<Integer>
+     */
+    List<ReservationDTO> showReservedSeats();
 }

@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>영화 좌석 예매 시스템</title>
     <style>
         .seat {
@@ -31,21 +31,22 @@
 <body>
 <h1>영화 좌석 예매 시스템</h1>
 
-    <span>
-        <input type='button' onclick='count("plus")' value='+'/>
-        <input type='button' onclick='count("minus")' value='-'/>
+<span>
+        <input onclick='count("plus")' type='button' value='+'/>
+        <input onclick='count("minus")' type='button' value='-'/>
         <div id="result">0</div>
     </span>
 
-    <div id="seatMap"></div>
-    <button onclick="reserveSelectedSeats()">선택한 좌석 예약</button>
-    <button onclick="cancelReservation()">예약 취소</button>
-    <p id="message"></p>
+<div id="seatMap"></div>
+<!--    <button onclick="reserveSelectedSeats()">선택한 좌석 예약</button>-->
+<!--    <button onclick="cancelReservation()">예약 취소</button>-->
+<p id="message"></p>
 <form action="/paymentReady" method="POST">
     <button type="submit">예약하기</button>
-    <input type="hidden" name="reservationNo" th:value="${rDTO.reservationNo}">
-    <input type="hidden"  id="countInput" name="reservationVisitor" th:value="${rDTO.reservationVisitor}">
-    <input type="hidden" id="selectedSeatsInput" name="reservationSeat" th:value="${rDTO.reservationSeat}">
+    <input name="reservationNo" th:value="${rDTO.reservationNo}" type="hidden">
+    <input id="countInput" name="reservationVisitor" th:value="${rDTO.reservationVisitor}" type="hidden">
+    <input id="selectedSeatsInput" name="reservationSeat" th:value="${rDTO.reservationSeat}" type="hidden">
+
 </form>
 
 <script th:inline="javascript">
@@ -54,10 +55,6 @@
     const reservationVisitor = document.getElementById('result');
     const countInput = document.getElementById('countInput');
     const selectedSeatsInput = document.getElementById('selectedSeatsInput');
-    const rows = 5;
-    const seatsPerRow = 10;
-    const seats = Array(rows * seatsPerRow).fill(false);
-    let selectedSeats = [];
 
     function count(type) {
         // 더하기/빼기
@@ -74,6 +71,16 @@
         reservationVisitor.innerText = visitorCount;
     }
 
+    const reservedSeatsString = /*[[${rList}]]*/ '[]';
+    const reservedSeats = reservedSeatsString.flatMap(item =>
+        item.reservationSeat.split(',').map(Number)
+    );
+    console.log(reservedSeats);
+    const rows = 5;
+    const seatsPerRow = 10;
+    const seats = Array(rows * seatsPerRow).fill(false);
+    let selectedSeats = [];
+
 
 
     function initializeSeatMap() {
@@ -83,6 +90,16 @@
             seat.className = 'seat';
             seat.innerText = i + 1;
             seat.onclick = () => toggleSeat(i);
+            seatMap.appendChild(seat);
+
+            if (reservedSeats.includes(i + 1)) {
+                seat.classList.add('reserved');
+                seats[i] = true; // 예매된 좌석 표시
+                seat.onclick = null;
+            } else {
+                seat.onclick = () => toggleSeat(i);
+            }
+
             seatMap.appendChild(seat);
             if ((i + 1) % seatsPerRow === 0) {
                 seatMap.appendChild(document.createElement('br'));
@@ -102,11 +119,13 @@
             selectedSeats.push(index);
             seatElement.classList.add('selected');
         } else {
-            setMessage(`최대 ${maxSeats}개의 좌석만 선택할 수 있습니다.`);
+            alert(`최대 ${maxSeats}개의 좌석만 선택할 수 있습니다.`);
             return;
         }
         updateSelectedSeatsInput();
     }
+
+
     function updateSelectedSeatsInput() {
         selectedSeatsInput.value = selectedSeats.map(index => index + 1).join(',');
         setMessage(`선택된 좌석: ${selectedSeatsInput.value}`);

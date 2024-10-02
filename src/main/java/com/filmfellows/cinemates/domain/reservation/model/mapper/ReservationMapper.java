@@ -13,4 +13,6 @@ public interface ReservationMapper {
     int insertReservationInfo();
 
     void insertReservationInfo2(Map<String, Object> reserveInfo);
+
+    List<ReservationDTO> showReservedSeats();
 }

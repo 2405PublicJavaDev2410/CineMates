@@ -23,4 +23,11 @@ public class ReservationServiceImpl implements ReservationService {
     public int insertReservationInfo(ReservationDTO rDTO) {
         return rmapper.insertReservationInfo();
     }
+
+    @Override
+    public List<ReservationDTO> showReservedSeats() {
+        return rmapper.showReservedSeats();
+    }
+
+
 }
