@@ -1,15 +1,13 @@
 package com.filmfellows.cinemates.app.movie;
 
-import com.filmfellows.cinemates.app.movie.dto.MovieInfoRequest;
 import com.filmfellows.cinemates.app.movie.dto.MovieInfoResponse;
+import com.filmfellows.cinemates.app.movie.dto.UpdateMovieDTO;
 import com.filmfellows.cinemates.domain.movie.model.service.MovieService;
 import com.filmfellows.cinemates.domain.movie.model.vo.Movie;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -18,8 +16,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Controller
 @Slf4j
@@ -57,9 +53,14 @@ public class AdminMovieController {
      * [관리자] 영화 정보 수정
      */
     @PostMapping("admin/update-movie")
-    public String updateMovieInfo(MovieInfoRequest request, @RequestParam Long movieNo) {
-
-        return "redirect:/admin/movie-detail/" + movieNo;
+    public String updateMovieInfo(@ModelAttribute UpdateMovieDTO updateMovieDTO, RedirectAttributes redirectAttributes) {
+        try {
+            movieService.updateMovie(updateMovieDTO);
+            redirectAttributes.addFlashAttribute("message", "영화 정보가 성공적으로 업데이트되었습니다.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "영화 정보 업데이트 중 오류가 발생했습니다: " + e.getMessage());
+        }
+        return "redirect:/admin/movie-detail/" + updateMovieDTO.getMovieNo();
     }
 
 

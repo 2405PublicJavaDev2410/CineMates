@@ -16,7 +16,7 @@ public class MovieInfoResponse {
     private String title;
     private String posterUrl;
     private LocalDate releaseDate;
-    private Long runningTime;
+    private Integer runningTime;
     private String rating;
     private String synopsis;
     private String director;

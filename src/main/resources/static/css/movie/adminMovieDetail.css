@@ -8,7 +8,7 @@ main {
 
 h1 {
     font-family: 'GmarketSansMedium', sans-serif;
-    margin: 30px 30px;
+    margin: 30px 30px 60px 30px;
 }
 
 h2 {
@@ -36,7 +36,6 @@ h2 {
     /*border: 1px solid #ddd;*/
     /*width: 400px;*/
     /*height: 400px;*/
-    margin-top: 75px;
 }
 
 /* 정보 입력란 */
@@ -96,9 +95,11 @@ textarea {
     font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
 }
 
-.add-Trailer {
+.trailer-container, .stillcut-container {
     border: 1px solid black;
     padding: 15px;
+    margin-bottom: 10px;
+
 }
 
 .remove-trailer-input {
@@ -118,9 +119,6 @@ select:focus {
     border-color: #EA4E4A;
 }
 
-.trailer-container {
-    margin-bottom: 10px;
-}
 
 /* 버튼*/
 .remove-input-Btn {

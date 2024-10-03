@@ -3,7 +3,6 @@ package com.filmfellows.cinemates.app.movie.dto;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -11,12 +10,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class MovieInfoRequest {
+public class UpdateMovieDTO {
     private Long movieNo;
     private String title;
     private String posterUrl;
     private LocalDate releaseDate;
-    private int runningTime;
+    private Integer runningTime;
     private String rating;
     private String synopsis;
     private String director;
@@ -24,16 +23,18 @@ public class MovieInfoRequest {
     private String genre;
     private String productionCountry;
     private String screeningStatus;
-    private List<MovieStillcut> stillcuts = new ArrayList<>();
-    private List<MovieTrailer> trailers = new ArrayList<>();
+    private List<UpdateStillcutDTO> stillcuts;
+    private List<UpdateTrailerDTO> trailers;
+    private List<UpdateStillcutDTO> newStillcuts;
+    private List<UpdateTrailerDTO> newTrailers;
 
     @Getter
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
     @ToString
-    public static class MovieStillcut {
-        private int stillcutNo;
+    public static class UpdateStillcutDTO {
+        private Long stillcutNo;
         private String stillcutUrl;
     }
 
@@ -42,8 +43,8 @@ public class MovieInfoRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     @ToString
-    public static class MovieTrailer {
-        private int trailerNo;
+    public static class UpdateTrailerDTO {
+        private Long trailerNo;
         private String trailerType;
         private String trailerThumbnailUrl;
         private String trailerUrl;

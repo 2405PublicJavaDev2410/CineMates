@@ -63,70 +63,46 @@
         SELECT MOVIE_NO, TITLE, RELEASE_DATE, SCREENING_STATUS FROM MOVIE_TBL
     </select>
 
-<!--    &lt;!&ndash; 영화 정보 업데이트 &ndash;&gt;-->
-<!--    <update id="updateMovieInfo" parameterType="MovieInfoResponse">-->
-<!--        UPDATE MOVIE_TBL-->
-<!--        SET-->
-<!--            TITLE = #{title},-->
-<!--            POSTER_URL = #{posterUrl},-->
-<!--            RELEASE_DATE = #{releaseDate},-->
-<!--            RUNNING_TIME = #{runningTime},-->
-<!--            RATING = #{rating},-->
-<!--            SYNOPSIS = #{synopsis},-->
-<!--            DIRECTOR = #{director},-->
-<!--            ACTORS = #{actors},-->
-<!--            GENRE = #{genre},-->
-<!--            PRODUCTION_COUNTRY = #{productionCountry},-->
-<!--            SCREENING_STATUS = #{screeningStatus}-->
-<!--        WHERE MOVIE_NO = #{movieNo}-->
-<!--    </update>-->
+    <update id="updateMovie" parameterType="com.filmfellows.cinemates.app.movie.dto.UpdateMovieDTO">
+        UPDATE MOVIE_TBL
+        SET TITLE = #{title},
+            POSTER_URL = #{posterUrl},
+            RELEASE_DATE = #{releaseDate},
+            RUNNING_TIME = #{runningTime},
+            RATING = #{rating},
+            SYNOPSIS = #{synopsis},
+            DIRECTOR = #{director},
+            ACTORS = #{actors},
+            GENRE = #{genre},
+            PRODUCTION_COUNTRY = #{productionCountry},
+            SCREENING_STATUS = #{screeningStatus}
+        WHERE MOVIE_NO = #{movieNo}
+    </update>
 
-<!--    &lt;!&ndash; 스틸컷 업데이트 &ndash;&gt;-->
-<!--    <update id="updateMovieStillcut" parameterType="com.filmfellows.cinemates.app.movie.dto.MovieInfoResponse$MovieStillcut">-->
-<!--        UPDATE MOVIE_STILLCUT_TBL-->
-<!--        SET-->
-<!--            STILLCUT_URL = #{stillcutUrl}-->
-<!--        WHERE STILLCUT_NO = #{stillcutNo} AND MOVIE_NO = #{movieNo}-->
-<!--    </update>-->
+    <delete id="deleteStillcutsByMovieNo" parameterType="long">
+        DELETE FROM MOVIE_STILLCUT_TBL WHERE MOVIE_NO = #{movieNo}
+    </delete>
 
-<!--    &lt;!&ndash; 새로운 스틸컷 삽입 &ndash;&gt;-->
-<!--    <insert id="insertMovieStillcut" parameterType="com.filmfellows.cinemates.app.movie.dto.MovieInfoResponse$MovieStillcut">-->
-<!--        INSERT INTO MOVIE_STILLCUT_TBL (STILLCUT_URL)-->
-<!--        VALUES (#{stillcutUrl})-->
-<!--    </insert>-->
+    <delete id="deleteTrailersByMovieNo" parameterType="long">
+        DELETE FROM MOVIE_TRAILER_TBL WHERE MOVIE_NO = #{movieNo}
+    </delete>
 
-<!--    &lt;!&ndash; 스틸컷 삭제 &ndash;&gt;-->
-<!--    <delete id="deleteMovieStillcut">-->
-<!--        DELETE FROM MOVIE_STILLCUT_TBL-->
-<!--        WHERE MOVIE_NO = #{movieNo} AND STILLCUT_NO NOT IN-->
-<!--        <foreach item="stillcut" collection="stillcuts" open="(" separator="," close=")">-->
-<!--            #{stillcut.stillcutNo}-->
-<!--        </foreach>-->
-<!--    </delete>-->
+    <insert id="insertStillcut">
+        INSERT INTO MOVIE_STILLCUT_TBL (MOVIE_NO, STILLCUT_URL)
+        VALUES (#{movieNo}, #{stillcut.stillcutUrl})
+    </insert>
 
-<!--    &lt;!&ndash; 트레일러 업데이트 &ndash;&gt;-->
-<!--    <update id="updateMovieTrailer" parameterType="com.filmfellows.cinemates.app.movie.dto.MovieInfoResponse$MovieTrailer">-->
-<!--        UPDATE MOVIE_TRAILER_TBL-->
-<!--        SET-->
-<!--            TRAILER_TYPE = #{trailerType},-->
-<!--            TRAILER_THUMBNAIL_URL = #{trailerThumbnailUrl},-->
-<!--            TRAILER_URL = #{trailerUrl}-->
-<!--        WHERE TRAILER_NO = #{trailerNo} AND MOVIE_NO = #{movieNo}-->
-<!--    </update>-->
+    <insert id="insertTrailer">
+        INSERT INTO MOVIE_TRAILER_TBL (MOVIE_NO, TRAILER_TYPE, TRAILER_THUMBNAIL_URL, TRAILER_URL)
+        VALUES (#{movieNo}, #{trailer.trailerType}, #{trailer.trailerThumbnailUrl}, #{trailer.trailerUrl})
+    </insert>
 
-<!--    &lt;!&ndash; 새로운 트레일러 삽입 &ndash;&gt;-->
-<!--    <insert id="insertMovieTrailer" parameterType="com.filmfellows.cinemates.app.movie.dto.MovieInfoResponse$MovieTrailer">-->
-<!--        INSERT INTO MOVIE_TRAILER_TBL (TRAILER_TYPE, TRAILER_THUMBNAIL_URL, TRAILER_URL)-->
-<!--        VALUES (#{trailerType}, #{trailerThumbnailUrl}, #{trailerUrl})-->
-<!--    </insert>-->
-
-<!--    &lt;!&ndash; 트레일러 삭제 &ndash;&gt;-->
-<!--    <delete id="deleteMovieTrailer">-->
-<!--        DELETE FROM MOVIE_TRAILER_TBL-->
-<!--        WHERE MOVIE_NO = #{movieNo} AND TRAILER_NO NOT IN-->
-<!--        <foreach item="trailer" collection="trailers" open="(" separator="," close=")">-->
-<!--            #{trailer.trailerNo}-->
-<!--        </foreach>-->
-<!--    </delete>-->
+    <select id="selectMovieByNo" resultMap="movieDetailResultMap">
+        SELECT m.*, s.STILLCUT_NO, s.STILLCUT_URL, t.TRAILER_NO, t.TRAILER_TYPE, t.TRAILER_THUMBNAIL_URL, t.TRAILER_URL
+        FROM MOVIE_TBL m
+                 LEFT JOIN MOVIE_STILLCUT_TBL s ON m.MOVIE_NO = s.MOVIE_NO
+                 LEFT JOIN MOVIE_TRAILER_TBL t ON m.MOVIE_NO = t.MOVIE_NO
+        WHERE m.MOVIE_NO = #{movieNo}
+    </select>
 
 </mapper>

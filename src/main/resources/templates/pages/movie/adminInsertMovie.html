@@ -11,7 +11,8 @@
 <div layout:fragment="content">
   <!-- 여기에 기존의 main 태그 내용을 넣습니다 -->
   <main>
-    <h1>영화 정보</h1>
+    <h1>영화 등록</h1>
+
     <div class="detail-area" th:if="${not #lists.isEmpty(movieInfo)}">
       <div th:each="movieInfo : ${movieInfo}">
         <div class="detail-left">
@@ -20,6 +21,7 @@
           </div>
         </div>
         <div class="detail-right" >
+          <h2>영화 정보</h2>
           <form action="/admin/update-movie" method="post" class="detail-form">
             <label for="">영화코드</label>
             <input type="text" name="movieNo" readonly th:value="${movieInfo?.movieNo}" />

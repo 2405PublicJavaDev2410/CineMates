@@ -12,7 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 @ToString
 public class MovieListResponse {
-    private int movieNo;
+    private Long movieNo;
     private String title;
     private LocalDate releaseDate;
     private String screeningStatus;
