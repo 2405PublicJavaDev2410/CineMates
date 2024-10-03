@@ -4,6 +4,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{common/layout/defaultLayout}"
       layout:fragment="Content">
+<script type="text/javascript" src="/js/member/register.js"></script>
 <link href="/css/member/register.css" rel="stylesheet">
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.5.1/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.5.1/uicons-regular-straight/css/uicons-regular-straight.css'>
@@ -26,7 +27,7 @@
 
                 <div class="input-group pwd-group">
                     <label>비밀번호 확인<span class="asterisk"> *</span></label>
-                    <input type="password" class="common-input-box" id="checkPassword" name="checkPassword" placeholder="비밀번호 확인">
+                    <input type="password" class="common-input-box" id="passwordCheck" name="checkPassword" placeholder="비밀번호 확인">
                     <i class="fi fi-rs-eye toggle-password cpwIcon"></i>
                 </div>
 
@@ -74,5 +75,4 @@
         </div>
     </div>
 </main>
-<script type="text/javascript" src="/js/member/register.js"></script>
 </html>

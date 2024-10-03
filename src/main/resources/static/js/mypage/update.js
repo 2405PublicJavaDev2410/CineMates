@@ -31,10 +31,11 @@ document.getElementById('profileImg').addEventListener('change', function(event)
     }
 });
 
+
+// 비밀번호 마스킹 해제
 const pwIcon = document.querySelector('.pwIcon');
 const pwInput = document.querySelector('#memberPw');
 
-// 비밀번호 마스킹 해제 버튼
 pwIcon.addEventListener('click', function () {
     const type = pwInput.getAttribute('type') === 'password' ? 'text' : 'password';
     pwInput.setAttribute('type', type);
@@ -48,7 +49,7 @@ pwIcon.addEventListener('click', function () {
     }
 });
 
-// 비밀번호 확인 마스킹 해제 버튼
+// 비밀번호 확인 마스킹 해제
 const cpwIcon = document.querySelector('.cpwIcon');
 const cpwInput = document.querySelector('#passwordCheck');
 

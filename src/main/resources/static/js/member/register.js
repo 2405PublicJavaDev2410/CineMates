@@ -26,10 +26,11 @@ document.getElementById('profileImg').addEventListener('change', function(event)
     }
 })
 
+
+// 비밀번호 마스킹 해제 버튼
 const pwIcon = document.querySelector('.pwIcon');
 const pwInput = document.querySelector('#memberPw');
 
-// 비밀번호 마스킹 해제 버튼
 pwIcon.addEventListener('click', function () {
     const type = pwInput.getAttribute('type') === 'password' ? 'text' : 'password';
     pwInput.setAttribute('type', type);

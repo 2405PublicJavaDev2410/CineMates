@@ -59,6 +59,7 @@
     cursor: pointer;
     color: #888;
     font-size: 20px;
+    width: 25px;
 }
 #select-file-btn {
     padding: 11px 10px;

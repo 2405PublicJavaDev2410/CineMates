@@ -8,10 +8,13 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.View;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -23,6 +26,7 @@ import java.time.format.DateTimeFormatter;
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService mService;
+    private final View error;
 
     /**
      * 담당자 : 엄태운
@@ -84,7 +88,7 @@ public class MemberController {
 
     /**
      * 담당자 : 엄태운
-     * 관련기능 : 회원정보 등록
+     * 관련기능 : 회원가입
      */
     @PostMapping("/register")
     public String insertMember(@ModelAttribute @Valid RegisterRequest registerRequest,
@@ -127,42 +131,21 @@ public class MemberController {
 
     /**
      * 담당자 : 엄태운
-     * 관련기능 : 회원정보 삭제
+     * 관련기능 : 회원탈퇴
      */
     @PostMapping("/remove")
-    public String deleteMember(@ModelAttribute @Valid RemoveRequest removeRequest,
-           HttpSession session) {
+    @ResponseBody
+    public ResponseEntity<String> deleteMember(@RequestBody @Valid RemoveRequest removeRequest,
+                                                 HttpSession session) {
         String memberId = session.getAttribute("memberId").toString();
-        removeRequest.setMemberId(memberId);
         Member member = mService.getOneMember(memberId);
-        if(memberId.equals(removeRequest.getMemberId()) && member.getMemberPw().equals(removeRequest.getMemberPw())) {
-            log.info(member.toString());
-            int result = mService.deleteMember(member);
+        if(member.getMemberPw().equals(removeRequest.getMemberPw())) {
+            mService.deleteMember(member);
             session.invalidate();
+            return ResponseEntity.ok("회원 탈퇴가 완료되었습니다.");
+        }else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호가 일치하지 않습니다.");
         }
-        return "redirect:/";
-    }
-
-    /**
-     * 담당자 : 엄태운
-     * 관련기능 : 생년월일 String을 Timestamp로 변환
-     */
-    public Timestamp convertStringToTimestamp(String birthDate) {
-        // 입력받은 String을 Date로 변환
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        LocalDate localDate = LocalDate.parse(birthDate, formatter);
-        // Date를 Timestamp로 변환
-        return Timestamp.valueOf(localDate.atStartOfDay());
-    }
-
-    /**
-     * 담당자 : 엄태운
-     * 관련기능 : 생년월일 Timestamp를 String으로 변환
-     */
-    public String convertTimestampToString(Timestamp birthDate) {
-        // Timestamp 타입의 데이터를 Date로 변환
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return birthDate.toLocalDateTime().format(formatter);
     }
 
     /**
@@ -213,6 +196,28 @@ public class MemberController {
     public String findMemberPw() {
 
         return "";
+    }
+
+    /**
+     * 담당자 : 엄태운
+     * 관련기능 : 생년월일 String을 Timestamp로 변환
+     */
+    public Timestamp convertStringToTimestamp(String birthDate) {
+        // 입력받은 String을 Date로 변환
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        LocalDate localDate = LocalDate.parse(birthDate, formatter);
+        // Date를 Timestamp로 변환
+        return Timestamp.valueOf(localDate.atStartOfDay());
+    }
+
+    /**
+     * 담당자 : 엄태운
+     * 관련기능 : 생년월일 Timestamp를 String으로 변환
+     */
+    public String convertTimestampToString(Timestamp birthDate) {
+        // Timestamp 타입의 데이터를 Date로 변환
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return birthDate.toLocalDateTime().format(formatter);
     }
 
 }

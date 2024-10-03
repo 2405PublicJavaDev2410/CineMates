@@ -6,6 +6,8 @@
       layout:fragment="Content">
 <link href="/css/mypage/remove.css" rel="stylesheet">
 <link href="/css/mypage/my-sidebar.css" rel="stylesheet">
+<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.5.1/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.5.1/uicons-regular-straight/css/uicons-regular-straight.css'>
 <div class="my-page-container">
     <!-- 사이드바 -->
     <div th:replace="~{pages/mypage/my-sidebar :: my-sidebar}"></div>
@@ -25,23 +27,23 @@
 회원 탈퇴 후에는 복구가 불가능합니다. 탈퇴 전에 다시 한 번 신중하게 생각해주시기 바랍니다.
 탈퇴로 인한 데이터 및 서비스 손실에 대해서는 책임지지 않습니다.</pre>
             </div><br>
-            <form action="/remove" method="post">
-                <div class="input-group">
+            <form id="remove-member-form">
+                <div class="input-group id-group">
                     <label><b>아이디</b></label>
                     <span th:text="${member.memberId}"></span>
                 </div>
-                <div class="input-group">
+                <div class="input-group pwd-group">
                     <label><b>비밀번호</b></label>
-                    <input type="password" class="common-input-box" id="memberPw" name="memberPw" placeholder="비밀번호를 입력해주세요">
-                </div><br><br>
-                <button class="submit-btn" id="remove-btn">회원탈퇴</button>
+                    <input type="password" class="common-input-box" id="pw-input" name="memberPw" placeholder="비밀번호를 입력해주세요">
+                    <i class="fi fi-rs-eye toggle-password pwIcon"></i>
+                    <span class="failure-message hide message" id="pw-failure-message"></span>
+                </div>
+                <br><br>
+                <button type="button" class="submit-btn" id="remove-btn" onclick="deleteMember()">회원탈퇴</button>
             </form>
         </div>
     </main>
 </div>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        document.querySelector('#side-menu-5').classList.add('selected');
-    })
-</script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script type="text/javascript" src="/js/mypage/remove.js"></script>
 </html>
