@@ -1,13 +1,21 @@
 package com.filmfellows.cinemates.domain.movie.model.service;
 
-import com.filmfellows.cinemates.app.movie.dto.MovieInfoResponse;
-import com.filmfellows.cinemates.app.movie.dto.UpdateMovieDTO;
+import com.filmfellows.cinemates.app.movie.dto.MovieDTO;
 import com.filmfellows.cinemates.domain.movie.model.vo.Movie;
+import org.apache.ibatis.session.RowBounds;
 
 import java.util.List;
+import java.util.Map;
 
 public interface MovieService {
-    List<Movie> selectMovieList();
-    List<MovieInfoResponse> selectMovieDetail(Long movieNo);
-    void updateMovie(UpdateMovieDTO updateMovieDTO);
+//    List<Movie> selectMovieList();
+    List<MovieDTO> selectMovieDetail(Long movieNo);
+    void updateMovie(MovieDTO movieDTO);
+
+    void insertMovie(MovieDTO movie);
+
+    List<Movie> selectSearchMovie(Map<String, String> paramMap);
+
+    List<Movie> selectMovieList(RowBounds rowBounds, Integer currentPage);
+    int totalMovieCount();
 }

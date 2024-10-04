@@ -17,7 +17,7 @@ public class Movie {
     private String title;
     private String posterUrl;
     private LocalDate releaseDate;
-    private int runningTime;
+    private Integer runningTime;
     private String rating;
     private String synopsis;
     private String director;
@@ -26,6 +26,6 @@ public class Movie {
     private String productionCountry;
     private String screeningStatus;
 
-    private String formattedReleaseDate;
+//    private String formattedReleaseDate;
 
 }

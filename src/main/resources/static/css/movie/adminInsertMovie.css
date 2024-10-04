@@ -1,0 +1,177 @@
+main {
+    text-align: center;
+    margin: 0 auto;
+    width: 1200px;
+}
+
+/* 타이틀 */
+
+h1 {
+    font-family: 'GmarketSansMedium', sans-serif;
+    margin: 30px 30px 60px 30px;
+}
+
+h2 {
+    font-family: 'GmarketSansMedium', sans-serif;
+    margin: 20px 20px;
+}
+
+.detail-area {
+    width: 80%;
+    height: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+}
+
+/* 영화 */
+
+.detail-left {
+    width: 450px;
+    height: 100%;
+    float: left;
+}
+
+.poster {
+    /*border: 1px solid #ddd;*/
+    /*width: 400px;*/
+    /*height: 400px;*/
+    margin-top: 75px;
+}
+
+/* 정보 입력란 */
+.detail-right {
+    width: 450px;
+    height: 100%;
+    float: left;
+}
+
+label {
+    float: left;
+    margin-bottom: 5px;
+    font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 13px;
+    border: 1px solid #ddd;
+    /*border-radius: 4px;*/
+    box-sizing: border-box;
+    font-size: 14px;
+    font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
+}
+
+select {
+    /* width: 49%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: 'Noto Sans KR', sans-serif; */
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 13px;
+    border: 1px solid #ddd;
+    /*border-radius: 4px;*/
+    box-sizing: border-box;
+    font-size: 14px;
+    font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
+}
+
+.rating {
+    margin-right: 3px;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 13px;
+    border: 1px solid #ddd;
+    /*border-radius: 4px;*/
+    box-sizing: border-box;
+    font-size: 14px;
+    font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
+}
+
+.trailer-container, .stillcut-container {
+    border: 1px solid black;
+    padding: 15px;
+    margin-bottom: 10px;
+
+}
+
+.remove-trailer-input {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.remove-stillcut-input {
+    display: flex;
+    justify-content: space-between;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: #EA4E4A;
+}
+
+
+/* 버튼*/
+.remove-input-Btn {
+    width: 50px;
+    height: 30px;
+    background-color: #464646;
+    color: white;
+    border: none;
+    font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
+    font-size: 12px;
+    /*border-radius: 15px;*/
+    cursor: pointer;
+}
+
+.addStillcut,
+.addTrailer {
+    width: 120px;
+    height: 40px;
+    background-color: #464646;
+    color: white;
+    border: none;
+    font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
+    font-size: 16px;
+    /*border-radius: 15px;*/
+    cursor: pointer;
+}
+
+.buttons {
+    width: 100px;
+    height: 40px;
+    background-color: #EA4E4A;
+    color: white;
+    border: none;
+    font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
+    font-size: 18px;
+    /*border-radius: 15px;*/
+    cursor: pointer;
+    margin: 30px 10px;
+}
+
+.buttons:hover {
+    background-color: #E12C25;
+}
+
+button:hover {
+    background-color: #242424;
+}
+
+.cancel {
+    background-color: #454545;
+}
+
+.cancel:hover {
+    background-color: #242424;
+}

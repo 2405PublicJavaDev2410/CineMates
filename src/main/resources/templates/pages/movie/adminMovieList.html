@@ -11,10 +11,10 @@
     <h1>영화 리스트</h1>
     <div class="search-register-container">
         <div class="search-section">
-            <form action="">
-                <select name="searchType" class="common-input">
-                    <option value="movie-code">영화번호</option>
-                    <option value="movie-title">영화명</option>
+            <form action="search-movie" method="post">
+                <select name="searchCondition" class="common-input">
+                    <option value="movieNo">영화번호</option>
+                    <option value="title">영화명</option>
                 </select>
                 <input
                         type="text"
@@ -26,7 +26,7 @@
             </form>
         </div>
         <div class="register-section">
-            <button type="button" class="register-btn">등록</button>
+            <button type="button" class="register-btn" onclick="goInsert();">등록</button>
         </div>
     </div>
     <div class="movie-list-area">
@@ -53,14 +53,28 @@
                         <span th:text="${movie.title}"></span>
                     </a>
                 </td>
-<!--                <td th:text="${movie.titleKor}"></td>-->
                 <td th:text="${movie.ReleaseDate}"></td>
-<!--                <td th:text="${movie.formattedReleaseDate}"></td>-->
                 <td th:text="${movie.screeningStatus}"></td>
             </tr>
             </tbody>
         </table>
+        <ul class="common-pagination">
+            <li class="common-pagination-li-end">
+                <a th:href="@{/admin/movie-list(cp=${pn.prevPage})}" th:if="${pn.startNavi}">이전</a>
+            </li>
+            <li th:classappend="${p == pn.currentPage} ? 'common-pagination-li common-pagination-li-active' : 'common-pagination-li'" th:each="p : ${#numbers.sequence(pn.startNavi, pn.endNavi)}">
+                <a th:href="@{/admin/movie-list(cp=${p})}" th:text="${p}"></a>
+            </li>
+            <li class="common-pagination-li-end">
+                <a th:href="@{/admin/movie-list(cp=${pn.nextPage})}" th:if="${pn.endNavi}">다음</a>
+            </li>
+        </ul>
     </div>
 </div>
 </main>
+<script>
+    function goInsert() {
+            location.href = "/admin/insert-movie"
+    }
+</script>
 </html>

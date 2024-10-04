@@ -103,3 +103,51 @@ h1 {
 .common-table tr:hover {
     background-color: #e2e2e26c;
 }
+
+/*페이지네이션*/
+
+.common-pagination-li-end {
+    display: inline-block;
+}
+
+.common-pagination {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    justify-content: center;
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+.common-pagination-li {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    /*border: 1px solid #E8E9ED;*/
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.common-pagination-li a{
+    text-decoration: none;
+    color: #78797B;
+    width: 100%;
+    text-align: center;
+}
+
+.common-pagination-li-end a {
+    text-decoration: none;
+    color: black;
+}
+
+.common-pagination-li-active {
+    background-color: #EA4E4A;
+    border: transparent;
+}
+
+.common-pagination-li-active a {
+    color: white;
+}
+

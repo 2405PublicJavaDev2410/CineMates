@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.filmfellows.cinemates.domain.movie.model.mapper.MovieMapper">
-    <resultMap id="movieDetailResultMap" type="MovieInfoResponse">
+    <resultMap id="movieResultMap" type="MovieDTO">
         <id property="movieNo" column="MOVIE_NO"/>
         <result property="title" column="TITLE"/>
         <result property="posterUrl" column="POSTER_URL"/>
@@ -15,12 +15,12 @@
         <result property="productionCountry" column="PRODUCTION_COUNTRY"/>
         <result property="screeningStatus" column="SCREENING_STATUS"/>
 
-        <collection property="stillcuts" ofType="com.filmfellows.cinemates.app.movie.dto.MovieInfoResponse$MovieStillcut">
+        <collection property="stillcuts" ofType="com.filmfellows.cinemates.app.movie.dto.MovieDTO$StillcutDTO">
             <id property="stillcutNo" column="STILLCUT_NO"/>
             <result property="stillcutUrl" column="STILLCUT_URL"/>
         </collection>
 
-        <collection property="trailers" ofType="com.filmfellows.cinemates.app.movie.dto.MovieInfoResponse$MovieTrailer">
+        <collection property="trailers" ofType="com.filmfellows.cinemates.app.movie.dto.MovieDTO$TrailerDTO">
             <id property="trailerNo" column="TRAILER_NO"/>
             <result property="trailerType" column="TRAILER_TYPE"/>
             <result property="trailerThumbnailUrl" column="TRAILER_THUMBNAIL_URL"/>
@@ -29,7 +29,7 @@
     </resultMap>
 
     <!-- 영화 정보 조회 -->
-    <select id="selectMovieDetail" resultMap="movieDetailResultMap">
+    <select id="selectMovieDetail" resultMap="movieResultMap">
         SELECT
             m.MOVIE_NO,
             m.TITLE,
@@ -63,7 +63,8 @@
         SELECT MOVIE_NO, TITLE, RELEASE_DATE, SCREENING_STATUS FROM MOVIE_TBL
     </select>
 
-    <update id="updateMovie" parameterType="com.filmfellows.cinemates.app.movie.dto.UpdateMovieDTO">
+    <!-- 영화 정보 수정-->
+    <update id="updateMovie" parameterType="com.filmfellows.cinemates.app.movie.dto.MovieDTO">
         UPDATE MOVIE_TBL
         SET TITLE = #{title},
             POSTER_URL = #{posterUrl},
@@ -79,25 +80,50 @@
         WHERE MOVIE_NO = #{movieNo}
     </update>
 
+    <!-- 스틸컷(단일영화) 전체 삭제-->
     <delete id="deleteStillcutsByMovieNo" parameterType="long">
         DELETE FROM MOVIE_STILLCUT_TBL WHERE MOVIE_NO = #{movieNo}
     </delete>
 
+    <!-- 트레일러(단일영화) 전체 삭제-->
     <delete id="deleteTrailersByMovieNo" parameterType="long">
         DELETE FROM MOVIE_TRAILER_TBL WHERE MOVIE_NO = #{movieNo}
     </delete>
 
+    <!-- 스틸컷 등록-->
     <insert id="insertStillcut">
         INSERT INTO MOVIE_STILLCUT_TBL (MOVIE_NO, STILLCUT_URL)
-        VALUES (#{movieNo}, #{stillcut.stillcutUrl})
+        VALUES (
+        <choose>
+            <when test="movieNo != null">
+                #{movieNo}
+            </when>
+            <otherwise>
+                SEQ_MOVIE_NO.CURRVAL
+            </otherwise>
+        </choose>,
+        #{stillcut.stillcutUrl})
     </insert>
 
+    <!-- 트레일러 등록-->
     <insert id="insertTrailer">
         INSERT INTO MOVIE_TRAILER_TBL (MOVIE_NO, TRAILER_TYPE, TRAILER_THUMBNAIL_URL, TRAILER_URL)
-        VALUES (#{movieNo}, #{trailer.trailerType}, #{trailer.trailerThumbnailUrl}, #{trailer.trailerUrl})
+        VALUES (
+        <choose>
+            <when test="movieNo != null">
+                #{movieNo}
+            </when>
+            <otherwise>
+                SEQ_MOVIE_NO.CURRVAL
+            </otherwise>
+        </choose>,
+        #{trailer.trailerType},
+        #{trailer.trailerThumbnailUrl},
+        #{trailer.trailerUrl}
+        )
     </insert>
 
-    <select id="selectMovieByNo" resultMap="movieDetailResultMap">
+    <select id="selectMovieByNo" resultMap="movieResultMap">
         SELECT m.*, s.STILLCUT_NO, s.STILLCUT_URL, t.TRAILER_NO, t.TRAILER_TYPE, t.TRAILER_THUMBNAIL_URL, t.TRAILER_URL
         FROM MOVIE_TBL m
                  LEFT JOIN MOVIE_STILLCUT_TBL s ON m.MOVIE_NO = s.MOVIE_NO
@@ -105,4 +131,35 @@
         WHERE m.MOVIE_NO = #{movieNo}
     </select>
 
+    <!-- 영화 등록-->
+    <insert id="insertMovie">
+        INSERT INTO MOVIE_TBL (MOVIE_NO, TITLE, POSTER_URL, RELEASE_DATE, RUNNING_TIME, RATING, SYNOPSIS, DIRECTOR, ACTORS, GENRE, PRODUCTION_COUNTRY, SCREENING_STATUS)
+        VALUES (SEQ_MOVIE_NO.NEXTVAL, #{title}, #{posterUrl}, #{releaseDate}, #{runningTime}, #{rating}, #{synopsis}, #{director}, #{actors}, #{genre}, #{productionCountry}, #{screeningStatus})
+    </insert>
+
+    <!-- 영화 검색-->
+    <select id="selectSearchMovie" resultType="Movie" parameterType="hashmap">
+        SELECT * FROM MOVIE_TBL
+        <!-- 		mybatis 동적쿼리 <where>태그 사용, 조건이 다 안맞을 때 where가 동작하지 않도록 함. -->
+        <where>
+            <!-- 		전체에서 검색하는 쿼리 -->
+            <if test="searchCondition == 'all'">
+                MOVIE_NO LIKE '%'||#{searchKeyword}||'%'
+                OR TITLE LIKE '%'||#{searchKeyword}||'%'
+            </if>
+            <!-- 		작성자로 검색하는 쿼리문 -->
+            <if test="searchCondition == 'movieNo'">
+                MOVIE_NO LIKE '%'||#{searchKeyword}||'%'
+            </if>
+            <!-- 		제목으로 검색하는 쿼리문 -->
+            <if test="searchCondition == 'title'">
+                TITLE LIKE '%'||#{searchKeyword}||'%'
+            </if>
+        </where>
+        ORDER BY MOVIE_NO DESC
+    </select>
+
+    <select id="totalMovieCount" resultType="_int">
+        SELECT COUNT(*) FROM MOVIE_TBL
+    </select>
 </mapper>

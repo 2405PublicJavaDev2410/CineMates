@@ -5,7 +5,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{common/layout/defaultLayout}"
       layout:fragment="Content">
-<link rel="stylesheet" href="/css/movie/adminMovieDetail.css">
+<link rel="stylesheet" href="/css/movie/adminInsertMovie.css">
 
 <body>
 <div layout:fragment="content">
@@ -13,26 +13,26 @@
   <main>
     <h1>영화 등록</h1>
 
-    <div class="detail-area" th:if="${not #lists.isEmpty(movieInfo)}">
-      <div th:each="movieInfo : ${movieInfo}">
+    <div class="detail-area" >
+      <div>
         <div class="detail-left">
           <div class="poster">
-            <img th:src="${movieInfo?.posterUrl}" th:alt="${movieInfo?.title + ' 포스터'}"/>
+            <img id="posterPreview" src="" alt="포스터 미리보기" />
           </div>
         </div>
         <div class="detail-right" >
           <h2>영화 정보</h2>
-          <form action="/admin/update-movie" method="post" class="detail-form">
-            <label for="">영화코드</label>
-            <input type="text" name="movieNo" readonly th:value="${movieInfo?.movieNo}" />
+          <form action="/admin/insert-movie" method="post" class="detail-form">
+<!--            <label for="">영화코드</label>-->
+            <input type="hidden" name="movieNo" readonly/>
             <label for="">영화명</label>
-            <input type="text" name="title" placeholder="영화명(국문)" th:value="${movieInfo?.title}" />
-            <label for="">포스터Url</label>
-            <input type="text" name="posterUrl" placeholder="포스터Url" th:value="${movieInfo?.posterUrl}" />
+            <input type="text" name="title" placeholder="영화명" />
+            <label for="posterUrl">포스터Url</label>
+            <input type="text" id="posterUrl" name="posterUrl" placeholder="포스터Url" oninput="updatePosterPreview()" />
             <label for="">개봉일</label>
-            <input type="text" name="releaseDate" placeholder="ex) 2024-10-23" th:value="${movieInfo?.releaseDate}" />
+            <input type="text" name="releaseDate" placeholder="ex) 2024-10-23" />
             <label for="">상영시간</label>
-            <input type="text" name="runningTime" placeholder="분단위 숫자만 입력 ex) 100" th:value="${movieInfo?.runningTime}" />
+            <input type="text" name="runningTime" placeholder="분단위 숫자만 입력 ex) 100" />
             <label for="">줄거리</label>
             <textarea
                     cols="30"
@@ -40,68 +40,44 @@
                     style="resize: none"
                     name="synopsis"
                     placeholder="줄거리"
-                    th:text="${movieInfo?.synopsis}"
             ></textarea>
             <label for="">감독</label>
-            <input type="text" name="director" placeholder="감독" th:value="${movieInfo?.director}" />
+            <input type="text" name="director" placeholder="감독" />
             <label for="">배우</label>
-            <input type="text" name="actors" placeholder=",로 구분 ex) 김배우, 강배우, 이배우" th:value="${movieInfo?.actors}" />
+            <input type="text" name="actors" placeholder=",로 구분 ex) 김배우, 강배우, 이배우" />
             <label for="">장르</label>
-            <input type="text" name="genre" placeholder=",로 구분 ex) 액션, 범죄" th:value="${movieInfo?.genre}" />
+            <input type="text" name="genre" placeholder=",로 구분 ex) 액션, 범죄" />
             <label for="">제작국가</label>
-            <input type="text" name="productionCountry" placeholder=",로 구분 ex) 한국, 미국" th:value="${movieInfo?.productionCountry}" />
+            <input type="text" name="productionCountry" placeholder=",로 구분 ex) 한국, 미국" />
             <label for="">상영등급</label>
             <div class="category-info">
               <select name="rating" class="rating" >
-                <option value="" disabled th:selected="${movieInfo?.rating == ''}">등급</option>
-                <option value="NOT RATED" th:selected="${movieInfo?.rating == 'NOT RATED'}">등급 미정</option>
-                <option value="ALL" th:selected="${movieInfo?.rating == 'ALL'}">전체관람가</option>
-                <option value="12" th:selected="${movieInfo?.rating == '12'}">12세이상관람가</option>
-                <option value="15" th:selected="${movieInfo?.rating == '15'}">15세이상관람가</option>
-                <option value="19" th:selected="${movieInfo?.rating == '19'}">청소년관람불가</option>
+                <option name="rating" value="" disabled>등급</option>
+                <option name="rating" value="NOT RATED">등급 미정</option>
+                <option name="rating" value="ALL">전체관람가</option>
+                <option name="rating" value="12">12세이상관람가</option>
+                <option name="rating" value="15">15세이상관람가</option>
+                <option name="rating" value="19">청소년관람불가</option>
               </select>
             </div>
             <label for="">상영상태</label>
             <div class="category-info">
               <select name="screeningStatus" class="screeningStatus">
-                <option value="" disabled th:selected="${movieInfo?.screeningStatus == ''}">상영 상태</option>
-                <option value="COMING SOON" th:selected="${movieInfo?.screeningStatus == 'COMING SOON'}">개봉예정</option>
-                <option value="NOW SHOWING" th:selected="${movieInfo?.screeningStatus == 'NOW SHOWING'}">상영중</option>
-                <option value="ON HOLD" th:selected="${movieInfo?.screeningStatus == 'ON HOLD'}">상영정지</option>
+                <option name="screeningStatus" value="" disabled>상영 상태</option>
+                <option name="screeningStatus" value="COMING SOON">개봉예정</option>
+                <option name="screeningStatus" value="NOW SHOWING">상영중</option>
+                <option name="screeningStatus" value="ON HOLD">상영정지</option>
               </select>
             </div>
             <div>
               <div>
                   <h2>트레일러</h2>
-                  <div th:if="${not #lists.isEmpty(movieInfo.trailers)}">
-                    <div th:each="trailer, status : ${movieInfo.trailers}">
-                        <div class="trailer-container">
-                            <input type="hidden" th:name="'trailers[' + ${status.index} + '].trailerNo'" th:value="${trailer.trailerNo}"/>
-                            <label for="">트레일러 제목</label>
-                            <input type="text" th:name="'trailers[' + ${status.index} + '].trailerType'" placeholder="트레일러 제목" th:value="${trailer.trailerType}"/>
-                            <label for="">트레일러 썸네일Url</label>
-                            <input type="text" th:name="'trailers[' + ${status.index} + '].trailerThumbnailUrl'" placeholder="썸네일Url" th:value="${trailer.trailerThumbnailUrl}"/>
-                            <label for="">트레일러Url</label>
-                            <input type="text" th:name="'trailers[' + ${status.index} + '].trailerUrl'" placeholder="트레일러Url" th:value="${trailer.trailerUrl}"/>
-                            <button type="button" class="remove-input-Btn">삭제</button>
-                        </div>
-                    </div>
-                  </div>
                     <div id="trailerWrapper">
                       <!-- 트레일러 항목들이 여기에 추가됩니다 -->
                     </div>
                   <button type="button" id="addTrailer" class="addTrailer">트레일러 추가</button>
 
                 <h2>스틸컷</h2>
-                <div th:if="${not #lists.isEmpty(movieInfo.stillcuts)}">
-                  <div th:each="stillcut, status : ${movieInfo.stillcuts}">
-                    <div class="stillcut-container">
-                      <input type="hidden" th:name="'stillcuts[' + ${status.index} + '].stillcutNo'" th:value="${stillcut.stillcutNo}"/>
-                      <input type="text" th:name="'stillcuts[' + ${status.index} + '].stillcutUrl'" placeholder="스틸컷Url" th:value="${stillcut.stillcutUrl}"/>
-                      <button type="button" class="remove-input-Btn">삭제</button>
-                    </div>
-                  </div>
-                </div>
                   <div id="stillcutWrapper">
                     <!-- 스틸컷 항목들이 여기에 추가됩니다 -->
                   </div>
@@ -112,7 +88,7 @@
             <!-- 트레일러 템플릿 -->
             <template id="trailerTemplate">
               <div class="trailer-container">
-                <input type="hidden" name="trailerNo" value="" />
+<!--                <input type="hidden" name="trailerNo" value="" />-->
                 <input type="text" name="trailerType" placeholder="트레일러 제목" />
                 <input type="text" name="trailerThumbnailUrl" placeholder="썸네일Url" />
                 <input type="text" name="trailerUrl" placeholder="트레일러Url" />
@@ -123,14 +99,14 @@
             <!-- 스틸컷 템플릿 -->
             <template id="stillcutTemplate">
             <div class="stillcut-container">
-              <input type="hidden" name="stillcutNo" value="" />
+<!--              <input type="hidden" name="stillcutNo" value="" />-->
               <input type="text" name="stillcutUrl" placeholder="스틸컷Url" />
               <button type="button" class="remove-input-Btn">삭제</button>
             </div>
           </template>
-            <button class="buttons modify" type="submit">수정</button>
-            <button class="buttons remove" type="submit">삭제</button>
-            <button class="buttons cancel" type="button">뒤로</button>
+            <button class="buttons modify" type="submit">등록</button>
+<!--            <button class="buttons remove" type="submit">삭제</button>-->
+            <button class="buttons cancel" type="button" onclick="goBack();">뒤로</button>
           </form>
         </div>
       </div>
@@ -211,6 +187,28 @@
           }
         });
       });
+
+      function updatePosterPreview() {
+        const posterUrl = document.getElementById('posterUrl').value;
+        const posterPreview = document.getElementById('posterPreview');
+
+        if (posterUrl) {
+          posterPreview.src = posterUrl;
+        } else {
+          posterPreview.src = ''; // URL이 비어있으면 이미지 제거
+        }
+      }
+
+      // 페이지 로드 시 이미지 미리보기 초기화
+      document.addEventListener('DOMContentLoaded', function() {
+        updatePosterPreview();
+      });
+
+      function goBack() {
+          if(confirm("영화 등록을 취소하시겠습니까?")) {
+              location.href = "/admin/movie-list"
+          }
+      }
     </script>
 </th:block>
 </body>
