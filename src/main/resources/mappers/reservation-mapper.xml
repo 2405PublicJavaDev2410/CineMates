@@ -3,14 +3,8 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.filmfellows.cinemates.domain.reservation.model.mapper.ReservationMapper">
-    <select id="showReservationPage" resultType="ReservationDTO">
-        SELECT *
-        FROM RESERVATION_TBL
-                 JOIN CINEMA_TBL USING (CINEMA_NO)
-                 JOIN MOVIE_TBL USING (MOVIE_NO)
-                 JOIN SCREEN_TBL USING (SCREEN_NO)
-                 JOIN SHOWTIME_TBL USING (SHOWTIME_NO)
-    </select>
+    <!--    <select id="showReservationPage" resultType="ReservationDTO">
+        </select>-->
     <insert id="insertReservationInfo">
         INSERT INTO RESERVATION_TBL
         VALUES (#{reservationNo}, #{reservationVisitor}, #{reservationSeat}, #{paymentMethod}, DEFAULT, #{movieNo},
@@ -26,6 +20,30 @@
     <select id="selectCinemas" resultType="String">
         SELECT CINEMA_NAME
         FROM CINEMA_TBL
-        WHERE CINEMA_ADDRESS LIKE '%'||#{cinemaAddress}||'%'
+        WHERE CINEMA_ADDRESS LIKE '%' || #{cinemaAddress} || '%'
+    </select>
+
+    <select id="selectMovies" resultType="String">
+        SELECT DISTINCT M.TITLE
+        FROM CINEMA_TBL
+                 JOIN SCREEN_TBL USING (CINEMA_NO)
+                 JOIN SHOWTIME_TBL USING (SCREEN_NO)
+                 JOIN MOVIE_TBL M USING (MOVIE_NO)
+        WHERE CINEMA_NAME = #{cinemaName}
+    </select>
+
+    <select id="selectCinemaName" resultType="String">
+        select CINEMA_NAME
+        from CINEMA_TBL
+    </select>
+
+    <select id="selectShowInfo" resultType="String">
+        SELECT S.SHOWTIME_TIME, SC.SCREEN_NAME, SC.SCREEN_SEAT
+        FROM CINEMA_TBL
+                 JOIN SCREEN_TBL SC USING (CINEMA_NO)
+                 JOIN SHOWTIME_TBL S USING (SCREEN_NO)
+                 JOIN MOVIE_TBL M USING (MOVIE_NO)
+        WHERE CINEMA_NAME = #{cinemaName}
+          AND TITLE = #{title}
     </select>
 </mapper>

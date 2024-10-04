@@ -17,4 +17,10 @@ public interface ReservationMapper {
     List<ReservationDTO> showReservedSeats();
 
     List<String> selectCinemas(String address);
+
+    List<String> selectMovies(String cinemaName);
+
+    List<String> selectCinemaName();
+
+    List<String> selectShowInfo(String cinemaName, String title);
 }

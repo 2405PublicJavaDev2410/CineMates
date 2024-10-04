@@ -34,5 +34,20 @@ public class ReservationServiceImpl implements ReservationService {
         return rmapper.selectCinemas(Address);
     }
 
+    @Override
+    public List<String> selectMovies(String cinemaName) {
+        return rmapper.selectMovies(cinemaName);
+    }
+
+    @Override
+    public List<String> selectCinemaName() {
+        return rmapper.selectCinemaName();
+    }
+
+    @Override
+    public List<String> selectShowInfo(String cinemaName, String title) {
+        return rmapper.selectShowInfo(cinemaName,title);
+    }
+
 
 }

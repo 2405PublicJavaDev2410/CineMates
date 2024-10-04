@@ -44,9 +44,18 @@ public class ReservationController {
 //        if(memberId==null) {
 //            return "redirect:/";
 //        }
-        List<ReservationDTO> rList = rService.showReservationPage();
+//        List<ReservationDTO> rList = rService.showReservationPage();
+        List<String> rList = rService.selectCinemaName();
+        List<String> processedList = new ArrayList<>();
 
-        model.addAttribute("rList", rList);
+        for (String cinemaGroup : rList) {
+            String[] cinemas = cinemaGroup.split(",");
+            for (String cinema : cinemas) {
+                processedList.add(cinema.trim());
+            }
+        }
+        model.addAttribute("rList", processedList);
+        System.out.println("보여줘" + processedList);
         return "pages/reservation/Showtime";
     }
 
@@ -67,12 +76,25 @@ public class ReservationController {
     public ResponseEntity<List<String>> selectCinemas(@RequestParam String cinemaAddress) {
         List<String> addresses = Arrays.asList(cinemaAddress.split("/"));
         List<String> allCinemas = new ArrayList<>();
-        for(String address : addresses) {
+        for (String address : addresses) {
             List<String> cinemas = rService.selectCinemas(address);
             allCinemas.addAll(cinemas);
             System.out.println(cinemas);
-       }
+        }
         return ResponseEntity.ok(allCinemas);
     }
 
+    @GetMapping("/getMovies")
+    public ResponseEntity<List<String>> selectMovies(@RequestParam String cinemaName) {
+        System.out.println("영화 이름" + cinemaName);
+        List<String> mList = rService.selectMovies(cinemaName);
+        System.out.println("영화 목록: " + mList);
+        return ResponseEntity.ok(mList);
+    }
+
+    @GetMapping("/getShowtimes")
+    public ResponseEntity<List<String>> selectShowInfo(@RequestParam String cinemaName , @RequestParam String title) {
+        List<String> sList = rService.selectShowInfo(cinemaName, title);
+        return ResponseEntity.ok(sList);
+    }
 }

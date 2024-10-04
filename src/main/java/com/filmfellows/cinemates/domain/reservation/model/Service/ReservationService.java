@@ -33,4 +33,26 @@ public interface ReservationService {
      * @return List<ReservationDTO>
      */
     List<String> selectCinemas(String Address);
+
+    /**
+     * 영화 조회
+     * @param cinemaName
+     * @return List<String>
+     */
+    List<String> selectMovies(String cinemaName);
+
+    /**
+     * 극장 이름 조회
+     *
+     * @return ist<ReservationDTO>
+     */
+    List<String> selectCinemaName();
+
+    /**
+     * 극장,영화제목으로 상영시간 출력
+     * @param cinemaName
+     * @param title
+     * @return  List<String>
+     */
+    List<String> selectShowInfo(String cinemaName, String title);
 }

@@ -7,68 +7,325 @@
 <head>
     <meta charset="UTF-8">
     <title>Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
 
+        .calendar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .month-display {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .week-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .days-container {
+            display: flex;
+            gap: 5px;
+        }
+
+        .day {
+            width: 40px;
+            height: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+        }
+
+        .day.active {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+
+        .weekday {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .date {
+            font-size: 16px;
+            margin-top: 5px;
+        }
+
+        .arrow {
+            cursor: pointer;
+            font-size: 20px;
+            user-select: none;
+            padding: 10px;
+        }
+        .selected {
+            background-color: #e0e0e0;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
 <form action="/Ticketing/PersonSeat" method="POST">
-    <div>
-        <ul id="Korea-region-list">
+    <div class="list-container">
+        <ul id="region-list">
             <li>
-                <a href="#none" data-cinema-address="서울">서울</a>
+                <a data-cinema-address="서울" href="#none">서울</a>
             </li>
             <li>
-                <a href="#none" data-cinema-address="경기/인천">경기/인천</a>
+                <a data-cinema-address="경기/인천" href="#none">경기/인천</a>
             </li>
             <li>
-                <a href="#none" data-cinema-address="충청/대전">충청/대전</a>
+                <a data-cinema-address="충청/대전" href="#none">충청/대전</a>
             </li>
             <li>
-                <a href="#none" data-cinema-address="전라/광주">전라/광주</a>
+                <a data-cinema-address="전라/광주" href="#none">전라/광주</a>
             </li>
             <li>
-                <a href="#none" data-cinema-address="경북/대구">경북/대구</a>
+                <a data-cinema-address="경북/대구" href="#none">경북/대구</a>
             </li>
             <li>
-                <a href="#none" data-cinema-address="경남/부산/울산">경남/부산/울산</a>
+                <a data-cinema-address="경남/부산/울산" href="#none">경남/부산/울산</a>
             </li>
             <li>
-                <a href="#none" data-cinema-address="강원">강원</a>
+                <a data-cinema-address="강원" href="#none">강원</a>
             </li>
             <li>
-                <a href="#none" data-cinema-address="제주">제주</a>
+                <a data-cinema-address="제주" href="#none">제주</a>
             </li>
         </ul>
+    </div>
+    <div class="list-container">
         <ul id="cinema-List"></ul>
+    </div>
+    <div class="list-container">
         <ul id="movie-List"></ul>
+        <div class="calendar">
+            <div class="month-display" id="month-display"></div>
+            <div class="week-container">
+                <div class="arrow" id="prevWeek">&lt;</div>
+                <div class="days-container" id="calendar-days"></div>
+                <div class="arrow" id="nextWeek">&gt;</div>
+            </div>
+        </div>
+    </div>
+    <div id="showtimes-container">
+        <ul id="showtimes-List"></ul>
     </div>
 
     <button>이동</button>
 </form>
 
 <script>
-    $(document).ready(function() {
-        $('#Korea-region-list').on('click', 'a', function(e) {
+    /*<![CDATA[*/
+    var cinemas = /*[[${rList}]]*/ [];
+    /*]]>*/
+    $(document).ready(function () {
+        // 지역에 따른 극장 출력
+        $('#region-list').on('click', 'a', function (e) {
             e.preventDefault();
-            var cinemaAddresses = $(this).data('cinema-address');
+            var Info = $(this).data('cinema-address');
+
+            // 선택된 지역에 selected 클래스 추가
+            $(this).parent().addClass('selected').siblings().removeClass('selected');
 
             $.ajax({
                 url: '/getCinemas',  // 서버의 엔드포인트 URL
                 method: 'GET',
-                data: { cinemaAddress: cinemaAddresses },
-                success: function(response) {
-                    var cinemaList = $('#cinema-List');
-                    cinemaList.empty();  // 기존 목록을 비웁니다
-                    
-                    $.each(response, function(index, cinema) {
-                        cinemaList.append('<li>'+'<a>'+cinema+'</a>'+'</li>');
+                data: {cinemaAddress: Info},
+                success: function (cinemas) {
+                    var cinema = $('#cinema-List');
+                    cinema.empty();  // 기존 목록을 비웁니다
+
+                    $.each(cinemas, function (index, cinemaName) {
+                        cinema.append('<li><a href="#" data-cinema-name="' + cinemaName + '">' + cinemaName + '</a></li>');
                     });
                     console.log("잘 전달 됨");
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.error("AJAX 요청 실패: ", error);
                 }
             });
         });
+
+        // 극장에 따른 영화 목록 출력
+        $('#cinema-List').on('click', 'a', function (e) {
+            e.preventDefault();
+            var Info = $(this).data('cinema-name');
+
+            // 선택된 극장에 selected 클래스 추가
+            $(this).parent().addClass('selected').siblings().removeClass('selected');
+
+            $.ajax({
+                url: '/getMovies',  // 서버의 엔드포인트 URL
+                method: 'GET',
+                data: {cinemaName: Info},
+                success: function (response) {
+                    var movie = $('#movie-List');
+                    movie.empty();  // 기존 목록을 비웁니다
+
+                    $.each(response, function (index, item) {
+                        movie.append('<li><a href="#none">' + item + '</a></li>');
+                    });
+                    console.log("잘 전달 됨");
+                },
+                error: function (xhr, status, error) {
+                    console.error("AJAX 요청 실패: ", error);
+                }
+            });
+        });
+
+        // 영화 선택 시 selected 클래스 추가
+        $('#movie-List').on('click', 'a', function (e) {
+            e.preventDefault();
+            $(this).parent().addClass('selected').siblings().removeClass('selected');
+        });
+
+    });
+
+
+    // 달력
+    const calendarDays = document.getElementById('calendar-days');
+    const prevWeek = document.getElementById('prevWeek');
+    const nextWeek = document.getElementById('nextWeek');
+    const monthDisplay = document.getElementById('month-display');
+    let currentDate = new Date();
+
+    const weekdays = ['월', '화', '수', '목', '금', '토', '일'];
+    const months = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
+
+    function getMonday(d) {
+        d = new Date(d);
+        var day = d.getDay(),
+            diff = d.getDate() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
+        return new Date(d.setDate(diff));
+    }
+
+    function updateCalendar() {
+        calendarDays.innerHTML = '';
+        const startDate = getMonday(currentDate);
+
+        let weekDates = [];
+        for (let i = 0; i < 7; i++) {
+            const date = new Date(startDate);
+            date.setDate(startDate.getDate() + i);
+            weekDates.push(date);
+        }
+
+        // 초기 월 표시 (주의 중간 날짜 기준)
+        let middleDate = weekDates[3];
+        monthDisplay.textContent = months[middleDate.getMonth()];
+
+        weekDates.forEach((date, index) => {
+            const dayElement = document.createElement('div');
+            dayElement.className = 'day';
+            dayElement.setAttribute('data-month', date.getMonth());
+            if (date.toDateString() === new Date().toDateString()) {
+                dayElement.classList.add('active');
+            }
+
+            const weekdayElement = document.createElement('div');
+            weekdayElement.className = 'weekday';
+            weekdayElement.textContent = weekdays[index];
+
+            const dateElement = document.createElement('div');
+            dateElement.className = 'date';
+            dateElement.textContent = date.getDate();
+
+            dayElement.appendChild(weekdayElement);
+            dayElement.appendChild(dateElement);
+            calendarDays.appendChild(dayElement);
+
+            dayElement.addEventListener('click', function () {
+                document.querySelectorAll('.day').forEach(day => day.classList.remove('active'));
+                this.classList.add('active');
+                monthDisplay.textContent = months[parseInt(this.getAttribute('data-month'))];
+            });
+        });
+    }
+
+    prevWeek.addEventListener('click', () => {
+        currentDate.setDate(currentDate.getDate() - 7);
+        updateCalendar();
+    });
+
+    nextWeek.addEventListener('click', () => {
+        currentDate.setDate(currentDate.getDate() + 7);
+        updateCalendar();
+    });
+
+    updateCalendar();
+
+    //영화 상영 가능 시간 출력
+    $(document).ready(function () {
+        let selectedMovie = null;
+        let selectedDate = null;
+
+        // 영화 선택 이벤트
+        $('#movie-List').on('click', 'a', function (e) {
+            e.preventDefault();
+            selectedMovie = $(this).text();
+            $(this).parent().addClass('selected').siblings().removeClass('selected');
+            checkAndGetShowtimes();
+        });
+
+        // 날짜 선택 이벤트 수정
+        $(document).on('click', '.day', function() {
+            document.querySelectorAll('.day').forEach(day => day.classList.remove('active'));
+            this.classList.add('active');
+            monthDisplay.textContent = months[parseInt(this.getAttribute('data-month'))];
+
+            selectedDate = new Date(currentDate.getFullYear(),
+                parseInt(this.getAttribute('data-month')),
+                parseInt(this.querySelector('.date').textContent));
+            checkAndGetShowtimes();
+        });
+
+        function checkAndGetShowtimes() {
+            if (selectedMovie && selectedDate) {
+                getShowtimes(selectedMovie, selectedDate);
+            }
+        }
+
+        function getShowtimes(movie, date) {
+            $.ajax({
+                url: '/getShowtimes',
+                method: 'GET',
+                data: {
+                    title: movie,
+                    date: date.toISOString().split('T')[0], // YYYY-MM-DD 형식
+                    cinemaName: $('#cinema-List .selected a').data('cinema-name')
+                },
+                success: function(showtimes) {
+                    displayShowtimes(showtimes);
+                },
+                error: function(xhr, status, error) {
+                    console.error("상영 시간 로드 실패:", error);
+                }
+            });
+        }
+
+        function displayShowtimes(showtimes) {
+            let showtimesList = $('<ul id="showtimes-list"></ul>');
+            showtimes.forEach(time => {
+                showtimesList.append(`<li>${time}</li>`);
+            });
+            $('#showtimes-container').empty().append(showtimesList);
+        }
     });
 </script>
 </body>
