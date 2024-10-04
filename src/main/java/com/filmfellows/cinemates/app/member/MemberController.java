@@ -91,10 +91,10 @@ public class MemberController {
      * 관련기능 : 회원가입
      */
     @PostMapping("/register")
+    @ResponseBody
     public String insertMember(@ModelAttribute @Valid RegisterRequest registerRequest,
             @RequestParam(value="profileImg", required=false) MultipartFile profileImg)
             throws IllegalStateException, IOException {
-//        if(registerRequest.getMemberPw().equals(registerRequest.getCheckPassword())) {
         Member member = new Member();
         member.setMemberId(registerRequest.getMemberId());
         member.setMemberPw(registerRequest.getMemberPw());
@@ -106,11 +106,11 @@ public class MemberController {
         // 프로필 이미지 파일이 있는 경우에만 처리
         int result = mService.insertMember(member,
                 (profileImg != null && !profileImg.isEmpty() ? profileImg : null));
-        if(result == 0) {
-            throw new IllegalStateException();
+        if(result > 0) {
+            return "success";
+        }else {
+            return "fail";
         }
-//            }
-        return "redirect:/login";
     }
 
     /**
@@ -125,7 +125,7 @@ public class MemberController {
         Member member = mService.getOneMember(memberId);
         member.setMemberPw(modifyRequest.getMemberPw());
         member.setPhone(modifyRequest.getPhone());
-        int result = mService.updateMember(member, profileImg);
+        mService.updateMember(member, profileImg);
         return "redirect:/my-page/update";
     }
 
@@ -135,16 +135,16 @@ public class MemberController {
      */
     @PostMapping("/remove")
     @ResponseBody
-    public ResponseEntity<String> deleteMember(@RequestBody @Valid RemoveRequest removeRequest,
+    public String deleteMember(@RequestBody @Valid RemoveRequest removeRequest,
                                                  HttpSession session) {
         String memberId = session.getAttribute("memberId").toString();
         Member member = mService.getOneMember(memberId);
         if(member.getMemberPw().equals(removeRequest.getMemberPw())) {
             mService.deleteMember(member);
             session.invalidate();
-            return ResponseEntity.ok("회원 탈퇴가 완료되었습니다.");
+            return "success";
         }else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호가 일치하지 않습니다.");
+            return "fail";
         }
     }
 
@@ -154,20 +154,23 @@ public class MemberController {
      */
     @PostMapping("/login")
     @ResponseBody
-    public String loginMember(@Valid LoginRequest loginRequest,
+    public String loginMember(@RequestBody @Valid LoginRequest loginRequest,
           HttpSession session, Model model) {
         Member member = new Member();
         member.setMemberId(loginRequest.getMemberId());
         member.setMemberPw(loginRequest.getMemberPw());
         member = mService.loginMember(member);
-        ProfileImg profileImg = mService.getOneProfileImg(member.getMemberId());
-        // 세션에 로그인 정보 저장
-        session.setAttribute("memberId", member.getMemberId());
-        session.setAttribute("name", member.getName());
-        // 로그인 시 메인에 회원&프로필사진 정보 전달
-        model.addAttribute("member", member);
-        model.addAttribute("profileImg", profileImg);
-        return "redirect:/";
+        if(member != null) {
+            ProfileImg profileImg = mService.getOneProfileImg(member.getMemberId());
+            // 세션에 로그인 정보 저장
+            session.setAttribute("memberId", member.getMemberId());
+            session.setAttribute("name", member.getName());
+            // 로그인 시 메인에 회원&프로필사진 정보 전달
+            model.addAttribute("member", member);
+            model.addAttribute("profileImg", profileImg);
+            return "success";
+        }
+        return "fail";
     }
 
     /**

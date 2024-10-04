@@ -1,7 +1,7 @@
 const pwInput = document.querySelector('#pw-input');
 const pwFailureMessage = document.querySelector('#pw-failure-message');
 
-const deleteMember = () => {
+function deleteMember() {
     if(!pwCheck()) {
         return;
     }
@@ -15,40 +15,26 @@ const deleteMember = () => {
             contentType: 'application/json', // Content-Type 설정
             dataType: 'text', // 서버로부터의 응답 데이터 타입
             success: function(data) {
-                alert(data);
-                window.location.href='/';
+                if(data === 'success') {
+                    alert("회원 탈퇴가 완료되었습니다.");
+                    window.location.href='/';
+                }else {
+                    pwFailureMessage.innerHTML = "비밀번호가 일치하지 않습니다.";
+                    pwFailureMessage.classList.remove('hide');
+                    pwInput.classList.add('error-border');
+                }
             },
-            error: function(xhr) {
-                // xhr.responseText에서 오류 메시지를 가져옴
-                pwFailureMessage.innerHTML = xhr.responseText
-                pwFailureMessage.classList.remove('hide');
-                pwInput.classList.add('error-border');
+            error: function() {
+                alert('서버 통신 에러!');
+                location.reload();
             }
         })
     }
 }
 
-
-// 비밀번호 마스킹 해제
-const pwIcon = document.querySelector('.pwIcon');
-
-pwIcon.addEventListener('click', function () {
-    const type = pwInput.getAttribute('type') === 'password' ? 'text' : 'password';
-    pwInput.setAttribute('type', type);
-
-    if (type === 'password') {
-        this.classList.remove('fi-rr-eye-crossed');
-        this.classList.add('fi-rs-eye');
-    } else {
-        this.classList.remove('fi-rs-eye');
-        this.classList.add('fi-rr-eye-crossed');
-    }
-});
-
-// 비밀번호 정규표현식
-function passwordRule(str) {
-    const regex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,16}$/; // 정규 표현식
-    return regex.test(str);
+// 비밀번호 정규식
+const passwordRule = (str) => {
+    return /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^*+=-])[A-Za-z0-9!@#$%^*+=-]{8,16}$/.test(str);
 }
 
 function pwCheck() {
@@ -71,9 +57,32 @@ function pwCheck() {
 }
 
 // 재입력을 위해 입력창을 클릭하면 빨간색 테두리 지워짐
-pwInput.onkeyup = function() {
-    pwInput.classList.remove('error-border');
-}
+// pwInput.onkeyup = function() {
+//     pwInput.classList.remove('error-border');
+// }
+
+// 엔터키 눌렀을 때 새로고침 방지
+pwInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+    }
+});
+
+// 비밀번호 마스킹 해제
+const pwIcon = document.querySelector('.pwIcon');
+
+pwIcon.addEventListener('click', function () {
+    const type = pwInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    pwInput.setAttribute('type', type);
+
+    if (type === 'password') {
+        this.classList.remove('fi-rr-eye-crossed');
+        this.classList.add('fi-rs-eye');
+    } else {
+        this.classList.remove('fi-rs-eye');
+        this.classList.add('fi-rr-eye-crossed');
+    }
+});
 
 document.addEventListener("DOMContentLoaded", function() {
     document.querySelector('#side-menu-5').classList.add('selected');

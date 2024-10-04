@@ -27,8 +27,8 @@ a:hover {
 }
 .common-input-box:focus {
     outline: none;
-    border: 1px solid #D54946;
-    box-shadow: 0 0 3px #D54946;
+    border: 1px solid #466288;
+    box-shadow: 0 0 3px #466288;
 }
 
 /* 빨간색 버튼 */

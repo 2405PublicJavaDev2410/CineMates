@@ -15,7 +15,7 @@
     display: inline-block;
 }
 .input-group {
-    margin: 15px 0;
+    margin-top: 18px;
     display: flex;
     flex-direction: column;
 }
@@ -34,12 +34,12 @@
 }
 .common-input-box {
     padding: 10px;
-    margin: 10px 0;
+    margin: 5px 0;
 }
 .common-input-box:focus {
     outline: none;
-    border: 1px solid #D54946;
-    box-shadow: 0 0 3px #D54946;
+    border: 1px solid #466288;
+    box-shadow: 0 0 3px #466288;
 }
 .pwd-group {
     position: relative;
@@ -63,7 +63,7 @@
 .email-btn, .auth-btn {
     width: 25%;
     height: 45px;
-    margin-top: 10px;
+    margin-top: 5px;
     border: none;
     color: white;
     font-size: 16px;
@@ -83,6 +83,40 @@
 }
 .asterisk {
     color: red;
+}
+.hide {
+    display: none;
+}
+.failure-message {
+    /*position: absolute;*/
+    /*top: 85%;*/
+    /*left: 1%;*/
+    color: #ED1C24;
+    font-size: 14px;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+.success-message {
+    color: #66BB6A;
+    font-size: 14px;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+.error-border {
+    transition: none;
+    border: 2px solid #ED1C24;
+}
+.error-border:focus {
+    border: 2px solid #ED1C24;
+    box-shadow: 0 0 3px #ED1C24;
+}
+.success-border {
+    transition: none;
+    border: 2px solid #66BB6A;
+}
+.success-border:focus {
+    border: 2px solid #66BB6A;
+    box-shadow: 0 0 3px #66BB6A;
 }
 #select-file-btn {
     margin-top: 10px;

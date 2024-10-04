@@ -22,6 +22,19 @@
 #login-form label {
     font-size: 16px;
 }
+.hide {
+    display: none;
+}
+.message {
+    color: #ED1C24;
+    font-size: 14px;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+.error-border {
+    transition: none;
+    border: 2px solid #ED1C24;
+}
 .common-input-box {
     padding: 10px;
     margin: 10px 0;
