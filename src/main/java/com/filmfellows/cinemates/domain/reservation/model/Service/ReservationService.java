@@ -1,6 +1,7 @@
 package com.filmfellows.cinemates.domain.reservation.model.Service;
 
 import com.filmfellows.cinemates.domain.reservation.model.vo.ReservationDTO;
+import com.filmfellows.cinemates.domain.reservation.model.vo.ShowInfoDTO;
 
 import java.util.List;
 
@@ -50,9 +51,17 @@ public interface ReservationService {
 
     /**
      * 극장,영화제목으로 상영시간 출력
+     *
      * @param cinemaName
      * @param title
-     * @return  List<String>
+     * @return List<String>
      */
-    List<String> selectShowInfo(String cinemaName, String title);
+    List<ShowInfoDTO> selectShowInfo(String cinemaName, String title);
+
+    /**
+     * 예약 좌석 조회
+     *
+     * @return List<ShowInfoDTO>
+     */
+    List<ReservationDTO> selectReservationSeat();
 }

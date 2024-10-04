@@ -307,22 +307,39 @@
                 method: 'GET',
                 data: {
                     title: movie,
-                    date: date.toISOString().split('T')[0], // YYYY-MM-DD 형식
+                    // date: date.toISOString().split('T')[0], // YYYY-MM-DD 형식
                     cinemaName: $('#cinema-List .selected a').data('cinema-name')
                 },
-                success: function(showtimes) {
-                    displayShowtimes(showtimes);
+                success: function(response) {
+                    if (Array.isArray(response)) {
+                        displayShowtimes(response);
+                    } else {
+                        console.error("Invalid response format:", response);
+                        $('#showtimes-container').html('<p>상영 시간 정보를 불러오는데 실패했습니다.</p>');
+                    }
                 },
                 error: function(xhr, status, error) {
                     console.error("상영 시간 로드 실패:", error);
+                    $('#showtimes-container').html('<p>상영 시간 정보를 불러오는데 실패했습니다.</p>');
                 }
             });
         }
 
-        function displayShowtimes(showtimes) {
+        function displayShowtimes(showInfoList) {
+            if (showInfoList.length === 0) {
+                $('#showtimes-container').html('<p>해당 날짜에 상영 정보가 없습니다.</p>');
+                return;
+            }
+
             let showtimesList = $('<ul id="showtimes-list"></ul>');
-            showtimes.forEach(time => {
-                showtimesList.append(`<li>${time}</li>`);
+            showInfoList.forEach((info,reserveInfo) => {
+                showtimesList.append(`
+            <li>
+                <a role="button" href="#none">${info.showtimeTime}</a>
+                <dl>좌석: ${info.availableSeats}/${info.screenSeat || '정보 없음'}</dl>
+                <dt>상영관: ${info.screenName || '정보 없음'}</dt>
+            </li>
+        `);
             });
             $('#showtimes-container').empty().append(showtimesList);
         }

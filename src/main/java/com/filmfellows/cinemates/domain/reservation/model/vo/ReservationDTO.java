@@ -40,4 +40,7 @@ public class ReservationDTO {
     private String buyer_email;
     private String buyer_name;
     private String buyer_tel;
+
+    //ShowTime - 상영
+    private String showtimeTime;
 }

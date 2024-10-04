@@ -7,8 +7,8 @@
         </select>-->
     <insert id="insertReservationInfo">
         INSERT INTO RESERVATION_TBL
-        VALUES (#{reservationNo}, #{reservationVisitor}, #{reservationSeat}, #{paymentMethod}, DEFAULT, #{movieNo},
-                #{memberId}, #{screenNo}, #{showTimeNo}, #{cinemaNo})
+        VALUES (#{reservationNo}, #{reservationVisitor}, #{reservationSeat}, DEFAULT, #{movieNo},
+                #{memberId}, #{screenNo}, #{showTimeNo}, #{cinemaNo},#{title},#{screenName},#{cinemaName})
     </insert>
 
     <select id="showReservedSeats" resultType="ReservationDTO">
@@ -37,13 +37,21 @@
         from CINEMA_TBL
     </select>
 
-    <select id="selectShowInfo" resultType="String">
-        SELECT S.SHOWTIME_TIME, SC.SCREEN_NAME, SC.SCREEN_SEAT
+    <select id="selectShowInfo" resultType="showInfoDTO">
+        SELECT s.showtime_time, sc.screen_seat, sc.screen_Name
         FROM CINEMA_TBL
-                 JOIN SCREEN_TBL SC USING (CINEMA_NO)
-                 JOIN SHOWTIME_TBL S USING (SCREEN_NO)
-                 JOIN MOVIE_TBL M USING (MOVIE_NO)
-        WHERE CINEMA_NAME = #{cinemaName}
-          AND TITLE = #{title}
+                 JOIN SCREEN_TBL sc USING (CINEMA_NO)
+                 JOIN SHOWTIME_TBL s USING (SCREEN_NO)
+                 JOIN MOVIE_TBL USING (MOVIE_NO)
+        where cinema_name = #{cinemaName}
+          AND title = #{title}
+    </select>
+
+    <select id="selectReservationSeat" resultType="ReservationDTO">
+        SELECT r.RESERVATION_SEAT, s.SCREEN_NAME, st.SHOWTIME_TIME
+        FROM RESERVATION_TBL r
+                 JOIN SHOWTIME_TBL st ON r.SHOWTIME_NO = st.SHOWTIME_NO
+                 JOIN SCREEN_TBL s ON st.SCREEN_NO = s.SCREEN_NO
+
     </select>
 </mapper>

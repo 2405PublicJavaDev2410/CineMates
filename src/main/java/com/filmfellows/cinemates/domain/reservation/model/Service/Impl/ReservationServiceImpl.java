@@ -3,6 +3,7 @@ package com.filmfellows.cinemates.domain.reservation.model.Service.Impl;
 import com.filmfellows.cinemates.domain.reservation.model.Service.ReservationService;
 import com.filmfellows.cinemates.domain.reservation.model.mapper.ReservationMapper;
 import com.filmfellows.cinemates.domain.reservation.model.vo.ReservationDTO;
+import com.filmfellows.cinemates.domain.reservation.model.vo.ShowInfoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,8 +46,13 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<String> selectShowInfo(String cinemaName, String title) {
-        return rmapper.selectShowInfo(cinemaName,title);
+    public List<ShowInfoDTO> selectShowInfo(String cinemaName, String title) {
+        return rmapper.selectShowInfo(cinemaName, title);
+    }
+
+    @Override
+    public List<ReservationDTO> selectReservationSeat() {
+        return rmapper.selectReservationSeat();
     }
 
 

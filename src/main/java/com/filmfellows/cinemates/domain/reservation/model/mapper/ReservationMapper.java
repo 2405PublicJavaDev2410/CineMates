@@ -1,6 +1,7 @@
 package com.filmfellows.cinemates.domain.reservation.model.mapper;
 
 import com.filmfellows.cinemates.domain.reservation.model.vo.ReservationDTO;
+import com.filmfellows.cinemates.domain.reservation.model.vo.ShowInfoDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -22,5 +23,7 @@ public interface ReservationMapper {
 
     List<String> selectCinemaName();
 
-    List<String> selectShowInfo(String cinemaName, String title);
+    List<ShowInfoDTO> selectShowInfo(String cinemaName, String title);
+
+    List<ReservationDTO> selectReservationSeat();
 }

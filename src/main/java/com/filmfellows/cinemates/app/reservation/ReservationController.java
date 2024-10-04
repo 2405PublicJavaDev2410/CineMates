@@ -3,6 +3,7 @@ package com.filmfellows.cinemates.app.reservation;
 import com.filmfellows.cinemates.domain.reservation.model.Service.ReservationService;
 import com.filmfellows.cinemates.domain.reservation.model.vo.Reservation;
 import com.filmfellows.cinemates.domain.reservation.model.vo.ReservationDTO;
+import com.filmfellows.cinemates.domain.reservation.model.vo.ShowInfoDTO;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -93,8 +94,23 @@ public class ReservationController {
     }
 
     @GetMapping("/getShowtimes")
-    public ResponseEntity<List<String>> selectShowInfo(@RequestParam String cinemaName , @RequestParam String title) {
-        List<String> sList = rService.selectShowInfo(cinemaName, title);
+    public ResponseEntity<List<ShowInfoDTO>> selectShowInfo(@RequestParam String cinemaName, @RequestParam String title) {
+        List<ShowInfoDTO> sList = rService.selectShowInfo(cinemaName, title);
+        List<ReservationDTO> rList = rService.selectReservationSeat();
+
+        for (ShowInfoDTO show : sList) {
+            int totalSeats = Integer.parseInt(show.getScreenSeat());
+            int reservedSeats = (int) rList.stream()
+                    .filter(r -> r.getScreenName().equals(show.getScreenName()) &&
+                            r.getShowtimeTime().equals(show.getShowtimeTime()))
+                    .flatMap(r -> Arrays.stream(r.getReservationSeat().split(",")))
+                    .count();
+            int availableSeats = totalSeats - reservedSeats;
+            show.setAvailableSeats(availableSeats);
+        }
+
+        System.out.println("나와라" + sList);
+        System.out.println("rList: " + rList);
         return ResponseEntity.ok(sList);
     }
 }
