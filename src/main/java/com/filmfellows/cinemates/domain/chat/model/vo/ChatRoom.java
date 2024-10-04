@@ -1,19 +1,25 @@
 package com.filmfellows.cinemates.domain.chat.model.vo;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.sql.Timestamp;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
 public class ChatRoom {
+    // 채팅방 정보
     private Integer roomNo;
     private String roomName;
-    private String roomCategory;
     private Timestamp roomDate;
+    private Integer roomTagNo;
+    private String roomCategory;
+
+    // 채팅방의 영화정보
+    private Integer movieNo;
+    private Integer cinemaLocationCode;
+    private Integer cinemaNo;
+
 }

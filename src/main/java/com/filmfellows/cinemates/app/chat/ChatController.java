@@ -1,17 +1,24 @@
 package com.filmfellows.cinemates.app.chat;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.filmfellows.cinemates.app.chat.dto.ChatRoomMovie;
+import com.filmfellows.cinemates.app.chat.dto.CinemaInfoByRegion;
+import com.filmfellows.cinemates.app.chat.dto.RegionAndCinemaCount;
+import com.filmfellows.cinemates.app.chat.dto.ReservationInfoAndChatInfo;
 import com.filmfellows.cinemates.domain.chat.model.service.ChatService;
+import com.filmfellows.cinemates.domain.chat.model.vo.ChatRoom;
+import com.filmfellows.cinemates.domain.chat.model.vo.ChatTag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class ChatController {
@@ -47,8 +54,55 @@ public class ChatController {
     }
 
     @PostMapping("/chat/create")
-    public String insertChatRoom(){
-        return "pages/chat/createChatForm";
+    public String insertChatRoom(@ModelAttribute("ReservationInfoAndChatInfo") ReservationInfoAndChatInfo revAndChatInfo){
+        System.out.println(revAndChatInfo);
+        // DTO -> VO
+        ChatRoom chatRoom = new ChatRoom(null,
+                revAndChatInfo.getRoomName(),
+                null, null,revAndChatInfo.getRoomCategory(), revAndChatInfo.getMovieNo(),
+                revAndChatInfo.getCinemaLocationCode(), revAndChatInfo.getCinemaNo()
+        );
+
+        int insertChatRoomResult = cService.insertChatRoom(chatRoom);
+
+        if(insertChatRoomResult > 0){
+            System.out.println("채팅방 insert 성공!");
+        }
+
+    if(!revAndChatInfo.getRoomTagName().equals("")){
+        List<String> tagNameArr = new ArrayList<String>();
+
+        String tagNameJson = revAndChatInfo.getRoomTagName();
+        // jackson 객체
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            // JSON 문자열을 List<Map<String, String>> 형태로 변환
+            List<Map<String, String>> list = objectMapper.readValue(tagNameJson, new TypeReference<List<Map<String, String>>>(){});
+
+            // value 필드만 추출하여 List로 변환
+            tagNameArr = list.stream().map(map -> map.get("value"))
+                    .toList();
+
+
+            // 각 배열의 값을 하나씩 table에 insert 시켜주기
+            for(String tagName : tagNameArr) {
+                ChatTag chatTag = new ChatTag();
+                chatTag.setTagName(tagName);
+                chatTag.setRoomNo(chatRoom.getRoomTagNo());
+                int tagResult = cService.insertTag(chatTag);
+            }
+
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
+        return "redirect:/chat/createForm?roomCategory="+revAndChatInfo.getRoomCategory();
+//        return "pages/chat/chatRoomList";
     }
 
     @GetMapping("/chat/navigation")
@@ -57,25 +111,40 @@ public class ChatController {
     }
 
 
-//    ajax
+//    ajax - 영화, 지역 조건 들어간 극장 리스트
     @PostMapping("/chat/cinemaList")
-    public String showCinemaList(@RequestParam("regions") String regions, Model model){
-        // 전달받은 regions '/'로 나누어 List화 시키기
-        String[] regionsArr = regions.split("/");
-        List<String> regionList = new ArrayList<>(Arrays.asList(regionsArr));
+    public String showCinemaList(@RequestParam("cinemaLocationCode") Integer cinemaLocationCode,
+                                 @RequestParam("movieNo") String movieNo, Model model){
+//        // 전달받은 regions '/'로 나누어 List화 시키기
+//        String[] regionsArr = regions.split("/");
+//        List<String> regionList = new ArrayList<>(Arrays.asList(regionsArr));
 
-        System.out.println(regionList);
-        List<String> cinemaListByOne = new ArrayList<String>();
+        System.out.println("movieNo :   " + movieNo);
 
-        List<String> cinemaListByAll = new ArrayList<String>();
-        for(String region : regionList){
-            // 하나의 region에 대한 극장 리스트 조회
-            cinemaListByOne = cService.selectCinemaByRegion(region);
-            // 전체의 region에 대한 극장 리스트를 만들기 위해 추가시키기
-            cinemaListByAll.addAll(cinemaListByOne);
-        }
+//        List<String> cinemaListByOne = new ArrayList<String>();
+//
+//        List<String> cinemaListByAll = new ArrayList<String>();
+//        for(String region : regionList){
+//            // 하나의 region에 대한 극장 리스트 조회
+//            cinemaListByOne = cService.selectCinemaByRegion(region, movieNo);
+//            // 전체의 region에 대한 극장 리스트를 만들기 위해 추가시키기
+//            cinemaListByAll.addAll(cinemaListByOne);
+//        }
+        List<CinemaInfoByRegion> cinemaListByRegion = cService.selectCinemaByRegion(cinemaLocationCode, movieNo);
 
-        model.addAttribute("cinemaListByAll", cinemaListByAll);
+        model.addAttribute("cinemaListByRegion", cinemaListByRegion);
         return "pages/chat/createChatForm::#cinema-list-container";
     }
+
+    // ajax - 영화 클릭 시 region ( cinemaCount) 형태의 list 출력
+    @PostMapping("/chat/regionList")
+    public String showMovieList(@RequestParam("movieNo") String movieNo, Model model){
+        List<RegionAndCinemaCount> regionAndCinemaCountList = cService.selectCinemaCountByRegionByMovie(movieNo);
+        model.addAttribute("regionAndCinemaCountList", regionAndCinemaCountList);
+        return "pages/chat/createChatForm::#region-list-container";
+    }
+
+
+
+
 }

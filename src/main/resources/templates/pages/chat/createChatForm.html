@@ -47,28 +47,28 @@
                 text-align: center;
             }
 
-            .movie-list-container{
+            #movie-list-container{
                 width: 50%;
                 height: 100%;
                 background-color:white;
-                overflow: scroll;
+                overflow-y: scroll;
                 position: relative;
             }
                                 /* scroll custom */
-                                .movie-list-container::-webkit-scrollbar-track
+                                #movie-list-container::-webkit-scrollbar-track
                                 {
                                     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
                                     border-radius: 10px;
                                     background-color: #F5F5F5;
                                 }
 
-                                .movie-list-container::-webkit-scrollbar
+                                #movie-list-container::-webkit-scrollbar
                                 {
                                     width: 12px;
                                     background-color: #F5F5F5;
                                 }
 
-                                .movie-list-container::-webkit-scrollbar-thumb
+                                #movie-list-container::-webkit-scrollbar-thumb
                                 {
                                     border-radius: 10px;
                                     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
@@ -257,14 +257,18 @@
                     unSelectedCinema(); // 전체 체크 해제 - 극장
                     div.classList.remove("selectedMovie");
                     div.children[2].classList.remove('checked');
+                    movieClick(div);
                 }else{
                     unSelectedAll(); // 전체 체크 해제 - 영화
                     unSelectedRegion(); // 전체 체크 해제 - 지역
                     unSelectedCinema(); // 전체 체크 해제 - 극장
                     div.classList.add("selectedMovie");
                     div.children[2].classList.add('checked');
+                    movieClick(div);
                 }
             }
+
+
 
             // 지역 선택
                 // 전체 체크 해제 - 지역
@@ -296,11 +300,13 @@
                         unSelectedCinema(); // 전체 체크 해제 - 극장
                         div.classList.remove("checkedRegion");
                         div.children[1].classList.remove('checked');
+                        regionClick(div);
                     }else{
                         unSelectedRegion(); // 전체 체크 해제 - 지역
                         unSelectedCinema(); // 전체 체크 해제 - 극장
                         div.classList.add("checkedRegion");
                         div.children[1].classList.add('checked');
+                        regionClick(div);
                     }
                 }
 
@@ -356,7 +362,7 @@
             // 로드 후 실행
             window.addEventListener('load', ()=>{
             /////////태그 js
-                const input = document.querySelector('input[name=boardTagName]');
+                const input = document.querySelector('input[name=roomTagName]');
                 let tagify = new Tagify(input); // Tagify 초기화
 
                 // 태그가 추가되면 이벤트 발생
@@ -368,13 +374,19 @@
 
             // 지역 클릭 시 ajax 처리
             let regionClick = (div) => {
-                console.log(div);
-                let regions = div.children[0].innerHTML;
-                console.log(regions);
+
+                let cinemaLocationCode = 0;
+                let movieNo = 0;
+                if(div.classList.contains("checkedRegion")){
+                    cinemaLocationCode = div.id;
+                    movieNo = document.querySelector('.selectedMovie').id
+                }
+
                 $.ajax({
                     url : "/chat/cinemaList",
                     data : {
-                        "regions" : regions
+                        "cinemaLocationCode" : cinemaLocationCode,
+                        "movieNo" : movieNo
                     },
                     type : "POST",
                     success : function(data){ // 서버로부터 return된 값은 직렬화된 json data로 들어옴
@@ -382,8 +394,9 @@
                         console.log("data :" + data);
                         setTimeout(function() {
                             // 값이 표시될 HTML 요소에 데이터를 출력
+
                             $('#cinema-list-container').replaceWith(data);
-                        }, 1000);
+                        }, 500);
                         console.log("replaceWith 까지 성공???")
                     },
                     error : function(){
@@ -402,8 +415,8 @@
                             $("#div_ajax_load_image").css({ "top": top+"px", "left": left+"px"});
                             $("#div_ajax_load_image").show();
                             $("#div_overlay").show(); // 기존 배경 어둡게 처리
-                            $("#div_overlay").fadeIn(); // 부드럽게
-                            $("#div_ajax_load_image").fadeIn(); // 부드럽게
+                            // $("#div_overlay").fadeIn(); // 부드럽게
+                            // $("#div_ajax_load_image").fadeIn(); // 부드럽게
                         } else {
                             $('.createChat-content').append('<div id="div_overlay" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:9998; background-color:rgba(0, 0, 0, 0.7); "></div>');
                             $('body').append('<div id="div_ajax_load_image" style="position:absolute; top:' + top + 'px; left:' + left + 'px; width:' + width + 'px; height:' + height + 'px; z-index:9999;  filter:alpha(opacity=50); opacity:alpha*0.5; margin:auto; padding:0; "><img src="/img/chat/loading.gif" style="width:50px; height:50px;"></div>');
@@ -421,27 +434,111 @@
                 });
             }
 
-            // 영화 선택하면 극장나오는 쿼리문
-        //     SELECT * FROM MOVIE_TBL m
-        //     JOIN SHOWTIME_TBL USING(MOVIE_NO)
-        //     JOIN SCREEN_TBL USING(SCREEN_NO)
-        //     JOIN CINEMA_TBL USING(CINEMA_NO)
-        //     WHERE m.TITLE = '베테랑2';
-        //
-        //
-        //     FROM movie_Tbl a
-        //     JOIN SHOWTIME_TBL b ON b.movie_no = a.movie_no
-        //     JOIN SCREEN_TBL c ON b.screen_no = c.screen_no
-        //     JOIN CINEMA_TBL d ON c.cinema_no = d.cinema_no
-        //     WHERE a.movie_no = '10000';
-        //
-        //
-        //     SELECT DISTINCT d.cinema_name
-        //     FROM movie_Tbl a
-        //     JOIN SHOWTIME_TBL b ON b.movie_no = a.movie_no
-        //     JOIN SCREEN_TBL c ON b.screen_no = c.screen_no
-        //     JOIN CINEMA_TBL d ON c.cinema_no = d.cinema_no
-        //     WHERE a.movie_no = '10000';
+
+            // 영화 클릭 시 ajax 처리
+            let movieClick = (div) => {
+                let movieNo = 0;
+                console.log(movieNo);
+                if(div.classList.contains("selectedMovie")){
+                    movieNo = div.id;
+                }
+                $.ajax({
+                    url : "/chat/regionList",
+                    data : {
+                        "movieNo" : movieNo
+                    },
+                    type : "POST",
+                    success : function(data){ // 서버로부터 return된 값은 직렬화된 json data로 들어옴
+                        console.log(movieNo);
+                        setTimeout(function() {
+                            // 값이 표시될 HTML 요소에 데이터를 출력
+                            $('#region-list-container').replaceWith(data);
+                            // 극장 리스트 초기화
+                            $('#cinema-list-container').empty();
+                        }, 500);
+                        console.log("replaceWith 까지 성공???")
+                    },
+                    error : function(){
+                        console.log("서버 전송 실패");
+                    },
+
+                    beforeSend: function () {
+                        let width = 0;
+                        let height = 0;
+                        let left = 0;
+                        let top = 0;
+                        width = 50; height = 50;
+                        top = ( $(window).height() - height ) / 2 + $(window).scrollTop(); left = ( $(window).width() - width ) / 2 + $(window).scrollLeft();
+
+                        if($("#div_ajax_load_image").length != 0) {
+                            $("#div_ajax_load_image").css({ "top": top+"px", "left": left+"px"});
+                            $("#div_ajax_load_image").show();
+                            $("#div_overlay").show(); // 기존 배경 어둡게 처리
+                            // $("#div_overlay").fadeIn(); // 부드럽게
+                            // $("#div_ajax_load_image").fadeIn(); // 부드럽게
+                        } else {
+                            $('.createChat-content').append('<div id="div_overlay" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:9998; background-color:rgba(0, 0, 0, 0.7); "></div>');
+                            $('body').append('<div id="div_ajax_load_image" style="position:absolute; top:' + top + 'px; left:' + left + 'px; width:' + width + 'px; height:' + height + 'px; z-index:9999;  filter:alpha(opacity=50); opacity:alpha*0.5; margin:auto; padding:0; "><img src="/img/chat/loading.gif" style="width:50px; height:50px;"></div>');
+                        }
+                    },
+                    complete: function () {
+                        setTimeout(function() {
+                            // 0.5초 뒤 로딩 이미지 숨김
+                            $("#div_ajax_load_image").hide();
+                            $("#div_overlay").hide();
+                        }, 500);
+
+                    }
+
+                });
+            }
+
+            // input hidden value에 ajax로 가져온 값 동적으로 저장하기
+            function hiddenValueInitialAndSubmit(){
+                let movieNoInput = document.querySelector('input[name=movieNo]');
+                let cinemaLocationCodeInput = document.querySelector('input[name=cinemaLocationCode]');
+                let cinemaNoInput = document.querySelector('input[name=cinemaNo]');
+
+                let movieItemAll = document.querySelectorAll('.movie-item-content');
+                let regionItemAll = document.querySelectorAll('.regionBox');
+                let cinemaItemAll = document.querySelectorAll('.cinemaBox');
+
+                let movieCheckStatus = 0;
+                let regionCheckStatus = 0;
+                let cinemaCheckStatus = 0;
+                movieItemAll.forEach(item => {
+                    if(item.classList.contains('selectedMovie')){
+                        movieNoInput.value = item.id;
+                        movieCheckStatus++;
+                    }
+                });
+
+                regionItemAll.forEach(item => {
+                    if(item.classList.contains('checkedRegion')){
+                        cinemaLocationCodeInput.value = item.id;
+                        regionCheckStatus++;
+                    }
+                });
+
+                cinemaItemAll.forEach(item => {
+                    if(item.classList.contains('checkedCinema')){
+                        cinemaNoInput.value = item.id;
+                        cinemaCheckStatus++;
+                    }
+                });
+                if (movieCheckStatus <= 0){
+                    alert("영화를 선택해주세요");
+                    return false;
+                }else if(regionCheckStatus <= 0){
+                    alert("지역을 선택해주세요");
+                    return false;
+                }else if(cinemaCheckStatus <= 0){
+                    alert("극장을 선택해주세요");
+                    return false;
+                }
+
+                return true;
+            }
 
         </script>
     </head>
@@ -453,10 +550,10 @@
             <div class="list-title" style="border-left:1px solid gray; width: 25%">극장선택</div>
         </div>
         <div class="createChat-content">
-            <div class="movie-list-container">
+            <div id="movie-list-container">
                 <div class="movie-list-content" th:each="movie : ${movieList}">
                     <!--                    moive 리스트 가져오기-->
-                    <div class="movie-item-content" th:id="${movie.movieNo}" onclick="selectMovie(this)">
+                    <div class="movie-item-content" th:id="${movie.movieNo}" onclick="selectMovie(this);">
                         <div class="movie-img">
                             <img th:src="${movie.posterUrl}" alt="영화이미지">
                         </div>
@@ -482,83 +579,46 @@
                     </div>
                 </div>
             </div>
-
             <div id="region-list-container">
-                <div class="regionBox" onclick="selectRegion(this); regionClick(this);">
-                    <span th:text="'서울'"></span>
-                    <span th:text="'()'"></span>
+                <div th:each="region : ${regionAndCinemaCountList}" th:id="${region.cinemaLocationCode}"  class="regionBox" onclick="selectRegion(this);">
+                    <span th:if="${region.cinemaLocationCode == 1}" th:text="'서울'"></span>
+                    <span th:if="${region.cinemaLocationCode == 2}" th:text="'인천'"></span>
+                    <span th:if="${region.cinemaLocationCode == 3}" th:text="'경기'"></span>
+                    <span th:if="${region.cinemaLocationCode == 4}" th:text="'대전/충청/세종'"></span>
+                    <span th:if="${region.cinemaLocationCode == 5}" th:text="'부산/울산'"></span>
+                    <span th:if="${region.cinemaLocationCode == 6}" th:text="'경북/대구'"></span>
+                    <span th:if="${region.cinemaLocationCode == 7}" th:text="'강원'"></span>
+                    <span th:if="${region.cinemaLocationCode == 8}" th:text="'제주/전남/광주'"></span>
+
+                    <span th:if="${region.cinemaLocationCode == 1}" th:text="'('+${region.cinemaCount}+')'"></span>
+                    <span th:if="${region.cinemaLocationCode == 2}" th:text="'('+${region.cinemaCount}+')'"></span>
+                    <span th:if="${region.cinemaLocationCode == 3}" th:text="'('+${region.cinemaCount}+')'"></span>
+                    <span th:if="${region.cinemaLocationCode == 4}" th:text="'('+${region.cinemaCount}+')'"></span>
+                    <span th:if="${region.cinemaLocationCode == 5}" th:text="'('+${region.cinemaCount}+')'"></span>
+                    <span th:if="${region.cinemaLocationCode == 6}" th:text="'('+${region.cinemaCount}+')'"></span>
+                    <span th:if="${region.cinemaLocationCode == 7}" th:text="'('+${region.cinemaCount}+')'"></span>
+                    <span th:if="${region.cinemaLocationCode == 8}" th:text="'('+${region.cinemaCount}+')'"></span>
                     <div class="region-check-icon">
                         <i class="fa-solid fa-check"></i>
                     </div>
                 </div>
-                <div class="regionBox" onclick="selectRegion(this); regionClick(this);">
-                    <span th:text="'경기/인천'"></span>
-                    <span th:text="'()'"></span>
-                    <div class="region-check-icon">
-                        <i class="fa-solid fa-check"></i>
-                    </div>
-                </div>
-                <div class="regionBox" onclick="selectRegion(this); regionClick(this);">
-                    <span th:text="'충청/대전'"></span>
-                    <span th:text="'()'"></span>
-                    <div class="region-check-icon">
-                        <i class="fa-solid fa-check"></i>
-                    </div>
-                </div>
-                <div class="regionBox" onclick="selectRegion(this); regionClick(this);">
-                    <span th:text="'전라/광주'"></span>
-                    <span th:text="'()'"></span>
-                    <div class="region-check-icon">
-                        <i class="fa-solid fa-check"></i>
-                    </div>
-                </div>
-                <div class="regionBox" onclick="selectRegion(this); regionClick(this);">
-                    <span th:text="'경북/대구'"></span>
-                    <span th:text="'()'"></span>
-                    <div class="region-check-icon">
-                        <i class="fa-solid fa-check"></i>
-                    </div>
-                </div>
-                <div class="regionBox" onclick="selectRegion(this); regionClick(this);">
-                    <span th:text="'경남/부산/울산'"></span>
-                    <span th:text="'()'"></span>
-                    <div class="region-check-icon">
-                        <i class="fa-solid fa-check"></i>
-                    </div>
-                </div>
-                <div class="regionBox" onclick="selectRegion(this); regionClick(this);">
-                    <span th:text="'강원'"></span>
-                    <span th:text="'()'"></span>
-                    <div class="region-check-icon">
-                        <i class="fa-solid fa-check"></i>
-                    </div>
-                </div>
-                <div class="regionBox" onclick="selectRegion(this); regionClick(this);">
-                    <span th:text="'제주'"></span>
-                    <span th:text="'()'"></span>
-                    <div class="region-check-icon">
-                        <i class="fa-solid fa-check"></i>
-                    </div>
+
+
+        </div>
+        <div id="cinema-list-container">
+            <div class="cinemaBox" th:each="cinema : ${cinemaListByRegion}" th:id="${cinema.cinemaNo}"  onclick="selectCinema(this);">
+                <span th:text="${cinema.cinemaName}"></span>
+                <div class="cinema-check-icon">
+                    <i class="fa-solid fa-check"></i>
                 </div>
             </div>
-
-
-            <div id="cinema-list-container">
-                <div th:each="cinema : ${cinemaListByAll}" class="cinemaBox" onclick="selectCinema(this);">
-                    <span th:text="${cinema}"></span>
-                    <div class="cinema-check-icon">
-                        <i class="fa-solid fa-check"></i>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
 
         <div style="font-weight: bold; font-size: 30px; margin: 20px 0">채팅방 정보 입력</div>
 
 
-        <form action="/chat/create" method="post">
+        <form id="chat-create-form" action="/chat/create" method="post">
             <div class="chatRoom-info">
                 <div class="charRoom-info-nameBox">
                     <input type="text" name="roomName" placeholder="채팅방 이름을 입력해 주세요" maxlength="30" oninput="changeLengthCount();" required>
@@ -568,11 +628,12 @@
                     </div>
                 </div>
                 <label>
-                    <input type="text" name="boardTagName" placeholder="해시태그로 채팅방을 소개해보세요" required>
+                    <input type="text" name="roomTagName" placeholder="해시태그로 채팅방을 소개해보세요">
                 </label>
             </div>
+
     <!--        카테고리 -> 이미 선택하고 들어옴-->
-            <input type="hidden" name="roomCategory">
+            <input type="hidden" name="roomCategory" th:value="${roomCategory}">
     <!--        영화선택-->
             <input type="hidden" name="movieNo">
     <!--        지역선택-->
@@ -580,7 +641,7 @@
     <!--        극장선택-->
             <input type="hidden" name="cinemaNo">
 
-            <button class="common-primary-btn" id="create-room-btn" type="button">완료</button>
+            <button class="common-primary-btn" id="create-room-btn" type="submit" onclick="hiddenValueInitialAndSubmit();">완료</button>
 
         </form>
 

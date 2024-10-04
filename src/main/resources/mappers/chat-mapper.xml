@@ -8,7 +8,40 @@
         SELECT * FROM MOVIE_TBL WHERE SCREENING_STATUS = 'NOW SHOWING'
     </select>
 
-    <select id="selectCinemaByRegion" resultType="string">
-        SELECT CINEMA_NAME FROM CINEMA_TBL WHERE CINEMA_ADDRESS LIKE '%'||#{region}||'%'
+    <select id="selectCinemaByRegion" resultType="CinemaInfoByRegion">
+        SELECT DISTINCT d.CINEMA_NAME, d.CINEMA_NO
+        FROM MOVIE_TBL a
+                 JOIN SHOWTIME_TBL b ON b.MOVIE_NO = a.MOVIE_NO
+                 JOIN SCREEN_TBL c ON b.SCREEN_NO = c.SCREEN_NO
+                 JOIN CINEMA_TBL d ON c.CINEMA_NO = d.CINEMA_NO
+        WHERE CINEMA_LOCATION_CODE = #{cinemaLocationCode} AND a.MOVIE_NO = #{movieNo}
+        ORDER BY CINEMA_NO ASC
     </select>
+
+    <select id="selectCinemaCountByRegionByMovie" resultType="RegionAndCinemaCount">
+        SELECT CINEMA_LOCATION_CODE, COUNT(DISTINCT d.cinema_name) cinemaCount
+        FROM movie_Tbl a
+            JOIN SHOWTIME_TBL b ON b.movie_no = a.movie_no
+            JOIN SCREEN_TBL c ON b.screen_no = c.screen_no
+            JOIN CINEMA_TBL d ON c.cinema_no = d.cinema_no
+        WHERE a.movie_no = #{movieNo}
+        GROUP BY CINEMA_LOCATION_CODE
+    </select>
+
+    <insert id="insertChatRoom">
+        INSERT INTO CHAT_ROOM_TBL VALUES(SEQ_ROOM_NO.NEXTVAL,${roomName},DEFAULT,SEQ_ROOM_TAG_NO,${roomCategory},${movieNo},${cinemaLocationCode},${cinemaNo})
+    </insert>
+
+<!--    //////////-->
+<!--    <insert id="insertChatRoom" useGeneratedKeys="true">-->
+<!--        <selectKey order="BEFORE" resultType="_int" keyProperty="roomNo">-->
+<!--            SELECT SEQ_ROOM_NO.NEXTVAL FROM DUAL-->
+<!--        </selectKey>-->
+<!--        INSERT INTO CHAT_ROOM_TBL VALUES(${roomNo},${roomName},DEFAULT,SEQ_ROOM_TAG_NO.NEXTVAL,${roomCategory},${movieNo},${cinemaLocationCode},${cinemaNo})-->
+<!--    </insert>-->
+
+
+    <insert id="insertTag">
+        INSERT INTO CHAT_ROOM_TAG_TBL VALUES(SEQ_ROOM_TAG_NO.NEXTVAL, #{tagName}, ${roomNo})
+    </insert>
 </mapper>
