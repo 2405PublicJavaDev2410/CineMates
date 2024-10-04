@@ -71,10 +71,16 @@
         reservationVisitor.innerText = visitorCount;
     }
 
-    const reservedSeatsString = /*[[${rList}]]*/ '[]';
-    const reservedSeats = reservedSeatsString.flatMap(item =>
-        item.reservationSeat.split(',').map(Number)
-    );
+    const reservedSeatsString = /*[[${rList}]]*/ '[]' || '[]';
+
+    const reservedSeats = JSON.parse(reservedSeatsString).flatMap(item => {
+        // item.reservationSeat이 null이 아닌지 확인 후 처리
+        if (item.reservationSeat) {
+            return item.reservationSeat.split(',').map(Number);
+        } else {
+            return []; // null인 경우 빈 배열 반환
+        }
+    });
     console.log(reservedSeats);
     const rows = 5;
     const seatsPerRow = 10;

@@ -73,9 +73,31 @@
             user-select: none;
             padding: 10px;
         }
+
         .selected {
             background-color: #e0e0e0;
             font-weight: bold;
+        }
+
+        .showtime-link {
+            text-decoration: none;
+            color: black;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .showtime-link.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .showtime-link:hover {
+            background-color: #e9ecef;
+        }
+
+        .showtime-link.active:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
@@ -128,6 +150,11 @@
     </div>
 
     <button>이동</button>
+    <input id="cinemaName" name="cinemaName" type="hidden">
+    <input id="showtimeTime" name="showtimeTime" type="hidden">
+    <input id="title" name="title" type="hidden">
+    <input id="screenName" name="screenName" type="hidden">
+    <input id="selectedDate" name="reservationDate" type="hidden">
 </form>
 
 <script>
@@ -144,12 +171,12 @@
             $(this).parent().addClass('selected').siblings().removeClass('selected');
 
             $.ajax({
-                url: '/getCinemas',  // 서버의 엔드포인트 URL
+                url: '/getCinemas',
                 method: 'GET',
                 data: {cinemaAddress: Info},
                 success: function (cinemas) {
                     var cinema = $('#cinema-List');
-                    cinema.empty();  // 기존 목록을 비웁니다
+                    cinema.empty();
 
                     $.each(cinemas, function (index, cinemaName) {
                         cinema.append('<li><a href="#" data-cinema-name="' + cinemaName + '">' + cinemaName + '</a></li>');
@@ -165,18 +192,17 @@
         // 극장에 따른 영화 목록 출력
         $('#cinema-List').on('click', 'a', function (e) {
             e.preventDefault();
-            var Info = $(this).data('cinema-name');
-
-            // 선택된 극장에 selected 클래스 추가
+            var cinemaName = $(this).data('cinema-name');
             $(this).parent().addClass('selected').siblings().removeClass('selected');
+            $('#cinemaName').val(cinemaName);
 
             $.ajax({
-                url: '/getMovies',  // 서버의 엔드포인트 URL
+                url: '/getMovies',
                 method: 'GET',
-                data: {cinemaName: Info},
+                data: {cinemaName: cinemaName},
                 success: function (response) {
                     var movie = $('#movie-List');
-                    movie.empty();  // 기존 목록을 비웁니다
+                    movie.empty();
 
                     $.each(response, function (index, item) {
                         movie.append('<li><a href="#none">' + item + '</a></li>');
@@ -192,9 +218,12 @@
         // 영화 선택 시 selected 클래스 추가
         $('#movie-List').on('click', 'a', function (e) {
             e.preventDefault();
+            var title = $(this).text();
             $(this).parent().addClass('selected').siblings().removeClass('selected');
-        });
+            $('#title').val(title);
+            selectedMovie = title;
 
+        });
     });
 
 
@@ -278,13 +307,15 @@
         // 영화 선택 이벤트
         $('#movie-List').on('click', 'a', function (e) {
             e.preventDefault();
-            selectedMovie = $(this).text();
+            var title = $(this).text();
             $(this).parent().addClass('selected').siblings().removeClass('selected');
+            $('#title').val(title);
+            selectedMovie = title;
             checkAndGetShowtimes();
         });
 
         // 날짜 선택 이벤트 수정
-        $(document).on('click', '.day', function() {
+        $(document).on('click', '.day', function () {
             document.querySelectorAll('.day').forEach(day => day.classList.remove('active'));
             this.classList.add('active');
             monthDisplay.textContent = months[parseInt(this.getAttribute('data-month'))];
@@ -292,6 +323,7 @@
             selectedDate = new Date(currentDate.getFullYear(),
                 parseInt(this.getAttribute('data-month')),
                 parseInt(this.querySelector('.date').textContent));
+            $('#selectedDate').val(selectedDate.toISOString().split('T')[0]);
             checkAndGetShowtimes();
         });
 
@@ -307,10 +339,9 @@
                 method: 'GET',
                 data: {
                     title: movie,
-                    // date: date.toISOString().split('T')[0], // YYYY-MM-DD 형식
                     cinemaName: $('#cinema-List .selected a').data('cinema-name')
                 },
-                success: function(response) {
+                success: function (response) {
                     if (Array.isArray(response)) {
                         displayShowtimes(response);
                     } else {
@@ -318,7 +349,7 @@
                         $('#showtimes-container').html('<p>상영 시간 정보를 불러오는데 실패했습니다.</p>');
                     }
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.error("상영 시간 로드 실패:", error);
                     $('#showtimes-container').html('<p>상영 시간 정보를 불러오는데 실패했습니다.</p>');
                 }
@@ -332,17 +363,34 @@
             }
 
             let showtimesList = $('<ul id="showtimes-list"></ul>');
-            showInfoList.forEach((info,reserveInfo) => {
+            showInfoList.forEach((info) => {
                 showtimesList.append(`
-            <li>
-                <a role="button" href="#none">${info.showtimeTime}</a>
-                <dl>좌석: ${info.availableSeats}/${info.screenSeat || '정보 없음'}</dl>
-                <dt>상영관: ${info.screenName || '정보 없음'}</dt>
-            </li>
-        `);
+                <li>
+                    <a role="button" href="#none" class="showtime-link">${info.showtimeTime}</a>
+                    <dl>좌석: ${info.availableSeats}/${info.screenSeat || '정보 없음'}</dl>
+                    <dt>상영관: ${info.screenName || '정보 없음'}</dt>
+                </li>
+            `);
             });
             $('#showtimes-container').empty().append(showtimesList);
+
+            // 상영 시간 선택 이벤트 리스너 추가
+            $('.showtime-link').on('click', function (e) {
+                e.preventDefault();
+                $('.showtime-link').removeClass('selected active');
+                $(this).addClass('selected active');
+                $('#showtimeTime').val($(this).text());
+                $('#screenName').val($(this).closest('li').find('dt').text().replace('상영관: ', ''));
+            });
         }
+
+        $('form').on('submit', function (e) {
+            if (!$('#cinemaName').val() || !$('#title').val() ||
+                !$('#selectedDate').val() || !$('#showtimeTime').val() || !$('#screenName').val()) {
+                e.preventDefault();
+                alert('모든 항목을 선택해주세요.');
+            }
+        });
     });
 </script>
 </body>

@@ -65,10 +65,10 @@ public class ReservationController {
 
         String randomString = generateRandomString(10);
         rDTO.setReservationNo(randomString);
-        System.out.println(rDTO);
-        List<ReservationDTO> rList = rService.showReservedSeats();
-        System.out.println(rList);
-        model.addAttribute("rList", rList);
+        System.out.println("rDTO 보여줘라 " + rDTO);
+//        List<ReservationDTO> rList = rService.showReservedSeats();
+//        System.out.println(rList);
+//        model.addAttribute("rList", rList);
         model.addAttribute("rDTO", rDTO);
         return "pages/reservation/PersonSeat";
     }

@@ -14,8 +14,7 @@ public class ReservationDTO {
     private String reservationNo;
     private Integer reservationVisitor;
     private String reservationSeat;
-    private String paymentMethod;
-    private Date reservationDate;
+    private String reservationDate;
 
 
     //Member - 회원
