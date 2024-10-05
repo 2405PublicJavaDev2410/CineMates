@@ -13,7 +13,8 @@ public interface MemberService {
     Member loginMember(Member member);
     Member getOneMember(String memberId);
     ProfileImg getOneProfileImg(String memberId);
-    Member findMemberId(String name, String email);
+    Member findMemberId(Member member);
     Member findMemberPw(String memberId, String email);
+    boolean isIdDuplicate(String memberId);
 
 }

@@ -68,7 +68,6 @@ public class MemberController {
         model.addAttribute("member", member);
         model.addAttribute("birthDate", birthDate);
         if(profileImg != null) {
-            log.info(profileImg.toString());
             model.addAttribute("profileImg", profileImg);
         }
         return "pages/mypage/update";
@@ -106,7 +105,7 @@ public class MemberController {
         // 프로필 이미지 파일이 있는 경우에만 처리
         int result = mService.insertMember(member,
                 (profileImg != null && !profileImg.isEmpty() ? profileImg : null));
-        if(result > 0) {
+        if(result == 1) {
             return "success";
         }else {
             return "fail";
@@ -115,18 +114,35 @@ public class MemberController {
 
     /**
      * 담당자 : 엄태운
+     * 관련기능 : 아이디 중복 체크
+     */
+    @GetMapping("/checkId")
+    @ResponseBody
+    public String checkDuplicatedId(@RequestParam("memberId") String memberId) {
+        boolean result = mService.isIdDuplicate(memberId);
+        log.info("isDuplicated : {}", result);
+        return result ? "duplicated" : "available";
+    }
+
+    /**
+     * 담당자 : 엄태운
      * 관련기능 : 회원정보 수정
      */
     @PostMapping("/modify")
+    @ResponseBody
     public String updateMember(@ModelAttribute @Valid ModifyRequest modifyRequest,
             @RequestParam(value="profileImg", required=false)  MultipartFile profileImg,
-            HttpSession session) throws IOException {
+            HttpSession session) throws IllegalStateException, IOException {
         String memberId = session.getAttribute("memberId").toString();
         Member member = mService.getOneMember(memberId);
         member.setMemberPw(modifyRequest.getMemberPw());
         member.setPhone(modifyRequest.getPhone());
-        mService.updateMember(member, profileImg);
-        return "redirect:/my-page/update";
+        int result = mService.updateMember(member, (profileImg != null && !profileImg.isEmpty() ? profileImg : null));
+        if(result == 1) {
+            return "success";
+        }else {
+            return "fail";
+        }
     }
 
     /**
@@ -186,9 +202,17 @@ public class MemberController {
      * 관련기능 : 아이디 찾기
      */
     @PostMapping("/find-id")
-    public FindIdResponse findMemberId(@ModelAttribute @Valid FindIdRequest findIdRequest) {
-        Member member = mService.findMemberId(findIdRequest.getName(), findIdRequest.getEmail());
-        return new FindIdResponse();
+    @ResponseBody
+    public FindIdResponse findMemberId(@RequestBody @Valid FindIdRequest findIdRequest) {
+        log.info(findIdRequest.toString());
+        Member member = new Member();
+        member.setName(findIdRequest.getName());
+        member.setEmail(findIdRequest.getEmail());
+        member = mService.findMemberId(member);
+        if (member != null) {
+            return new FindIdResponse(member.getName(), member.getMemberId());
+        }
+        return new FindIdResponse("조회 결과 없음", null);
     }
 
     /**

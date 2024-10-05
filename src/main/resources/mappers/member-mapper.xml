@@ -5,13 +5,18 @@
         SELECT * FROM MEMBER_TBL
         WHERE MEMBER_ID = #{memberId}
     </select>
-    <select id="selectOneByNameAndEmail">
+    <select id="selectOneByNameAndEmail" resultType="Member">
         SELECT * FROM MEMBER_TBL
         WHERE NAME = #{name}
         AND EMAIL = #{email}
     </select>
     <select id="selectOneProfileImgById" resultType="ProfileImg">
         SELECT * FROM PROFILE_IMG_TBL
+        WHERE MEMBER_ID = #{memberId}
+    </select>
+    <select id="countByMemberId" resultType="boolean">
+        SELECT COUNT(*)
+        FROM MEMBER_TBL
         WHERE MEMBER_ID = #{memberId}
     </select>
     <insert id="insertMember">

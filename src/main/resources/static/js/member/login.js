@@ -25,7 +25,6 @@ function loginMember() {
         },
         error: function() {
             alert('서버 통신 에러!');
-            location.reload();
         }
     })
 }
@@ -62,10 +61,14 @@ function idCheck() {
     return true;
 }
 
-// 재입력을 위해 입력창을 클릭하면 빨간색 테두리 지워짐
-// pwInput.onkeyup = function() {
-//     pwInput.classList.remove('error-border');
-// }
+// 입력창을 벗어나면 빨간 테두리 삭제
+idInput.onblur = function() {
+    idInput.classList.remove('error-border');
+}
+pwInput.onblur = function() {
+    pwInput.classList.remove('error-border');
+}
+
 // 엔터 누르면 로그인 버튼 동작
 document.getElementById('login-member-form').addEventListener("keydown", function (e) {
     if (e.key === 'Enter') {

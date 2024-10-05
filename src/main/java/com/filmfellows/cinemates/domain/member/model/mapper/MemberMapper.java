@@ -3,6 +3,7 @@ package com.filmfellows.cinemates.domain.member.model.mapper;
 import com.filmfellows.cinemates.domain.member.model.vo.Member;
 import com.filmfellows.cinemates.domain.member.model.vo.ProfileImg;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface MemberMapper {
@@ -13,6 +14,7 @@ public interface MemberMapper {
     int updateProfileImg(ProfileImg profileImg);
     Member selectOneById(String memberId);
     ProfileImg selectOneProfileImgById(String memberId);
-    Member selectOneByNameAndEmail(String name, String email);
+    Member selectOneByNameAndEmail(@Param("name") String name, @Param("email") String email);
     Member selectOneByIdAndEmail(String memberId, String email);
+    boolean countByMemberId(String memberId);
 }

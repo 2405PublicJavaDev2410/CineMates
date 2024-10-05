@@ -7,6 +7,7 @@ import com.filmfellows.cinemates.domain.member.model.vo.Member;
 import com.filmfellows.cinemates.domain.member.model.vo.ProfileImg;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -66,7 +67,7 @@ public class MemberServiceImpl implements MemberService {
                 result = mMapper.insertProfileImg(profileImg);
             }
         }
-        return 0;
+        return result;
     }
 
     @Override
@@ -96,12 +97,18 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Member findMemberId(String name, String email) {
-        return mMapper.selectOneByNameAndEmail(name, email);
+    public Member findMemberId(Member member) {
+        return mMapper.selectOneByNameAndEmail(member.getName(), member.getEmail());
     }
 
     @Override
     public Member findMemberPw(String memberId, String email) {
         return null;
     }
+
+    @Override
+    public boolean isIdDuplicate(String memberId) {
+        return mMapper.countByMemberId(memberId);
+    }
+
 }

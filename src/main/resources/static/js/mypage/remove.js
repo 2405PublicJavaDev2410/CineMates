@@ -1,7 +1,7 @@
 const pwInput = document.querySelector('#pw-input');
 const pwFailureMessage = document.querySelector('#pw-failure-message');
 
-function deleteMember() {
+function removeMember() {
     if(!pwCheck()) {
         return;
     }
@@ -55,11 +55,6 @@ function pwCheck() {
     pwInput.classList.remove('error-border');
     return true;
 }
-
-// 재입력을 위해 입력창을 클릭하면 빨간색 테두리 지워짐
-// pwInput.onkeyup = function() {
-//     pwInput.classList.remove('error-border');
-// }
 
 // 엔터키 눌렀을 때 새로고침 방지
 pwInput.addEventListener('keydown', function (e) {

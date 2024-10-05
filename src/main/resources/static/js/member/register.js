@@ -64,7 +64,7 @@ function registerMember() {
         contentType: false, // 브라우저가 알아서 Content-Type 설정하도록 함
         success: function(data) {
             if (data === 'success') {
-                alert("가입이 완료되었습니다.");
+                alert("회원가입이 완료되었습니다.");
                 window.location.href = '/login';
             }
         },
@@ -110,6 +110,12 @@ const phoneRule = (str) => {
 idInput.onkeyup = function() {
     idCheck();
 }
+// 입력창을 벗어났을 때 중복 체크
+idInput.onblur = function() {
+    if (idRule(idInput.value)) {
+        checkDuplicateId();
+    }
+}
 pwInput.onkeyup = function() {
     pwCheck();
 }
@@ -136,6 +142,40 @@ phoneInput.onkeyup = function() {
 const hasNoInput = (str) => {
     return str.trim().length === 0;
 }
+
+// 아이디 중복 검사
+const  checkDuplicateId = () => {
+    const id = idInput.value;
+
+    // 아이디가 유효하지 않으면 서버 요청 생략
+    if(hasNoInput(id) || !idRule(id)) {
+        return;
+    }
+
+    $.ajax({
+        url: '/checkId',
+        method: 'get',
+        data: {memberId : id},
+        success: function (response) {
+            if(response === 'duplicated') {
+                idInput.classList.remove('success-border');
+                idFailureMsg.innerHTML = '이미 사용중인 아이디입니다.';
+                idSuccessMsg.classList.add('hide');
+                idFailureMsg.classList.remove('hide');
+                idInput.classList.add('error-border');
+            }else if(response === 'available'){
+                idFailureMsg.classList.add('hide');
+                idSuccessMsg.classList.remove('hide');
+                idInput.classList.remove('error-border');
+                idSuccessMsg.innerHTML = '사용 가능한 아이디입니다.';
+                idInput.classList.add('success-border');
+            }
+        },
+        error: function() {
+            alert('서버 통신 에러!');
+        }
+    });
+};
 
 // 아이디 유효성 검사
 function idCheck() {
@@ -320,26 +360,26 @@ function phoneCheck() {
     return true;
 }
 
-// const inputFields = [
-//     idInput,
-//     pwInput,
-//     pwCheckInput,
-//     nameInput,
-//     birthDateInput,
-//     emailInput,
-//     authCodeInput,
-//     phoneInput
-// ];
+const inputFields = [
+    idInput,
+    pwInput,
+    pwCheckInput,
+    nameInput,
+    birthDateInput,
+    emailInput,
+    authCodeInput,
+    phoneInput
+];
 
 // 입력창 클릭 시 빨간 테두리 지우기
-// inputFields.forEach(inputField => {
-//     inputField.addEventListener('keydown', () => removeErrorBorder(inputField));
-// });
+inputFields.forEach(inputField => {
+    inputField.addEventListener('keydown', () => removeErrorBorder(inputField));
+});
 
 // 재입력을 위해 입력창을 클릭하면 빨간색 테두리 지워짐
-// function removeErrorBorder(inputElement) {
-//     inputElement.classList.remove('error-border');
-// }
+function removeErrorBorder(inputElement) {
+    inputElement.classList.remove('error-border');
+}
 
 // 파일 업로드
 document.getElementById('profileImg').addEventListener('change', function(event) {
@@ -388,11 +428,10 @@ pwIcon.addEventListener('click', function () {
 
 // 비밀번호 확인 마스킹 해제 버튼
 const cpwIcon = document.querySelector('.cpwIcon');
-const cpwInput = document.querySelector('#pw-check-input');
 
 cpwIcon.addEventListener('click', function () {
-    const type = cpwInput.getAttribute('type') === 'password' ? 'text' : 'password';
-    cpwInput.setAttribute('type', type);
+    const type = pwCheckInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    pwCheckInput.setAttribute('type', type);
 
     if (type === 'password') {
         this.classList.remove('fi-rr-eye-crossed');

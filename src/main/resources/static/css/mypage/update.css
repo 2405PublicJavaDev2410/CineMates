@@ -27,7 +27,7 @@
     font-weight: bold;
 }
 .input-group {
-    margin: 15px 0;
+    margin-top: 20px;
     height: 58px;
     display: flex;
     align-items: center;
@@ -44,7 +44,7 @@
 .common-input-box {
     width: 460px;
     padding: 10px;
-    margin: 10px 0;
+    margin: 5px 0;
 }
 .pwd-group {
     position: relative;
@@ -60,6 +60,37 @@
     color: #888;
     font-size: 20px;
     width: 25px;
+}
+.hide {
+    display: none;
+}
+.failure-message {
+    color: #ED1C24;
+    font-size: 14px;
+    margin-top: 5px;
+    margin-left: 145px;
+}
+.success-message {
+    color: #66BB6A;
+    font-size: 14px;
+    margin-top: 5px;
+    margin-left: 145px;
+}
+.error-border {
+    transition: none;
+    border: 2px solid #ED1C24;
+}
+.error-border:focus {
+    border: 2px solid #ED1C24;
+    box-shadow: 0 0 3px #ED1C24;
+}
+.success-border {
+    transition: none;
+    border: 2px solid #66BB6A;
+}
+.success-border:focus {
+    border: 2px solid #66BB6A;
+    box-shadow: 0 0 3px #66BB6A;
 }
 #select-file-btn {
     padding: 11px 10px;

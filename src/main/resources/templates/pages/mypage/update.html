@@ -15,7 +15,7 @@
     <main id="main-container">
         <div class="update-form">
             <p id="update-title">회원 정보 수정</p><br><br>
-            <form action="/modify" method="post" enctype="multipart/form-data">
+            <form id="update-member-form" enctype="multipart/form-data">
                 <div class="input-group">
                     <label><b>아이디</b></label>
                     <span th:text="${member.memberId}"></span>
@@ -23,15 +23,19 @@
 
                 <div class="input-group pwd-group">
                     <label><b>비밀번호</b></label>
-                    <input type="password" class="common-input-box" id="memberPw" name="memberPw" placeholder="영문, 숫자, 특수문자 2가지 이상 포함한 8자~16자">
+                    <input type="password" class="common-input-box" id="pw-input" name="memberPw" placeholder="대문자, 숫자, 특수문자를 조합한 영문 8자~16자" maxlength="16">
                     <i class="fi fi-rs-eye toggle-password pwIcon"></i>
                 </div>
+                <div class="success-message hide message" id="pw-success-message"></div>
+                <div class="failure-message hide message" id="pw-failure-message"></div>
 
                 <div class="input-group pwd-group">
                     <label><b>비밀번호 확인</b></label>
-                    <input type="password" class="common-input-box" id="passwordCheck" placeholder="비밀번호 확인">
+                    <input type="password" class="common-input-box" id="pw-check-input" placeholder="비밀번호 확인">
                     <i class="fi fi-rs-eye toggle-password cpwIcon"></i>
                 </div>
+                <div class="success-message hide message" id="pw-check-success-message"></div>
+                <div class="failure-message hide message" id="pw-check-failure-message"></div>
 
                 <div class="input-group">
                     <label><b>이름</b></label>
@@ -50,10 +54,12 @@
 
                 <div class="input-group">
                     <label><b>핸드폰 번호</b></label>
-                    <input type="text" class="common-input-box" id="phone"
+                    <input type="text" class="common-input-box" id="phone-input"
                        name="phone" placeholder="(-)빼고 입력"
                         th:value="${member.phone}">
                 </div>
+                <div class="success-message hide message" id="phone-success-message"></div>
+                <div class="failure-message hide message" id="phone-failure-message"></div>
 
                 <div class="input-group file-group">
                     <label><b>프로필 사진</b></label>
@@ -66,11 +72,12 @@
                          th:style="${profileImg != null ? 'display: block;' : 'display: none;'}">
                 </div>
                 <br><br><br>
-                <button class="common-primary-btn">회원 정보 수정</button>
+                <button type="button" class="common-primary-btn" onclick="modifyMember()">회원 정보 수정</button>
             </form>
         </div>
     </main>
 </div>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="/js/mypage/update.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {

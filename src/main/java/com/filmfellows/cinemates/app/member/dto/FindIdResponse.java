@@ -8,5 +8,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FindIdResponse {
+    private String name;
     private String memberId;
 }

@@ -88,9 +88,6 @@
     display: none;
 }
 .failure-message {
-    /*position: absolute;*/
-    /*top: 85%;*/
-    /*left: 1%;*/
     color: #ED1C24;
     font-size: 14px;
     margin-top: 5px;
