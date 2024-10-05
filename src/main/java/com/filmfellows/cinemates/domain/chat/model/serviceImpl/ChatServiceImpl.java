@@ -52,4 +52,16 @@ public class ChatServiceImpl implements ChatService {
         int result = cMapper.insertTag(chatTag);
         return result;
     }
+
+    @Override
+    public List<ChatRoom> selectChatRoomList() {
+        List<ChatRoom> ChatRoomList = cMapper.selectChatRoomList();
+        return ChatRoomList;
+    }
+
+    @Override
+    public List<ChatRoom> selectChatTagList() {
+        List<ChatRoom> chatTagList = cMapper.selectChatTagList();
+        return chatTagList;
+    }
 }

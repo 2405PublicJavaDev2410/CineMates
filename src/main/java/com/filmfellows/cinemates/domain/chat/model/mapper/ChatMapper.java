@@ -47,4 +47,18 @@ public interface ChatMapper {
      * @return int (성공여부)
      */
     int insertTag(ChatTag chatTag);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : 채팅방 전체 리스트 조회 mapper
+     * @return List<ChatRoom> (채팅방 전체 리스트)
+     */
+    List<ChatRoom> selectChatRoomList();
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : 채팅방 태그 조회 mapper
+     * @return List<ChatRoom> (채팅방 태그 리스트)
+     */
+    List<ChatRoom> selectChatTagList();
 }

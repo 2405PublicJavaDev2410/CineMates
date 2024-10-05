@@ -14,7 +14,6 @@ public class ChatRoom {
     private Integer roomNo;
     private String roomName;
     private Timestamp roomDate;
-    private Integer roomTagNo;
     private String roomCategory;
 
     // 채팅방의 영화정보

@@ -31,9 +31,18 @@ public class ChatController {
 
 
     @GetMapping("/chat/list")
-    public String showChatRoomList(){
+    public String showChatRoomList(Model model){
+        // 채팅방 리스트 전체 조회 비즈니스 로직
+        List<ChatRoom> chatRoomList = cService.selectChatRoomList();
+
+        // 채팅방 태그 조회
+        List<ChatRoom> tagList = cService.selectChatTagList();
+
+        model.addAttribute("tagList", tagList);
+        model.addAttribute("chatRoomList", chatRoomList);
         return "pages/chat/chatRoomList";
     }
+
     @GetMapping("/chat/room")
     public String showChatRoom(){
         return "pages/chat/chatRoom";
@@ -59,7 +68,7 @@ public class ChatController {
         // DTO -> VO
         ChatRoom chatRoom = new ChatRoom(null,
                 revAndChatInfo.getRoomName(),
-                null, null,revAndChatInfo.getRoomCategory(), revAndChatInfo.getMovieNo(),
+                null,revAndChatInfo.getRoomCategory(), revAndChatInfo.getMovieNo(),
                 revAndChatInfo.getCinemaLocationCode(), revAndChatInfo.getCinemaNo()
         );
 
@@ -88,9 +97,11 @@ public class ChatController {
             for(String tagName : tagNameArr) {
                 ChatTag chatTag = new ChatTag();
                 chatTag.setTagName(tagName);
-                chatTag.setRoomNo(chatRoom.getRoomTagNo());
+                chatTag.setRoomNo(chatRoom.getRoomNo());
                 int tagResult = cService.insertTag(chatTag);
+                if(tagResult > 0) System.out.println("tag등록 성공!!");
             }
+
 
         } catch(Exception e){
             e.printStackTrace();
