@@ -15,4 +15,6 @@ public class ShowInfoDTO {
     private String showtimeTime;
     private String screenName;
     private Integer availableSeats;
+    private Integer screenNo;
+    private Integer movieNo;
 }

@@ -16,7 +16,6 @@ public class ReservationDTO {
     private String reservationSeat;
     private String reservationDate;
 
-
     //Member - 회원
     private String memberId;
 
@@ -29,7 +28,6 @@ public class ReservationDTO {
     //Cinema - 극장
     private String cinemaName;
     private Integer cinemaNo;
-    private String cinemaAddress;
 
     //screen - 상영관
     private String screenName;
@@ -39,6 +37,7 @@ public class ReservationDTO {
     private String buyer_email;
     private String buyer_name;
     private String buyer_tel;
+    private String imp_uid;
 
     //ShowTime - 상영
     private String showtimeTime;

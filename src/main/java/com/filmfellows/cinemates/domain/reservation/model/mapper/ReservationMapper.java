@@ -11,9 +11,9 @@ import java.util.Map;
 public interface ReservationMapper {
     List<ReservationDTO> showReservationPage();
 
-    int insertReservationInfo();
+//    int insertReservationInfo();
 
-    void insertReservationInfo2(Map<String, Object> reserveInfo);
+    int insertReservationInfo(Map<String, Object> reserveInfo);
 
     List<ReservationDTO> showReservedSeats();
 

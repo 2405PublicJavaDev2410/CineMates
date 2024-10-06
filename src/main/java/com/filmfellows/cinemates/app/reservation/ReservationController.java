@@ -62,13 +62,9 @@ public class ReservationController {
 
     @PostMapping("/Ticketing/PersonSeat")
     public String showPersonSeatPage(@ModelAttribute ReservationDTO rDTO, Model model) {
-
         String randomString = generateRandomString(10);
         rDTO.setReservationNo(randomString);
         System.out.println("rDTO 보여줘라 " + rDTO);
-//        List<ReservationDTO> rList = rService.showReservedSeats();
-//        System.out.println(rList);
-//        model.addAttribute("rList", rList);
         model.addAttribute("rDTO", rDTO);
         return "pages/reservation/PersonSeat";
     }
@@ -94,7 +90,7 @@ public class ReservationController {
     }
 
     @GetMapping("/getShowtimes")
-    public ResponseEntity<List<ShowInfoDTO>> selectShowInfo(@RequestParam String cinemaName, @RequestParam String title) {
+    public ResponseEntity<List<ShowInfoDTO>> selectShowInfo(@RequestParam String cinemaName, @RequestParam String title , Model model) {
         List<ShowInfoDTO> sList = rService.selectShowInfo(cinemaName, title);
         List<ReservationDTO> rList = rService.selectReservationSeat();
 
@@ -110,6 +106,8 @@ public class ReservationController {
         }
 
         System.out.println("나와라" + sList);
+        model.addAttribute("sList", sList);
+        System.out.println("sList: " + sList);
         System.out.println("rList: " + rList);
         return ResponseEntity.ok(sList);
     }

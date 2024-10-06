@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ReservationServiceImpl implements ReservationService {
@@ -20,10 +21,10 @@ public class ReservationServiceImpl implements ReservationService {
         return rmapper.showReservationPage();
     }
 
-    @Override
-    public int insertReservationInfo(ReservationDTO rDTO) {
-        return rmapper.insertReservationInfo();
-    }
+//    @Override
+//    public int insertReservationInfo(Map<String, Object> reserveInfo) {
+//        return rmapper.insertReservationInfo(reserveInfo);
+//    }
 
     @Override
     public List<ReservationDTO> showReservedSeats() {

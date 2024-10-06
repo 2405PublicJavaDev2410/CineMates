@@ -46,7 +46,10 @@
     <input name="reservationNo" th:value="${rDTO.reservationNo}" type="hidden">
     <input id="countInput" name="reservationVisitor" th:value="${rDTO.reservationVisitor}" type="hidden">
     <input id="selectedSeatsInput" name="reservationSeat" th:value="${rDTO.reservationSeat}" type="hidden">
-
+    <input type="hidden" name="screenNo" th:value="${rDTO.screenNo}">
+    <input type="hidden" name="movieNo" th:value="${rDTO.movieNo}">
+    <input type="hidden" name="showtimeTime" th:value="${rDTO.showtimeTime}">
+    <input type="hidden" name="title" th:value="${rDTO.title}">
 </form>
 
 <script th:inline="javascript">
@@ -71,16 +74,9 @@
         reservationVisitor.innerText = visitorCount;
     }
 
-    const reservedSeatsString = /*[[${rList}]]*/ '[]' || '[]';
-
-    const reservedSeats = JSON.parse(reservedSeatsString).flatMap(item => {
-        // item.reservationSeat이 null이 아닌지 확인 후 처리
-        if (item.reservationSeat) {
-            return item.reservationSeat.split(',').map(Number);
-        } else {
-            return []; // null인 경우 빈 배열 반환
-        }
-    });
+    const rDTO = /*[[${rDTO}]]*/ {};
+    const reservedSeats = rDTO.reservationSeat ? rDTO.reservationSeat.split(',').map(Number) : [];
+    /*]]>*/
     console.log(reservedSeats);
     const rows = 5;
     const seatsPerRow = 10;

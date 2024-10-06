@@ -3,12 +3,10 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.filmfellows.cinemates.domain.reservation.model.mapper.ReservationMapper">
-    <!--    <select id="showReservationPage" resultType="ReservationDTO">
-        </select>-->
     <insert id="insertReservationInfo">
         INSERT INTO RESERVATION_TBL
         VALUES (#{reservationNo}, #{reservationVisitor}, #{reservationSeat}, DEFAULT, #{movieNo},
-                #{memberId}, #{screenNo}, #{showTimeNo}, #{cinemaNo},#{title},#{screenName},#{cinemaName})
+                #{memberId}, #{screenNo}, #{showTimeNo}, #{cinemaNo},#{title},#{screenName},#{cinemaName},#{showtimeTime},#{imp_uid})
     </insert>
 
     <select id="showReservedSeats" resultType="ReservationDTO">
@@ -38,11 +36,11 @@
     </select>
 
     <select id="selectShowInfo" resultType="showInfoDTO">
-        SELECT s.showtime_time, sc.screen_seat, sc.screen_Name
+        SELECT s.showtime_time, sc.screen_seat, sc.screen_Name , screen_No , movie_No
         FROM CINEMA_TBL
                  JOIN SCREEN_TBL sc USING (CINEMA_NO)
                  JOIN SHOWTIME_TBL s USING (SCREEN_NO)
-                 JOIN MOVIE_TBL USING (MOVIE_NO)
+                 JOIN MOVIE_TBL m USING (MOVIE_NO)
         where cinema_name = #{cinemaName}
           AND title = #{title}
     </select>

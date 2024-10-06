@@ -12,13 +12,13 @@ public interface ReservationService {
      */
     List<ReservationDTO> showReservationPage();
 
-    /**
-     * 예매 등록 하기
-     *
-     * @param rDTO
-     * @return ReservationDTO
-     */
-    int insertReservationInfo(ReservationDTO rDTO);
+//    /**
+//     * 예매 등록 하기
+//     *
+//     * @param rDTO
+//     * @return ReservationDTO
+//     */
+//    int insertReservationInfo(ReservationDTO rDTO);
 
     /**
      * 예약 좌석 조회하기

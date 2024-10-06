@@ -18,7 +18,8 @@
 <input type="hidden" id="memberId" name="memberId" th:value="${rDTO.memberId}">
 <input type="hidden" id="cinemaName" name="cinemaName" th:value="${rDTO.cinemaName}">
 <input type="hidden" id="screenName" name="screenName" th:value="${rDTO.screenName}">
-
+<input type="hidden" id="screenNo" name="screenNo" th:value="${rDTO.screenNo}">
+<input type="hidden" id="movieNo" name="movieNo" th:value="${rDTO.movieNo}">
 <script>
 
     var IMP = window.IMP;
@@ -31,7 +32,9 @@
             reservationSeat: document.getElementById('reservationSeat').value,
             memberId: document.getElementById('memberId').value,
             cinemaName: document.getElementById('cinemaName').value,
-            screenName: document.getElementById('screenName').value
+            screenName: document.getElementById('screenName').value,
+            screenNo: document.getElementById('screenNo').value,
+            movieNo: document.getElementById('movieNo').value
         };
         console.log("Reservation Data:", reservationData);
         IMP.request_pay({
@@ -43,8 +46,7 @@
             buyer_email: 'iamport@siot.do',
             buyer_name: '구매자이름',
             buyer_tel: '010-1234-5678',
-            /* 			buyer_addr : '서울특별시 강남구 삼성동',
-             buyer_postcode : '123-456' */
+            /* buyer_postcode : '123-456' */
         }, function (rsp) {
             console.log("완료")
             if (rsp.success) {
@@ -67,7 +69,10 @@
                         "amount": parseInt(rsp.paid_amount, 10),
                         "buyer_email": rsp.buyer_email,
                         "buyer_name": rsp.buyer_name,
-                        "buyer_tel": rsp.buyer_tel
+                        "buyer_tel": rsp.buyer_tel,
+                        "screenNo" : reservationData.screenNo,
+                        "movieNo" : reservationData.movieNo,
+                        "reservationNo": reservationData.reservationNo
                     };
                     var reserveInfo = {
                         "reservationNo": reservationData.reservationNo,
@@ -76,7 +81,9 @@
                         "reservationDate": reservationData.reservationDate,
                         "memberId": reservationData.memberId,
                         "cinemaName": reservationData.cinemaName,
-                        "screenName": reservationData.screenName
+                        "screenName": reservationData.screenName,
+                        "imp_uid": rsp.imp_uid
+
                     }
                     $.ajax({
                         url: "/save_buyerInfo",

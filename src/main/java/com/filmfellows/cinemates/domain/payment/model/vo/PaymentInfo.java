@@ -16,4 +16,7 @@ public class PaymentInfo {
     private String buyer_name;
     private String buyer_tel;
     private String name;
+    private Integer movieNo;
+    private Integer screenNo;
+    private String reservationNo;
 }

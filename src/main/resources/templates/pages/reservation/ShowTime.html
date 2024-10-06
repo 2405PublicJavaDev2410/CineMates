@@ -150,11 +150,13 @@
     </div>
 
     <button>이동</button>
-    <input id="cinemaName" name="cinemaName" type="hidden">
-    <input id="showtimeTime" name="showtimeTime" type="hidden">
-    <input id="title" name="title" type="hidden">
-    <input id="screenName" name="screenName" type="hidden">
-    <input id="selectedDate" name="reservationDate" type="hidden">
+    <input id="cinemaName" name="cinemaName" type="hidden" value="">
+    <input id="showtimeTime" name="showtimeTime" type="hidden" value="">
+    <input id="title" name="title" type="hidden" value="">
+    <input id="screenName" name="screenName" type="hidden" value="">
+    <input id="selectedDate" name="reservationDate" type="hidden" value="">
+    <input type="hidden" name="screenNo" value="">
+    <input type="hidden" name="movieNo" value="">
 </form>
 
 <script>
@@ -318,12 +320,21 @@
         $(document).on('click', '.day', function () {
             document.querySelectorAll('.day').forEach(day => day.classList.remove('active'));
             this.classList.add('active');
-            monthDisplay.textContent = months[parseInt(this.getAttribute('data-month'))];
 
-            selectedDate = new Date(currentDate.getFullYear(),
-                parseInt(this.getAttribute('data-month')),
-                parseInt(this.querySelector('.date').textContent));
-            $('#selectedDate').val(selectedDate.toISOString().split('T')[0]);
+            var year = currentDate.getFullYear();
+            var month = parseInt(this.getAttribute('data-month')) + 1; // 0-based to 1-based
+            var day = parseInt(this.querySelector('.date').textContent);
+
+            // 날짜 문자열을 직접 생성
+            var dateString = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+
+            console.log('Selected date string:', dateString);
+
+            $('#selectedDate').val(dateString);
+            selectedDate = new Date(year, month - 1, day); // JavaScript 내부 사용을 위한 Date 객체
+
+            monthDisplay.textContent = months[month - 1]; // 월 표시 업데이트
+
             checkAndGetShowtimes();
         });
 
@@ -344,6 +355,8 @@
                 success: function (response) {
                     if (Array.isArray(response)) {
                         displayShowtimes(response);
+                        $('input[name="screenNo"]').val(response[0].screenNo);
+                        $('input[name="movieNo"]').val(response[0].movieNo);
                     } else {
                         console.error("Invalid response format:", response);
                         $('#showtimes-container').html('<p>상영 시간 정보를 불러오는데 실패했습니다.</p>');
