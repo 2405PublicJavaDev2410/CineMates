@@ -1,6 +1,7 @@
 package com.filmfellows.cinemates.domain.movie.model.service.impl;
 
 import com.filmfellows.cinemates.app.movie.dto.MovieDTO;
+import com.filmfellows.cinemates.app.movie.dto.MovieListDTO;
 import com.filmfellows.cinemates.domain.movie.model.mapper.MovieMapper;
 import com.filmfellows.cinemates.domain.movie.model.service.MovieService;
 import com.filmfellows.cinemates.domain.movie.model.vo.Movie;
@@ -21,10 +22,10 @@ public class MovieServiceImpl implements MovieService {
 
     private final MovieMapper movieMapper;
 
-//    @Override
-//    public List<Movie> selectMovieList() {
-//        return movieMapper.selectMovieList();
-//    }
+    @Override
+    public List<MovieListDTO> selectMovieList() {
+        return movieMapper.selectMovieList();
+    }
 
     @Override
     public List<MovieDTO> selectMovieDetail(Long movieNo) {

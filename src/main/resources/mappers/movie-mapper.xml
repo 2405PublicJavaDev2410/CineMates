@@ -57,10 +57,14 @@
         ORDER BY
             m.MOVIE_NO, s.STILLCUT_NO, t.TRAILER_NO
 
-    <!-- 영화 리스트 조회 -->
+    <!-- 어디민 영화 리스트 조회 -->
     </select>
     <select id="selectMovieList" resultType="Movie">
         SELECT MOVIE_NO, TITLE, RELEASE_DATE, SCREENING_STATUS FROM MOVIE_TBL
+    </select>
+
+    <select id="selectMovieList" resultType="MovieListDTO">
+        SELECT MOVIE_NO, TITLE, POSTER_URL, RELEASE_DATE, RATING, SCREENING_STATUS FROM MOVIE_TBL
     </select>
 
     <!-- 영화 정보 수정-->
