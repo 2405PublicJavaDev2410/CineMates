@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>유성노은</title>
+	<style>
+		body {
+			font-family: 'Arial', sans-serif;
+			margin: 20px;
+			line-height: 1.6;
+			background-color: #f9f9f9;
+			color: #333;
+		}
+
+		h2 {
+			color: #007bff; /* 강조 색상 */
+			font-size: 24px;
+			border-bottom: 2px solid #007bff;
+			padding-bottom: 10px;
+			margin-bottom: 20px;
+		}
+
+		hr {
+			border: 0;
+			height: 1px;
+			background-color: #ddd;
+			margin: 20px 0;
+		}
+
+		pre {
+			background-color: #f0f8ff; /* 가독성을 위한 배경색 */
+			padding: 15px;
+			border-radius: 5px;
+			font-size: 16px;
+			overflow-x: auto;
+			white-space: pre-wrap;
+			word-wrap: break-word;
+		}
+
+		div {
+			text-align: right;
+			margin-bottom: 20px;
+		}
+
+		button {
+			padding: 10px 20px;
+			background-color: #007bff;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			font-size: 16px;
+		}
+
+		button:hover {
+			background-color: #0056b3;
+		}
+
+		/* 주차 안내 박스 */
+		.parking-info {
+			background-color: #fff8dc;
+			padding: 20px;
+			border: 1px solid #ccc;
+			border-radius: 10px;
+			margin-top: 20px;
+		}
+
+		/* 미디어 쿼리: 모바일에서의 최적화 */
+		@media (max-width: 600px) {
+			body {
+				margin: 10px;
+			}
+
+			h2 {
+				font-size: 20px;
+			}
+
+			button {
+				width: 100%;
+				font-size: 18px;
+			}
+
+			pre {
+				font-size: 14px;
+			}
+		}
+	</style>
+	</head>
+	<body>
+	<div><button th:onclick="mapgo([[${cinemaAddress}]])">길찾기</button></div>
+		<h2>대중교통안내</h2>
+		<hr>
+		
+		<pre>
+■지하철
+대전지하철 | 노은역 4번 출구 3분 거리
+
+■버스
+[대전지하철 노은역 앞]
+- 대전 시내버스: 101, 114, 116, 109, 121
+		</pre>
+		<h2>주차안내</h2>
+		<hr>
+	<pre class="parking-info">
+■주차안내
+- 건물 지하주차장 1~2층
+- 노은역 환승주차장 이용시 주차권 할인 판매
+
+■주차확인(인증방법)
+- 건물내) 출차시 당일 영화티켓 제시
+- 노은역 환승주차장) 매표에서 당일 티켓 제시 후 할인권 구매
+- 할인권 구매는 현금 및 계좌이체만 가능
+
+■주차요금
+- 건물내 주차 무료
+- 노은역 환승주차장 3시간 30분 2,000원 (이후 10분당 500원)
+		</pre>
+		<script>
+        // 팝업창 크기 변경 함수
+       function maximizePopup() {
+		    // 화면의 가로 및 세로 크기 가져오기
+		    var screenWidth = window.screen.availWidth;
+		    var screenHeight = window.screen.availHeight;
+		    
+		    // 팝업 창을 화면의 100%로 확장
+		    window.resizeTo(screenWidth, screenHeight);
+		}
+
+
+			function mapgo(a){
+	    		
+	            window.location.href = "https://map.naver.com/v5/search/"+a;  // 페이지 이동
+	            maximizePopup();  // 페이지 이동 후 팝업창 크기 조절
+
+
+	    		
+
+			}
+		</script>
+	</body>
+</html>

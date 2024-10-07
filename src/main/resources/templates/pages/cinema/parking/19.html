@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>청주율량</title>
+	<style>
+		body {
+			font-family: 'Arial', sans-serif;
+			margin: 20px;
+			line-height: 1.6;
+			background-color: #f9f9f9;
+			color: #333;
+		}
+
+		h2 {
+			color: #007bff; /* 강조 색상 */
+			font-size: 24px;
+			border-bottom: 2px solid #007bff;
+			padding-bottom: 10px;
+			margin-bottom: 20px;
+		}
+
+		hr {
+			border: 0;
+			height: 1px;
+			background-color: #ddd;
+			margin: 20px 0;
+		}
+
+		pre {
+			background-color: #f0f8ff; /* 가독성을 위한 배경색 */
+			padding: 15px;
+			border-radius: 5px;
+			font-size: 16px;
+			overflow-x: auto;
+			white-space: pre-wrap;
+			word-wrap: break-word;
+		}
+
+		div {
+			text-align: right;
+			margin-bottom: 20px;
+		}
+
+		button {
+			padding: 10px 20px;
+			background-color: #007bff;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			font-size: 16px;
+		}
+
+		button:hover {
+			background-color: #0056b3;
+		}
+
+		/* 주차 안내 박스 */
+		.parking-info {
+			background-color: #fff8dc;
+			padding: 20px;
+			border: 1px solid #ccc;
+			border-radius: 10px;
+			margin-top: 20px;
+		}
+
+		/* 미디어 쿼리: 모바일에서의 최적화 */
+		@media (max-width: 600px) {
+			body {
+				margin: 10px;
+			}
+
+			h2 {
+				font-size: 20px;
+			}
+
+			button {
+				width: 100%;
+				font-size: 18px;
+			}
+
+			pre {
+				font-size: 14px;
+			}
+		}
+	</style>
+	</head>
+	<body>
+	<div><button th:onclick="mapgo([[${cinemaAddress}]])">길찾기</button></div>
+		<h2>대중교통안내</h2>
+		<hr>
+		
+		<pre>
+<버스 이용 시>
+[정류소명 : 동양일보]
+- LG 산전 APT. 내덕자연시장 방면
+ : 111, 112, 113, 115, 115-1, 117, 119, 512, 512-1, 512-2, 512-3
+  871, 915, 105, 105-1
+- 신흥고등학교 방면
+ : 018, 019, 111, 112, 113, 115, 115-1, 117, 119, 512, 512-1, 512-2, 512-3
+  843, 851, 915, 105, 105-1
+		</pre>
+		<h2>주차안내</h2>
+		<hr>
+	<pre class="parking-info">
+■ 주차안내
+- 그랜드호텔 지상 주차장 (최대 180대)
+  ※ 지하주차장은 홈플러스, 그랜드호텔 이용 고객만 이용가능)
+  ※ 22시 이후에는 홈플러스 지하주차장 출차 불가
+
+■ 주차확인(인증방법)
+-  셀프정산PC에서 인증 후 출차
+
+■ 주차요금
+- 주차인증 시 3시간 무료(초과 시 10분당 500원 부과)
+- 주차장 출구에 설치된 무인정산기를 통해 정산 가능
+   (현금결제 불가, 카드결제만 가능)
+ ※ 홈플러스 이용 시 1만원-1시간 무료, 2만원-2시간 무료, 3만원-3시간 무료 (중복할인가능)
+		</pre>
+		<script>
+        // 팝업창 크기 변경 함수
+       function maximizePopup() {
+		    // 화면의 가로 및 세로 크기 가져오기
+		    var screenWidth = window.screen.availWidth;
+		    var screenHeight = window.screen.availHeight;
+		    
+		    // 팝업 창을 화면의 100%로 확장
+		    window.resizeTo(screenWidth, screenHeight);
+		}
+
+
+			function mapgo(a){
+	    		
+	            window.location.href = "https://map.naver.com/v5/search/"+a;  // 페이지 이동
+	            maximizePopup();  // 페이지 이동 후 팝업창 크기 조절
+
+
+	    		
+
+			}
+		</script>
+	</body>
+</html>
