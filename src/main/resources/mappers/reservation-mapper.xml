@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.filmfellows.cinemates.domain.reservation.model.mapper.ReservationMapper">
+    <insert id="insertReservationInfo">
+        INSERT INTO RESERVATION_TBL
+        VALUES (#{reservationNo}, #{reservationVisitor}, #{reservationSeat}, DEFAULT, #{movieNo},
+                #{memberId}, #{screenNo}, #{showTimeNo}, #{cinemaNo},#{title},#{screenName},#{cinemaName},#{showtimeTime},#{imp_uid})
+    </insert>
+
+    <select id="showReservedSeats" resultType="ReservationDTO">
+        select RESERVATION_SEAT
+        from RESERVATION_TBL
+    </select>
+
+    <!-- 상영관 출력  -->
+    <select id="selectCinemas" resultType="String">
+        SELECT CINEMA_NAME
+        FROM CINEMA_TBL
+        WHERE CINEMA_ADDRESS LIKE '%' || #{cinemaAddress} || '%'
+    </select>
+
+    <select id="selectMovies" resultType="String">
+        SELECT DISTINCT M.TITLE
+        FROM CINEMA_TBL
+                 JOIN SCREEN_TBL USING (CINEMA_NO)
+                 JOIN SHOWTIME_TBL USING (SCREEN_NO)
+                 JOIN MOVIE_TBL M USING (MOVIE_NO)
+        WHERE CINEMA_NAME = #{cinemaName}
+    </select>
+
+    <select id="selectCinemaName" resultType="String">
+        select CINEMA_NAME
+        from CINEMA_TBL
+    </select>
+
+    <select id="selectShowInfo" resultType="showInfoDTO">
+        SELECT s.showtime_time, sc.screen_seat, sc.screen_Name , screen_No , movie_No , m.title , cinema_no , CINEMA_NAME
+        FROM CINEMA_TBL
+                 JOIN SCREEN_TBL sc USING (CINEMA_NO)
+                 JOIN SHOWTIME_TBL s USING (SCREEN_NO)
+                 JOIN MOVIE_TBL m USING (MOVIE_NO)
+        where cinema_name = #{cinemaName}
+          AND title = #{title}
+    </select>
+
+    <select id="selectReservationSeat" resultType="ReservationDTO">
+        SELECT r.RESERVATION_SEAT, s.SCREEN_NAME, st.SHOWTIME_TIME
+        FROM RESERVATION_TBL r
+                 JOIN SHOWTIME_TBL st ON r.SHOWTIME_NO = st.SHOWTIME_NO
+                 JOIN SCREEN_TBL s ON st.SCREEN_NO = s.SCREEN_NO
+
+    </select>
+</mapper>

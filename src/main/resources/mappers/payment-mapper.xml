@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.filmfellows.cinemates.domain.payment.model.mapper.PaymentMapper">
+
+    <insert id="insertPaymentInfo">
+        INSERT INTO PAYMENT_TBL (IMP_UID, MERCHANT_UID, AMOUNT, STATUS,BUYER_EMAIL, BUYER_NAME, BUYER_TEL, NAME) VALUES (#{imp_uid},#{merchant_uid},#{amount},DEFAULT,#{buyer_email},#{buyer_name},#{buyer_tel},#{name})
+    </insert>
+    <insert id="insertPaymentInfo2">
+        INSERT INTO PAYMENT_TBL (IMP_UID, MERCHANT_UID, AMOUNT, STATUS,BUYER_EMAIL, BUYER_NAME, BUYER_TEL, NAME,MOVIE_NO,SCREEN_NO,RESERVATION_NO) VALUES (#{imp_uid},#{merchant_uid},#{amount},DEFAULT,#{buyer_email},#{buyer_name},#{buyer_tel},#{name},#{movieNo},#{screenNo},#{reservationNo})
+    </insert>
+
+
+</mapper>
