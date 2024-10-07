@@ -41,4 +41,5 @@ public class ReservationDTO {
 
     //ShowTime - 상영
     private String showtimeTime;
+    private Integer showtimeNo;
 }

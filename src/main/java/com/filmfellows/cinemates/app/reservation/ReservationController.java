@@ -19,6 +19,7 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class ReservationController {
@@ -48,6 +49,7 @@ public class ReservationController {
                 processedList.add(cinema.trim());
             }
         }
+
         model.addAttribute("rList", processedList);
         System.out.println("보여줘" + processedList);
         return "pages/reservation/Showtime";
@@ -55,10 +57,11 @@ public class ReservationController {
 
     @PostMapping("/Ticketing/PersonSeat")
     public String showPersonSeatPage(@ModelAttribute ReservationDTO rDTO, Model model,HttpSession session) {
-
+        String memberId = (String)session.getAttribute("memberId");
         String randomString = generateRandomString(10);
         rDTO.setReservationNo(randomString);
         System.out.println("rDTO 보여줘라 " + rDTO);
+        model.addAttribute("memberId",memberId);
         model.addAttribute("rDTO", rDTO);
         return "pages/reservation/PersonSeat";
     }

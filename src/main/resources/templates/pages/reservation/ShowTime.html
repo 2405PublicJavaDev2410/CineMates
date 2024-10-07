@@ -157,6 +157,8 @@
     <input id="selectedDate" name="reservationDate" type="hidden" value="">
     <input type="hidden" name="screenNo" value="">
     <input type="hidden" name="movieNo" value="">
+    <input type="hidden" name="cinemaNo" value="">
+    <input type="hidden" name="showtimeNo" value="">
 </form>
 
 <script>
@@ -357,6 +359,8 @@
                         displayShowtimes(response);
                         $('input[name="screenNo"]').val(response[0].screenNo);
                         $('input[name="movieNo"]').val(response[0].movieNo);
+                        $('input[name="cinemaNo"]').val(response[0].cinemaNo);
+                        $('input[name="showtimeNo"]').val(response[0].showtimeNo);
                     } else {
                         console.error("Invalid response format:", response);
                         $('#showtimes-container').html('<p>상영 시간 정보를 불러오는데 실패했습니다.</p>');
@@ -404,6 +408,7 @@
                 alert('모든 항목을 선택해주세요.');
             }
         });
+
     });
 </script>
 </body>

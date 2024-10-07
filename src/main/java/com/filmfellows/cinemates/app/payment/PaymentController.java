@@ -1,7 +1,10 @@
 package com.filmfellows.cinemates.app.payment;
 
+import com.filmfellows.cinemates.domain.member.model.vo.Member;
 import com.filmfellows.cinemates.domain.payment.model.service.PaymentService;
 import com.filmfellows.cinemates.domain.payment.model.vo.PaymentInfo;
+import com.filmfellows.cinemates.domain.reservation.model.Service.ReservationService;
+import com.filmfellows.cinemates.domain.reservation.model.vo.MemberDTO;
 import com.filmfellows.cinemates.domain.reservation.model.vo.ReservationDTO;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
@@ -26,7 +29,8 @@ public class PaymentController {
     @Autowired
     private ReservationDTO rDTO;
     private final IamportClient iamportClient;
-
+    @Autowired
+    private ReservationService rService;
     @Value("${IMP_API_KEY}")
     String apiKey;
     @Value("${IMP_API_SECRETKEY}")
@@ -40,7 +44,16 @@ public class PaymentController {
     @PostMapping("/paymentReady")
     public String readyTogoPay(@ModelAttribute("ReservationDTO") ReservationDTO rDTO, Model model, HttpSession session) {
         System.out.println("paymentReady" + rDTO);
+        String memberId = (String)session.getAttribute("memberId");
+        MemberDTO info = rService.selectMemberInfo(memberId);
+        System.out.println("info" + info);
+
+        rDTO.setBuyer_email(info.getEmail());
+        rDTO.setBuyer_name(info.getName());
+        rDTO.setBuyer_tel(info.getPhone());
+
         session.setAttribute("rDTO", rDTO);
+        System.out.println("rDTO 함 보여바라" + rDTO);
         model.addAttribute("rDTO", rDTO);
         return "redirect:/payment?reservationNo=" + rDTO.getReservationNo();
     }

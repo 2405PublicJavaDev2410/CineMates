@@ -5,8 +5,8 @@
 <mapper namespace="com.filmfellows.cinemates.domain.reservation.model.mapper.ReservationMapper">
     <insert id="insertReservationInfo">
         INSERT INTO RESERVATION_TBL
-        VALUES (#{reservationNo}, #{reservationVisitor}, #{reservationSeat}, DEFAULT, #{movieNo},
-                #{memberId}, #{screenNo}, #{showTimeNo}, #{cinemaNo},#{title},#{screenName},#{cinemaName},#{showtimeTime},#{imp_uid})
+        VALUES (#{reservationNo}, #{reservationVisitor}, #{reservationSeat}, #{reservationDate}, #{movieNo},
+                #{memberId}, #{screenNo}, #{showtimeNo}, #{cinemaNo},#{title},#{screenName},#{cinemaName},#{showtimeTime},#{imp_uid})
     </insert>
 
     <select id="showReservedSeats" resultType="ReservationDTO">
@@ -31,12 +31,11 @@
     </select>
 
     <select id="selectCinemaName" resultType="String">
-        select CINEMA_NAME
-        from CINEMA_TBL
+        SELECT CINEMA_NAME , CINEMA_NO  FROM CINEMA_TBL JOIN SCREEN_TBL USING(CINEMA_NO) JOIN SHOWTIME_TBL USING(SCREEN_NO)
     </select>
 
     <select id="selectShowInfo" resultType="showInfoDTO">
-        SELECT s.showtime_time, sc.screen_seat, sc.screen_Name , screen_No , movie_No , m.title , cinema_no , CINEMA_NAME
+        SELECT s.showtime_time, sc.screen_seat, sc.screen_Name , screen_No , movie_No , m.title , cinema_no , CINEMA_NAME , s.showtime_no
         FROM CINEMA_TBL
                  JOIN SCREEN_TBL sc USING (CINEMA_NO)
                  JOIN SHOWTIME_TBL s USING (SCREEN_NO)
@@ -51,5 +50,9 @@
                  JOIN SHOWTIME_TBL st ON r.SHOWTIME_NO = st.SHOWTIME_NO
                  JOIN SCREEN_TBL s ON st.SCREEN_NO = s.SCREEN_NO
 
+    </select>
+
+    <select id="selectMemberInfo" resultType="MemberDTO">
+        select * from member_tbl where MEMBER_ID=#{memberId}
     </select>
 </mapper>

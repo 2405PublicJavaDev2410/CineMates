@@ -1,5 +1,6 @@
 package com.filmfellows.cinemates.domain.reservation.model.mapper;
 
+import com.filmfellows.cinemates.domain.reservation.model.vo.MemberDTO;
 import com.filmfellows.cinemates.domain.reservation.model.vo.ReservationDTO;
 import com.filmfellows.cinemates.domain.reservation.model.vo.ShowInfoDTO;
 import org.apache.ibatis.annotations.Mapper;
@@ -13,7 +14,7 @@ public interface ReservationMapper {
 
 //    int insertReservationInfo();
 
-    int insertReservationInfo(Map<String, Object> reserveInfo);
+    void insertReservationInfo(Map<String, Object> reserveInfo);
 
     List<ReservationDTO> showReservedSeats();
 
@@ -21,9 +22,14 @@ public interface ReservationMapper {
 
     List<String> selectMovies(String cinemaName);
 
-    List<String> selectCinemaName();
 
     List<ShowInfoDTO> selectShowInfo(String cinemaName, String title);
 
     List<ReservationDTO> selectReservationSeat();
+
+    MemberDTO selectMemberInfo(String memberId);
+
+    Map<String, Integer> getReservationCounts();
+
+    List<String> selectCinemaName();
 }
