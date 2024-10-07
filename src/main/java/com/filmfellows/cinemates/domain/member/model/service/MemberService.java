@@ -14,7 +14,8 @@ public interface MemberService {
     Member getOneMember(String memberId);
     ProfileImg getOneProfileImg(String memberId);
     Member findMemberId(Member member);
-    Member findMemberPw(String memberId, String email);
+    Member findMemberPw(Member member);
+    int updatePassword(Member member);
     boolean isIdDuplicate(String memberId);
 
 }

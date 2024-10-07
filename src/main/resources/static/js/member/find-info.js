@@ -3,17 +3,57 @@ const findPwdBtn = document.getElementById('find-pwd-btn');
 const findIdForm = document.getElementById('find-id-form');
 const findPwdForm = document.getElementById('find-pw-form');
 
+// 아이디 찾기 관련
 const findIdNameInput = document.querySelector('#find-id-name-input');
 const findIdEmailInput = document.querySelector('#find-id-email-input')
 const nameFailureMsg = document.querySelector('#name-failure-message');
-const emailFailureMsg = document.querySelector('#email-failure-message');
+const findIdEmailFailureMsg = document.querySelector('#find-id-email-failure-message');
 const ViewId = document.querySelector(('.show-find-id'));
+
+// 비밀번호 찾기 관련
+const findPwIdInput = document.querySelector('#find-pw-id-input');
+const findPwEmailInput = document.querySelector('#find-pw-email-input');
+const idFailureMsg = document.querySelector('#id-failure-message');
+const findPwEmailFailureMsg = document.querySelector('#find-pw-email-failure-message');
+const ViewResetPw = document.querySelector(('.show-find-pw'));
+
+function findMemberPw() {
+    if(!idCheck()) {
+        return;
+    }
+    if(!emailCheckForPw()) {
+        return;
+    }
+    const formData = new FormData(document.querySelector('#find-member-pw-form'));
+    console.log(Object.fromEntries(formData));
+    $.ajax({
+        url: '/send-reset-link',
+        method: 'post',
+        data: JSON.stringify(Object.fromEntries(formData)),
+        contentType: 'application/json',
+        dataType: 'text',
+        success: function(response) {
+            if(response === 'success') {
+                ViewResetPw.innerHTML = `<span>비밀번호 재설정 링크가 이메일로 전송되었습니다.</span><br><span>이메일의 링크를 클릭하여 비밀번호를 재설정하세요.</span>`
+                ViewResetPw.classList.remove('hide');
+            }else if(response === 'fail') {
+                findPwEmailFailureMsg.innerHTML = '아이디 또는 이메일이 일치하지 않습니다. 입력한 내용을 확인해주세요.';
+                findPwEmailFailureMsg.classList.remove('hide');
+                findPwIdInput.classList.add('error-border');
+                findPwEmailInput.classList.add('error-border');
+            }
+        },
+        error: function() {
+            alert('서버 통신 에러!');
+        }
+    })
+}
 
 function findMemberId() {
     if(!nameCheck()) {
         return;
     }
-    if(!emailCheck()) {
+    if(!emailCheckForId()) {
         return;
     }
     const formData = new FormData(document.querySelector('#find-member-id-form'));
@@ -27,11 +67,11 @@ function findMemberId() {
             // && 연산자를 써서 data가 있을 경우에만 memberId에 접근. 없으면 else 구문 실행
             if(data && data.memberId) {
                 const maskedId = maskMemberId(data.memberId);
-                ViewId.innerHTML = `<span>"${data.name}" 님의 아이디입니다.<br><br></span><span><b>${maskedId}</b></span>`
+                ViewId.innerHTML = `<span>"${data.name}" 님의 아이디입니다.</span><br><br><span><b>${maskedId}</b></span>`
                 ViewId.classList.remove('hide');
             }else {
-                emailFailureMsg.innerHTML = '회원 정보가 존재하지 않습니다. 입력한 내용을 확인해주세요.';
-                emailFailureMsg.classList.remove('hide');
+                findIdEmailFailureMsg.innerHTML = '회원 정보가 존재하지 않습니다. 입력한 내용을 확인해주세요.';
+                findIdEmailFailureMsg.classList.remove('hide');
                 findIdNameInput.classList.add('error-border');
                 findIdEmailInput.classList.add('error-border');
             }
@@ -45,6 +85,10 @@ function findMemberId() {
 // 이름 정규식
 const nameRule = (str) => {
     return /^[가-힣]{2,5}$/.test(str);
+}
+// 아이디 정규식
+const idRule = (str) => {
+    return /^[A-Za-z0-9]{5,10}$/.test(str);
 }
 // 이메일 정규식
 const emailRule = (str) => {
@@ -70,23 +114,61 @@ function nameCheck() {
     findIdNameInput.classList.remove('error-border');
     return true;
 }
-// 이메일 유효성 검사
-function emailCheck() {
+// 아이디 유효성 검사
+function idCheck() {
+    if(findPwIdInput.value.trim() === '') {
+        idFailureMsg.innerHTML = '아이디를 입력하지 않았습니다.';
+        idFailureMsg.classList.remove('hide');
+        findPwIdInput.classList.add('error-border');
+        return false;
+    }
+    if(!idRule(findPwIdInput.value)) {
+        idFailureMsg.innerHTML = '유효하지 않은 아이디입니다. 정확한 아이디를 입력해주세요.';
+        idFailureMsg.classList.remove('hide');
+        findPwIdInput.classList.add('error-border');
+        return false;
+    }
+    idFailureMsg.classList.add('hide');
+    idFailureMsg.innerHTML = '';
+    findPwIdInput.classList.remove('error-border');
+    return true;
+}
+// 아이디 찾기 이메일 유효성 검사
+function emailCheckForId() {
     if(findIdEmailInput.value.trim() === '') {
-        emailFailureMsg.innerHTML = '이메일 주소를 입력하지 않았습니다.';
-        emailFailureMsg.classList.remove('hide');
+        findIdEmailFailureMsg.innerHTML = '이메일 주소를 입력하지 않았습니다.';
+        findIdEmailFailureMsg.classList.remove('hide');
         findIdEmailInput.classList.add('error-border');
         return false;
     }
     if(!emailRule(findIdEmailInput.value)) {
-        emailFailureMsg.innerHTML = '유효하지 않은 이메일 주소입니다. 정확한 이메일을 입력해주세요';
-        emailFailureMsg.classList.remove('hide');
+        findIdEmailFailureMsg.innerHTML = '유효하지 않은 이메일 주소입니다. 정확한 이메일을 입력해주세요';
+        findIdEmailFailureMsg.classList.remove('hide');
         findIdEmailInput.classList.add('error-border');
         return false;
     }
-    emailFailureMsg.classList.add('hide');
-    emailFailureMsg.innerHTML = '';
+    findIdEmailFailureMsg.classList.add('hide');
+    findIdEmailFailureMsg.innerHTML = '';
     findIdEmailInput.classList.remove('error-border');
+    return true;
+}
+// 비밀번호 찾기 이메일 유효성 검사
+function emailCheckForPw() {
+    if(findPwEmailInput.value.trim() === '') {
+        findPwEmailFailureMsg.innerHTML = '이메일 주소를 입력하지 않았습니다.';
+        findPwEmailFailureMsg.classList.remove('hide');
+        findPwEmailInput.classList.add('error-border');
+        return false;
+    }
+    if(!emailRule(findPwEmailInput.value)) {
+        findPwEmailFailureMsg.innerHTML = '유효하지 않은 이메일 주소입니다. 정확한 이메일을 입력해주세요';
+        findPwEmailFailureMsg.classList.remove('hide');
+        findPwEmailInput.classList.add('error-border');
+        return false;
+    }
+    findPwEmailFailureMsg.classList.add('hide');
+    findPwEmailFailureMsg.innerHTML = '';
+    findPwEmailInput.classList.remove('error-border');
     return true;
 }
 
@@ -100,6 +182,12 @@ findIdNameInput.onblur = function() {
     findIdNameInput.classList.remove('error-border');
 }
 findIdEmailInput.onblur = function() {
+    findIdEmailInput.classList.remove('error-border');
+}
+findPwIdInput.onblur = function() {
+    findIdEmailInput.classList.remove('error-border');
+}
+findPwEmailInput.onblur = function() {
     findIdEmailInput.classList.remove('error-border');
 }
 

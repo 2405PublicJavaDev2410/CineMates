@@ -7,7 +7,6 @@ import com.filmfellows.cinemates.domain.member.model.vo.Member;
 import com.filmfellows.cinemates.domain.member.model.vo.ProfileImg;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -102,8 +101,15 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Member findMemberPw(String memberId, String email) {
-        return null;
+    public Member findMemberPw(Member member) {
+        return mMapper.selectOneByIdAndEmail(member.getMemberId(), member.getEmail());
+    }
+
+    @Override
+    public int updatePassword(Member member) {
+        String memberId = member.getMemberId();
+        String newPassword = member.getMemberPw();
+        return mMapper.updatePassword(memberId, newPassword);
     }
 
     @Override

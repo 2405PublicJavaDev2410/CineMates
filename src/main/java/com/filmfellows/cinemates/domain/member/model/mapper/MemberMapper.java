@@ -15,6 +15,8 @@ public interface MemberMapper {
     Member selectOneById(String memberId);
     ProfileImg selectOneProfileImgById(String memberId);
     Member selectOneByNameAndEmail(@Param("name") String name, @Param("email") String email);
-    Member selectOneByIdAndEmail(String memberId, String email);
+    Member selectOneByIdAndEmail(@Param("memberId") String memberId, @Param("email") String email);
+    int updatePassword(@Param("memberId")String memberId, @Param("memberPw") String newPassword);
     boolean countByMemberId(String memberId);
+
 }

@@ -10,6 +10,11 @@
         WHERE NAME = #{name}
         AND EMAIL = #{email}
     </select>
+    <select id="selectOneByIdAndEmail" resultType="Member">
+        SELECT * FROM MEMBER_TBL
+        WHERE MEMBER_ID = #{memberId}
+        AND EMAIL = #{email}
+    </select>
     <select id="selectOneProfileImgById" resultType="ProfileImg">
         SELECT * FROM PROFILE_IMG_TBL
         WHERE MEMBER_ID = #{memberId}
@@ -34,6 +39,11 @@
     <update id="deleteMember">
         UPDATE MEMBER_TBL
         SET DELETE_YN = 'Y'
+        WHERE MEMBER_ID = #{memberId}
+    </update>
+    <update id="updatePassword">
+        UPDATE MEMBER_TBL
+        SET MEMBER_PW = #{memberPw}
         WHERE MEMBER_ID = #{memberId}
     </update>
     <insert id="insertProfileImg">
