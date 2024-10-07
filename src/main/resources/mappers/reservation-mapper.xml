@@ -36,7 +36,7 @@
     </select>
 
     <select id="selectShowInfo" resultType="showInfoDTO">
-        SELECT s.showtime_time, sc.screen_seat, sc.screen_Name , screen_No , movie_No
+        SELECT s.showtime_time, sc.screen_seat, sc.screen_Name , screen_No , movie_No , m.title , cinema_no , CINEMA_NAME
         FROM CINEMA_TBL
                  JOIN SCREEN_TBL sc USING (CINEMA_NO)
                  JOIN SHOWTIME_TBL s USING (SCREEN_NO)
