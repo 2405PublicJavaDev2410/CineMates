@@ -7,6 +7,7 @@ import com.filmfellows.cinemates.domain.chat.model.mapper.ChatMapper;
 import com.filmfellows.cinemates.domain.chat.model.service.ChatService;
 import com.filmfellows.cinemates.domain.chat.model.vo.ChatRoom;
 import com.filmfellows.cinemates.domain.chat.model.vo.ChatTag;
+import com.filmfellows.cinemates.domain.member.model.vo.ProfileImg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,5 +64,11 @@ public class ChatServiceImpl implements ChatService {
     public List<ChatRoom> selectChatTagList() {
         List<ChatRoom> chatTagList = cMapper.selectChatTagList();
         return chatTagList;
+    }
+
+    @Override
+    public List<ProfileImg> selectProfileList() {
+        List<ProfileImg> profileList = cMapper.selectProfileList();
+        return profileList;
     }
 }

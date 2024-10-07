@@ -23,13 +23,39 @@
                 overflow: hidden;
             }
 
+            /* 검색, 내 채팅방, 전체 메뉴 버튼*/
+            .listMenuContainer{
+                margin: 0 auto;
+                display: flex;
+                width: 90%;
+                height: 50px;
+                font-size: 20px;
+            }
+            .listMenu-item{
+                user-select: none;
+                width: 120px;
+                height: 100%;
+                text-align: center;
+                line-height: 50px;
+                background-color: #ececec;
+                border-radius: 100px;
+                transition: all 200ms;
+                margin: 5px;
+                cursor:pointer;
+
+            }
+            .listMenu-item:hover{
+                background-color: #466288;
+                color: white;
+                transform: scale(1.02);
+            }
 
 
             /* list 전환 버튼 css */
             #listSwitchContainer{
                 display: flex;
-                justify-content: space-between;
-                width: 230px;
+                justify-content: right;
+                width: 100%;
                 height: 45px;
                 align-items: center;
                 text-align: center;
@@ -45,6 +71,7 @@
                 border-radius: 10px;
                 transition: all 200ms;
                 cursor: pointer;
+                margin-right: 20px;
             }
             .listSwitch-btn span{
                 display: inline-block;
@@ -68,6 +95,7 @@
 
             /* list형, card형 css */
             #toList-container{
+                margin:0 auto;
                 position: absolute;
                 top:10px;
                 left: 0;
@@ -89,12 +117,14 @@
             /* list형 기본 스타일 */
             .list-item {
                 width: 90%;
+                height: 150px;
                 background-color: #f0f0f0;
-                padding: 20px;
-                border-radius: 8px;
+                padding: 15px;
+                border-radius: 15px;
                 /*transition: opacity 0.5s ease, transform 0.5s ease;*/
                 opacity: 1;
                 /*transform: scale(1);*/
+                margin: 0 auto;
                 margin-bottom: 20px;
 
                 visibility: visible; /* 처음엔 숨겨져 있음 */
@@ -143,6 +173,58 @@
                 transform: scale(0.9);
             }
 
+
+            /* list item flex */
+            .item-flex-container{
+                display: flex;
+                justify-content: left;
+                width: 100%;
+                height: 100%;
+                font-size: 20px;
+            }
+
+            .flex-item-memberProfile{
+                width: 120px;
+                height: 120px;
+                margin-right: 20px;
+            }
+
+            .chatRoomName{
+                font-size: 25px;
+                /*font-weight: bold;*/
+            }
+
+            .chatTagList{
+                color: #6e6e6e;
+            }
+
+            .flex-item-chatInfoBox{
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+
+            .itemBtnFlexContainer{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .joinBtn{
+                width: 60px;
+                height: 40px;
+                background-color:#6e6e6e;
+                border-radius: 10px;
+                text-align: center;
+                line-height: 40px;
+                cursor: pointer;
+                transition: all 200ms;
+            }
+            .joinBtn:hover{
+                color:white;
+                font-weight: bold;
+                background: #EA4E4A;
+                transform: scale(1.02);
+            }
         </style>
 
         <!-- inline JS 영역-->
@@ -252,10 +334,10 @@
     <body>
         <h1>ChatList 영역입니다.</h1>
         <div class="chatRoomList-main">
-            <div>
-                <div>검색</div>
-                <div>내 채팅방</div>
-                <div>전체</div>
+            <div class="listMenuContainer">
+                <div class="listMenu-item"><i class="fa-solid fa-magnifying-glass" style="padding-right: 10px"></i>검색</div>
+                <div class="listMenu-item">내 채팅방</div>
+                <div class="listMenu-item" style="width: 100px">전체</div>
             </div>
             <br><br><br>
             <div id="listSwitchContainer">
@@ -270,24 +352,56 @@
 <!--                리스트형 레이아웃-->
                 <div class="chatRoomList-container" id="toList-container">
                     <div th:if="${chatRoomList != null}" th:each="chatRoom : ${chatRoomList}" class="chatRoom-item list-item fade-in">
-                        <div>방장 이미지</div>
-                        <div th:text="'채팅방 이름 : '+${chatRoom.roomName}"></div>
-                        <div th:text="'채팅방 생성 날짜 : '+${chatRoom.roomDate}"></div>
-                        <div>채팅방 최근채팅내용</div>
-                        <div>태그 :
-                            <span th:each="tag : ${tagList}" th:if="${tag.roomNo == chatRoom.roomNo}" th:text="'#'+${tag.tagName}+' '"></span>
+
+                        <div class="itemBtnFlexContainer">
+                            <div class="item-flex-container">
+
+                                <div class="flex-item-memberProfile" th:each="memberProfile : ${profileList}">
+                                    <th:block  th:if="${memberProfile.memberId != chatRoom.roomWriter}">
+                                        <img alt="프로필" src="/img/chat/defaultProfile.png" style="width: 100%; height: 100%; border-radius: 30%;">
+                                    </th:block>
+                                    <th:block  th:if="${memberProfile.memberId == chatRoom.roomWriter}">
+                                        <img th:src="@{|${memberProfile.filePath}${memberProfile.fileRename}|}" alt="프로필" style="width: 100%; height: 100%; border-radius: 30%;">
+                                    </th:block>
+                                </div>
+                                <div class="flex-item-chatInfoBox">
+                                    <div class="chatRoomName" th:text="${chatRoom.roomName}"></div>
+
+                                    <div class="chatTagList">태그 :
+                                        <span th:each="tag : ${tagList}" th:if="${tag.roomNo == chatRoom.roomNo}" th:text="'#'+${tag.tagName}+' '"></span>
+                                    </div>
+                                    <div style="display: flex">
+                                        <div style="margin-right: 50px">참여인원: 00명 참여중</div>
+                                        <div th:text="${chatRoom.title}+' ('+${chatRoom.cinemaAddress}+' / '+${chatRoom.cinemaName}+')'"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="joinBtn">참여</div>
+                            </div>
                         </div>
-                        <div th:text="'영화이름 : '+${chatRoom.movieNo}"></div>
-                        <div>영화이미지</div>
-                        <div th:text="'지역 : '+${chatRoom.cinemaLocationCode}"></div>
-                        <div th:text="'극장 : '+${chatRoom.cinemaNo}"></div>
+
+
+
+
+<!--                        <div>방장 이미지</div>-->
+
+<!--                        <div th:text="'채팅방 생성 날짜 : '+${chatRoom.roomDate}"></div>-->
+<!--                        <div>채팅방 최근채팅내용</div>-->
+
+<!--                        <div th:text="'영화이름 : '+${chatRoom.movieNo}"></div>-->
+<!--                        <div th:text="'지역 : '+${chatRoom.cinemaLocationCode}"></div>-->
+<!--                        <div th:text="'극장 : '+${chatRoom.cinemaNo}"></div>-->
                         <br><br>
                     </div>
+
                 </div>
 <!--                카드형 레이아웃-->
                 <div class="chatRoomList-container" id="toCard-container">
                     <div th:if="${chatRoomList != null}" th:each="chatRoom : ${chatRoomList}" class="chatRoom-item card-item fade-out">
-                        <div>방장 이미지</div>
+
+
                         <div th:text="'채팅방 이름 : '+${chatRoom.roomName}"></div>
                         <div th:text="'채팅방 생성 날짜 : '+${chatRoom.roomDate}"></div>
                         <div>채팅방 최근채팅내용</div>

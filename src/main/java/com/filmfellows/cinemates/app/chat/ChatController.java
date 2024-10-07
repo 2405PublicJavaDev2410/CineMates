@@ -9,6 +9,10 @@ import com.filmfellows.cinemates.app.chat.dto.ReservationInfoAndChatInfo;
 import com.filmfellows.cinemates.domain.chat.model.service.ChatService;
 import com.filmfellows.cinemates.domain.chat.model.vo.ChatRoom;
 import com.filmfellows.cinemates.domain.chat.model.vo.ChatTag;
+import com.filmfellows.cinemates.domain.member.model.service.MemberService;
+import com.filmfellows.cinemates.domain.member.model.service.impl.MemberServiceImpl;
+import com.filmfellows.cinemates.domain.member.model.vo.ProfileImg;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -31,17 +35,28 @@ public class ChatController {
 
 
     @GetMapping("/chat/list")
-    public String showChatRoomList(Model model){
+    public String showChatRoomList(Model model, HttpSession session) {
+        // 로그인 확인
+        String memberId = (String) session.getAttribute("memberId");
+        if(memberId == null) {
+            return "redirect:/login";
+        }
+        // 전체 프로필 정보 조회 -> 채팅방 정보에 출력
+        List<ProfileImg> profileList = cService.selectProfileList();
+        System.out.println(profileList);
+
         // 채팅방 리스트 전체 조회 비즈니스 로직
         List<ChatRoom> chatRoomList = cService.selectChatRoomList();
-
+        System.out.println(chatRoomList);
         // 채팅방 태그 조회
         List<ChatRoom> tagList = cService.selectChatTagList();
 
+        model.addAttribute("profileList", profileList);
         model.addAttribute("tagList", tagList);
         model.addAttribute("chatRoomList", chatRoomList);
         return "pages/chat/chatRoomList";
     }
+
 
     @GetMapping("/chat/room")
     public String showChatRoom(){
@@ -62,14 +77,21 @@ public class ChatController {
             return "pages/chat/createChatForm";
     }
 
+    /**
+     * 담당자 : 이충무
+     * 관련기능 : 채팅방 개설 기능
+     * model : ReservationInfoAndChatInfo
+     */
     @PostMapping("/chat/create")
-    public String insertChatRoom(@ModelAttribute("ReservationInfoAndChatInfo") ReservationInfoAndChatInfo revAndChatInfo){
-        System.out.println(revAndChatInfo);
+    public String insertChatRoom(@ModelAttribute("ReservationInfoAndChatInfo") ReservationInfoAndChatInfo revAndChatInfo,HttpSession session){
+        // 로그인 확인 -> 채팅방 개설 시 작성자로 저장
+        String memberId = (String) session.getAttribute("memberId");
+        
         // DTO -> VO
-        ChatRoom chatRoom = new ChatRoom(null,
+        ChatRoom chatRoom = new ChatRoom(null, memberId,
                 revAndChatInfo.getRoomName(),
-                null,revAndChatInfo.getRoomCategory(), revAndChatInfo.getMovieNo(),
-                revAndChatInfo.getCinemaLocationCode(), revAndChatInfo.getCinemaNo()
+                null,revAndChatInfo.getRoomCategory(), revAndChatInfo.getMovieNo(), null, null,
+                revAndChatInfo.getCinemaLocationCode(), null, revAndChatInfo.getCinemaNo(), null
         );
 
         int insertChatRoomResult = cService.insertChatRoom(chatRoom);
@@ -92,7 +114,6 @@ public class ChatController {
             tagNameArr = list.stream().map(map -> map.get("value"))
                     .toList();
 
-
             // 각 배열의 값을 하나씩 table에 insert 시켜주기
             for(String tagName : tagNameArr) {
                 ChatTag chatTag = new ChatTag();
@@ -102,15 +123,10 @@ public class ChatController {
                 if(tagResult > 0) System.out.println("tag등록 성공!!");
             }
 
-
         } catch(Exception e){
             e.printStackTrace();
         }
     }
-
-
-
-
 
         return "redirect:/chat/createForm?roomCategory="+revAndChatInfo.getRoomCategory();
 //        return "pages/chat/chatRoomList";

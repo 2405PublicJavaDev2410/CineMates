@@ -5,6 +5,7 @@ import com.filmfellows.cinemates.app.chat.dto.CinemaInfoByRegion;
 import com.filmfellows.cinemates.app.chat.dto.RegionAndCinemaCount;
 import com.filmfellows.cinemates.domain.chat.model.vo.ChatRoom;
 import com.filmfellows.cinemates.domain.chat.model.vo.ChatTag;
+import com.filmfellows.cinemates.domain.member.model.vo.ProfileImg;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -61,4 +62,11 @@ public interface ChatMapper {
      * @return List<ChatRoom> (채팅방 태그 리스트)
      */
     List<ChatRoom> selectChatTagList();
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : 채팅방 프로필 조회
+     * @return List<ProfileImg> (채팅방 프로필 리스트)
+     */
+    List<ProfileImg> selectProfileList();
 }

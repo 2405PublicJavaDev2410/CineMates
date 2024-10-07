@@ -33,7 +33,14 @@
 
 <!--   채팅방 전체 조회 -->
     <select id="selectChatRoomList" resultType="ChatRoom">
-        SELECT * FROM CHAT_ROOM_TBL ORDER BY ROOM_DATE DESC
+        SELECT chat.ROOM_NO, chat.ROOM_NAME, chat.ROOM_WRITER, chat.ROOM_DATE, chat.ROOM_CATEGORY,
+               chat.MOVIE_NO, movie.TITLE, movie.POSTER_URL,
+               chat.CINEMA_LOCATION_CODE,
+               SUBSTR(cinema.CINEMA_ADDRESS, 1, INSTR(cinema.CINEMA_ADDRESS, ' ') - 1) CINEMA_ADDRESS, cinema.CINEMA_NO, cinema.CINEMA_NAME
+        FROM CHAT_ROOM_TBL chat
+                 JOIN MOVIE_TBL movie ON chat.MOVIE_NO = movie.MOVIE_NO
+                 JOIN CINEMA_TBL cinema ON chat.CINEMA_NO = cinema.CINEMA_NO
+        ORDER BY chat.ROOM_DATE DESC
     </select>
 
 <!--   채팅방 태그 조회 -->
@@ -53,4 +60,9 @@
     <insert id="insertTag">
         INSERT INTO CHAT_ROOM_TAG_TBL VALUES(SEQ_ROOM_TAG_NO.NEXTVAL, #{tagName}, #{roomNo})
     </insert>
+
+<!--   채팅방 프로필 전체 조회 -->
+    <select id="selectProfileList" resultType="ProfileImg">
+        SELECT * FROM PROFILE_IMG_TBL
+    </select>
 </mapper>
