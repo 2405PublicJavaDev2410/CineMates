@@ -33,11 +33,12 @@ public class ReservationController {
 
     @GetMapping("/Ticketing")
     public String showShowTimePage(Model model, HttpSession session) {
-//        String memberId = (String)session.getAttribute("memberId");
-//        if(memberId==null) {
-//            return "redirect:/";
-//        }
-//        List<ReservationDTO> rList = rService.showReservationPage();
+        String memberId = (String)session.getAttribute("memberId");
+
+        if(memberId==null) {
+            return "redirect:/";
+        }
+
         List<String> rList = rService.selectCinemaName();
         List<String> processedList = new ArrayList<>();
 
@@ -53,7 +54,8 @@ public class ReservationController {
     }
 
     @PostMapping("/Ticketing/PersonSeat")
-    public String showPersonSeatPage(@ModelAttribute ReservationDTO rDTO, Model model) {
+    public String showPersonSeatPage(@ModelAttribute ReservationDTO rDTO, Model model,HttpSession session) {
+
         String randomString = generateRandomString(10);
         rDTO.setReservationNo(randomString);
         System.out.println("rDTO 보여줘라 " + rDTO);

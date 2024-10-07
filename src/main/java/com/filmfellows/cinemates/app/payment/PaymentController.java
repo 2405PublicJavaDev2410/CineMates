@@ -38,16 +38,18 @@ public class PaymentController {
     }
 
     @PostMapping("/paymentReady")
-    public String readyTogoPay(@ModelAttribute("ReservationDTO") ReservationDTO rDTO , Model model, HttpSession session) {
+    public String readyTogoPay(@ModelAttribute("ReservationDTO") ReservationDTO rDTO, Model model, HttpSession session) {
         System.out.println("paymentReady" + rDTO);
-        session.setAttribute("rDTO",rDTO);
+        session.setAttribute("rDTO", rDTO);
         model.addAttribute("rDTO", rDTO);
-        return "redirect:/payment?reservationNo="+ rDTO.getReservationNo();
+        return "redirect:/payment?reservationNo=" + rDTO.getReservationNo();
     }
 
-    @GetMapping ("/payment")
-    public String showPayForm(@ModelAttribute ReservationDTO rDTO , Model model,HttpSession session) {
-        ReservationDTO DTO = (ReservationDTO)session.getAttribute("rDTO");
+    @GetMapping("/payment")
+    public String showPayForm(@ModelAttribute ReservationDTO rDTO, Model model, HttpSession session) {
+        String memberId = (String)session.getAttribute("memberId");
+        ReservationDTO DTO = (ReservationDTO) session.getAttribute("rDTO");
+        model.addAttribute("memberId", memberId);
         System.out.println("showPayForm" + DTO);
         model.addAttribute("rDTO", DTO);
         return "pages/payment/inipay";
@@ -66,6 +68,7 @@ public class PaymentController {
     @ResponseBody
     public ResponseEntity<String> saveBuyerInfo(
             @RequestBody Map<String, Object> data
+            ,HttpSession session
 //            @RequestBody PaymentInfo paymentInfo
     ) {
 //        System.out.println("PaymentInfo: " + paymentInfo);
@@ -74,7 +77,9 @@ public class PaymentController {
 //        paymentService.saveBuyerInfo(paymentInfo);
         System.out.println("saveBuyerInfo" + buyerInfo);
         System.out.println("saveBuyerInfo2" + reserveInfo);
-        paymentService.saveBuyerAndOrderInfo(buyerInfo,reserveInfo);
+        String memberId = (String)session.getAttribute("memberId");
+
+        paymentService.saveBuyerAndOrderInfo(buyerInfo, reserveInfo);
         return ResponseEntity.ok("결제정보 저장 완");
     }
 
