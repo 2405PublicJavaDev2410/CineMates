@@ -60,13 +60,13 @@
         </table>
         <ul class="common-pagination">
             <li class="common-pagination-li-end">
-                <a th:href="@{/admin/movie-list(cp=${pn.prevPage})}" th:if="${pn.startNavi}">이전</a>
+                <a th:href="@{/admin/movie-list(cp=${pn.prevPage})}" th:if="${pn.startNavi}">&#10094</a>
             </li>
             <li th:classappend="${p == pn.currentPage} ? 'common-pagination-li common-pagination-li-active' : 'common-pagination-li'" th:each="p : ${#numbers.sequence(pn.startNavi, pn.endNavi)}">
                 <a th:href="@{/admin/movie-list(cp=${p})}" th:text="${p}"></a>
             </li>
             <li class="common-pagination-li-end">
-                <a th:href="@{/admin/movie-list(cp=${pn.nextPage})}" th:if="${pn.endNavi}">다음</a>
+                <a th:href="@{/admin/movie-list(cp=${pn.nextPage})}" th:if="${pn.endNavi}">&#10095</a>
             </li>
         </ul>
     </div>

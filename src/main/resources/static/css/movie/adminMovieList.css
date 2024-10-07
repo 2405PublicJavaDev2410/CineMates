@@ -108,6 +108,8 @@ h1 {
 
 .common-pagination-li-end {
     display: inline-block;
+    margin-right: 5px;
+    margin-left: 5px;
 }
 
 .common-pagination {
@@ -123,7 +125,7 @@ h1 {
 .common-pagination-li {
     width: 30px;
     height: 30px;
-    border-radius: 50%;
+    /*border-radius: 50%;*/
     /*border: 1px solid #E8E9ED;*/
     display: inline-flex;
     align-items: center;
@@ -132,7 +134,8 @@ h1 {
 
 .common-pagination-li a{
     text-decoration: none;
-    color: #78797B;
+    /*color: #78797B;*/
+    
     width: 100%;
     text-align: center;
 }
@@ -142,12 +145,14 @@ h1 {
     color: black;
 }
 
-.common-pagination-li-active {
-    background-color: #EA4E4A;
-    border: transparent;
-}
+/*.common-pagination-li-active {*/
+/*    !*background-color: #EA4E4A;*!*/
+/*    border: transparent;*/
+/*}*/
 
 .common-pagination-li-active a {
-    color: white;
+    /*color: white;*/
+    color: #EA4E4A;
+    font-weight: bold;
 }
 
