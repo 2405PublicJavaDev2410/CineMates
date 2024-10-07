@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>강남</title>
+	<style>
+		body {
+			font-family: 'Arial', sans-serif;
+			margin: 20px;
+			line-height: 1.6;
+			background-color: #f9f9f9;
+			color: #333;
+		}
+
+		h2 {
+			color: #007bff; /* 강조 색상 */
+			font-size: 24px;
+			border-bottom: 2px solid #007bff;
+			padding-bottom: 10px;
+			margin-bottom: 20px;
+		}
+
+		hr {
+			border: 0;
+			height: 1px;
+			background-color: #ddd;
+			margin: 20px 0;
+		}
+
+		pre {
+			background-color: #f0f8ff; /* 가독성을 위한 배경색 */
+			padding: 15px;
+			border-radius: 5px;
+			font-size: 16px;
+			overflow-x: auto;
+			white-space: pre-wrap;
+			word-wrap: break-word;
+		}
+
+		div {
+			text-align: right;
+			margin-bottom: 20px;
+		}
+
+		button {
+			padding: 10px 20px;
+			background-color: #007bff;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			font-size: 16px;
+		}
+
+		button:hover {
+			background-color: #0056b3;
+		}
+
+		/* 주차 안내 박스 */
+		.parking-info {
+			background-color: #fff8dc;
+			padding: 20px;
+			border: 1px solid #ccc;
+			border-radius: 10px;
+			margin-top: 20px;
+		}
+
+		/* 미디어 쿼리: 모바일에서의 최적화 */
+		@media (max-width: 600px) {
+			body {
+				margin: 10px;
+			}
+
+			h2 {
+				font-size: 20px;
+			}
+
+			button {
+				width: 100%;
+				font-size: 18px;
+			}
+
+			pre {
+				font-size: 14px;
+			}
+		}
+	</style>
+	</head>
+	<body>
+	<div><button th:onclick="mapgo([[${cinemaAddress}]])">길찾기</button></div>
+		<h2>대중교통안내</h2>
+		<hr>
+		
+		<pre>
+# 지하철
+- 2호선 강남역 11번 출구 도보 5분
+- 9호선 신논현역 5번 출구 도보 5분
+- 신분당선 신논현역 6번 출구 도보 3분
+
+# 버스
+- 간선버스 : 140, 144, 145, 146, 360, 400, 402, 420, 421, 440, 441, 452, 470, 542, 640, 643, 741 
+  심야) N13, N31, N37, N75
+- 지선버스 : 3412, 4312, 8146, 8541
+- 광역버스 : 1005, 1100, 1101, 1151, 1241, 1311, 1311B, 1550, 1550-1, 1551, 1551B, 1552, 1560, 1570, 1700, 2000, 2000-1, 3008, 3030, 3100, 3401, 3600, 4403, 5001, 5001-1, 5002A, 5002B, 5003A, 5003B,5006, 5100, 5200, 5300, 6001, 6002, 6002-1, 6004, 6427, 6600, 7007, 8001, 8502, 9004, 9202, 9303, 9400, 9404, 9408, 9409, 9500, 9501, 9600, 9700, 9711, 9800, 9802, G5100,G7426, M4403, M4434, M4448, M4449, M5422, M5438, M6427, M7412, P9201, 이음2
+  심야) 1101N, 3100N
+- 마을버스 : 서초03
+- 공항버스 : 6009
+		</pre>
+		<h2>주차안내</h2>
+		<hr>
+	<pre class="parking-info">
+■ 주차안내 (발렛주차)
+ - 스타플렉스 건물 지하2층~4층
+ - 발렛서비스 운영시간
+   : 오전 8시 이후 ~ 오후 20시
+   : 발렛 무료 서비스는  영화 관람 고객 한 함 (영화 미관람 시 건물 주차장에서 별도 정산)
+    (20시 이후 입차 차량은 발렛서비스 이용이 제한될 수 있으며, 
+     별도 운영되는 주차팀의 사정에 따라 변경될 수 있습니다.)
+
+■ 주차확인 (인증방법)
+ - 출차 시 영화티켓 제시 
+   (모바일/지류 모두가능)
+
+■ 주차요금
+ - 영화 관람 시 3시간 6,000원
+ - 주차시간(3시간) 초과 시 10분 당 1,000원
+		</pre>
+		<script>
+        // 팝업창 크기 변경 함수
+       function maximizePopup() {
+		    // 화면의 가로 및 세로 크기 가져오기
+		    var screenWidth = window.screen.availWidth;
+		    var screenHeight = window.screen.availHeight;
+		    
+		    // 팝업 창을 화면의 100%로 확장
+		    window.resizeTo(screenWidth, screenHeight);
+		}
+
+
+			function mapgo(a){
+	            window.location.href = "https://map.naver.com/v5/search/"+a;  // 페이지 이동
+	            maximizePopup();  // 페이지 이동 후 팝업창 크기 조절
+			}
+		</script>
+	</body>
+</html>

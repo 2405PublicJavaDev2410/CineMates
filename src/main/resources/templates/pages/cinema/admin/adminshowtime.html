@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <title>상영일정</title>
+      <style>
+          body {
+              text-align: center;
+              font-family: Arial, sans-serif;
+              background-color: #2c2c2c; /* 전체 배경을 어두운 색으로 */
+              color: white; /* 텍스트를 흰색으로 */
+              margin: 0;
+              padding: 0;
+          }
+          hr {
+              border: none;
+              height: 2px;
+              background-color: #d3d3d3; /* 구분선 색상 */
+              margin: 20px 0;
+          }
+
+          /* 네비게이션 리스트 */
+          ul {
+              padding: 0;
+              margin: 0;
+              list-style-type: none;
+          }
+
+          li {
+              display: inline-block;
+              margin-right: 15px;
+          }
+          div{
+              display:inline-block;
+          }
+          a{
+              color: white;
+              text-decoration: none;
+              font-size: 18px;
+              padding: 10px 20px;
+              background-color: #444; /* 버튼 같은 느낌을 위한 배경색 */
+              border-radius: 5px;
+              transition: background-color 0.3s;
+              text-align: center;
+              margin-right: 5px
+          }
+          a:hover {
+              background-color: #ff6f61; /* 마우스 호버시 색상 변경 */
+          }
+
+          #cinemamain div {
+              background-color: rgba(0, 0, 0, 0.7); /* 투명한 검은색 배경 */
+              padding: 10px;
+              margin-bottom: 10px;
+              border-radius: 5px;
+              font-size: 18px;
+          }
+
+          button {
+              background-color: #ff6f61;
+              border: none;
+              padding: 10px 20px;
+              font-size: 16px;
+              color: white;
+              cursor: pointer;
+              border-radius: 5px;
+              transition: background-color 0.3s;
+          }
+
+          button:hover {
+              background-color: #e65550;
+          }
+
+          h1 {
+              color: #ff6f61;
+          }
+          table {
+              width: 80%;
+              margin: 20px auto;
+              border-collapse: collapse;
+              background-color: white;
+              color: #333;
+              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 테이블에 그림자 추가 */
+          }
+
+          th, td {
+              padding: 12px;
+              text-align: center;
+              border: 1px solid #ddd; /* 테두리 추가 */
+          }
+
+          th {
+              background-color: #ff6f61; /* 헤더 배경 색상 */
+              color: white;
+          }
+
+          td {
+              color: #333;
+          }
+
+          tr:nth-child(even) {
+              background-color: #f9f9f9; /* 짝수 행의 배경을 약간 다르게 */
+          }
+          </style>
+  </head>
+  <body>
+  <h1>상영 일정</h1>
+  <input type="hidden" name="cinemaNo" th:value="${cinemaNo}">
+  <button th:onclick="adminscreen([[${cinemaNo}]])">상영관 관리</button>
+  <button th:onclick="showtimeinsert([[${cinemaNo}]])">상영 추가</button>
+
+  <button onclick="backone()">뒤로가기</button>
+  <br>
+  <h1>현재 상영일정</h1>
+    <div style="width:80%;text-align:left;">
+      <th th:each="showtime, stat : ${sList}" >
+          <div th:if="(${stat.index == 0} or ${sList[stat.index - 1].screenName != showtime.screenName}) or (${stat.index == 0} or${sList[stat.index - 1].movieNo != showtime.movieNo})" style="width:100%;">[[${showtime.title}]]</div>
+          <div th:if="${stat.index == 0} or ${sList[0].screenName==showtime.screenName} or${sList[stat.index - 1].screenName == showtime.screenName}"  style="width:200px;height:200px;float:left;" >
+              <!-- screenName이 바뀔 때마다 <br> 추가 -->
+              <!-- 이전 screenName과 현재 screenName 비교 -->
+
+              <div th:if="(${stat.index == 0} or ${sList[stat.index - 1].screenName != showtime.screenName}) or (${stat.index == 0} or${sList[stat.index - 1].movieNo != showtime.movieNo})">
+
+                  <div>[[${showtime.screenName}]]/[[${showtime.screenSeat}]]석</div><br>
+                  <div>상영 시작 :[[${showtime.showtimeStart}]]</div><br>
+                  <div>상영 종료 :[[${showtime.showtimeEnd}]]</div><br>
+              </div>
+              <div th:unless="(${stat.index == 0} or ${sList[stat.index - 1].screenName != showtime.screenName}) or (${stat.index == 0} or${sList[stat.index - 1].movieNo != showtime.movieNo})">
+
+                  <div style="height:59px;"></div>
+
+              </div>
+
+              <!-- showtimeTime 출력 -->
+              <a style="display:block; height:45px;">
+                  <div>[[${showtime.showtimeTime}]] <br>[[${showtime.showtimeSeat}]]석</div><br>
+              </a>
+          </div>
+          <div th:unless="${stat.index == 0} or ${sList[0].screenName==showtime.screenName} or${sList[stat.index - 1].screenName == showtime.screenName}"  style="display:block"></div>
+          <div th:unless="${stat.index == 0} or ${sList[0].screenName==showtime.screenName} or${sList[stat.index - 1].screenName == showtime.screenName}"  style="width:200px;height:200px; float:left" >
+              <!-- screenName이 바뀔 때마다 <br> 추가 -->
+              <!-- 이전 screenName과 현재 screenName 비교 -->
+              <div th:if="(${stat.index == 0} or ${sList[stat.index - 1].screenName != showtime.screenName}) or (${stat.index == 0} or${sList[stat.index - 1].movieNo != showtime.movieNo})">
+
+                  <div>[[${showtime.screenName}]]/[[${showtime.screenSeat}]]석</div><br>
+                  <div>상영 시작 :[[${showtime.showtimeStart}]]</div><br>
+                  <div>상영 종료 :[[${showtime.showtimeEnd}]]</div><br>
+              </div>
+              <div th:unless="(${stat.index == 0} or ${sList[stat.index - 1].screenName != showtime.screenName}) or (${stat.index == 0} or${sList[stat.index - 1].movieNo != showtime.movieNo})">
+                  <div style="height:59px;"></div>
+              </div>
+
+              <!-- showtimeTime 출력 -->
+              <a style="display:block; height:45px;">
+                  <div>[[${showtime.showtimeTime}]] <br>[[${showtime.showtimeSeat}]]석</div><br>
+              </a>
+
+
+          </div>
+      </th>
+  </div>
+  <h1>전체 상영일정</h1>
+  <table>
+      <tr>
+          <th>상영번호</th>
+          <th>상영관번호</th>
+          <th>이름</th>
+          <th>영화번호</th>
+          <th>남은좌석수</th>
+          <th>상영시작시간</th>
+          <th>상영시작일정</th>
+          <th>상영종료일정</th>
+
+      </tr>
+      <tr th:each="show:${allsList}">
+          <td>[[${show.showtimeNo}]]</td>
+          <td>[[${show.screenNo}]]</td>
+          <td><a style="background: none; color: inherit; padding: 0; margin: 0; border: none; text-decoration: underline; cursor: pointer;" href="" th:onclick="updateshowtime([[${show.showtimeNo}]])">[[${show.screenName}]]</a></td>
+          <td>[[${show.movieNo}]]</td>
+          <td>[[${show.showtimeSeat}]]</td>
+          <td>[[${show.showtimeTime}]]</td>
+          <td>[[${show.showtimeStart}]]</td>
+          <td>[[${show.showtimeEnd}]]</td>
+      </tr>
+  </table>
+
+  <script>
+      function showtimeinsert(a){
+          var popupW = 600;
+          var popupH = 800;
+          var left = Math.ceil((window.screen.width - popupW)/2);
+          var top = Math.ceil((window.screen.height - popupH)/2);
+          writeWindow=window.open("/cinema/showtimeinsert"+a,"pop","width=600,height=800,left="+left+",top="+top+"");
+      }
+      function adminscreen(a){
+          location.href="/cinema/screen"+a;
+      }
+      function updateshowtime(a){
+          var popupW = 600;
+          var popupH = 800;
+          var left = Math.ceil((window.screen.width - popupW)/2);
+          var top = Math.ceil((window.screen.height - popupH)/2);
+          writeWindow=window.open("/cinema/updateshowtime"+a,"pop","width=600,height=800,left="+left+",top="+top+"");
+      }
+      function backone(){
+          window.history.back();
+      }
+  </script>
+
+  </body>
+</html>

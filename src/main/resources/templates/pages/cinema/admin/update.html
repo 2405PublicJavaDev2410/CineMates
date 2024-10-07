@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>극장추가</title>
+
+        <style type="text/css">
+            body {
+                font-family: 'Arial', sans-serif;
+                width: 100%;
+                max-width: 500px;
+                margin: 0 auto;
+                padding: 20px;
+                background-color: #f0f0f0;
+                color: #333;
+                box-sizing: border-box;
+            }
+            h1 {
+                color: #2c3e50;
+                text-align: center;
+                margin-bottom: 30px;
+            }
+            form {
+                background-color: white;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            div {
+                margin: 15px 0;
+                text-align: left;
+            }
+            input, select {
+                width: 100%;
+                padding: 10px;
+                margin-top: 5px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+            small {
+                display: block;
+                color: #e74c3c;
+                font-size: 12px;
+                margin-top: 5px;
+            }
+            button {
+
+                width: 45%;
+                padding: 10px;
+                background-color: #3498db;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 16px;
+                margin-top: 20px;
+            }
+            button:hover {
+                background-color: #2980b9;
+            }
+        </style>
+    </head>
+    <body>
+    <h1>극장 수정/삭제</h1>
+    <form action="/cinema/update" method="post">
+        <div>
+            <label for="cinemaLocationCode">지역코드</label>
+            <input type="number" name="cinemaLocationCode" id="cinemaLocationCode" th:value="${cinema.cinemaLocationCode}">
+            <small>1:서울,2:인천,3:경기,4:대전/충천,5:부산/울산,6:대구/경상,7:강원,8:광주/전라/제주</small>
+        </div>
+        <div>
+            <label for="cinemaName">극장이름</label>
+            <input type="text" name="cinemaName" id="cinemaName" th:value="${cinema.cinemaName}">
+
+        </div>
+        <div>
+            <label for="cinemaAddress">주소</label>
+            <input type="text" name="cinemaAddress" id="cinemaAddress" th:value="${cinema.cinemaAddress}">
+
+        </div>
+        <div>
+            <label for="cinemaCall">극장전화번호</label>
+            <input type="text" name="cinemaCall" id="cinemaCall" th:value="${cinema.cinemaCall}">
+
+        </div>
+        <div>
+            <label for="cinemaScreens">상영관수</label>
+            <input type="number" name="cinemaScreens" id="cinemaScreens" th:value="${cinema.cinemaScreens}">
+
+        </div>
+        <div>
+            <label for="cinemaSeat">총좌석</label>
+            <input type="number" name="cinemaSeat" id="cinemaSeat" th:value="${cinema.cinemaSeat}">
+        </div>
+        <input type="hidden" name="cinemaNo" th:value="${cinema.cinemaNo}">
+        <button>수정</button>
+        <button type="button" th:onclick="deletecinema([[${cinema.cinemaNo}]])">삭제</button>
+    </form>
+    <script>
+        function deletecinema(a){
+            location.href="/cinema/delete"+a;
+        }
+    </script>
+    </body>
+</html>

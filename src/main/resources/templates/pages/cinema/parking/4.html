@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>동대문</title>
+	<style>
+		body {
+			font-family: 'Arial', sans-serif;
+			margin: 20px;
+			line-height: 1.6;
+			background-color: #f9f9f9;
+			color: #333;
+		}
+
+		h2 {
+			color: #007bff; /* 강조 색상 */
+			font-size: 24px;
+			border-bottom: 2px solid #007bff;
+			padding-bottom: 10px;
+			margin-bottom: 20px;
+		}
+
+		hr {
+			border: 0;
+			height: 1px;
+			background-color: #ddd;
+			margin: 20px 0;
+		}
+
+		pre {
+			background-color: #f0f8ff; /* 가독성을 위한 배경색 */
+			padding: 15px;
+			border-radius: 5px;
+			font-size: 16px;
+			overflow-x: auto;
+			white-space: pre-wrap;
+			word-wrap: break-word;
+		}
+
+		div {
+			text-align: right;
+			margin-bottom: 20px;
+		}
+
+		button {
+			padding: 10px 20px;
+			background-color: #007bff;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			font-size: 16px;
+		}
+
+		button:hover {
+			background-color: #0056b3;
+		}
+
+		/* 주차 안내 박스 */
+		.parking-info {
+			background-color: #fff8dc;
+			padding: 20px;
+			border: 1px solid #ccc;
+			border-radius: 10px;
+			margin-top: 20px;
+		}
+
+		/* 미디어 쿼리: 모바일에서의 최적화 */
+		@media (max-width: 600px) {
+			body {
+				margin: 10px;
+			}
+
+			h2 {
+				font-size: 20px;
+			}
+
+			button {
+				width: 100%;
+				font-size: 18px;
+			}
+
+			pre {
+				font-size: 14px;
+			}
+		}
+	</style>
+	</head>
+	<body>
+	<div><button th:onclick="mapgo([[${cinemaAddress}]])">길찾기</button></div>
+		<h2>대중교통안내</h2>
+		<hr>
+		
+		<pre>
+- 위치안내 : 동대문 현대시티아울렛 10층에 위치
+- 버스안내 : [청계6가, 버들다리] 간선버스(파랑버스): 163
+                [청계6가, 오간수교] 간선버스(파랑버스): 163
+                [동대문역사문화공원] 간선버스(파랑버스): 105, 144, 261, 301, 407, 420, N13, N16, N30, N62
+                                            지선버스(초록버스): 2014, 2233, 7212
+                                            광역버스(빨강버스): 9403
+- 지하철안내 : 1, 4호선 동대문역 8번출구 도보 약5분거리(385m)
+                   2, 4, 5호선 동대문역사문화공원역 14번출구 도보 6분거리(425m)
+		</pre>
+		<h2>주차안내</h2>
+		<hr>
+	<pre class="parking-info">
+■ 주차 안내
+- 건물 지하 3층 ~ 지하 6층
+- 22:30 이후 출차 고객은 지하 3, 4층 주차장 이용(22:30 지하 5, 6층 주차장 폐쇠)
+- 지하 주차장 이용 시 9, 10호기 엘레베이터 이용
+- 주차 공간이 협소하오니 대중교통 이용 부탁드립니다.
+
+■ 주차 확인(인증 방법)
+- 영화 종영 후, 평일(월~금) 10층 E/V 앞 주차 키오스크 셀프 인증
+- 주말(토~일) 티켓판매기 또는 10층 E/V 앞 주차 키오스크 셀프 인증
+
+■ 주차 요금
+- 영화 관람 시, 주차 2시간 30분 무료(+입차 후 기본 30분 무료)
+- 이후 10분당 600원
+- 현대시티아울렛 이용 시 최대 4시간 적용 가능
+- 영화 두 편 이상 관람 시에도 3시간에 한하여 무료 적용
+
+
+
+- 노원방면 진입시: 미아사거리에서 '길음역'방면으로 우회전 → 청계7가에서 '동대문 시장'방면으로 우회전 → 두산타워와 평화시장 건물 사이길로 입차
+
+- 뚝섬방면 진입시: 성동교 → 한양대병원사거리 → 왕십리로 → 한양공고 앞 '시청, 동대문 역사문화공원' 방면으로 우회전 → 롯데 피트인에서 우회전 → 밀리오레에서 좌회전 → 현대 시티 아울렛 동대문점 선큰 광장 위치
+
+- 광진구방면 진입시: 강변북로 → 서울숲지하차도 진입후 뚝섬로 이동 → 응봉교 → 고산자로 → 왕십리역에서 '상왕십리역'방면으로 좌회전 → 한양공고 앞 '시청, 동대문 역사문화공원' 방면으로 우회전 → 롯데 피트인에서 우회전 → 밀리오레에서 좌회전 → 현대 시티 아울렛 동대문점 선큰 광장 위치
+		</pre>
+		<script>
+        // 팝업창 크기 변경 함수
+       function maximizePopup() {
+		    // 화면의 가로 및 세로 크기 가져오기
+		    var screenWidth = window.screen.availWidth;
+		    var screenHeight = window.screen.availHeight;
+		    
+		    // 팝업 창을 화면의 100%로 확장
+		    window.resizeTo(screenWidth, screenHeight);
+		}
+
+
+			function mapgo(a){
+	    		
+	            window.location.href = "https://map.naver.com/v5/search/"+a;  // 페이지 이동
+	            maximizePopup();  // 페이지 이동 후 팝업창 크기 조절
+
+
+	    		
+
+			}
+		</script>
+	</body>
+</html>
