@@ -20,6 +20,7 @@
 <input type="hidden" id="screenName" name="screenName" th:value="${rDTO.screenName}">
 <input type="hidden" id="screenNo" name="screenNo" th:value="${rDTO.screenNo}">
 <input type="hidden" id="movieNo" name="movieNo" th:value="${rDTO.movieNo}">
+<input type="hidden" id="cinemaNo" name="cinemaNo" th:value="${rDTO.cinemaNo}">
 <script>
 
     var IMP = window.IMP;
@@ -34,7 +35,8 @@
             cinemaName: document.getElementById('cinemaName').value,
             screenName: document.getElementById('screenName').value,
             screenNo: document.getElementById('screenNo').value,
-            movieNo: document.getElementById('movieNo').value
+            movieNo: document.getElementById('movieNo').value,
+            cinemaNo: document.getElementById('cinemaNo').value
         };
         console.log("Reservation Data:", reservationData);
         IMP.request_pay({
@@ -82,7 +84,10 @@
                         "memberId": reservationData.memberId,
                         "cinemaName": reservationData.cinemaName,
                         "screenName": reservationData.screenName,
-                        "imp_uid": rsp.imp_uid
+                        "screenNo" : reservationData.screenNo,
+                        "movieNo" : reservationData.movieNo,
+                        "imp_uid": rsp.imp_uid,
+                        "cinemaNo" : reservationData.cinemaNo
 
                     }
                     $.ajax({

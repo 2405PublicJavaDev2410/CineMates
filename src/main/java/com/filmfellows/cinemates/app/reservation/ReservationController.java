@@ -30,14 +30,6 @@ public class ReservationController {
     @Autowired
     private ReservationDTO reservationDTO;
 
-    private static String generateRandomString(int length) {
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < length; i++) {
-            int character = random.nextInt(ALPHA_NUMERIC_STRING.length());
-            builder.append(ALPHA_NUMERIC_STRING.charAt(character));
-        }
-        return builder.toString();
-    }
 
     @GetMapping("/Ticketing")
     public String showShowTimePage(Model model, HttpSession session) {
@@ -67,6 +59,14 @@ public class ReservationController {
         System.out.println("rDTO 보여줘라 " + rDTO);
         model.addAttribute("rDTO", rDTO);
         return "pages/reservation/PersonSeat";
+    }
+    private static String generateRandomString(int length) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            int character = random.nextInt(ALPHA_NUMERIC_STRING.length());
+            builder.append(ALPHA_NUMERIC_STRING.charAt(character));
+        }
+        return builder.toString();
     }
 
     @GetMapping("/getCinemas")
@@ -105,9 +105,8 @@ public class ReservationController {
             show.setAvailableSeats(availableSeats);
         }
 
-        System.out.println("나와라" + sList);
+        System.out.println("sList" + sList);
         model.addAttribute("sList", sList);
-        System.out.println("sList: " + sList);
         System.out.println("rList: " + rList);
         return ResponseEntity.ok(sList);
     }
