@@ -14,9 +14,8 @@ public class Member {
     private String memberPw;
     private String name;
     private Timestamp birthDate;
-    private String email;
-    private String profileImg;
     private String phone;
+    private String email;
     private String status;
     private String deleteYn;
     private String role;

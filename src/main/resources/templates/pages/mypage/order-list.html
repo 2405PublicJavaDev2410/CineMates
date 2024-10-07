@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/defaultLayout}"
+      layout:fragment="Content">
+<link href="/css/mypage/order-list.css" rel="stylesheet">
+<link href="/css/mypage/my-sidebar.css" rel="stylesheet">
+<div class="my-page-container">
+    <!-- 사이드바 -->
+    <div th:replace="~{pages/mypage/my-sidebar :: my-sidebar}"></div>
+    <!-- 메인 -->
+    <main id="main-container">
+        <div class="search-order-form">
+            <p id="order-title">구매 내역 조회</p><br><br><br>
+            <div id="period-group">
+                <div class="form-group " id="order-search-section">
+                    <label><b>조회 기간</b></label>
+                    <div class="period-buttons">
+                        <button id="one-month-btn" onclick="setPeriod(1, this)">1개월</button>
+                        <button id="three-month-btn" onclick="setPeriod(3, this)">3개월</button>
+                        <button id="six-month-btn" onclick="setPeriod(6, this)">6개월</button>
+                        <button id="custom-btn" onclick="customPeriod(this)">직접 입력</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="date" id="start-date" class="period-date" value="2024-08-25">
+                    <span> ~ </span>
+                    <input type="date" id="end-date" class="period-date" value="2024-09-25">
+                    <button id="period-search-btn">조회하기</button>
+                </div>
+            </div>
+                <br>
+            <table id="result-table" style="display: none;">
+                <colgroup>
+                    <col style="width: 20%"/>
+                    <col style="width: 60%"/>
+                    <col style="width: 20%"/>
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>구매일</th>
+                        <th>상품명</th>
+                        <th>결제금액</th>
+                    </tr>
+                </thead>
+                <tbody id="result-body"></tbody>
+            </table>
+            <p class="no-result-msg" id="period-no-result" style="display: none;">구매 내역이 없습니다.</p>
+        </div>
+    </main>
+</div>
+<script type="text/javascript" src="/js/mypage/order-list.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelector('#side-menu-2').classList.add('selected');
+    })
+</script>
+</html>

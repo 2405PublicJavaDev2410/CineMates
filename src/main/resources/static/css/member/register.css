@@ -1,0 +1,154 @@
+
+#signup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 100px 0;
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+}
+#signup-form {
+    width: 740px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 20px gainsboro;
+    padding: 80px 110px 70px 110px;
+    display: inline-block;
+}
+.input-group {
+    margin-top: 18px;
+    display: flex;
+    flex-direction: column;
+}
+.input-container {
+    display: flex;
+    justify-content: space-between;
+}
+#signup-form h1 {
+    font-family: 'GmarketSansMedium', serif;
+    letter-spacing: 3px;
+    font-size: 32px;
+    color: #D54946;
+}
+.input-group label {
+    font-size: 16px;
+}
+.common-input-box {
+    padding: 10px;
+    margin: 5px 0;
+}
+.common-input-box:focus {
+    outline: none;
+    border: 1px solid #466288;
+    box-shadow: 0 0 3px #466288;
+}
+.pwd-group {
+    position: relative;
+    width: 100%;
+}
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 64%;
+    left: 92%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #888;
+    font-size: 20px;
+    width: 25px;
+}
+.email-group, .auth-group {
+    display: flex;
+    justify-content: space-evenly;
+}
+.email-btn, .auth-btn {
+    width: 25%;
+    height: 45px;
+    margin-top: 5px;
+    border: none;
+    color: white;
+    font-size: 16px;
+    letter-spacing: 1px;
+    border-radius: 5px;
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+    background-color: #EA4E4A;
+    margin-left: 10px;
+}
+.email-btn:hover {
+    background-color: #E12C25;
+    cursor: pointer;
+}
+.auth-btn:hover {
+    background-color: #E12C25;
+    cursor: pointer;
+}
+.asterisk {
+    color: red;
+}
+.hide {
+    display: none;
+}
+.failure-message {
+    color: #ED1C24;
+    font-size: 14px;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+.success-message {
+    color: #66BB6A;
+    font-size: 14px;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+.error-border {
+    transition: none;
+    border: 2px solid #ED1C24;
+}
+.error-border:focus {
+    border: 2px solid #ED1C24;
+    box-shadow: 0 0 3px #ED1C24;
+}
+.success-border {
+    transition: none;
+    border: 2px solid #66BB6A;
+}
+.success-border:focus {
+    border: 2px solid #66BB6A;
+    box-shadow: 0 0 3px #66BB6A;
+}
+#select-file-btn {
+    margin-top: 10px;
+    padding: 11px 10px;
+    width: 100px;
+    font-size: 16px;
+    text-align: center;
+    color: #fff;
+    background-color: #6e6e6e;
+    cursor: pointer;
+    height: 40px;
+    border-radius: 5px;
+}
+.file-group input[type="file"] {
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+}
+#thumbnail-container {
+    margin-top: 10px;
+}
+#profile-thumbnail {
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 0 7px rgba(0, 0, 0, 0.2);
+}
+.common-primary-btn {
+    letter-spacing: 1px;
+    margin: 10px 0;
+}
+.common-primary-btn:hover {
+    background-color: #E12C25;
+}

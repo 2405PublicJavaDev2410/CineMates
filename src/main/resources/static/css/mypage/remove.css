@@ -1,0 +1,113 @@
+.my-page-container {
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 100px 0;
+    margin: 0 auto;
+    flex-direction: row;
+    width: 90%;
+    flex: 1 1 auto;
+}
+
+/*메인 CSS*/
+#main-container {
+    width: 800px;
+    float: left;
+    margin: 0 auto;
+}
+.remove-form {
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+    margin-left: 40px;
+    padding: 20px 0 20px 20px;
+}
+#remove-title {
+    font-family: 'GmarketSansMedium', serif;
+    font-size: 28px;
+    font-weight: bold;
+}
+#remove-info {
+    margin-bottom: 10px;
+    padding: 30px 20px;
+    background-color: #ececec;
+    border-radius: 10px;
+}
+#remove-info pre {
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+    font-size: 14px;
+    /*letter-spacing: 1px;*/
+}
+#red-text {
+    color: red;
+}
+.input-group {
+    margin: 15px 0;
+    display: flex;
+    align-items: center;
+}
+.input-group label {
+    width: 120px;
+    font-size: 16px;
+}
+.id-group span {
+    font-size: 16px;
+    font-weight: 500;
+    color: #233245;
+}
+.common-input-box {
+    width: 440px;
+    padding: 10px;
+    margin: 10px 0;
+}
+.pwd-group {
+    position: relative;
+    width: 100%;
+}
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 54%;
+    left: 70%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #888;
+    font-size: 20px;
+    width: 25px;
+}
+.hide {
+    display: none;
+}
+.message {
+    position: absolute;
+    top: 85%;
+    left: 1%;
+    color: #ED1C24;
+    font-size: 14px;
+    margin-top: 5px;
+    margin-left: 120px;
+}
+.error-border {
+    transition: none;
+    border: 2px solid #ED1C24;
+}
+#remove-btn {
+    width: 90px;
+    height: 45px;
+    padding: 10px 10px;
+    margin-right: 20px;
+    border-radius: 5px;
+    letter-spacing: 1px;
+    background-color: #464646;
+    border: 2px solid #464646;
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+    transition: border 0.3s ease, background-color 0.3s ease;
+    font-size: 16px;
+    color: white;
+    cursor: pointer;
+    float: right;
+}
+#remove-btn:hover {
+    background-color: #242424;
+    border: 2px solid #242424;
+    color: white;
+}

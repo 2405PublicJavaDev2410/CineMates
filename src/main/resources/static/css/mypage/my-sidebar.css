@@ -1,0 +1,65 @@
+/*사이드바 CSS*/
+.my-sidebar {
+    width: 170px;
+    height: 100%;
+    margin: 0 auto;
+    background-color: #f8f8f8;
+    border: 2px solid #ddd;
+    border-radius: 15px;
+    float: left;
+}
+#my-title {
+    width: 170px;
+    z-index: 1;
+    height: 62px;
+    background-color: #233245;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px 15px 0 0;
+    border: 2px solid #233245;
+    margin: -2px -2px 0 -2px;
+}
+#my-title p {
+    font-family: 'GmarketSansMedium', serif;
+    text-align: center;
+    font-weight: 500;
+    font-size: 22px;
+}
+.my-sideList ul {
+    list-style-type: none;
+    padding: 10px 10px;
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+}
+.my-sideList li {
+    margin: 15px 0;
+}
+.my-sideList a {
+    text-decoration: none;
+    color: black;
+    font-size: 16px;
+    padding: 8px 12px;
+    display: block;
+    border-radius: 5px;
+}
+.my-sideList a:hover {
+    background-color: #D54946;
+    color: #fff;
+    transition: background-color 0.3s;
+}
+.my-sideList .withdrawal {
+    color: red;
+}
+.my-sideList a.withdrawal:hover {
+    background-color: #466288;
+    color: white;
+}
+.my-sideList li .selected {
+    background-color: #D54946;
+    color: white;
+}
+.my-sideList li:last-child .selected {
+    background-color: #466288;
+    color: white;
+}
