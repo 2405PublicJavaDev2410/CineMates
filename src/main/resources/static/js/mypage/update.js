@@ -26,7 +26,7 @@ function modifyMember() {
         const formData = new FormData(document.querySelector('#update-member-form'));
         $.ajax({
             url: '/modify',
-            method: 'post',
+            method: 'POST',
             data: formData,
             processData: false,
             contentType: false,

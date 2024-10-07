@@ -14,7 +14,7 @@
         <div class="qna-list-form">
             <p id="qna-title">1:1 문의 내역 조회</p><br><br><br>
             <div class="qna-header">
-                <button id="new-qna-btn">1:1 문의 등록</button>
+                <button type="button" id="new-qna-btn" onclick="goToRegister()">1:1 문의 등록</button>
             </div>
             <div class="search-container">
                 <select name="searchCondition">
@@ -77,9 +77,4 @@
     </main>
 </div>
 <script type="text/javascript" src="/js/mypage/qna-list.js"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        document.querySelector('#side-menu-3').classList.add('selected');
-    })
-</script>
 </html>

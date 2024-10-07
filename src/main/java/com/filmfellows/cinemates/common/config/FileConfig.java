@@ -20,6 +20,13 @@ public class FileConfig implements WebMvcConfigurer {
         private String memberImagePath;
 
         /**
+         * 담당자 : 엄태운
+         * 문의 파일 경로
+         */
+        @Value("${qna.images.path}")
+        private String qnaImagePath;
+
+        /**
          * 담당자 : another
          * 영화 파일 경로
          */
@@ -31,6 +38,9 @@ public class FileConfig implements WebMvcConfigurer {
         public void addResourceHandlers(ResourceHandlerRegistry registry) {
                 registry.addResourceHandler(FOLDER_PATH + "/member/**")
                         .addResourceLocations(memberImagePath);
+
+                registry.addResourceHandler(FOLDER_PATH + "/qna/**")
+                        .addResourceLocations(qnaImagePath);
 
                 registry.addResourceHandler(FOLDER_PATH + "/another/**")
                         .addResourceLocations(anotherImagePath);

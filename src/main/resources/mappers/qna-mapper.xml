@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.filmfellows.cinemates.domain.mypage.model.mapper.MyPageMapper">
+    <insert id="insertQna" useGeneratedKeys="true" keyProperty="qnaNo" keyColumn="QNA_NO">
+        INSERT INTO QNA_TBL (QNA_NO, TITLE, CONTENT, MEMBER_ID)
+        VALUES (SEQ_QNA_NO.NEXTVAL, #{title}, #{content}, #{memberId})
+    </insert>
+    <insert id="insertQnaFile">
+        INSERT INTO QNA_FILE_TBL (QNA_FILE_NO, FILE_NAME, FILE_RENAME, FILE_PATH, QNA_NO)
+        VALUES (SEQ_QNA_FILE_NO.NEXTVAL, #{fileName}, #{fileRename}, #{filePath}, #{qnaNo})
+    </insert>
+</mapper>

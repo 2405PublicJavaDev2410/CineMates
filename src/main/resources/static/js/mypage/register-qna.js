@@ -1,6 +1,33 @@
-document.getElementById('profileImg').addEventListener('change', function(event) {
+function registerQna() {
+    if(confirm("문의를 등록하시겠습니까? 한번 등록된 문의는 삭제만 가능합니다.")) {
+        const formData = new FormData(document.querySelector('#register-qna-form'));
+        for (const [key, value] of formData.entries()) {
+            console.log(key, value);
+        }
+        $.ajax({
+            url: '/qna-register',
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                if(data === 'success') {
+                    alert('등록이 완료되었습니다.');
+                    window.location.href = '/my-page/qna-list';
+                }else {
+                    alert('등록 실패. 다시 시도해 주세요.');
+                }
+            },
+            error: function() {
+                alert('서버 통신 에러!');
+            }
+        });
+    }
+}
+
+document.getElementById('qnaFile').addEventListener('change', function(event) {
     const file = event.target.files[0];
-    const thumbnail = document.getElementById('profile-thumbnail');
+    const thumbnail = document.getElementById('qna-file-thumbnail');
     const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
 
     if (file) {
@@ -26,36 +53,6 @@ document.getElementById('profileImg').addEventListener('change', function(event)
     }
 })
 
-const pwIcon = document.querySelector('.pwIcon');
-const pwInput = document.querySelector('#memberPw');
-
-// 비밀번호 마스킹 해제 버튼
-pwIcon.addEventListener('click', function () {
-    const type = pwInput.getAttribute('type') === 'password' ? 'text' : 'password';
-    pwInput.setAttribute('type', type);
-
-    if (type === 'password') {
-        this.classList.remove('fi-rr-eye-crossed');
-        this.classList.add('fi-rs-eye');
-    } else {
-        this.classList.remove('fi-rs-eye');
-        this.classList.add('fi-rr-eye-crossed');
-    }
-});
-
-// 비밀번호 확인 마스킹 해제 버튼
-const cpwIcon = document.querySelector('.cpwIcon');
-const cpwInput = document.querySelector('#passwordCheck');
-
-cpwIcon.addEventListener('click', function () {
-    const type = cpwInput.getAttribute('type') === 'password' ? 'text' : 'password';
-    cpwInput.setAttribute('type', type);
-
-    if (type === 'password') {
-        this.classList.remove('fi-rr-eye-crossed');
-        this.classList.add('fi-rs-eye');
-    } else {
-        this.classList.remove('fi-rs-eye');
-        this.classList.add('fi-rr-eye-crossed');
-    }
-});
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelector('#side-menu-3').classList.add('selected');
+})
