@@ -110,3 +110,35 @@ pwInput.onblur = function() {
 pwCheckInput.onblur = function() {
     pwCheckInput.classList.remove('error-border');
 }
+
+// 비밀번호 마스킹 해제 버튼
+const pwIcon = document.querySelector('.pwIcon');
+
+pwIcon.addEventListener('click', function () {
+    const type = pwInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    pwInput.setAttribute('type', type);
+
+    if (type === 'password') {
+        this.classList.remove('fi-rr-eye-crossed');
+        this.classList.add('fi-rs-eye');
+    } else {
+        this.classList.remove('fi-rs-eye');
+        this.classList.add('fi-rr-eye-crossed');
+    }
+});
+
+// 비밀번호 확인 마스킹 해제 버튼
+const cpwIcon = document.querySelector('.cpwIcon');
+
+cpwIcon.addEventListener('click', function () {
+    const type = pwCheckInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    pwCheckInput.setAttribute('type', type);
+
+    if (type === 'password') {
+        this.classList.remove('fi-rr-eye-crossed');
+        this.classList.add('fi-rs-eye');
+    } else {
+        this.classList.remove('fi-rs-eye');
+        this.classList.add('fi-rr-eye-crossed');
+    }
+});

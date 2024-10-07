@@ -25,6 +25,7 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
     private final JavaMailSender mailSender;
     private final EmailVerificationMapper evMapper;
 
+    // 비밀번호 재설정 이메일 보내기
     @Override
     public void sendPasswordResetEmail(String toEmail, String memberId) {
         String resetToken = generateResetToken(memberId);
@@ -50,6 +51,7 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
         }
     }
 
+    // 토큰이 유효한지 검증
     public boolean isValidToken(String token) {
         PwResetToken resetToken = evMapper.findTokenByToken(token);
         if (resetToken == null) {
@@ -60,6 +62,7 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
         return now.before(resetToken.getExpireTime());
     }
 
+    // 토큰 정보 select
     public String verifyToken(String token) {
         PwResetToken resetToken = evMapper.findTokenByToken(token);
         log.info(resetToken.toString());
@@ -70,10 +73,11 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
         return resetToken.getMemberId();
     }
 
+    // 토큰 생성
     @Override
     public String generateResetToken(String memberId) {
         String token = UUID.randomUUID().toString();
-        Timestamp expireTime = Timestamp.valueOf(LocalDateTime.now().plusHours(1));
+        Timestamp expireTime = Timestamp.valueOf(LocalDateTime.now().plusMinutes(30));
 
         PwResetToken resetToken = new PwResetToken();
         resetToken.setToken(token);
