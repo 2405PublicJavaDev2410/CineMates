@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>영화 좌석 예매 시스템</title>
+    <style>
+        .seat {
+            width: 30px;
+            height: 30px;
+            margin: 3px;
+            display: inline-block;
+            text-align: center;
+            line-height: 30px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+
+        .selected {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .reserved {
+            background-color: #f44336;
+            color: white;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+<h1>영화 좌석 예매 시스템</h1>
+
+<span>
+        <input onclick='count("plus")' type='button' value='+'/>
+        <input onclick='count("minus")' type='button' value='-'/>
+        <div id="result">0</div>
+    </span>
+
+<div id="seatMap"></div>
+<!--    <button onclick="reserveSelectedSeats()">선택한 좌석 예약</button>-->
+<!--    <button onclick="cancelReservation()">예약 취소</button>-->
+<p id="message"></p>
+<form action="/paymentReady" method="POST">
+    <button type="submit">예약하기</button>
+    <input name="reservationNo" th:value="${rDTO.reservationNo}" type="hidden">
+    <input id="countInput" name="reservationVisitor" th:value="${rDTO.reservationVisitor}" type="hidden">
+    <input id="selectedSeatsInput" name="reservationSeat" th:value="${rDTO.reservationSeat}" type="hidden">
+    <input type="hidden" name="screenNo" th:value="${rDTO.screenNo}">
+    <input type="hidden" name="movieNo" th:value="${rDTO.movieNo}">
+    <input type="hidden" name="showtimeTime" th:value="${rDTO.showtimeTime}">
+    <input type="hidden" name="title" th:value="${rDTO.title}">
+</form>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    let visitorCount = /*[[${rDTO.reservationVisitor}]]*/ 0;
+    const reservationVisitor = document.getElementById('result');
+    const countInput = document.getElementById('countInput');
+    const selectedSeatsInput = document.getElementById('selectedSeatsInput');
+
+    function count(type) {
+        // 더하기/빼기
+        if (type === "plus") {
+            visitorCount++;
+        } else if (type === "minus" && visitorCount > 0) {
+            visitorCount--;
+        }
+        // 현재 화면에 표시된 값
+        reservationVisitor.innerText = visitorCount;
+        countInput.value = visitorCount;
+
+        // 결과 출력
+        reservationVisitor.innerText = visitorCount;
+    }
+
+    const rDTO = /*[[${rDTO}]]*/ {};
+    const reservedSeats = rDTO.reservationSeat ? rDTO.reservationSeat.split(',').map(Number) : [];
+    /*]]>*/
+    console.log(reservedSeats);
+    const rows = 5;
+    const seatsPerRow = 10;
+    const seats = Array(rows * seatsPerRow).fill(false);
+    let selectedSeats = [];
+
+
+
+    function initializeSeatMap() {
+        const seatMap = document.getElementById('seatMap');
+        for (let i = 0; i < seats.length; i++) {
+            const seat = document.createElement('div');
+            seat.className = 'seat';
+            seat.innerText = i + 1;
+            seat.onclick = () => toggleSeat(i);
+            seatMap.appendChild(seat);
+
+            if (reservedSeats.includes(i + 1)) {
+                seat.classList.add('reserved');
+                seats[i] = true; // 예매된 좌석 표시
+                seat.onclick = null;
+            } else {
+                seat.onclick = () => toggleSeat(i);
+            }
+
+            seatMap.appendChild(seat);
+            if ((i + 1) % seatsPerRow === 0) {
+                seatMap.appendChild(document.createElement('br'));
+            }
+        }
+    }
+
+    function toggleSeat(index) {
+        if (seats[index]) return; // 이미 예약된 좌석은 선택 불가
+        const maxSeats = parseInt(reservationVisitor.innerText);
+        const seatElement = document.getElementsByClassName('seat')[index];
+
+        if (selectedSeats.includes(index)) {
+            selectedSeats = selectedSeats.filter(seatIndex => seatIndex !== index);
+            seatElement.classList.remove('selected');
+        } else if (selectedSeats.length < maxSeats) {
+            selectedSeats.push(index);
+            seatElement.classList.add('selected');
+        } else {
+            alert(`최대 ${maxSeats}개의 좌석만 선택할 수 있습니다.`);
+            return;
+        }
+        updateSelectedSeatsInput();
+    }
+
+
+    function updateSelectedSeatsInput() {
+        selectedSeatsInput.value = selectedSeats.map(index => index + 1).join(',');
+        setMessage(`선택된 좌석: ${selectedSeatsInput.value}`);
+    }
+
+    function setMessage(msg) {
+        document.getElementById('message').innerText = msg;
+    }
+
+    initializeSeatMap();
+</script>
+</body>
+</html>
