@@ -15,13 +15,13 @@ function resetPassword() {
     const formData = new FormData(document.querySelector('#reset-member-pw-form'));
     $.ajax({
         url: '/reset-pw',
-        method: 'post',
+        method: 'POST',
         data: JSON.stringify(Object.fromEntries(formData)),
         contentType: 'application/json',
         dataType: 'text',
         success: function(data) {
             if(data === 'success') {
-                alert('비밀번호가 변경이 완료되었습니다. 로그인 화면으로 이동합니다.')
+                alert('비밀번호 변경이 완료되었습니다. 로그인 화면으로 이동합니다.')
                 window.location.href= '/login';
             }else {
                 pwCheckFailureMsg.innerHTML =  '올바른 형식의 비밀번호가 아닙니다. 입력한 내용을 확인해주세요.';

@@ -5,7 +5,7 @@ const pwCheckInput = document.querySelector('#pw-check-input');
 const nameInput = document.querySelector('#name-input');
 const birthDateInput = document.querySelector('#birth-date-input');
 const emailInput = document.querySelector('#email-input');
-const authCodeInput = document.querySelector('#auth-code-input');
+const verCodeInput = document.querySelector('#ver-code-input');
 const phoneInput = document.querySelector('#phone-input');
 
 // 각 입력창의 메시지에 대한 객체 생성
@@ -21,57 +21,142 @@ const birthDateSuccessMsg = document.querySelector('#birth-date-success-message'
 const birthDateFailureMsg = document.querySelector('#birth-date-failure-message');
 const emailSuccessMsg = document.querySelector('#email-success-message');
 const emailFailureMsg = document.querySelector('#email-failure-message');
-const authCodeSuccessMsg = document.querySelector('#auth-code-success-message');
-const authCodeFailureMsg = document.querySelector('#auth-code-failure-message');
+const verCodeSuccessMsg = document.querySelector('#ver-code-success-message');
+const verCodeFailureMsg = document.querySelector('#ver-code-failure-message');
 const phoneSuccessMsg = document.querySelector('#phone-success-message');
 const phoneFailureMsg = document.querySelector('#phone-failure-message');
 
-function registerMember() {
-    if(!idCheck()) {
-        idInput.scrollIntoView({behavior: 'smooth', block: 'start'});
-        return;
-    }
-    if(!pwCheck()) {
-        pwInput.scrollIntoView({behavior: 'smooth', block: 'start'});
-        return;
-    }
-    if(!pwCheckCheck()) {
-        pwCheckInput.scrollIntoView({behavior: 'smooth', block: 'start'});
-        return;
-    }
-    if(!nameCheck()) {
-        nameInput.scrollIntoView({behavior: 'smooth', block: 'start'});
-        return;
-    }
-    if(!birthDateCheck()) {
-        birthDateInput.scrollIntoView({behavior: 'smooth', block: 'start'});
-        return;
-    }
+// 인증번호 발송
+function sendCode() {
     if(!emailCheck()) {
-        emailInput.scrollIntoView({behavior: 'smooth', block: 'start'});
         return;
     }
-    if(!phoneCheck()) {
-        phoneCheck.scrollIntoView({behavior: 'smooth', block: 'start'});
+
+    // 이메일 중복 체크
+    if (emailInput.classList.contains('error-border')) {
+        emailInput.focus(); // 중복된 이메일인 경우 포커스 이동
+        alert('중복된 이메일입니다. 다른 이메일을 사용해 주세요.');
         return;
     }
-    const formData = new FormData(document.querySelector('#register-member-form'));
+
+    const email = emailInput.value;
     $.ajax({
-        url: '/register',
-        method: 'post',
-        data: formData,
-        processData: false, // FormData를 문자열로 변환 X
-        contentType: false, // 브라우저가 알아서 Content-Type 설정하도록 함
+        url: '/send-verification-code',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ email : email }),
         success: function(data) {
-            if (data === 'success') {
-                alert("회원가입이 완료되었습니다.");
-                window.location.href = '/login';
+            if(data.success) {
+                alert(data.message);
+            }else {
+                alert(data.message);
+            }
+        },
+        error: function () {
+            alert('서버 통신 에러!');
+        }
+    })
+}
+
+// 인증번호 인증 여부를 체크하는 변수
+let isCodeVerified = false;
+// 인증번호 인증
+function verifyCode() {
+    const email = emailInput.value;
+    const verificationCode = verCodeInput.value;
+
+    $.ajax({
+        url: '/verify-code',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            email: email,
+            verificationCode: verificationCode
+        }),
+        success: function(data) {
+            if (data.success) {
+                isCodeVerified = true;
+                verCodeFailureMsg.classList.add('hide');
+                verCodeSuccessMsg.classList.remove('hide');
+                verCodeInput.classList.remove('error-border');
+                verCodeSuccessMsg.innerHTML = '인증이 완료되었습니다.';
+                verCodeInput.classList.add('success-border');
+            } else {
+                verCodeInput.classList.remove('success-border');
+                verCodeFailureMsg.innerHTML = '인증번호가 일치하지 않습니다.';
+                verCodeSuccessMsg.classList.add('hide');
+                verCodeFailureMsg.classList.remove('hide');
+                verCodeInput.classList.add('error-border');
             }
         },
         error: function() {
             alert('서버 통신 에러!');
         }
-    })
+    });
+}
+
+// 회원가입
+function registerMember() {
+    const errorFields = [];
+
+    if (!idCheck()) {
+        errorFields.push(idInput);
+    }
+    if (!pwCheck()) {
+        errorFields.push(pwInput);
+    }
+    if (!pwCheckCheck()) {
+        errorFields.push(pwCheckInput);
+    }
+    if (!nameCheck()) {
+        errorFields.push(nameInput);
+    }
+    if (!birthDateCheck()) {
+        errorFields.push(birthDateInput);
+    }
+    if (!emailCheck()) {
+        errorFields.push(emailInput);
+    }
+    if (!verifyCodeCheck()) {
+        errorFields.push(verCodeInput);
+    }
+    if (!phoneCheck()) {
+        errorFields.push(phoneInput);
+    }
+    checkDuplicateEmail((isAvailable) => {
+        if (!isAvailable) {
+            if (errorFields.length === 0) {
+                errorFields.push(emailInput);
+            }
+            if (errorFields.length > 0) {
+                // 첫 번째 에러가 있는 필드로 스크롤
+                errorFields[0].scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            return; // 회원가입 처리 중단
+        }
+        if (errorFields.length > 0) {
+            errorFields[0].scrollIntoView({ behavior: 'smooth', block: 'start' });
+            return;
+        }
+        const formData = new FormData(document.querySelector('#register-member-form'));
+        console.log(formData);
+        $.ajax({
+            url: '/register',
+            method: 'POST',
+            data: formData,
+            processData: false, // FormData를 문자열로 변환 X
+            contentType: false, // 브라우저가 알아서 Content-Type 설정하도록 함
+            success: function(data) {
+                if (data === 'success') {
+                    alert("회원가입이 완료되었습니다.");
+                    window.location.href = '/login';
+                }
+            },
+            error: function() {
+                alert('서버 통신 에러!');
+            }
+        })
+    });
 }
 
 // 아이디 정규식
@@ -109,12 +194,7 @@ const phoneRule = (str) => {
 
 idInput.onkeyup = function() {
     idCheck();
-}
-// 입력창을 벗어났을 때 중복 체크
-idInput.onblur = function() {
-    if (idRule(idInput.value)) {
-        checkDuplicateId();
-    }
+    checkDuplicateId();
 }
 pwInput.onkeyup = function() {
     pwCheck();
@@ -131,9 +211,6 @@ birthDateInput.onkeyup = function() {
 emailInput.onkeyup = function() {
     emailCheck();
 }
-// authCodeInput.onkeyup = function() {
-//     authCodeCheck();
-// }
 phoneInput.onkeyup = function() {
     phoneCheck();
 }
@@ -154,7 +231,7 @@ const  checkDuplicateId = () => {
 
     $.ajax({
         url: '/checkId',
-        method: 'get',
+        method: 'GET',
         data: {memberId : id},
         success: function (response) {
             if(response === 'duplicated') {
@@ -173,6 +250,43 @@ const  checkDuplicateId = () => {
         },
         error: function() {
             alert('서버 통신 에러!');
+        }
+    });
+};
+
+// 이메일 중복 검사
+const  checkDuplicateEmail = (callback) => {
+    const email = emailInput.value;
+
+    // 아이디가 유효하지 않으면 서버 요청 생략
+    if(!emailRule(email)) {
+        return callback(false);
+    }
+
+    $.ajax({
+        url: '/checkEmail',
+        method: 'GET',
+        data: {email : email},
+        success: function (response) {
+            if(response === 'duplicated') {
+                emailInput.classList.remove('success-border');
+                emailFailureMsg.innerHTML = '이미 사용중인 이메일입니다.';
+                emailSuccessMsg.classList.add('hide');
+                emailFailureMsg.classList.remove('hide');
+                emailInput.classList.add('error-border');
+                callback(false);
+            }else if(response === 'available'){
+                emailFailureMsg.classList.add('hide');
+                emailSuccessMsg.classList.remove('hide');
+                emailInput.classList.remove('error-border');
+                emailSuccessMsg.innerHTML = '사용 가능한 이메일입니다.';
+                emailInput.classList.add('success-border');
+                callback(true);
+            }
+        },
+        error: function() {
+            alert('서버 통신 에러!');
+            callback(false);
         }
     });
 };
@@ -334,6 +448,25 @@ function emailCheck() {
     emailInput.classList.add('success-border');
     return true;
 }
+// 인증번호 유효성 검사
+function verifyCodeCheck() {
+    if(!isCodeVerified
+            || verCodeInput.value.trim() === ''
+            || verCodeInput.value.trim().length !== 6) {
+        verCodeInput.classList.remove('success-border');
+        verCodeFailureMsg.innerHTML = '이메일 인증이 완료되지 않았습니다.';
+        verCodeSuccessMsg.classList.add('hide');
+        verCodeFailureMsg.classList.remove('hide');
+        verCodeInput.classList.add('error-border');
+        return false;
+    }
+    verCodeFailureMsg.classList.add('hide');
+    verCodeSuccessMsg.classList.remove('hide');
+    verCodeInput.classList.remove('error-border');
+    verCodeSuccessMsg.innerHTML = '이메일 인증이 완료되었습니다.';
+    verCodeInput.classList.add('success-border');
+    return true;
+}
 // 핸드폰 번호 유효성 검사
 function phoneCheck() {
     if(hasNoInput(phoneInput.value)) {
@@ -367,7 +500,7 @@ const inputFields = [
     nameInput,
     birthDateInput,
     emailInput,
-    authCodeInput,
+    verCodeInput,
     phoneInput
 ];
 

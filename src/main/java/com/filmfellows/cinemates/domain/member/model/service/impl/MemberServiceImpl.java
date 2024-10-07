@@ -117,4 +117,9 @@ public class MemberServiceImpl implements MemberService {
         return mMapper.countByMemberId(memberId);
     }
 
+    @Override
+    public boolean isEmailDuplicate(String email) {
+        return mMapper.countByEmail(email);
+    }
+
 }

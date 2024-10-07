@@ -54,7 +54,7 @@
                     <label>이메일<span class="asterisk"> *</span></label>
                     <div class="input-container">
                         <input type="text" class="common-input-box" id="email-input" name="email" placeholder="이메일 주소">
-                        <button type="button" class="common-secondary-btn email-btn" id="email-btn">인증요청</button>
+                        <button type="button" class="common-secondary-btn email-btn" id="email-btn" onclick="sendCode()">인증요청</button>
                     </div>
                 </div>
                 <div class="success-message hide message" id="email-success-message"></div>
@@ -63,12 +63,12 @@
                 <div class="input-group auth-group">
                     <label>인증번호 입력<span class="asterisk"> *</span></label>
                     <div class="input-container">
-                        <input type="text" class="common-input-box" id="auth-code-input"  name="authCode" placeholder="인증번호 6자리">
-                        <button type="button" class="common-secondary-btn auth-btn" id="auth-btn">인증</button>
+                        <input type="text" class="common-input-box" id="ver-code-input"  name="verificationCode" placeholder="인증번호 6자리">
+                        <button type="button" class="common-secondary-btn auth-btn" id="ver-btn" onclick="verifyCode()">인증</button>
                     </div>
                 </div>
-                <div class="success-message hide message" id="auth-code-success-message"></div>
-                <div class="failure-message hide message" id="auth-code-failure-message"></div>
+                <div class="success-message hide message" id="ver-code-success-message"></div>
+                <div class="failure-message hide message" id="ver-code-failure-message"></div>
 
                 <div class="input-group">
                     <label>핸드폰 번호<span class="asterisk"> *</span></label>

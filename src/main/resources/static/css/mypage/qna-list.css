@@ -114,8 +114,6 @@
 }
 #qna-table tbody td:nth-child(2) {
     max-width: 324px;
-    white-space: nowrap;
-    overflow: hidden;
 }
 #qna-list-body {
     text-align: center;
