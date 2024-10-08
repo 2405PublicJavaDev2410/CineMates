@@ -1,5 +1,8 @@
 package com.filmfellows.cinemates.app.reservation;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.filmfellows.cinemates.domain.reservation.model.Service.ReservationService;
 import com.filmfellows.cinemates.domain.reservation.model.vo.Reservation;
 import com.filmfellows.cinemates.domain.reservation.model.vo.ReservationDTO;
@@ -16,10 +19,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class ReservationController {
@@ -56,12 +57,26 @@ public class ReservationController {
     }
 
     @PostMapping("/Ticketing/PersonSeat")
-    public String showPersonSeatPage(@ModelAttribute ReservationDTO rDTO, Model model,HttpSession session) {
+    public String showPersonSeatPage(@ModelAttribute ReservationDTO rDTO, @RequestParam String reservationSeat, Model model, HttpSession session) {
         String memberId = (String)session.getAttribute("memberId");
         String randomString = generateRandomString(10);
         rDTO.setReservationNo(randomString);
+
+        // JSON 문자열을 Map으로 변환
+        ObjectMapper mapper = new ObjectMapper();
+        Map<Integer, List<Integer>> reservedSeats;
+        try {
+            reservedSeats = mapper.readValue(reservationSeat, new TypeReference<Map<Integer, List<Integer>>>(){});
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            reservedSeats = new HashMap<>();
+        }
+
+        // 예약된 좌석 정보를 모델에 추가
+        model.addAttribute("reservationSeat", reservedSeats);
+
         System.out.println("rDTO 보여줘라 " + rDTO);
-        model.addAttribute("memberId",memberId);
+        model.addAttribute("memberId", memberId);
         model.addAttribute("rDTO", rDTO);
         return "pages/reservation/PersonSeat";
     }
@@ -95,24 +110,32 @@ public class ReservationController {
     }
 
     @GetMapping("/getShowtimes")
-    public ResponseEntity<List<ShowInfoDTO>> selectShowInfo(@RequestParam String cinemaName, @RequestParam String title , Model model) {
+    public ResponseEntity<Map<String, Object>> selectShowInfo(@RequestParam String cinemaName, @RequestParam String title, Model model) {
         List<ShowInfoDTO> sList = rService.selectShowInfo(cinemaName, title);
         List<ReservationDTO> rList = rService.selectReservationSeat();
 
+        Map<Integer, List<Integer>> reservedSeatsMap = new HashMap<>();
+
         for (ShowInfoDTO show : sList) {
             int totalSeats = Integer.parseInt(show.getScreenSeat());
-            int reservedSeats = (int) rList.stream()
+            List<Integer> reservedSeats = rList.stream()
                     .filter(r -> r.getScreenName().equals(show.getScreenName()) &&
                             r.getShowtimeTime().equals(show.getShowtimeTime()))
-                    .flatMap(r -> Arrays.stream(r.getReservationSeat().split(",")))
-                    .count();
-            int availableSeats = totalSeats - reservedSeats;
+                    .flatMap(r -> Arrays.stream(r.getReservationSeat().split(",")).map(Integer::parseInt))
+                    .collect(Collectors.toList());
+
+            int availableSeats = totalSeats - reservedSeats.size();
             show.setAvailableSeats(availableSeats);
+
+            reservedSeatsMap.put((show.getShowtimeNo()), reservedSeats);
         }
 
+        Map<String, Object> response = new HashMap<>();
+        response.put("showInfoList", sList);
+        response.put("reservationSeat", reservedSeatsMap);
+
         System.out.println("sList" + sList);
-        model.addAttribute("sList", sList);
-        System.out.println("rList: " + rList);
-        return ResponseEntity.ok(sList);
+        System.out.println("reservationSeat: " + reservedSeatsMap);
+        return ResponseEntity.ok(response);
     }
 }

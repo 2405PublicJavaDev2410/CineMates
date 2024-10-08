@@ -11,8 +11,12 @@ import java.sql.Date;
 @Setter
 @Repository
 public class ReservationDTO {
+    //Reservation - 예약
     private String reservationNo;
     private Integer reservationVisitor;
+    private Integer adultReserved;
+    private Integer childReserved;
+    private Integer seniorReserved;
     private String reservationSeat;
     private String reservationDate;
 

@@ -28,6 +28,9 @@
 <input type="hidden" id="buyer_tel" name="buyer_tel" th:value="${rDTO.buyer_tel}">
 <input type="hidden" id="buyer_email" name="buyer_email" th:value="${rDTO.buyer_email}">
 <input type="hidden" id="buyer_name" name="buyer_name" th:value="${rDTO.buyer_name}">
+<input type="hidden" id="adultReserved" name="adultReserved" th:value="${rDTO.adultReserved}">
+<input type="hidden" id="childReserved" name="adultReserved" th:value="${rDTO.childReserved}">
+<input type="hidden" id="seniorReserved" name="adultReserved" th:value="${rDTO.seniorReserved}">
 <script>
 
     var IMP = window.IMP;
@@ -50,7 +53,10 @@
             buyer_tel: document.getElementById('buyer_tel').value,
             buyer_name: document.getElementById('buyer_name').value,
             buyer_email:document.getElementById('buyer_email').value,
-            showtimeNo : document.getElementById('showtimeNo').value
+            showtimeNo : document.getElementById('showtimeNo').value,
+            adultReserved:document.getElementById('adultReserved').value,
+            childReserved:document.getElementById('childReserved').value,
+            seniorReserved:document.getElementById('seniorReserved').value
         };
         console.log("Reservation Data:", reservationData);
         IMP.request_pay({
@@ -104,7 +110,10 @@
                         "cinemaNo" : reservationData.cinemaNo,
                         "title" : reservationData.title,
                         "showtimeTime" : reservationData.showtimeTime,
-                        "showtimeNo" :reservationData.showtimeNo
+                        "showtimeNo" :reservationData.showtimeNo,
+                        "adultReserved":reservationData.adultReserved,
+                        "childReserved":reservationData.childReserved,
+                        "seniorReserved":reservationData.seniorReserved
 
                     }
                     $.ajax({

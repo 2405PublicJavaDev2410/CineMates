@@ -159,6 +159,7 @@
     <input type="hidden" name="movieNo" value="">
     <input type="hidden" name="cinemaNo" value="">
     <input type="hidden" name="showtimeNo" value="">
+    <input type="hidden" name="reservationSeat" value="">
 </form>
 
 <script>
@@ -355,12 +356,15 @@
                     cinemaName: $('#cinema-List .selected a').data('cinema-name')
                 },
                 success: function (response) {
-                    if (Array.isArray(response)) {
-                        displayShowtimes(response);
-                        $('input[name="screenNo"]').val(response[0].screenNo);
-                        $('input[name="movieNo"]').val(response[0].movieNo);
-                        $('input[name="cinemaNo"]').val(response[0].cinemaNo);
-                        $('input[name="showtimeNo"]').val(response[0].showtimeNo);
+                    if (response && response.showInfoList && Array.isArray(response.showInfoList)) {
+                        displayShowtimes(response.showInfoList);
+                        $('input[name="screenNo"]').val(response.showInfoList[0].screenNo);
+                        $('input[name="movieNo"]').val(response.showInfoList[0].movieNo);
+                        $('input[name="cinemaNo"]').val(response.showInfoList[0].cinemaNo);
+                        $('input[name="showtimeNo"]').val(response.showInfoList[0].showtimeNo);
+
+                        // 예약된 좌석 정보를 저장
+                        $('input[name="reservationSeat"]').val(JSON.stringify(response.reservationSeat));
                     } else {
                         console.error("Invalid response format:", response);
                         $('#showtimes-container').html('<p>상영 시간 정보를 불러오는데 실패했습니다.</p>');

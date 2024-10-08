@@ -5,8 +5,8 @@
 <mapper namespace="com.filmfellows.cinemates.domain.reservation.model.mapper.ReservationMapper">
     <insert id="insertReservationInfo">
         INSERT INTO RESERVATION_TBL
-        VALUES (#{reservationNo}, #{reservationVisitor}, #{reservationSeat}, #{reservationDate}, #{movieNo},
-                #{memberId}, #{screenNo}, #{showtimeNo}, #{cinemaNo},#{title},#{screenName},#{cinemaName},#{showtimeTime},#{imp_uid})
+        VALUES (#{reservationNo}, #{reservationVisitor},#{reservationSeat}, #{reservationDate}, #{movieNo},
+                #{memberId}, #{screenNo}, #{showtimeNo}, #{cinemaNo},#{title},#{screenName},#{cinemaName},#{showtimeTime},#{imp_uid},#{adultReserved},#{childReserved},#{seniorReserved})
     </insert>
 
     <select id="showReservedSeats" resultType="ReservationDTO">
@@ -20,20 +20,20 @@
         FROM CINEMA_TBL
         WHERE CINEMA_ADDRESS LIKE '%' || #{cinemaAddress} || '%'
     </select>
-
+    <!--영화 제목 출력 -->
     <select id="selectMovies" resultType="String">
         SELECT DISTINCT M.TITLE
         FROM CINEMA_TBL
                  JOIN SCREEN_TBL USING (CINEMA_NO)
                  JOIN SHOWTIME_TBL USING (SCREEN_NO)
                  JOIN MOVIE_TBL M USING (MOVIE_NO)
-        WHERE CINEMA_NAME = #{cinemaName}
+        WHERE CINEMA_NAME = #{cinemaName} AND SCREENING_STATUS ='NOW SHOWING'
     </select>
-
+    <!--영화 이름과 번호 출력-->
     <select id="selectCinemaName" resultType="String">
         SELECT CINEMA_NAME , CINEMA_NO  FROM CINEMA_TBL JOIN SCREEN_TBL USING(CINEMA_NO) JOIN SHOWTIME_TBL USING(SCREEN_NO)
     </select>
-
+    <!-- 상영정보 출력 -->
     <select id="selectShowInfo" resultType="showInfoDTO">
         SELECT s.showtime_time, sc.screen_seat, sc.screen_Name , screen_No , movie_No , m.title , cinema_no , CINEMA_NAME , s.showtime_no
         FROM CINEMA_TBL
@@ -43,7 +43,7 @@
         where cinema_name = #{cinemaName}
           AND title = #{title}
     </select>
-
+        <!--예약 좌석 출력-->
     <select id="selectReservationSeat" resultType="ReservationDTO">
         SELECT r.RESERVATION_SEAT, s.SCREEN_NAME, st.SHOWTIME_TIME
         FROM RESERVATION_TBL r
@@ -51,7 +51,7 @@
                  JOIN SCREEN_TBL s ON st.SCREEN_NO = s.SCREEN_NO
 
     </select>
-
+    <!--사용자 정보 출력-->
     <select id="selectMemberInfo" resultType="MemberDTO">
         select * from member_tbl where MEMBER_ID=#{memberId}
     </select>
