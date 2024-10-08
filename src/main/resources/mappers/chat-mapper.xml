@@ -65,4 +65,8 @@
     <select id="selectProfileList" resultType="ProfileImg">
         SELECT * FROM PROFILE_IMG_TBL
     </select>
+
+    <select id="getTotalCount">
+        SELECT COUNT(*) FROM CHAT_ROOM_TBL
+    </select>
 </mapper>

@@ -5,13 +5,17 @@ import com.filmfellows.cinemates.app.chat.dto.CinemaInfoByRegion;
 import com.filmfellows.cinemates.app.chat.dto.RegionAndCinemaCount;
 import com.filmfellows.cinemates.domain.chat.model.mapper.ChatMapper;
 import com.filmfellows.cinemates.domain.chat.model.service.ChatService;
+import com.filmfellows.cinemates.domain.chat.model.vo.ChatPagination;
 import com.filmfellows.cinemates.domain.chat.model.vo.ChatRoom;
 import com.filmfellows.cinemates.domain.chat.model.vo.ChatTag;
 import com.filmfellows.cinemates.domain.member.model.vo.ProfileImg;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ChatServiceImpl implements ChatService {
@@ -55,9 +59,21 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public List<ChatRoom> selectChatRoomList() {
-        List<ChatRoom> ChatRoomList = cMapper.selectChatRoomList();
-        return ChatRoomList;
+    public Map<String, Object> selectChatRoomList(Integer currentPage) {
+
+        int totalCount = cMapper.getTotalCount();
+        ChatPagination pn = new ChatPagination(totalCount, currentPage);
+
+        int limit = pn.getBoardLimit();
+        int offset = (currentPage-1) * limit ;
+        RowBounds rowBounds = new RowBounds(offset, limit);
+
+        List<ChatRoom> cList = cMapper.selectChatRoomList(rowBounds);
+        Map<String, Object> map = new HashMap<>();
+        map.put("cList", cList);
+        map.put("pn", pn);
+
+        return map;
     }
 
     @Override
@@ -71,4 +87,8 @@ public class ChatServiceImpl implements ChatService {
         List<ProfileImg> profileList = cMapper.selectProfileList();
         return profileList;
     }
+
+
+
+
 }

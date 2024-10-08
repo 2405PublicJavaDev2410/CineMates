@@ -7,8 +7,10 @@ import com.filmfellows.cinemates.app.chat.dto.RegionAndCinemaCount;
 import com.filmfellows.cinemates.domain.chat.model.vo.ChatRoom;
 import com.filmfellows.cinemates.domain.chat.model.vo.ChatTag;
 import com.filmfellows.cinemates.domain.member.model.vo.ProfileImg;
+import org.apache.ibatis.session.RowBounds;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ChatService {
 
@@ -52,7 +54,7 @@ public interface ChatService {
      * 기능 : 채팅방 전체 리스트 조회
      * @return List<ChatRoom> (채팅방 전체 리스트)
      */
-    List<ChatRoom> selectChatRoomList();
+    Map<String, Object> selectChatRoomList(Integer currentPage);
 
     /**
      * 담당자 : 이충무
@@ -67,4 +69,6 @@ public interface ChatService {
      * @return List<ProfileImg> (채팅방 프로필 리스트)
      */
     List<ProfileImg> selectProfileList();
+
+
 }

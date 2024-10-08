@@ -9,18 +9,14 @@ import com.filmfellows.cinemates.app.chat.dto.ReservationInfoAndChatInfo;
 import com.filmfellows.cinemates.domain.chat.model.service.ChatService;
 import com.filmfellows.cinemates.domain.chat.model.vo.ChatRoom;
 import com.filmfellows.cinemates.domain.chat.model.vo.ChatTag;
-import com.filmfellows.cinemates.domain.member.model.service.MemberService;
-import com.filmfellows.cinemates.domain.member.model.service.impl.MemberServiceImpl;
 import com.filmfellows.cinemates.domain.member.model.vo.ProfileImg;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -35,7 +31,13 @@ public class ChatController {
 
 
     @GetMapping("/chat/list")
-    public String showChatRoomList(Model model, HttpSession session) {
+    public String showChatRoomList(Model model, HttpSession session,
+                                   @RequestParam(value = "cp", defaultValue = "1") Integer currentPage,
+                                   @RequestParam(value="viewMode", defaultValue = "list") String viewMode
+                                   ) {
+
+        System.out.println("cp : " + currentPage);
+        System.out.println("viewMode : " + viewMode);
         // 로그인 확인
         String memberId = (String) session.getAttribute("memberId");
         if(memberId == null) {
@@ -46,16 +48,21 @@ public class ChatController {
         System.out.println(profileList);
 
         // 채팅방 리스트 전체 조회 비즈니스 로직
-        List<ChatRoom> chatRoomList = cService.selectChatRoomList();
-        System.out.println(chatRoomList);
+        // 서비스에서 Pagination 객체, 조회된 cList 객체 매핑해서 반환
+        Map<String, Object> map = cService.selectChatRoomList(currentPage);
+
         // 채팅방 태그 조회
         List<ChatRoom> tagList = cService.selectChatTagList();
 
         model.addAttribute("profileList", profileList);
         model.addAttribute("tagList", tagList);
-        model.addAttribute("chatRoomList", chatRoomList);
+        model.addAttribute("chatRoomList", map.get("cList"));
+        model.addAttribute("pn", map.get("pn"));
+        model.addAttribute("viewMode", viewMode);
         return "pages/chat/chatRoomList";
     }
+
+
 
 
     @GetMapping("/chat/room")
@@ -170,7 +177,6 @@ public class ChatController {
         model.addAttribute("regionAndCinemaCountList", regionAndCinemaCountList);
         return "pages/chat/createChatForm::#region-list-container";
     }
-
 
 
 

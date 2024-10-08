@@ -8,6 +8,7 @@ import com.filmfellows.cinemates.domain.chat.model.vo.ChatTag;
 import com.filmfellows.cinemates.domain.member.model.vo.ProfileImg;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.session.RowBounds;
 
 import java.util.List;
 
@@ -56,6 +57,8 @@ public interface ChatMapper {
      */
     List<ChatRoom> selectChatRoomList();
 
+    List<ChatRoom> selectChatRoomList(RowBounds rowBounds);
+
     /**
      * 담당자 : 이충무
      * 기능 : 채팅방 태그 조회 mapper
@@ -69,4 +72,12 @@ public interface ChatMapper {
      * @return List<ProfileImg> (채팅방 프로필 리스트)
      */
     List<ProfileImg> selectProfileList();
+
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : 전체 채팅방 개수
+     * @return int
+     */
+    int getTotalCount();
 }
