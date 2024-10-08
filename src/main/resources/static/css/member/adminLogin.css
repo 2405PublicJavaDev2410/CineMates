@@ -1,0 +1,44 @@
+#login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+}
+#login-form {
+    width: 580px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 20px gainsboro;
+    padding: 80px 80px 70px 80px;
+    display: inline-block;
+}
+#login-form h1 {
+    font-family: 'GmarketSansMedium', serif;
+    letter-spacing: 3px;
+    font-size: 32px;
+    color: #D54946;
+}
+#login-form label {
+    font-size: 16px;
+}
+.hide {
+    display: none;
+}
+.message {
+    color: #ED1C24;
+    font-size: 14px;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+.error-border {
+    transition: none;
+    border: 2px solid #ED1C24;
+}
+.common-input-box {
+    padding: 10px;
+    margin: 10px 0;
+}
+.common-primary-btn {
+    margin: 10px 0;
+}

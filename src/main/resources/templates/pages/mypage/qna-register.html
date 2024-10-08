@@ -24,12 +24,14 @@
             <form id="register-qna-form" enctype="multipart/form-data">
                 <div class="input-group" id="new-qna-top">
                     <label>제목</label>
-                    <input type="text" class="common-input-box" id="qna-title" required name="title">
+                    <input type="text" class="common-input-box" id="qna-title" name="title">
                 </div>
+                <div class="failure-message hide message" id="title-failure-message"></div>
                 <div class="input-group" id="new-qna-middle">
                     <label>내용</label>
-                    <textarea rows="10" cols="74" style="resize: none;" id="qna-content" name="content"></textarea>
+                    <textarea class="content-input-box" rows="10" cols="74" style="resize: none;" id="qna-content" name="content"></textarea>
                 </div>
+                <div class="failure-message hide message" id="content-failure-message"></div>
                 <div class="input-group file-group" id="new-qna-bottom">
                     <label>첨부파일</label>
                     <label for="qnaFile" id="select-file-btn">파일 선택</label>
@@ -37,12 +39,18 @@
                 </div>
                 <div id="thumbnail-container">
                     <img id="qna-file-thumbnail" alt="사진 미리보기" style="display: none;">
-                </div><br><br>
-                <button type="button" class="common-primary-btn" onclick="registerQna()">등록하기</button>
+                </div>
+                <!-- 썸네일 모달창 -->
+                <div id="image-modal" class="modal" style="display: none;">
+                    <div class="modal-content">
+                        <img id="modal-image" alt="확대 이미지">
+                    </div>
+                </div>
+                <br><br>
+                <button type="submit" class="common-primary-btn" onclick="qnaRegister(event)">등록하기</button>
             </form>
         </div>
     </main>
 </div>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script type="text/javascript" src="/js/mypage/register-qna.js"></script>
+<script type="text/javascript" src="/js/mypage/qna-register.js"></script>
 </html>

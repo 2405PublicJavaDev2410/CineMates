@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -28,13 +29,18 @@ public class MyPageServiceImpl implements MyPageService {
     }
 
     @Override
-    public String selectAllQna() {
-        return "";
+    public List<Qna> selectAllQnaById(String memberId) {
+        return myMapper.selectAllQnaById(memberId);
     }
 
     @Override
-    public String selectOneQnaByNo() {
-        return "";
+    public Qna selectOneQnaByNo(int qnaNo) {
+        return myMapper.selectOneQnaByNo(qnaNo);
+    }
+
+    @Override
+    public QnaFile selectQnaFileByNo(int qnaNo) {
+        return myMapper.selectQnaFileByNo(qnaNo);
     }
 
     @Override
@@ -56,7 +62,7 @@ public class MyPageServiceImpl implements MyPageService {
     }
 
     @Override
-    public int deleteQna() {
-        return 0;
+    public int deleteQna(int qnaNo) {
+        return myMapper.deleteQna(qnaNo);
     }
 }

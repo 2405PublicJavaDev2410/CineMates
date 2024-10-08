@@ -19,8 +19,8 @@
             <div class="search-container">
                 <select name="searchCondition">
                     <option value="" selected disabled>전체</option>
-                    <option value="no-reply">미답변</option>
-                    <option value="replied">답변완료</option>
+                    <option value="no">미답변</option>
+                    <option value="yes">답변완료</option>
                 </select>
                 <input type="text" class="common-input-box" id="keyword-input-box" name="searchKeyword" placeholder="제목으로 검색">
                 <button type="button" id="search-btn"></button>
@@ -34,42 +34,20 @@
                 </colgroup>
                 <thead>
                     <tr>
-                        <th>번호</th>
+                        <th>문의번호</th>
                         <th>제목</th>
                         <th>작성일자</th>
                         <th>답변상태</th>
                     </tr>
                 </thead>
                 <tbody id="qna-list-body">
-                    <tr>
-                        <td>번호</td>
-                        <td><a class="qna-detail-link">제목제목제목제목제목</a></td>
-                        <td>작성일자</td>
-                        <td>답변상태</td>
-                    </tr>
-                    <tr>
-                        <td>번호</td>
-                        <td><a class="qna-detail-link">제목제목제목제목제목제목</a></td>
-                        <td>작성일자</td>
-                        <td>답변상태</td>
-                    </tr>
-                    <tr>
-                        <td>번호</td>
-                        <td><a class="qna-detail-link">제목제목제목</a></td>
-                        <td>작성일자</td>
-                        <td>답변상태</td>
-                    </tr>
-                    <tr>
-                        <td>번호</td>
-                        <td><a class="qna-detail-link">제목제목제목제목제목</a></td>
-                        <td>작성일자</td>
-                        <td>답변상태</td>
-                    </tr>
-                    <tr>
-                        <td>번호</td>
-                        <td><a class="qna-detail-link">제목제목제목제목제목제목제목제목제목제목제목</a></td>
-                        <td>작성일자</td>
-                        <td>답변상태</td>
+                    <tr th:each="qna : ${qList}">
+                        <td th:text="${qna.qnaNo}"></td>
+                        <td><a class="qna-detail-link"
+                               th:href="@{/my-page/qna-detail/{qnaNo}(qnaNo=${qna.qnaNo})}"
+                               th:text="${qna.title}"></a></td>
+                        <td th:text="${#dates.format(qna.regDate, 'yyyy-MM-dd')}"></td>
+                        <td th:text="${qna.parentQnaNo != null ? '답변완료' : '미답변'}"></td>
                     </tr>
                 </tbody>
             </table>

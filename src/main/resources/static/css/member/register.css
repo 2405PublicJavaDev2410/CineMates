@@ -104,6 +104,7 @@
     border: 2px solid #ED1C24;
 }
 .error-border:focus {
+    outline: none;
     border: 2px solid #ED1C24;
     box-shadow: 0 0 3px #ED1C24;
 }
@@ -112,6 +113,7 @@
     border: 2px solid #66BB6A;
 }
 .success-border:focus {
+    outline: none;
     border: 2px solid #66BB6A;
     box-shadow: 0 0 3px #66BB6A;
 }

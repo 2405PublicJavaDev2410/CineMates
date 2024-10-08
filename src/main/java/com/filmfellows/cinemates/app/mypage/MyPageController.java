@@ -8,10 +8,14 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Controller
 @Slf4j
@@ -42,7 +46,10 @@ public class MyPageController {
      * 관련기능 : 문의내역 페이지 이동
      */
     @GetMapping("/my-page/qna-list")
-    public String showMyQna() {
+    public String showMyQna(HttpSession session, Model model) {
+        String memberId = (String) session.getAttribute("memberId");
+        List<Qna> qList = myService.selectAllQnaById(memberId);
+        model.addAttribute("qList", qList);
         return "pages/mypage/qna-list";
     }
 
@@ -50,8 +57,14 @@ public class MyPageController {
      * 담당자 : 엄태운
      * 관련기능 : 문의 상세조회 페이지 이동
      */
-    @GetMapping("/my-page/qna-detail")
-    public String showQnaDetail() {
+    @GetMapping("/my-page/qna-detail/{qnaNo}")
+    public String showQnaDetail(@PathVariable Integer qnaNo, Model model) {
+        Qna qna = myService.selectOneQnaByNo(qnaNo);
+        QnaFile qnaFile = myService.selectQnaFileByNo(qnaNo);
+        model.addAttribute("qna", qna);
+        if(qnaFile != null) {
+            model.addAttribute("qnaFile", qnaFile);
+        }
         return "pages/mypage/qna-detail";
     }
 
@@ -99,8 +112,20 @@ public class MyPageController {
      * 담당자 : 엄태운
      * 관련기능 : 문의 삭제
      */
-    public int deleteQna() {
-        return 0;
+    @GetMapping("/qna-delete/{qnaNo}")
+    public String deleteQna(@PathVariable Integer qnaNo) {
+        int result = myService.deleteQna(qnaNo);
+        return "redirect:/my-page/qna-list";
+    }
+
+    /**
+     * 담당자 : 엄태운
+     * 관련기능 : 작성일자 Timestamp를 String으로 변환
+     */
+    public String convertTimestampToString(Timestamp regDate) {
+        // Timestamp 타입의 데이터를 Date로 변환
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return regDate.toLocalDateTime().format(formatter);
     }
 
 }

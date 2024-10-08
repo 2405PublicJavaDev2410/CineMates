@@ -16,5 +16,5 @@ public class Qna {
     private Timestamp regDate;
     private Timestamp modDate;
     private String memberId;
-    private int parentQnaNo;
+    private Integer parentQnaNo;
 }

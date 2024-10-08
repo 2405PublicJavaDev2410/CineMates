@@ -14,14 +14,22 @@
         <div class="qna-detail-form">
             <p id="qna-title">1:1 문의 내역 조회</p><br><br><br>
             <div class="detail-top">
-                <p id="detail-title"><b>트랜스포머 언제 나와요?</b></p>
-                <p id="detail-reg-date">2024-10-01</p>
+                <p id="detail-title" th:text="${qna.title}"><b></b></p>
+                <p id="detail-reg-date" th:text="${#dates.format(qna.regDate, 'yyyy-MM-dd')}">2024-10-01</p>
             </div>
             <div class="detail-middle">
-                <p id="detail-content">트랜스포머 언제 나와요?트랜스포머 언제 나와요?트랜스포머 언제 나와요?트랜스포머 언제 나와요?트랜스포머 언제 나와요?트랜스포머 언제 나와요?트랜스포머 언제 나와요?트랜스포머 언제 나와요?트랜스포머 언제 나와요?트랜스포머 언제 나와요?트랜스포머 언제 나와요?트랜스포머 언제 나와요?트랜스포머 언제 나와요?트랜스포머 언제 나와요?</p>
+                <p id="detail-content" th:text="${qna.content}"></p>
                 <div class="file-form">
                     <label><b>첨부파일</b></label>
-                    <a>첨부파일.jpg</a>
+                    <img id="qna-file-thumbnail" alt="사진 미리보기"
+                         th:src="@{${qnaFile != null ? qnaFile.filePath + qnaFile.fileRename : ''}}"
+                         th:style="${qnaFile != null ? 'display: flex;' : 'display: none;'}">
+                </div>
+            </div>
+            <!-- 썸네일 모달창 -->
+            <div id="image-modal" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <img id="modal-image" alt="확대 이미지">
                 </div>
             </div>
             <div class="detail-bottom">
@@ -30,14 +38,10 @@
             </div>
         </div>
         <div class="button-category">
-            <button type="button" class="common-secondary-btn" id="go-qna-list-btn">목록</button>
-            <button type="button" class="common-primary-btn" id="delete-qna-btn">삭제</button>
+            <button type="button" class="common-secondary-btn" id="go-qna-list-btn" onclick="goToList()">목록</button>
+            <button type="button" class="common-primary-btn" id="delete-qna-btn" th:onclick="deleteQna(/*[[${qna.qnaNo}]]*/)">삭제</button>
         </div>
     </main>
 </div>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        document.querySelector('#side-menu-3').classList.add('selected');
-    })
-</script>
+<script type="text/javascript" src="/js/mypage/qna-detail.js"></script>
 </html>

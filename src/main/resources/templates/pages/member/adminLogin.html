@@ -4,11 +4,11 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{common/layout/defaultLayout}"
       layout:fragment="Content">
-<link href="/css/member/login.css" rel="stylesheet">
+<link href="/css/member/adminLogin.css" rel="stylesheet">
 <main>
     <div id="login-container">
         <div id="login-form">
-            <h1>로그인</h1>
+            <h1>관리자 로그인</h1>
             <br><br>
             <form id="login-member-form">
                 <label for="id-input">아이디</label>
@@ -19,10 +19,6 @@
                 <div class="failure-message hide message" id="failure-message"></div>
                 <br>
                 <button type="button" class="common-primary-btn" onclick="loginMember()">로그인</button>
-                <ul>
-                    <li><a href="/find-info">아이디/비밀번호 찾기</a></li>
-                    <li><a href="/register">회원가입</a></li>
-                </ul>
             </form>
         </div>
     </div>

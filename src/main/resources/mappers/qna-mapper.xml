@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.filmfellows.cinemates.domain.mypage.model.mapper.MyPageMapper">
+    <select id="selectAllQnaById" resultType="Qna">
+        SELECT *
+        FROM QNA_TBL
+        WHERE MEMBER_ID = #{memberId}
+        ORDER BY QNA_NO DESC
+    </select>
+    <select id="selectOneQnaByNo" resultType="Qna">
+        SELECT *
+        FROM QNA_TBL
+        WHERE QNA_NO = #{qnaNo}
+    </select>
+    <select id="selectQnaFileByNo" resultType="QnaFile">
+        SELECT *
+        FROM QNA_FILE_TBL
+        WHERE QNA_NO = #{qnaNo}
+    </select>
     <insert id="insertQna" useGeneratedKeys="true" keyProperty="qnaNo" keyColumn="QNA_NO">
         INSERT INTO QNA_TBL (QNA_NO, TITLE, CONTENT, MEMBER_ID)
         VALUES (SEQ_QNA_NO.NEXTVAL, #{title}, #{content}, #{memberId})
@@ -9,4 +25,8 @@
         INSERT INTO QNA_FILE_TBL (QNA_FILE_NO, FILE_NAME, FILE_RENAME, FILE_PATH, QNA_NO)
         VALUES (SEQ_QNA_FILE_NO.NEXTVAL, #{fileName}, #{fileRename}, #{filePath}, #{qnaNo})
     </insert>
+    <delete id="deleteQna">
+        DELETE FROM QNA_TBL
+        WHERE QNA_NO = #{qnaNo}
+    </delete>
 </mapper>
