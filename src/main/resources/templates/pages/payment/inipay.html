@@ -64,7 +64,7 @@
             pay_method: 'card',
             merchant_uid: 'merchant_' + new Date().getTime(),
             name: reservationData.title,
-            amount: 100,
+            amount: 14000*reservationData.adultReserved + 12000*reservationData.childReserved + 7000*reservationData.seniorReserved,
             buyer_email: reservationData.buyer_email,
             buyer_name: reservationData.buyer_name,
             buyer_tel: reservationData.buyer_tel,
