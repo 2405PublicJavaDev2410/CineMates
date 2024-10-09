@@ -152,7 +152,7 @@
             .list-item {
                 width: 90%;
                 height: 150px;
-                background-color: #f0f0f0;
+                background-color: white;
                 padding: 15px;
                 border-radius: 15px;
                 /*transition: opacity 0.5s ease, transform 0.5s ease;*/
@@ -165,12 +165,17 @@
                 transform: translateY(20px);
                 transition: opacity 0.5s ease, transform 0.5s ease, visibility 0s 0.5s; /* visibility는 0.5초 후에 표시 */
             }
+                .list-item.fade-in:hover{
+                    transform: translateY(-5px);
+                    box-shadow: 0 5px 5px 5px rgb(162, 162, 162);
+
+                }
             /* list형 fade-in 스타일 */
             .list-item.fade-in {
                 visibility: visible; /* 0.5초 후에 보이게 */
                 opacity: 1;
                 transform: translateY(0);
-                transition: opacity 0.5s ease, transform 0.5s ease; /* 부드럽게 등장 */
+                transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.2s; /* 부드럽게 등장 */
             }
             /* list형 fade-out 스타일 */
             .list-item.fade-out {
@@ -277,6 +282,7 @@
                 background-color: #fff8dc;
                 border-radius: 20px;
                 transition: all 300ms;
+                z-index: 5;
             }
             .toCard-item-info:hover{
                 height: 70%;
@@ -286,7 +292,46 @@
                 display: none;
             }
 
+            .card-mouseover{
+                user-select: none;
+                width: 100%;
+                height: 80%;
+                border-radius: 20px;
+                z-index: 3;
+                background-color: black;
+                opacity: 0;
+                position: absolute;
+                top: 0;
+                left: 0;
+                padding-top: 50px;
+            }
+            .card-mouseover.visible{
+                transition: all 200ms;
+                opacity: 0.7;
+            }
 
+            .card-mouseover-text{
+                text-align: center;
+                color: white;
+                font-size: 20px;
+            }
+
+            .card-mouseover-text.joinBtn2{
+
+                margin: 20px auto;
+                width: 100px;
+                height: 60px;
+                border-radius: 10px;
+                border: 1px solid white;
+                text-align: center;
+                line-height: 60px;
+                cursor: pointer;
+                transition: all 200ms;
+            }
+            .card-mouseover-text.joinBtn2:hover{
+                background-color:white;
+                color: black;
+            }
         </style>
 
         <!-- inline JS 영역-->
@@ -497,7 +542,21 @@
 
                })
 
+               let cardMouseover = document.querySelectorAll('.card-mouseover');
+               cardMouseover.forEach(item=>{
 
+                   item.addEventListener('mouseover',()=>{
+                       item.classList.add('visible');
+                        console.log("hi")
+                       item.addEventListener('mouseout',()=>{
+                           item.classList.remove('visible');
+                           item.classList.remove('visible');
+                           item.classList.remove('visible');
+
+                       });
+                   })
+
+               })
 
 
            });
@@ -538,7 +597,7 @@
 
                                     <div class="flex-item-memberProfile" th:each="memberProfile : ${profileList}">
                                         <th:block  th:if="${memberProfile.memberId != chatRoom.roomWriter}">
-                                            <img alt="프로필" src="/img/chat/defaultProfile.png" style="width: 100%; height: 100%; border-radius: 30%;">
+                                            <img alt="프로필" src="/img/chat/defaultProfile2.png" style="width: 100%; height: 100%; border-radius: 30%;">
                                         </th:block>
                                         <th:block  th:if="${memberProfile.memberId == chatRoom.roomWriter}">
                                             <img th:src="@{|${memberProfile.filePath}${memberProfile.fileRename}|}" alt="프로필" style="width: 100%; height: 100%; border-radius: 30%;">
@@ -579,20 +638,31 @@
                     <!--                카드형 레이아웃-->
                     <div class="chatRoomList-container" id="toCard-container">
                         <div th:if="${chatRoomList != null}" th:each="chatRoom : ${chatRoomList}" class="chatRoom-item card-item fade-out">
+                            <div class="card-mouseover">
+                                <div class="card-mouseover-text" th:if="${chatRoom.roomCategory == 'reservation'}" th:text="'모집방'"></div>
+                                <div class="card-mouseover-text" th:if="${chatRoom.roomCategory == 'talk'}" th:text="'소통방'"></div>
+                                <div class="card-mouseover-text joinBtn2">참여하기</div>
+                            </div>
                             <div th:style="'width:100%; height: 400px; background-image: url('+${chatRoom.posterUrl}+'); background-position: center; background-size: cover; border-radius:20px;'">
                             </div>
+
                             <div class="toCard-item-info">
                                 <div class="itemCard-title" th:text="'< '+${chatRoom.title}+' >'"></div>
                                 <div style="font-size: 25px; font-weight:bold" th:text="${#strings.length(chatRoom.roomName) > 15 ? chatRoom.roomName.substring(0, 15) + ' . . .' : chatRoom.roomName}"></div>
 
-                                <div class="itemCard-recentContent">채팅방 최근채팅내용</div>
+                                <div class="itemCard-recentContent" >채팅방 최근채팅내용</div>
+
                                 <div>
                                     <span th:each="tag : ${tagList}" th:if="${tag.roomNo == chatRoom.roomNo}" th:text="'#'+${tag.tagName}+' '"></span>
                                 </div>
 
                                 <div style="">00명 참여중</div>
                                 <div th:text="${chatRoom.cinemaAddress}+' / '+${chatRoom.cinemaName}"></div>
-                                <div class="itemCard-roomDate" th:text="''+${chatRoom.roomDate}"></div>
+                                <th:block th:each="rTime : ${relativeTimeList}">
+                                    <div class="itemCard-roomDate" th:if="${chatRoom.roomDate == rTime.roomDate}" th:text="'개설일 : '+${rTime.relativeTime}"></div>
+                                </th:block>
+
+
                             </div>
 
 

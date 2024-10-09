@@ -53,7 +53,7 @@
         <selectKey order="BEFORE" resultType="_int" keyProperty="roomNo">
             SELECT SEQ_ROOM_NO.NEXTVAL FROM DUAL
         </selectKey>
-        INSERT INTO CHAT_ROOM_TBL VALUES(#{roomNo},#{roomName},DEFAULT,#{roomCategory},#{movieNo},#{cinemaLocationCode},#{cinemaNo})
+        INSERT INTO CHAT_ROOM_TBL VALUES(#{roomNo},#{roomName},DEFAULT,#{roomCategory},#{movieNo},#{cinemaLocationCode},#{cinemaNo}, #{roomWriter})
     </insert>
 
 <!--   채팅방 태그 등록 -->

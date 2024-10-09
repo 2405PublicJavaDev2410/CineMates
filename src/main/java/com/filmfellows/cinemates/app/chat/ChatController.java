@@ -16,7 +16,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,10 +56,16 @@ public class ChatController {
         // 채팅방 태그 조회
         List<ChatRoom> tagList = cService.selectChatTagList();
 
+
+
+
+
+
         model.addAttribute("profileList", profileList);
         model.addAttribute("tagList", tagList);
         model.addAttribute("chatRoomList", map.get("cList"));
         model.addAttribute("pn", map.get("pn"));
+        model.addAttribute("relativeTimeList", map.get("relativeTimeList"));
         model.addAttribute("viewMode", viewMode);
         return "pages/chat/chatRoomList";
     }
@@ -92,10 +100,10 @@ public class ChatController {
     @PostMapping("/chat/create")
     public String insertChatRoom(@ModelAttribute("ReservationInfoAndChatInfo") ReservationInfoAndChatInfo revAndChatInfo,HttpSession session){
         // 로그인 확인 -> 채팅방 개설 시 작성자로 저장
-        String memberId = (String) session.getAttribute("memberId");
+        String roomWriter = (String) session.getAttribute("memberId");
         
         // DTO -> VO
-        ChatRoom chatRoom = new ChatRoom(null, memberId,
+        ChatRoom chatRoom = new ChatRoom(null, roomWriter,
                 revAndChatInfo.getRoomName(),
                 null,revAndChatInfo.getRoomCategory(), revAndChatInfo.getMovieNo(), null, null,
                 revAndChatInfo.getCinemaLocationCode(), null, revAndChatInfo.getCinemaNo(), null
