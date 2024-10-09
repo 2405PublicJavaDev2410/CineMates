@@ -52,7 +52,7 @@ public class MemberController {
      */
     @GetMapping("/find-info")
     public String showFindIdOrPw() {
-        return "pages/member/find-info";
+        return "pages/member/findInfo";
     }
 
     /**
@@ -97,7 +97,7 @@ public class MemberController {
         }
         model.addAttribute("token", token);
         log.info("token : {}", token);
-        return "pages/member/reset-password";
+        return "pages/member/resetPassword";
     }
 
     /**

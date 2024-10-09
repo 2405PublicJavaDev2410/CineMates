@@ -1,5 +1,7 @@
 package com.filmfellows.cinemates.app.mypage;
 
+import com.filmfellows.cinemates.app.movie.dto.Pagination;
+import com.filmfellows.cinemates.app.mypage.dto.QnaDTO;
 import com.filmfellows.cinemates.app.mypage.dto.RegisterQnaRequest;
 import com.filmfellows.cinemates.domain.mypage.model.service.MyPageService;
 import com.filmfellows.cinemates.domain.mypage.model.vo.Qna;
@@ -7,6 +9,7 @@ import com.filmfellows.cinemates.domain.mypage.model.vo.QnaFile;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +32,7 @@ public class MyPageController {
      */
     @GetMapping("/my-page/find-reservation")
     public String showMyReservation() {
-        return "pages/mypage/find-reservation";
+        return "pages/mypage/findReservation";
     }
 
     /**
@@ -38,7 +41,7 @@ public class MyPageController {
      */
     @GetMapping("/my-page/order-list")
     public String showMyOrder() {
-        return "pages/mypage/order-list";
+        return "pages/mypage/orderList";
     }
 
     /**
@@ -46,11 +49,18 @@ public class MyPageController {
      * 관련기능 : 문의내역 페이지 이동
      */
     @GetMapping("/my-page/qna-list")
-    public String showMyQna(HttpSession session, Model model) {
+    public String showMyQna(HttpSession session, Model model,
+            @RequestParam(value = "cp", required = false, defaultValue = "1") Integer currentPage) {
         String memberId = (String) session.getAttribute("memberId");
-        List<Qna> qList = myService.selectAllQnaById(memberId);
+        int totalCount = myService.getTotalQnaCountById(memberId);
+        Pagination pn = new Pagination(totalCount, currentPage);
+        int limit = pn.getBoardLimit();
+        int offset = (currentPage - 1) * limit;
+        RowBounds rBounds = new RowBounds(offset, limit);
+        List<QnaDTO> qList = myService.selectAllQnaById(currentPage, memberId, rBounds);
         model.addAttribute("qList", qList);
-        return "pages/mypage/qna-list";
+        model.addAttribute("pn", pn);
+        return "pages/mypage/qnaList";
     }
 
     /**
@@ -58,14 +68,14 @@ public class MyPageController {
      * 관련기능 : 문의 상세조회 페이지 이동
      */
     @GetMapping("/my-page/qna-detail/{qnaNo}")
-    public String showQnaDetail(@PathVariable Integer qnaNo, Model model) {
+    public String showQnaDetail(@PathVariable("qnaNo") Integer qnaNo, Model model) {
         Qna qna = myService.selectOneQnaByNo(qnaNo);
         QnaFile qnaFile = myService.selectQnaFileByNo(qnaNo);
         model.addAttribute("qna", qna);
         if(qnaFile != null) {
             model.addAttribute("qnaFile", qnaFile);
         }
-        return "pages/mypage/qna-detail";
+        return "pages/mypage/qnaDetail";
     }
 
     /**
@@ -74,7 +84,7 @@ public class MyPageController {
      */
     @GetMapping("/my-page/qna-register")
     public String showRegisterQna() {
-        return "pages/mypage/qna-register";
+        return "pages/mypage/qnaRegister";
     }
 
     /**
@@ -113,8 +123,8 @@ public class MyPageController {
      * 관련기능 : 문의 삭제
      */
     @GetMapping("/qna-delete/{qnaNo}")
-    public String deleteQna(@PathVariable Integer qnaNo) {
-        int result = myService.deleteQna(qnaNo);
+    public String deleteQna(@PathVariable("qnaNo") Integer qnaNo) {
+        myService.deleteQna(qnaNo);
         return "redirect:/my-page/qna-list";
     }
 

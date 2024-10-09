@@ -1,5 +1,6 @@
 package com.filmfellows.cinemates.domain.mypage.model.service.impl;
 
+import com.filmfellows.cinemates.app.mypage.dto.QnaDTO;
 import com.filmfellows.cinemates.common.utility.Util;
 import com.filmfellows.cinemates.domain.member.model.vo.ProfileImg;
 import com.filmfellows.cinemates.domain.mypage.model.mapper.MyPageMapper;
@@ -8,6 +9,7 @@ import com.filmfellows.cinemates.domain.mypage.model.vo.Qna;
 import com.filmfellows.cinemates.domain.mypage.model.vo.QnaFile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,8 +31,13 @@ public class MyPageServiceImpl implements MyPageService {
     }
 
     @Override
-    public List<Qna> selectAllQnaById(String memberId) {
-        return myMapper.selectAllQnaById(memberId);
+    public List<QnaDTO> selectAllQnaById(Integer currentPage, String memberId, RowBounds rBounds) {
+        return myMapper.selectAllQnaById(currentPage, memberId, rBounds);
+    }
+
+    @Override
+    public List<QnaDTO> selectAllQna(RowBounds rBounds, Integer currentPage) {
+        return myMapper.selectAllQna(rBounds, currentPage);
     }
 
     @Override
@@ -41,6 +48,11 @@ public class MyPageServiceImpl implements MyPageService {
     @Override
     public QnaFile selectQnaFileByNo(int qnaNo) {
         return myMapper.selectQnaFileByNo(qnaNo);
+    }
+
+    @Override
+    public Qna selectOneReplyByNo(Integer parentQnaNo) {
+        return myMapper.selectOneReplyByNo(parentQnaNo);
     }
 
     @Override
@@ -64,5 +76,20 @@ public class MyPageServiceImpl implements MyPageService {
     @Override
     public int deleteQna(int qnaNo) {
         return myMapper.deleteQna(qnaNo);
+    }
+
+    @Override
+    public int insertReply(Qna qna) {
+        return myMapper.insertReply(qna);
+    }
+
+    @Override
+    public int getTotalQnaCountById(String memberId) {
+        return myMapper.getTotalQnaCountById(memberId);
+    }
+
+    @Override
+    public int getTotalQnaCount() {
+        return myMapper.getTotalQnaCount();
     }
 }

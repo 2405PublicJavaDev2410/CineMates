@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/defaultLayout}"
+      layout:fragment="Content">
+<link href="/css/mypage/adminQnaDetail.css" rel="stylesheet">
+<main id="main-container">
+    <div class="qna-detail-form">
+        <div class="detail-top">
+            <p id="detail-title" th:text="${qna.title}"><b></b></p>
+            <p id="detail-reg-date" th:text="${#dates.format(qna.regDate, 'yyyy-MM-dd')}">2024-10-01</p>
+        </div>
+        <div class="detail-middle">
+            <p id="detail-content" th:text="${qna.content}"></p>
+            <div class="file-form">
+                <label><b>첨부파일</b></label>
+                <img id="qna-file-thumbnail" alt="사진 미리보기"
+                     th:src="@{${qnaFile != null ? qnaFile.filePath + qnaFile.fileRename : ''}}"
+                     th:style="${qnaFile != null ? 'display: flex;' : 'display: none;'}">
+            </div>
+        </div>
+        <!-- 썸네일 모달창 -->
+        <div id="image-modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <img id="modal-image" alt="확대 이미지">
+            </div>
+        </div>
+        <div class="detail-bottom" th:if="${reply != null}">
+            <p class="reply-title"><b>답변내용</b></p>
+            <p class="reply-content" th:text="${reply.content}"></p>
+        </div>
+        <div class="detail-bottom" th:if="${reply == null}">
+            <p class="reply-title"><b>답변내용</b></p>
+            <form id="register-reply-form">
+                <input type="hidden" name="parentQnaNo" th:value="${qna.qnaNo}">
+                <textarea class="reply-content" id="reply-content" cols="90" rows="5" style="resize: none;" name="content"></textarea>
+                <button type="submit" class="common-secondary-btn" id="register-reply-btn" th:onclick="registerReply(/*[[${qna.qnaNo}]]*/)">답변 등록</button>
+            </form>
+        </div>
+    </div>
+    </div>
+</main>
+<script type="text/javascript" src="/js/mypage/adminQnaDetail.js"></script>
+</html>
