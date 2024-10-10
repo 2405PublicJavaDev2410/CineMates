@@ -16,4 +16,8 @@ public class MovieListDTO {
     private LocalDate releaseDate;
     private String rating;
     private String screeningStatus;
+
+    private String reservationRate;
+
+
 }

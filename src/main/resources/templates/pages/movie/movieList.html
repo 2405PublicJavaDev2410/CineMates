@@ -13,42 +13,48 @@
     <div class="banner-wrapper">
         <div class="banner-container">
             <div class="banner active">
-                <img src="./img/banner/AmazonBullseye_19204202.jpg" alt="배너 1" />
+                <img src="/img/movie//banner/AmazonBullseye_19204202.jpg" alt="배너 1" />
             </div>
             <div class="banner">
-                <img src="./img/banner/GrandMa_1920420.jpg" alt="배너 2" />
+                <img src="/img/movie//banner/GrandMa_1920420.jpg" alt="배너 2" />
             </div>
             <div class="banner">
-                <img src="./img/banner/MyLovelyPartner_19204203.jpg" alt="배너 3" />
+                <img src="/img/movie//banner/MyLovelyPartner_19204203.jpg" alt="배너 3" />
             </div>
             <div class="banner">
-                <img src="./img/banner/MyPet_1920420.jpg" alt="배너 4" />
+                <img src="/img/movie//banner/MyPet_1920420.jpg" alt="배너 4" />
             </div>
             <div class="banner">
-                <img src="./img/banner/MyPet_1920420.jpg" alt="배너 5" />
+                <img src="/img/movie/banner/MyPet_1920420.jpg" alt="배너 5" />
             </div>
         </div>
         <div class="banner-nav prev">&#10094;</div>
         <div class="banner-nav next">&#10095;</div>
         <div class="banner-dots"></div>
     </div>
-    <div class="container">
+    <div class="main-container">
         <div class="movie-section">
             <div class="section-title">현재 상영작</div>
             <div class="movie-list">
-                <div class="movie-poster">
+                <div class="movie-poster" th:each="mList : ${mList}">
                     <div class="poster-image">
-                        <img src="./img/poster/21394_103_1.jpg" alt="베테랑2" />
+                        <img th:if="${mList.posterUrl != null}" th:src="${mList.posterUrl}" th:alt="${mList.title}" />
+                        <img class="imageNull" th:if="${mList.posterUrl == null}" src="/img/movie/imageNull.png" th:alt="${mList.title}" />
                     </div>
                     <div class="movie-info">
                         <div class="title-container">
-                            <img class="age-rating" src="./img/15.svg" alt="15세 이상" />
-                            <div class="movie-title">베테랑2</div>
+<!--                            <img class="age-rating" th:if="${mList.rating} == 'ALL'" src="/img/chat/all.jpg" alt="전체관람가" />-->
+<!--                            <img class="age-rating" th:if="${mList.rating} == 12" src="/img/chat/12.jpg" alt="12세이상관람가" />-->
+<!--                            <img class="age-rating" th:if="${mList.rating} == 15" src="/img/chat/15.jpg" alt="15세이상관람가" />-->
+<!--                            <img class="age-rating" th:if="${mList.rating} == 19" src="/img/chat/19.jpg" alt="청소년관람불가" />-->
+<!--                            <img class="age-rating" th:if="${mList.rating} == 'NOT RATED'" src="/img/chat/notRated.jpg" alt="15세 이상" />-->
+                            <img class="age-rating" th:src="@{'/img/chat/' + ${mList.rating} + '.jpg'}" th:alt="${mList.rating == 'ALL' ? '전체관람가' : mList.rating + '세 이상관람가'}"/>
+                            <div class="movie-title" th:text="${mList.title}"></div>
                         </div>
                         <div class="movie-details">
-                            <span class="booking-rate">예매율 21.8%</span>
+                            <span class="booking-rate" th:text="'예매율 '+${mList.reservationRate}"></span>
                             <span>|</span>
-                            <span>2024.10.01 개봉</span>
+                            <span th:text="${mList.releaseDate != null ? mList.releaseDate + ' 개봉' : '개봉일 미정'}"></span>
                         </div>
                         <button class="booking-button">예매</button>
                     </div>

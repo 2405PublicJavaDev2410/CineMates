@@ -1,10 +1,18 @@
-body {
+main {
     margin: 0;
     padding: 0;
     font-family: 'Nanum Gothic', sans-serif;
     background-color: #f0f0f0;
 }
-.container {
+.container{
+    width: 1920px;
+    height: 420px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.main-container {
     width: 1200px;
     margin: 0 auto;
     padding: 20px;
@@ -95,7 +103,8 @@ body {
 }
 .poster-image img {
     width: 100%;
-    height: auto;
+    /*height: auto;*/
+    height: 308.56px;
     border-radius: 8px;
 }
 .movie-info {
@@ -115,10 +124,13 @@ body {
     font-weight: bold;
     flex-grow: 1;
     font-size: 18px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .movie-details {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     font-size: 14px;
     color: #666;
     font-weight: bold;
@@ -139,10 +151,14 @@ body {
 }
 
 @media (max-width: 1920px) {
-    .banner-container {
+    .container {
         width: 100%;
     }
 }
 .movie-title img {
     height: 28px;
+}
+
+.poster-image .imageNull {
+    object-fit: scale-down;
 }

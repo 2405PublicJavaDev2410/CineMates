@@ -59,10 +59,18 @@
                 <option value="19" th:selected="${movieInfo?.rating == '19'}">청소년관람불가</option>
               </select>
             </div>
+            <label for="">예매상태</label>
+            <div class="category-info">
+              <select name="isBookable" class="isBookable">
+                <option value="" disabled th:selected="${movieInfo?.isBookable == ''}">예매상태</option>
+                <option value="Y" th:selected="${movieInfo?.isBookable == 'Y'}">예매 가능</option>
+                <option value="N" th:selected="${movieInfo?.isBookable == 'N'}">예매 불가능</option>
+              </select>
+            </div>
             <label for="">상영상태</label>
             <div class="category-info">
               <select name="screeningStatus" class="screeningStatus">
-                <option value="" disabled th:selected="${movieInfo?.screeningStatus == ''}">상영 상태</option>
+                <option value="" disabled th:selected="${movieInfo?.screeningStatus == ''}">상영상태</option>
                 <option value="COMING SOON" th:selected="${movieInfo?.screeningStatus == 'COMING SOON'}">개봉예정</option>
                 <option value="NOW SHOWING" th:selected="${movieInfo?.screeningStatus == 'NOW SHOWING'}">상영중</option>
                 <option value="ON HOLD" th:selected="${movieInfo?.screeningStatus == 'ON HOLD'}">상영정지</option>
