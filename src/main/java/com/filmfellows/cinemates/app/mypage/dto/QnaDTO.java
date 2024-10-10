@@ -17,5 +17,5 @@ public class QnaDTO {
     private Timestamp modDate;
     private String memberId;
     private Integer parentQnaNo;
-    private String replyStatus; // 답변 여부
+    private String replyStatus; // 답변 상태
 }

@@ -1,6 +1,7 @@
 package com.filmfellows.cinemates.app.movie;
 
 import com.filmfellows.cinemates.app.movie.dto.*;
+import com.filmfellows.cinemates.common.Pagination;
 import com.filmfellows.cinemates.domain.movie.model.service.MovieService;
 import com.filmfellows.cinemates.domain.movie.model.vo.Movie;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +10,6 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -33,8 +33,8 @@ public class AdminMovieController {
     public String showMovieList(Model model
             , @RequestParam(value = "cp", required = false, defaultValue = "1") Integer currentPage) {
         int totalCount = movieService.totalMovieCount();
-        Pagination pn = new Pagination(totalCount, currentPage);
         int limit = 10;
+        Pagination pn = new Pagination(totalCount, currentPage, limit);
         int offset = (currentPage - 1) * limit;
         RowBounds rowBounds = new RowBounds(offset, limit);
         List<Movie> movies = movieService.selectMovieList(rowBounds, currentPage);

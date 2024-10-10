@@ -1,6 +1,6 @@
 package com.filmfellows.cinemates.app.mypage;
 
-import com.filmfellows.cinemates.app.movie.dto.Pagination;
+import com.filmfellows.cinemates.common.Pagination;
 import com.filmfellows.cinemates.app.mypage.dto.QnaDTO;
 import com.filmfellows.cinemates.app.mypage.dto.RegisterReplyRequest;
 import com.filmfellows.cinemates.domain.mypage.model.service.MyPageService;
@@ -29,10 +29,10 @@ public class AdminMyPageController {
     public String showQnaList(Model model,
           @RequestParam(value = "cp", required = false, defaultValue = "1") Integer currentPage) {
         int totalCount = myService.getTotalQnaCount();
-        Pagination pn = new Pagination(totalCount, currentPage);
-        int limit = pn.getBoardLimit();
-        int offset = (currentPage - 1) * limit;
-        RowBounds rBounds = new RowBounds(offset, limit);
+        int boardLimit = 10;
+        Pagination pn = new Pagination(totalCount, currentPage, boardLimit);
+        int offset = (currentPage - 1) * boardLimit;
+        RowBounds rBounds = new RowBounds(offset, boardLimit);
         List<QnaDTO> qList = myService.selectAllQna(rBounds, currentPage);
         model.addAttribute("qList", qList);
         model.addAttribute("pn", pn);

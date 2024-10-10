@@ -4,12 +4,9 @@
     <select id="selectAllQnaById" resultType="QnaDTO">
         SELECT QNA_NO, TITLE, REG_DATE,
             CASE
-                WHEN EXISTS (
-                    SELECT 1
-                    FROM QNA_TBL
-                    WHERE PARENT_QNA_NO = q.QNA_NO
-                ) THEN '답변완료'
-                ELSE '미답변'
+                WHEN EXISTS (SELECT 1 FROM QNA_TBL WHERE PARENT_QNA_NO = q.QNA_NO)
+                    THEN '답변완료'
+                    ELSE '미답변'
             END AS REPLY_STATUS
         FROM QNA_TBL q
         WHERE MEMBER_ID = #{memberId}
@@ -19,12 +16,9 @@
     <select id="selectAllQna" resultType="QnaDTO">
         SELECT QNA_NO, TITLE, MEMBER_ID, REG_DATE, PARENT_QNA_NO,
             CASE
-                WHEN EXISTS (
-                    SELECT 1
-                    FROM QNA_TBL
-                    WHERE PARENT_QNA_NO = q.QNA_NO
-                ) THEN '답변완료'
-                ELSE '미답변'
+                WHEN EXISTS (SELECT 1 FROM QNA_TBL WHERE PARENT_QNA_NO = q.QNA_NO)
+                    THEN '답변완료'
+                    ELSE '미답변'
             END AS REPLY_STATUS
         FROM QNA_TBL q
         WHERE PARENT_QNA_NO IS NULL

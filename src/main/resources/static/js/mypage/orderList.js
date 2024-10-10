@@ -87,3 +87,7 @@ document.getElementById('period-search-btn').addEventListener('click', function(
         noResult.style.display = 'block';
     }
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelector('#side-menu-2').classList.add('selected');
+})

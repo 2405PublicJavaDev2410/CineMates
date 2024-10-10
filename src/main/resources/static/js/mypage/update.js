@@ -212,3 +212,7 @@ cpwIcon.addEventListener('click', function () {
         this.classList.add('fi-rr-eye-crossed');
     }
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelector('#side-menu-4').classList.add('selected');
+})
