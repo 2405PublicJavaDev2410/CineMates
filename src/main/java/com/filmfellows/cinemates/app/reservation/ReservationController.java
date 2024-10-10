@@ -145,7 +145,7 @@ public class ReservationController {
 
     @GetMapping("/search")
     public String showSearchPage(){
-        return "pages/reservation/test";
+        return "pages/reservation/selectReservationInfo";
     }
 
     @GetMapping("/Ticketing/search")
