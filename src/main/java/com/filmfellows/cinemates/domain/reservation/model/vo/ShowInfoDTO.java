@@ -20,4 +20,6 @@ public class ShowInfoDTO {
     private String title;
     private Integer cinemaNo;
     private String cinemaName;
+    private Integer showtimeNo;
+    private String posterUrl;
 }

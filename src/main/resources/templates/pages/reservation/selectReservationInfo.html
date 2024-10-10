@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>영화 좌석 예매 시스템</title>
+    <script
+            crossorigin="anonymous"
+            integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+            referrerpolicy="no-referrer"
+            src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+<input id="reservationNo" name="reservationNo" type="text">
+<button onclick="selectInfo();">검색</button>
+
+<div id="reserveInfo">
+    <h3>예약 정보</h3>
+    <img alt="영화 포스터" id="TitleImage" style="max-width: 200px; height: auto;" th:src="@{${posterUrl}}">
+    <h3>예약 정보</h3>
+    <p>영화: <span id="Title" th:text="${title}"></span></p>
+    <p>상영 시간: <span id="showtimeTime" th:text="${reservationDate} + ${showtimeTime}"></span></p>
+    <p>좌석: <span id="reservationSeat" th:text="${reservationSeat}"></span></p>
+    <p>예매 번호: <span id="reservationNoresult" th:text="${reservationNo}"></span></p>
+    <p>극장/상영관: <span id="cinema" th:text="${cinemaName}+'/'+${screenName}"></span></p>
+    <p> 관람인원:
+        <span id="reservation-detail" th:text="${
+    (adultReserved != null ? '어른: ' + adultReserved : '') +
+    (adultReserved != null and childReserved != null ? ', ' : '') +
+    (childReserved != null ? '아이: ' + childReserved : '') +
+    ((adultReserved != null or childReserved != null) and seniorReserved != null ? ', ' : '') +
+    (seniorReserved != null ? '경로: ' + seniorReserved : '')
+}"></span>
+    </p>
+
+</div>
+
+
+<script>
+    function selectInfo() {
+        const reservationNo = $('#reservationNo').val();
+        if (!reservationNo) {
+            alert("예약 번호를 입력해주세요.");
+            return;
+        }
+
+        $.ajax({
+            url: "/Ticketing/search",
+            type: "GET",
+            data: {reservationNo: reservationNo},
+            dataType: "json"
+        })
+            .done(function (response) {
+                if (response) {
+                    $('#Title').text(response.title);
+                    $('#showtimeTime').text(function(){
+                        var infos = [];
+                        if (response.reservationDate) {
+                            // 앞의 6자리를 제거하고 나머지 부분만 사용
+                            var formattedTime = response.reservationDate.substring(0,10);
+                            infos.push(formattedTime);
+                        }
+                        if (response.showtimeTime) {
+                            infos.push(response.showtimeTime);
+                        }
+                        return infos.join(' '); // 날짜와 시간 사이에 공백 추가
+                    });
+                    $('#reservationSeat').text(response.reservationSeat);
+                    $('#amount').text(response.amount);
+                    $('#cinema').text(response.cinemaName + '/' + response.screenName);
+                    $('#reservationNoresult').text(response.reservationNo);
+                    $('#reservation-detail').text(function() {
+                        var details = [];
+                        if (response.adultReserved) {
+                            details.push('어른: ' + response.adultReserved);
+                        }
+                        if (response.childReserved) {
+                            details.push('아이: ' + response.childReserved);
+                        }
+                        if (response.seniorReserved) {
+                            details.push('경로: ' + response.seniorReserved);
+                        }
+                        return details.join(', ');
+                    });
+
+
+                    // 이미지 처리
+                    if (response.posterUrl) {
+                        // 이미지 엘리먼트가 이미 있다면 src만 업데이트
+                        if ($('#TitleImage').length) {
+                            $('#TitleImage').attr('src', response.posterUrl);
+                        } else {
+                            // 이미지 엘리먼트가 없다면 새로 생성
+                            const imgElement = $('<img>', {
+                                id: 'TitleImage',
+                                src: response.posterUrl,
+                                alt: response.title + ' 포스터',
+                                style: 'max-width: 200px; height: auto;' // 이미지 크기 조절
+                            });
+                            $('#reserveInfo').prepend(imgElement); // 예약 정보 div의 맨 앞에 이미지 추가
+                        }
+                    } else {
+                        // 포스터 URL이 없는 경우 이미지 제거
+                        $('#TitleImage').remove();
+                    }
+
+                    // 예약 정보 div 표시
+                    $('#reserveInfo').show();
+                } else {
+                    alert("유효한 예약 번호가 아닙니다.");
+                    $('#reserveInfo').hide();
+                }
+            })
+            .fail(function (jqXHR, textStatus) {
+                alert("예약 정보를 가져오는데 실패했습니다: " + textStatus);
+                $('#reserveInfo').hide();
+            });
+    }
+
+    // 페이지 로드 시 예약 정보 div 숨김
+    $(document).ready(function () {
+        $('#reserveInfo').hide();
+    });
+
+</script>
+</body>
+</html>

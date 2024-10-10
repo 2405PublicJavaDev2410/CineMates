@@ -80,4 +80,8 @@ public class PaymentService {
         rmapper.insertReservationInfo(reserveInfo);
         pmapper.insertPaymentInfo2(buyerInfo);
     }
+
+    public int selectImpUid(String reservationNo) {
+        return pmapper.selectImpUid(reservationNo);
+    }
 }

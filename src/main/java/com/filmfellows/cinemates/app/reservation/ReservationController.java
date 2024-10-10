@@ -1,12 +1,14 @@
 package com.filmfellows.cinemates.app.reservation;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.filmfellows.cinemates.domain.reservation.model.Service.ReservationService;
 import com.filmfellows.cinemates.domain.reservation.model.vo.Reservation;
 import com.filmfellows.cinemates.domain.reservation.model.vo.ReservationDTO;
 import com.filmfellows.cinemates.domain.reservation.model.vo.ShowInfoDTO;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,9 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class ReservationController {
@@ -33,11 +34,12 @@ public class ReservationController {
 
     @GetMapping("/Ticketing")
     public String showShowTimePage(Model model, HttpSession session) {
-//        String memberId = (String)session.getAttribute("memberId");
-//        if(memberId==null) {
-//            return "redirect:/";
-//        }
-//        List<ReservationDTO> rList = rService.showReservationPage();
+        String memberId = (String)session.getAttribute("memberId");
+
+        if(memberId==null) {
+            return "redirect:/login";
+        }
+
         List<String> rList = rService.selectCinemaName();
         List<String> processedList = new ArrayList<>();
 
@@ -47,18 +49,39 @@ public class ReservationController {
                 processedList.add(cinema.trim());
             }
         }
+
         model.addAttribute("rList", processedList);
         System.out.println("보여줘" + processedList);
-        return "pages/reservation/Showtime";
+        return "pages/reservation/showtime";
     }
 
     @PostMapping("/Ticketing/PersonSeat")
-    public String showPersonSeatPage(@ModelAttribute ReservationDTO rDTO, Model model) {
+    public String showPersonSeatPage(@ModelAttribute ReservationDTO rDTO, @RequestParam String reservationSeat, Model model, HttpSession session,
+                                     @RequestParam String title) {
+        String memberId = (String)session.getAttribute("memberId");
         String randomString = generateRandomString(10);
         rDTO.setReservationNo(randomString);
+        ShowInfoDTO sDTO = rService.selectMoviePoster(title);
+        System.out.println("영화 포스터: " + sDTO);
+
+        // JSON 문자열을 Map으로 변환
+        ObjectMapper mapper = new ObjectMapper();
+        Map<Integer, List<Integer>> reservedSeats;
+        try {
+            reservedSeats = mapper.readValue(reservationSeat, new TypeReference<Map<Integer, List<Integer>>>(){});
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            reservedSeats = new HashMap<>();
+        }
+
+        // 예약된 좌석 정보를 모델에 추가
+        model.addAttribute("reservationSeat", reservedSeats);
+        model.addAttribute("sDTO",sDTO);
+
         System.out.println("rDTO 보여줘라 " + rDTO);
+        model.addAttribute("memberId", memberId);
         model.addAttribute("rDTO", rDTO);
-        return "pages/reservation/PersonSeat";
+        return "pages/reservation/personSeat";
     }
     private static String generateRandomString(int length) {
         StringBuilder builder = new StringBuilder();
@@ -90,24 +113,44 @@ public class ReservationController {
     }
 
     @GetMapping("/getShowtimes")
-    public ResponseEntity<List<ShowInfoDTO>> selectShowInfo(@RequestParam String cinemaName, @RequestParam String title , Model model) {
+    public ResponseEntity<Map<String, Object>> selectShowInfo(
+            @RequestParam String cinemaName,
+            @RequestParam String title,
+            @RequestParam String reservationDate){
         List<ShowInfoDTO> sList = rService.selectShowInfo(cinemaName, title);
-        List<ReservationDTO> rList = rService.selectReservationSeat();
+        List<ReservationDTO> rList = rService.selectReservationSeat(reservationDate);
+
+        Map<Integer, List<Integer>> reservedSeatsMap = new HashMap<>();
 
         for (ShowInfoDTO show : sList) {
             int totalSeats = Integer.parseInt(show.getScreenSeat());
-            int reservedSeats = (int) rList.stream()
+            List<Integer> reservedSeats = rList.stream()
                     .filter(r -> r.getScreenName().equals(show.getScreenName()) &&
                             r.getShowtimeTime().equals(show.getShowtimeTime()))
-                    .flatMap(r -> Arrays.stream(r.getReservationSeat().split(",")))
-                    .count();
-            int availableSeats = totalSeats - reservedSeats;
+                    .flatMap(r -> Arrays.stream(r.getReservationSeat().split(",")).map(Integer::parseInt))
+                    .collect(Collectors.toList());
+
+            int availableSeats = totalSeats - reservedSeats.size();
             show.setAvailableSeats(availableSeats);
+
+            reservedSeatsMap.put((show.getShowtimeNo()), reservedSeats);
         }
 
-        System.out.println("sList" + sList);
-        model.addAttribute("sList", sList);
-        System.out.println("rList: " + rList);
-        return ResponseEntity.ok(sList);
+        Map<String, Object> response = new HashMap<>();
+        response.put("showInfoList", sList);
+        response.put("reservationSeat", reservedSeatsMap);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/search")
+    public String showSearchPage(){
+        return "pages/reservation/selectReservationInfo";
+    }
+
+    @GetMapping("/Ticketing/search")
+    public ResponseEntity<ReservationDTO> selectReservationInfo(String reservationNo){
+        ReservationDTO rDTO = rService.selectReservationInfo(reservationNo);
+        return ResponseEntity.ok(rDTO);
     }
 }
