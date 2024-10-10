@@ -18,7 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @Slf4j
@@ -61,6 +63,33 @@ public class MyPageController {
         model.addAttribute("qList", qList);
         model.addAttribute("pn", pn);
         return "pages/mypage/qnaList";
+    }
+
+    /**
+     * 담당자 : 엄태운
+     * 관련기능 : 문의 검색
+     */
+    @PostMapping("/my-page/search-qna")
+    public String searchQna(Model model,
+            @RequestParam("searchCondition") String searchCondition,
+            @RequestParam("searchKeyword") String searchKeyword,
+            @RequestParam(value = "cp", required = false, defaultValue = "1") Integer currentPage,
+            HttpSession session) {
+        String memberId = (String) session.getAttribute("memberId");
+        if (memberId == null) {
+            return "redirect:/login";
+        }
+        int totalCount = myService.getTotalQnaCountByIdAndKeyword(memberId, searchCondition, searchKeyword);
+        int boardLimit = 10;
+        Pagination pn = new Pagination(totalCount, currentPage, boardLimit);
+        int offset = (currentPage - 1) * boardLimit;
+        RowBounds rBounds = new RowBounds(offset, boardLimit);
+        List<QnaDTO> sList = myService.searchQnaByIdAndKeyword(memberId, searchCondition, searchKeyword, rBounds);
+        model.addAttribute("sList", sList);
+        model.addAttribute("pn", pn);
+        model.addAttribute("searchCondition", searchCondition);
+        model.addAttribute("searchKeyword", searchKeyword);
+        return "pages/mypage/qnaSearchList";
     }
 
     /**

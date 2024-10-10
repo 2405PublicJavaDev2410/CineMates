@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<!-- Default Layout Import-->
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/defaultLayout}"
+      layout:fragment="Content">
+<link rel="stylesheet" href="/css/mypage/adminQnaList.css">
+<main>
+    <div class="qna-container">
+        <h1>문의 내역</h1>
+        <div class="search-input-container">
+            <div class="input-section">
+                <form action="search-qna" method="post">
+                    <input type="text"
+                           class="common-input"
+                           name="searchKeyword"
+                           placeholder="제목으로 검색"
+                            th:value="${searchKeyword}"/>
+                    <button type="submit" class="search-btn">검색</button>
+                </form>
+            </div>
+        </div>
+        <div class="qna-list-area">
+            <table class="common-table">
+                <colgroup>
+                    <col style="width: 8%"/>
+                    <col style="width: 55%"/>
+                    <col style="width: 12%"/>
+                    <col style="width: 15%"/>
+                    <col style="width: 10%"/>
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>문의번호</th>
+                    <th>제목</th>
+                    <th>작성자</th>
+                    <th>문의일자</th>
+                    <th>답변상태</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${#lists.isEmpty(sList)}">
+                        <td colspan="5">
+                            <div id="no-search-result"><span><b>검색 결과가 없습니다.</b></span></div>
+                        </td>
+                    </tr>
+                    <tr th:each="qna : ${sList}" th:if="${!#lists.isEmpty(sList)}"
+                        th:style="${qna.replyStatus == '미답변' ? 'background-color: #F7F6F4;' : 'background-color: #ffffff;'}">
+                        <td th:text="${qna.qnaNo}"></td>
+                        <td><a class="qna-detail-link"
+                               th:href="@{/admin/qna-detail/{qnaNo}(qnaNo=${qna.qnaNo})}"
+                               th:text="${qna.title}"></a></td>
+                        <td th:text="${qna.memberId}"></td>
+                        <td th:text="${#dates.format(qna.regDate, 'yyyy-MM-dd')}"></td>
+                        <td th:text="${qna.replyStatus}"
+                        ></td>
+                    </tr>
+                </tbody>
+            </table>
+            <ul class="common-pagination" th:if="${pn.totalCount > 0}">
+                <li class="common-pagination-li-end">
+                    <a th:href="@{/admin/qna-list(cp=${pn.prevPage})}" th:if="${pn.startNavi}">&#10094</a>
+                </li>
+                <li th:classappend="${p == pn.currentPage} ? 'common-pagination-li common-pagination-li-active' : 'common-pagination-li'"
+                    th:each="p : ${#numbers.sequence(pn.startNavi, pn.endNavi)}">
+                    <a th:href="@{/admin/qna-list(cp=${p})}" th:text="${p}"></a>
+                </li>
+                <li class="common-pagination-li-end">
+                    <a th:href="@{/admin/qna-list(cp=${pn.nextPage})}" th:if="${pn.endNavi}">&#10095</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</main>
+</html>

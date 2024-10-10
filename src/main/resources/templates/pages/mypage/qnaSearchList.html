@@ -19,11 +19,16 @@
             <div class="search-container">
                 <form action="/my-page/search-qna" method="post">
                     <select name="searchCondition">
-                        <option value="all" selected>전체</option>
-                        <option value="no-reply">미답변</option>
-                        <option value="replied">답변완료</option>
+                        <option value="all" th:selected="${searchCondition == 'all'}">전체</option>
+                        <option value="no-reply" th:selected="${searchCondition == 'no-reply'}">미답변</option>
+                        <option value="replied" th:selected="${searchCondition == 'replied'}">답변완료</option>
                     </select>
-                    <input type="text" class="common-input-box" id="keyword-input-box" name="searchKeyword" placeholder="제목으로 검색">
+                    <input type="text"
+                           class="common-input-box"
+                           id="keyword-input-box"
+                           name="searchKeyword"
+                           placeholder="제목으로 검색"
+                           th:value="${searchKeyword}">
                     <button type="submit" id="search-btn"></button>
                 </form>
             </div>
@@ -35,15 +40,20 @@
                     <col style="width: 20%"/>
                 </colgroup>
                 <thead>
-                    <tr>
-                        <th>문의번호</th>
-                        <th>제목</th>
-                        <th>작성일자</th>
-                        <th>답변상태</th>
-                    </tr>
+                <tr>
+                    <th>문의번호</th>
+                    <th>제목</th>
+                    <th>작성일자</th>
+                    <th>답변상태</th>
+                </tr>
                 </thead>
                 <tbody id="qna-list-body">
-                    <tr th:each="qna : ${qList}">
+                    <tr th:if="${#lists.isEmpty(sList)}">
+                        <td colspan="4">
+                            <div id="no-search-result"><span><b>검색 결과가 없습니다.</b></span></div>
+                        </td>
+                    </tr>
+                    <tr th:each="qna : ${sList}" th:if="${!#lists.isEmpty(sList)}">
                         <td th:text="${qna.qnaNo}"></td>
                         <td><a class="qna-detail-link"
                                th:href="@{/my-page/qna-detail/{qnaNo}(qnaNo=${qna.qnaNo})}"

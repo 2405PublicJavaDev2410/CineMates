@@ -36,3 +36,9 @@ h1 {
     border: none;
     cursor: pointer;
 }
+#no-search-result {
+    text-align: center;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 16px;
+}

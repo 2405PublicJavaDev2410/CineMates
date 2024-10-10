@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface MyPageMapper {
@@ -16,6 +17,8 @@ public interface MyPageMapper {
     List<QnaDTO> selectAllQna(RowBounds rBounds, Integer currentPage);
     Qna selectOneQnaByNo(int qnaNo);
     QnaFile selectQnaFileByNo(int qnaNo);
+    List<QnaDTO> selectQnaByIdAndKeyword(String memberId, String searchCondition, String searchKeyword, RowBounds rBounds);
+    List<QnaDTO> selectQnaByKeyword(String searchKeyword, RowBounds rBounds);
     Qna selectOneReplyByNo(Integer parentQnaNo);
     int insertQna(Qna qna);
     int insertQnaFile(QnaFile qnaFile);
@@ -23,5 +26,6 @@ public interface MyPageMapper {
     int insertReply(Qna qna);
     int getTotalQnaCountById(String memberId);
     int getTotalQnaCount();
-
+    int getTotalQnaCountByIdAndKeyword(String memberId, String searchCondition, String searchKeyword);
+    int getTotalQnaCountByKeyword(String searchKeyword);
 }
