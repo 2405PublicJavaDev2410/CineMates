@@ -4,9 +4,9 @@ import com.filmfellows.cinemates.app.chat.dto.ChatRoomMovie;
 import com.filmfellows.cinemates.app.chat.dto.CinemaInfoByRegion;
 import com.filmfellows.cinemates.app.chat.dto.RegionAndCinemaCount;
 import com.filmfellows.cinemates.app.chat.dto.RelativeTime;
+import com.filmfellows.cinemates.common.Pagination;
 import com.filmfellows.cinemates.domain.chat.model.mapper.ChatMapper;
 import com.filmfellows.cinemates.domain.chat.model.service.ChatService;
-import com.filmfellows.cinemates.domain.chat.model.vo.ChatPagination;
 import com.filmfellows.cinemates.domain.chat.model.vo.ChatRoom;
 import com.filmfellows.cinemates.domain.chat.model.vo.ChatTag;
 import com.filmfellows.cinemates.domain.chat.model.vo.ChatTimeUtils;
@@ -62,17 +62,17 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public Map<String, Object> selectChatRoomList(Integer currentPage) {
+    public Map<String, Object> selectChatRoomList(Integer currentPage, int boardLimit, String tagName) {
         // 전체 채팅방 수 계산
-        int totalCount = cMapper.getTotalCount();
-        ChatPagination pn = new ChatPagination(totalCount, currentPage);
+        int totalCount = cMapper.getTotalCount(tagName);
+        Pagination pn = new Pagination(totalCount, currentPage, boardLimit);
 
         int limit = pn.getBoardLimit();
         int offset = (currentPage-1) * limit ;
         RowBounds rowBounds = new RowBounds(offset, limit);
 
         // 채팅방 리스트 조회
-        List<ChatRoom> cList = cMapper.selectChatRoomList(rowBounds);
+        List<ChatRoom> cList = cMapper.selectChatRoomList(rowBounds, tagName);
 
         // 채팅방 개설 상대 시간 계산
         List<RelativeTime> relativeTimeList = new ArrayList<>();
@@ -98,8 +98,8 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public List<ChatRoom> selectChatTagList() {
-        List<ChatRoom> chatTagList = cMapper.selectChatTagList();
+    public List<ChatTag> selectChatTagList(String status) {
+        List<ChatTag> chatTagList = cMapper.selectChatTagList(status);
         return chatTagList;
     }
 

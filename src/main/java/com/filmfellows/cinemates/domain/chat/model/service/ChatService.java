@@ -54,14 +54,14 @@ public interface ChatService {
      * 기능 : 채팅방 전체 리스트 조회
      * @return List<ChatRoom> (채팅방 전체 리스트)
      */
-    Map<String, Object> selectChatRoomList(Integer currentPage);
+    Map<String, Object> selectChatRoomList(Integer currentPage, int boardLimit, String tagName);
 
     /**
      * 담당자 : 이충무
      * 기능 : 채팅방 태그 조회
-     * @return List<ChatRoom> (채팅방 태그 리스트)
+     * @return List<ChatTag> (채팅방 태그 리스트)
      */
-    List<ChatRoom> selectChatTagList();
+    List<ChatTag> selectChatTagList(String status);
 
     /**
      * 담당자 : 이충무

@@ -40,12 +40,23 @@
         FROM CHAT_ROOM_TBL chat
                  JOIN MOVIE_TBL movie ON chat.MOVIE_NO = movie.MOVIE_NO
                  JOIN CINEMA_TBL cinema ON chat.CINEMA_NO = cinema.CINEMA_NO
+            <if test="tagName != null">
+                JOIN CHAT_ROOM_TAG_TBL tag ON chat.ROOM_NO = tag.ROOM_NO
+                WHERE tag.TAG_NAME = #{tagName}
+            </if>
         ORDER BY chat.ROOM_DATE DESC
     </select>
 
 <!--   채팅방 태그 조회 -->
     <select id="selectChatTagList" resultType="ChatTag">
-        SELECT * FROM CHAT_ROOM_TAG_TBL
+        <if test="status == 'default'">
+            SELECT * FROM CHAT_ROOM_TAG_TBL
+        </if>
+        <if test="status == 'distinct'">
+            SELECT TAG_NAME, COUNT(*) AS TAG_COUNT FROM CHAT_ROOM_TAG_TBL GROUP BY TAG_NAME ORDER BY TAG_COUNT DESC
+        </if>
+
+
     </select>
 
 <!--   채팅방 개설 및 채팅방 번호 필드값 생성 -->
@@ -66,7 +77,15 @@
         SELECT * FROM PROFILE_IMG_TBL
     </select>
 
-    <select id="getTotalCount">
-        SELECT COUNT(*) FROM CHAT_ROOM_TBL
+    <select id="getTotalCount" resultType="_int">
+        <if test="tagName != null">
+            SELECT COUNT(distinct chat.ROOM_NAME)  FROM CHAT_ROOM_TBL chat
+            JOIN CHAT_ROOM_TAG_TBL tag ON chat.ROOM_NO = tag.ROOM_NO
+            WHERE TAG_NAME = #{tagName}
+        </if>
+        <if test="tagName == null">
+            SELECT COUNT(*) FROM CHAT_ROOM_TBL
+        </if>
+
     </select>
 </mapper>

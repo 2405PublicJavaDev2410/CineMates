@@ -8,331 +8,12 @@
     <head>
         <title>채팅방 목록</title>
         <script src="https://kit.fontawesome.com/7d4169cb69.js" crossorigin="anonymous"></script>
+        <!-- css link-->
+        <link rel="stylesheet" href="/css/chat/chatList.css">
         <!-- inline CSS 영역-->
-        <style th:inline="css" type="text/css">
-
-            *{
-                font-family: 'NEXON Lv1 Gothic OTF', serif;
-            }
-            /* 페이징 처리 */
-            .paginationBox a{
-                display:inline-block;
-                text-align:center;
-                line-height:30px;
-                font-size: 20px;
-                min-width:30px;
-                height:30px;
-                text-decoration: none;
-                color: #6e6e6e;
-            }
-            .paginationBox #currentPageId{
-                display:inline-block;
-                text-align:center;
-                line-height:30px;
-                font-size: 20px;
-                min-width:30px;
-                height:30px;
-                text-decoration: none;
-                border-radius:50%;
-                background-color:#EA4E4A;
-                color: white;
-            }
-
-            .paginationBox{
-                text-align: center;
-                height: 120px;
-                line-height: 100px;
-            }
-
-            .chatRoomList-main{
-                width: 100%;
-            }
-
-            /*list, card 기준이 되는 relative 컨테이너*/
-            #position-box{
-                position: relative;
-                width: 100%;
-                height: 1600px;
-                overflow: hidden;
-            }
-
-            /* 검색, 내 채팅방, 전체 메뉴 버튼*/
-            .listMenuContainer{
-                margin: 0 auto;
-                display: flex;
-                width: 90%;
-                height: 50px;
-                font-size: 20px;
-            }
-            .listMenu-item{
-                user-select: none;
-                width: 120px;
-                height: 100%;
-                text-align: center;
-                line-height: 50px;
-                background-color: #ececec;
-                border-radius: 100px;
-                transition: all 200ms;
-                margin: 5px;
-                cursor:pointer;
-
-            }
-            .listMenu-item:hover{
-                background-color: #466288;
-                color: white;
-                transform: scale(1.02);
-            }
-
-
-            /* list 전환 버튼 css */
-            #listSwitchContainer{
-                display: flex;
-                justify-content: right;
-                width: 100%;
-                height: 45px;
-                align-items: center;
-                text-align: center;
-                line-height: 45px;
-            }
-
-            .listSwitch-btn{
-                width: 110px;
-                height: 100%;
-                background-color: #ececec;
-                font-size: 18px;
-                border: none;
-                border-radius: 10px;
-                transition: all 200ms;
-                cursor: pointer;
-                margin-right: 20px;
-            }
-            .listSwitch-btn span{
-                display: inline-block;
-                margin-left: 10px;
-            }
-            .listSwitch-btn:hover{
-                transform:scale(1.05);
-                color: white;
-                font-size: 20px;
-                font-weight: bold;
-                background-color: #EA4E4A;
-            }
-
-            #toCard-btn.active, #toList-btn.active{
-                transform:scale(1.05);
-                color: white;
-                font-size: 20px;
-                font-weight: bold;
-                background-color: #EA4E4A;
-            }
-
-            /* list형, card형 css */
-            #toList-container{
-                margin:0 auto;
-                position: absolute;
-                top:10px;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                z-index: 3;
-            }
-            #toCard-container{
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 20px;
-                position: absolute;
-                top:10px;
-                left: 0;
-                width: 100%;
-                z-index: 2;
-            }
-
-            /* list형 기본 스타일 */
-            .list-item {
-                width: 90%;
-                height: 150px;
-                background-color: white;
-                padding: 15px;
-                border-radius: 15px;
-                /*transition: opacity 0.5s ease, transform 0.5s ease;*/
-                opacity: 1;
-                /*transform: scale(1);*/
-                margin: 0 auto;
-                margin-bottom: 20px;
-
-                visibility: visible; /* 처음엔 숨겨져 있음 */
-                transform: translateY(20px);
-                transition: opacity 0.5s ease, transform 0.5s ease, visibility 0s 0.5s; /* visibility는 0.5초 후에 표시 */
-            }
-                .list-item.fade-in:hover{
-                    transform: translateY(-5px);
-                    box-shadow: 0 5px 5px 5px rgb(162, 162, 162);
-
-                }
-            /* list형 fade-in 스타일 */
-            .list-item.fade-in {
-                visibility: visible; /* 0.5초 후에 보이게 */
-                opacity: 1;
-                transform: translateY(0);
-                transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.2s; /* 부드럽게 등장 */
-            }
-            /* list형 fade-out 스타일 */
-            .list-item.fade-out {
-                opacity: 0;
-                transform: scale(0.9);
-                visibility: hidden;
-            }
-
-
-            /* card형 기본 스타일 */
-            .card-item {
-                width: 30%;
-                height: 500px;
-                background-color: #ffe5b4;
-                /*padding: 20px;*/
-                border-radius: 20px;
-
-                opacity: 0;
-                visibility: hidden; /* 처음엔 숨겨져 있음 */
-                transform: translateY(20px);
-                transition: opacity 0.5s ease, transform 0.5s ease, visibility 0s 0.5s; /* visibility는 0.5초 후에 표시 */
-            }
-
-            /* card형 fade-in 스타일 */
-            .card-item.fade-in {
-                visibility: visible; /* 0.5초 후에 보이게 */
-                opacity: 1;
-                transform: translateY(0);
-                transition: opacity 0.5s ease, transform 0.5s ease; /* 부드럽게 등장 */
-            }
-            /* card형 fade-out 스타일 */
-            .card-item.fade-out {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-
-
-            /* list item flex */
-            .item-flex-container{
-                display: flex;
-                justify-content: left;
-                width: 100%;
-                height: 100%;
-                font-size: 20px;
-            }
-
-            .flex-item-memberProfile{
-                width: 120px;
-                height: 120px;
-                margin-right: 20px;
-            }
-
-            .chatRoomName{
-                font-size: 25px;
-                /*font-weight: bold;*/
-            }
-
-            .chatTagList{
-                color: #6e6e6e;
-            }
-
-            .flex-item-chatInfoBox{
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-            }
-
-            .itemBtnFlexContainer{
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }
-            .joinBtn{
-                width: 60px;
-                height: 40px;
-                background-color:#6e6e6e;
-                border-radius: 10px;
-                text-align: center;
-                line-height: 40px;
-                cursor: pointer;
-                transition: all 200ms;
-            }
-            .joinBtn:hover{
-                color:white;
-                font-weight: bold;
-                background: #EA4E4A;
-                transform: scale(1.02);
-            }
-
-
-
-
-            /* card item */
-            .toCard-item-info{
-                display: flex;
-                flex-direction: column;
-                justify-content: space-around;
-                padding: 10px;
-                position: absolute;
-                bottom:0;
-                left:0;
-                width: 100%;
-                height: 30%;
-                background-color: #fff8dc;
-                border-radius: 20px;
-                transition: all 300ms;
-                z-index: 5;
-            }
-            .toCard-item-info:hover{
-                height: 70%;
-            }
-
-            .itemCard-title, .itemCard-recentContent, .itemCard-roomDate {
-                display: none;
-            }
-
-            .card-mouseover{
-                user-select: none;
-                width: 100%;
-                height: 80%;
-                border-radius: 20px;
-                z-index: 3;
-                background-color: black;
-                opacity: 0;
-                position: absolute;
-                top: 0;
-                left: 0;
-                padding-top: 50px;
-            }
-            .card-mouseover.visible{
-                transition: all 200ms;
-                opacity: 0.7;
-            }
-
-            .card-mouseover-text{
-                text-align: center;
-                color: white;
-                font-size: 20px;
-            }
-
-            .card-mouseover-text.joinBtn2{
-
-                margin: 20px auto;
-                width: 100px;
-                height: 60px;
-                border-radius: 10px;
-                border: 1px solid white;
-                text-align: center;
-                line-height: 60px;
-                cursor: pointer;
-                transition: all 200ms;
-            }
-            .card-mouseover-text.joinBtn2:hover{
-                background-color:white;
-                color: black;
-            }
+        <style>
         </style>
+
 
         <!-- inline JS 영역-->
         <script th:inline="javascript" type="text/javascript">
@@ -469,7 +150,6 @@
                 }else{
                     console.log("location 실패")
                 }
-
             }
 
            window.addEventListener('load',()=>{
@@ -571,7 +251,7 @@
         <h1>ChatList 영역입니다.</h1>
         <div class="chatRoomList-main">
             <div class="listMenuContainer">
-                <div class="listMenu-item"><i class="fa-solid fa-magnifying-glass" style="padding-right: 10px"></i>검색</div>
+                <div class="listMenu-item" onclick="location.href=`/chat/search`;"><i class="fa-solid fa-magnifying-glass" style="padding-right: 10px"></i>검색</div>
                 <div class="listMenu-item">내 채팅방</div>
                 <div class="listMenu-item" style="width: 100px; color:white; background-color: #466288; cursor:auto">전체</div>
             </div>
@@ -676,8 +356,8 @@
             <div>
                 <div class="paginationBox" th:unless="${#lists.isEmpty(chatRoomList)}">
                     <div>
-                        <a th:if="${pn.currentPage != 1}"  href="javascript:void(0)" th:text="처음" th:onclick="navigatePage(1)"></a>
-                        <a th:if="${pn.getStartNavi() != 1}"  href="javascript:void(0)" th:text="이전" th:onclick="navigatePage([[${pn.prevPage}]])"></a>
+                        <a th:if="${pn.currentPage != 1}"  href="javascript:void(0)" th:onclick="navigatePage(1)">&#10094&#10094</a>
+                        <a th:if="${pn.getStartNavi() != 1}"  href="javascript:void(0)" th:onclick="navigatePage([[${pn.prevPage}]])">&#10094</a>
 
                         <span th:each="p : ${#numbers.sequence(pn.startNavi, pn.endNavi)}">
                             <span th:if="${p == pn.currentPage}">
@@ -690,8 +370,8 @@
                             </span>
                         </span>
 
-                        <a th:if="${pn.getEndNavi() != pn.MaxPage}"  href="javascript:void(0)" th:text="다음" th:onclick="navigatePage([[${pn.nextPage}]])"></a>
-                        <a th:if="${pn.currentPage != pn.maxPage}"  href="javascript:void(0)" th:text="마지막" th:onclick="navigatePage([[${pn.maxPage}]])"></a>
+                        <a th:if="${pn.getEndNavi() != pn.MaxPage}"  href="javascript:void(0)"  th:onclick="navigatePage([[${pn.nextPage}]])">&#10095</a>
+                        <a th:if="${pn.currentPage != pn.maxPage}"  href="javascript:void(0)" th:onclick="navigatePage([[${pn.maxPage}]])">&#10095&#10095</a>
 
                     </div>
                 </div>
@@ -701,8 +381,6 @@
         </div>
 
 
-
-        [[${pn}]]
 
         <br><br><br>
         <div>최근참여많은방을 추천해요</div>

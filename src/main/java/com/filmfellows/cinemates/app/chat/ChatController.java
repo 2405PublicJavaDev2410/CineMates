@@ -51,13 +51,11 @@ public class ChatController {
 
         // 채팅방 리스트 전체 조회 비즈니스 로직
         // 서비스에서 Pagination 객체, 조회된 cList 객체 매핑해서 반환
-        Map<String, Object> map = cService.selectChatRoomList(currentPage);
+        int boardLimit = 9;
+        Map<String, Object> map = cService.selectChatRoomList(currentPage, boardLimit, null);
 
         // 채팅방 태그 조회
-        List<ChatRoom> tagList = cService.selectChatTagList();
-
-
-
+        List<ChatTag> tagList = cService.selectChatTagList("default");
 
 
 
@@ -70,8 +68,45 @@ public class ChatController {
         return "pages/chat/chatRoomList";
     }
 
+    @GetMapping("/chat/search")
+    public String showSearchList(Model model, @RequestParam(value = "cp", defaultValue = "1") Integer currentPage){
+
+        List<ChatTag> tagListDistinctList = cService.selectChatTagList("distinct");
+        int boardLimit = 5;
+        Map<String, Object> map = cService.selectChatRoomList(currentPage, boardLimit, "없음");
+        model.addAttribute("pn", map.get("pn"));
+        System.out.println(map.get("pn"));
+        model.addAttribute("tagListDistinctList", tagListDistinctList);
+        return "pages/chat/searchChat";
+    }
+
+//    ajax 검색 리스트 출력
+    @PostMapping("/chat/search")
+    public String selectSearchList(Model model, @RequestParam("tagName") String tagName,
+                                   @RequestParam(value = "cp", defaultValue = "1") Integer currentPage){
+
+        // 전체 프로필 정보 조회 -> 채팅방 정보에 출력
+        List<ProfileImg> profileList = cService.selectProfileList();
+
+        // 채팅방 리스트 전체 조회 비즈니스 로직
+        // 서비스에서 Pagination 객체, 조회된 cList 객체 매핑해서 반환
+        int boardLimit = 5;
+        Map<String, Object> map = cService.selectChatRoomList(currentPage, boardLimit, tagName);
 
 
+
+        // 채팅방 태그 조회
+        List<ChatTag> tagList = cService.selectChatTagList("default");
+
+        model.addAttribute("profileList", profileList);
+        model.addAttribute("tagList", tagList);
+        model.addAttribute("chatRoomList", map.get("cList"));
+        model.addAttribute("pn", map.get("pn"));
+        model.addAttribute("relativeTimeList", map.get("relativeTimeList"));
+//      tagName으로 검색한 이후 페이지네비게이션에서 tagName을 기억해야하기때문에 다시 전달해줌
+        model.addAttribute("tagName", tagName);
+        return "pages/chat/searchChat::#list-pagination-container";
+    }
 
     @GetMapping("/chat/room")
     public String showChatRoom(){

@@ -57,14 +57,14 @@ public interface ChatMapper {
      */
     List<ChatRoom> selectChatRoomList();
 
-    List<ChatRoom> selectChatRoomList(RowBounds rowBounds);
+    List<ChatRoom> selectChatRoomList(RowBounds rowBounds, String tagName);
 
     /**
      * 담당자 : 이충무
      * 기능 : 채팅방 태그 조회 mapper
-     * @return List<ChatRoom> (채팅방 태그 리스트)
+     * @return List<ChatTag> (채팅방 태그 리스트)
      */
-    List<ChatRoom> selectChatTagList();
+    List<ChatTag> selectChatTagList(String status);
 
     /**
      * 담당자 : 이충무
@@ -76,8 +76,8 @@ public interface ChatMapper {
 
     /**
      * 담당자 : 이충무
-     * 기능 : 전체 채팅방 개수
+     * 기능 : 조건별 채팅방 개수
      * @return int
      */
-    int getTotalCount();
+    int getTotalCount(String tagName);
 }
