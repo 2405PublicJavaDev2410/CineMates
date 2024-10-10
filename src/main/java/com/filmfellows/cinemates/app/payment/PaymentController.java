@@ -113,9 +113,9 @@ public class PaymentController {
     }
 
     @GetMapping("/getImpUid")
-    public ResponseEntity<String> getImpUid(@RequestParam String reservationNo) {
+    public ResponseEntity<ReservationDTO> getImpUid(@RequestParam String reservationNo) {
         System.out.println("getReservationNo: " + reservationNo);
-        int result = paymentService.selectImpUid(reservationNo);
-        return ResponseEntity.ok(reservationNo);
+        ReservationDTO DTO  = paymentService.selectImpUid(reservationNo);
+        return ResponseEntity.ok(DTO);
     }
 }

@@ -184,12 +184,13 @@
                         url: "/payments/cancel/" + response.imp_uid,
                         type: "GET",
                         contentType: "application/json",
-                        data: JSON.stringify({
-                            merchant_uid: response.merchant_uid,
-                            cancel_request_amount: response.amount,
-                            reason: "고객 요청",
-                        }),
-                        dataType: "json"
+                        // data:
+                            // JSON.stringify({
+                            // merchant_uid: response.merchant_uid,
+                            // cancel_request_amount: response.amount,
+                            // reason: "고객 요청",
+                        // }),
+                        // dataType: "json"
                     })
                         .done(function (data) {
                             alert("취소가 완료되었습니다!");

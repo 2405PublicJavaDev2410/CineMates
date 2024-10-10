@@ -81,7 +81,7 @@ public class PaymentService {
         pmapper.insertPaymentInfo2(buyerInfo);
     }
 
-    public int selectImpUid(String reservationNo) {
+    public ReservationDTO selectImpUid(String reservationNo) {
         return pmapper.selectImpUid(reservationNo);
     }
 }
