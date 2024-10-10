@@ -11,5 +11,8 @@
         INSERT INTO PAYMENT_TBL (IMP_UID, MERCHANT_UID, AMOUNT, STATUS,BUYER_EMAIL, BUYER_NAME, BUYER_TEL, NAME,MOVIE_NO,SCREEN_NO,RESERVATION_NO) VALUES (#{imp_uid},#{merchant_uid},#{amount},DEFAULT,#{buyer_email},#{buyer_name},#{buyer_tel},#{name},#{movieNo},#{screenNo},#{reservationNo})
     </insert>
 
+    <select id="selectImpUid" resultType="String">
+        SELECT IMP_UID FROM PAYMENT_TBL WHERE RESERVATION_NO = #{reservationNo}
+    </select>
 
 </mapper>

@@ -9,7 +9,6 @@ import com.filmfellows.cinemates.domain.reservation.model.vo.ReservationDTO;
 import com.filmfellows.cinemates.domain.reservation.model.vo.ShowInfoDTO;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,7 +52,7 @@ public class ReservationController {
 
         model.addAttribute("rList", processedList);
         System.out.println("보여줘" + processedList);
-        return "pages/reservation/Showtime";
+        return "pages/reservation/showtime";
     }
 
     @PostMapping("/Ticketing/PersonSeat")
@@ -82,7 +81,7 @@ public class ReservationController {
         System.out.println("rDTO 보여줘라 " + rDTO);
         model.addAttribute("memberId", memberId);
         model.addAttribute("rDTO", rDTO);
-        return "pages/reservation/PersonSeat";
+        return "pages/reservation/personSeat";
     }
     private static String generateRandomString(int length) {
         StringBuilder builder = new StringBuilder();
@@ -142,5 +141,16 @@ public class ReservationController {
         response.put("reservationSeat", reservedSeatsMap);
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/search")
+    public String showSearchPage(){
+        return "pages/reservation/test";
+    }
+
+    @GetMapping("/Ticketing/search")
+    public ResponseEntity<ReservationDTO> selectReservationInfo(String reservationNo){
+        ReservationDTO rDTO = rService.selectReservationInfo(reservationNo);
+        return ResponseEntity.ok(rDTO);
     }
 }

@@ -72,5 +72,10 @@ public class ReservationServiceImpl implements ReservationService {
         return rmapper.selectMoviePoster(title);
     }
 
+    @Override
+    public ReservationDTO selectReservationInfo(String reservationNo) {
+        return rmapper.selectReservationInfo(reservationNo);
+    }
+
 
 }

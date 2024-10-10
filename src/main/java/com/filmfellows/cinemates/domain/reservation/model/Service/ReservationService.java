@@ -87,4 +87,12 @@ public interface ReservationService {
      * @return
      */
     ShowInfoDTO selectMoviePoster(String title);
+
+    /**
+     * 예매번호로 예매 정보 조회
+     *
+     * @param reservationNo
+     * @return
+     */
+    ReservationDTO selectReservationInfo(String reservationNo);
 }

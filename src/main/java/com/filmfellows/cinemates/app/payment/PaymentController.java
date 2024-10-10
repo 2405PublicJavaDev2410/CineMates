@@ -111,4 +111,11 @@ public class PaymentController {
         IamportResponse<Payment> response = paymentService.cancelPayment(imp_uid);
         return ResponseEntity.ok("취소 완!");
     }
+
+    @GetMapping("/getImpUid")
+    public ResponseEntity<String> getImpUid(@RequestParam String reservationNo) {
+        System.out.println("getReservationNo: " + reservationNo);
+        int result = paymentService.selectImpUid(reservationNo);
+        return ResponseEntity.ok(reservationNo);
+    }
 }

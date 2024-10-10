@@ -34,4 +34,6 @@ public interface ReservationMapper {
     List<String> selectCinemaName();
 
     ShowInfoDTO selectMoviePoster(String title);
+
+    ReservationDTO selectReservationInfo(String reservationNo);
 }

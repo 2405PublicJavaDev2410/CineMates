@@ -90,7 +90,8 @@
             pay_method: 'card',
             merchant_uid: 'merchant_' + new Date().getTime(),
             name: reservationData.title,
-            amount: 14000 * reservationData.adultReserved + 12000 * reservationData.childReserved + 7000 * reservationData.seniorReserved,
+            // amount: 14000 * reservationData.adultReserved + 12000 * reservationData.childReserved + 7000 * reservationData.seniorReserved,
+            amount: 100,
             buyer_email: reservationData.buyer_email,
             buyer_name: reservationData.buyer_name,
             buyer_tel: reservationData.buyer_tel,
@@ -164,23 +165,45 @@
     }
 
     function cancelPay() {
+        const reservationNumber = prompt("예약 번호를 입력해주세요");
+        if (!reservationNumber) {
+            alert("올바른 예약 번호를 입력해야 합니다.");
+            return;
+        }
+
+        // 먼저 서버에서 imp_uid를 가져옵니다.
         $.ajax({
-            // 예: http://www.myservice.com/payments/cancel
-            url: "/payments/cancel/imp_336641553168",
+            url: "/getImpUid",
             type: "GET",
-            contentType: "application/json",
-            // data : JSON.stringify({
-            // 	merchant_uid : "merchant_1727417862892", // 예: ORD20180131-0000011
-            // 	cancel_request_amount : 2000, // 환불금액
-            // 	reason : "테스트 결제 환불",// 환불사유
-            // 	refund_holder : "홍길동",
-            // 	refund_bank : "88"
-            // }),
-            "dataType": "json"
+            data: { reservationNo: reservationNumber }
         })
-            .done(function (data) {
-                alert("취소가 완료되었습니다!");
-                console.log(data);
+            .done(function (response) {
+                if (response.imp_uid) {
+                    // imp_uid를 받아왔다면, 결제 취소를 진행합니다.
+                    $.ajax({
+                        url: "/payments/cancel/" + response.imp_uid,
+                        type: "GET",
+                        contentType: "application/json",
+                        data: JSON.stringify({
+                            merchant_uid: response.merchant_uid,
+                            cancel_request_amount: response.amount,
+                            reason: "고객 요청",
+                        }),
+                        dataType: "json"
+                    })
+                        .done(function (data) {
+                            alert("취소가 완료되었습니다!");
+                            console.log(data);
+                        })
+                        .fail(function (jqXHR, textStatus) {
+                            alert("결제 취소에 실패했습니다: " + textStatus);
+                        });
+                } else {
+                    alert("유효한 예약 번호가 아닙니다.");
+                }
+            })
+            .fail(function (jqXHR, textStatus) {
+                alert("예약 정보를 가져오는데 실패했습니다: " + textStatus);
             });
     }
 </script>
