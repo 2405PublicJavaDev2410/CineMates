@@ -1,0 +1,116 @@
+.my-page-container {
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 100px 0;
+    margin: 0 auto;
+    flex-direction: row;
+    width: 90%;
+    flex: 1 1 auto;
+}
+
+/*메인 CSS*/
+#main-container {
+    width: 800px;
+    min-height: 400px;
+    float: left;
+    margin: 0 auto;
+}
+.qna-detail-form {
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+    margin-left: 40px;
+    padding: 20px;
+}
+#qna-title {
+    font-family: 'GmarketSansMedium', serif;
+    font-size: 28px;
+    font-weight: bold;
+}
+#detail-title {
+    max-width: 580px;
+}
+.detail-top {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 5px 10px;
+    border-bottom: 1px solid black;
+}
+.detail-middle {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px 5px 20px 5px;
+    line-height: 1.5;
+    border-bottom: 1px solid black;
+}
+.file-form {
+    display: flex;
+}
+.file-form label {
+    margin-right: 40px;
+}
+#qna-file-thumbnail {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    box-shadow: 0 0 7px rgba(0, 0, 0, 0.2);
+}
+.modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* 반투명 배경 */
+}
+.modal-content img {
+    object-fit: cover;
+    display: block;
+    margin: 0 auto;
+    width: 460px;
+    height: 460px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+.detail-bottom {
+    width: 100%;
+    padding: 20px 5px;
+    display: flex;
+}
+#detail-content {
+    padding-bottom: 150px;
+}
+#reply-title {
+    width: 15%;
+}
+#reply-content {
+    width: 85%;
+    line-height: 1.5;
+}
+.button-category {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 40px;
+    margin-right: 30px;
+}
+.button-category button {
+    width: 75px;
+    height: 40px;
+    border-radius: 5px;
+    letter-spacing: 1px;
+    font-size: 16px;
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+    border: none;
+    color: white;
+}
+#go-qna-list-btn {
+    background-color: #464646;
+    margin-right: 10px;
+}
+#go-qna-list-btn:hover {
+    background-color: #242424;
+    border: 2px solid #242424;
+}

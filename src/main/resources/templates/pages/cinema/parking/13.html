@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>평촌</title>
+	<style>
+		body {
+			font-family: 'Arial', sans-serif;
+			margin: 20px;
+			line-height: 1.6;
+			background-color: #f9f9f9;
+			color: #333;
+		}
+
+		h2 {
+			color: #007bff; /* 강조 색상 */
+			font-size: 24px;
+			border-bottom: 2px solid #007bff;
+			padding-bottom: 10px;
+			margin-bottom: 20px;
+		}
+
+		hr {
+			border: 0;
+			height: 1px;
+			background-color: #ddd;
+			margin: 20px 0;
+		}
+
+		pre {
+			background-color: #f0f8ff; /* 가독성을 위한 배경색 */
+			padding: 15px;
+			border-radius: 5px;
+			font-size: 16px;
+			overflow-x: auto;
+			white-space: pre-wrap;
+			word-wrap: break-word;
+		}
+
+		div {
+			text-align: right;
+			margin-bottom: 20px;
+		}
+
+		button {
+			padding: 10px 20px;
+			background-color: #007bff;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			font-size: 16px;
+		}
+
+		button:hover {
+			background-color: #0056b3;
+		}
+
+		/* 주차 안내 박스 */
+		.parking-info {
+			background-color: #fff8dc;
+			padding: 20px;
+			border: 1px solid #ccc;
+			border-radius: 10px;
+			margin-top: 20px;
+		}
+
+		/* 미디어 쿼리: 모바일에서의 최적화 */
+		@media (max-width: 600px) {
+			body {
+				margin: 10px;
+			}
+
+			h2 {
+				font-size: 20px;
+			}
+
+			button {
+				width: 100%;
+				font-size: 18px;
+			}
+
+			pre {
+				font-size: 14px;
+			}
+		}
+	</style>
+	</head>
+	<body>
+	<div><button th:onclick="mapgo([[${cinemaAddress}]])">길찾기</button></div>
+		<h2>대중교통안내</h2>
+		<hr>
+		
+		<pre>
+지하철
+
+4호선 │ 평촌역 1번출구
+20M직진 후 한림대 병원 맞은편 8층
+
+버스
+
+마을버스: 6, 6-1(한림대 병원 앞 하차), 5, 5-1, 7, 8 (평촌역 하차)
+일반버스: 1, 6, 552 (평촌역 하차)
+		</pre>
+		<h2>주차안내</h2>
+		<hr>
+	<pre class="parking-info">
+■  주차 안내
+- 지상 3층~7층 이용
+(지하 1층 주차장은 상가 전용 주차장으로 주차료 정산 시 혜택을 받으실 수 없습니다.)
+
+■  주차 확인(인증방법)
+- 영화티켓 하단 바코드를 이용하여 인증
+- 모바일티켓은 화면 상단 '예매번호' 입력 시 인증 가능
+- 3층, 8층, 9층 무인정산기에서 정산 후 20분 내로 출차
+
+■ 주차 요금
+- 티켓 인증 시, 4시간 무료(출차 직전 주차정산 진행)
+- 4시간 이후 20분당 1,000원 부과
+		</pre>
+		<script>
+        // 팝업창 크기 변경 함수
+       function maximizePopup() {
+		    // 화면의 가로 및 세로 크기 가져오기
+		    var screenWidth = window.screen.availWidth;
+		    var screenHeight = window.screen.availHeight;
+		    
+		    // 팝업 창을 화면의 100%로 확장
+		    window.resizeTo(screenWidth, screenHeight);
+		}
+
+
+			function mapgo(a){
+	    		
+	            window.location.href = "https://map.naver.com/v5/search/"+a;  // 페이지 이동
+	            maximizePopup();  // 페이지 이동 후 팝업창 크기 조절
+
+
+	    		
+
+			}
+		</script>
+	</body>
+</html>

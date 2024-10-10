@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @Slf4j
@@ -50,7 +52,7 @@ public class MemberController {
      */
     @GetMapping("/find-info")
     public String showFindIdOrPw() {
-        return "pages/member/find-info";
+        return "pages/member/findInfo";
     }
 
     /**
@@ -95,7 +97,7 @@ public class MemberController {
         }
         model.addAttribute("token", token);
         log.info("token : {}", token);
-        return "pages/member/reset-password";
+        return "pages/member/resetPassword";
     }
 
     /**
@@ -105,8 +107,15 @@ public class MemberController {
     @PostMapping("/register")
     @ResponseBody
     public String insertMember(@ModelAttribute @Valid RegisterRequest registerRequest,
-            @RequestParam(value="profileImg", required=false) MultipartFile profileImg)
+            @RequestParam(value="profileImg", required=false) MultipartFile profileImg,
+                               @RequestParam("verificationCode") String verCode)
             throws IllegalStateException, IOException {
+        // 이메일 인증번호 검증
+        boolean isVerified = evService.verifyCode(registerRequest.getEmail(), verCode);
+        if(!isVerified) {
+            return "verification_fail";
+        }
+
         Member member = new Member();
         member.setMemberId(registerRequest.getMemberId());
         member.setMemberPw(registerRequest.getMemberPw());
@@ -133,6 +142,18 @@ public class MemberController {
     @ResponseBody
     public String checkDuplicatedId(@RequestParam("memberId") String memberId) {
         boolean result = mService.isIdDuplicate(memberId);
+        log.info("isDuplicated : {}", result);
+        return result ? "duplicated" : "available";
+    }
+
+    /**
+     * 담당자 : 엄태운
+     * 관련기능 : 이메일 중복 체크
+     */
+    @GetMapping("/checkEmail")
+    @ResponseBody
+    public String checkDuplicatedEmail(@RequestParam("email") String email) {
+        boolean result = mService.isEmailDuplicate(email);
         log.info("isDuplicated : {}", result);
         return result ? "duplicated" : "available";
     }
@@ -230,6 +251,74 @@ public class MemberController {
 
     /**
      * 담당자 : 엄태운
+     * 관련기능 : 이메일 인증번호 전송
+     */
+    @PostMapping("/send-verification-code")
+    @ResponseBody
+    public Map<String, Object> sendVerificationCode(@RequestBody EmailVerifyRequest emailVerifyRequest) {
+        String email = emailVerifyRequest.getEmail();
+        Map<String, Object> response = new HashMap<>();
+
+        if (email == null || email.isEmpty()) {
+            response.put("success", false);
+            response.put("message", "이메일이 유효하지 않습니다.");
+            return response;
+        }
+
+        boolean isSent = evService.sendVerificationCode(email);
+        log.info("isSent : {}", isSent);
+        if (isSent) {
+            response.put("success", true);
+            response.put("message", "인증번호가 발송되었습니다. 이메일을 확인해주세요.");
+        } else {
+            response.put("success", false);
+            response.put("message", "인증번호 발송에 실패하였습니다. 다시 시도해주세요.");
+        }
+        return response;
+    }
+
+    /**
+     * 담당자 : 엄태운
+     * 관련기능 : 인증번호 인증
+     */
+    @PostMapping("/verify-code")
+    @ResponseBody
+    public Map<String, Object> verifyCode(@RequestBody CodeVerifyRequest codeVerifyRequest) {
+        Map<String, Object> response = new HashMap<>();
+        String email = codeVerifyRequest.getEmail();
+        String code = codeVerifyRequest.getVerificationCode();
+
+        // 서비스에서 저장된 인증번호를 가져와서 입력값과 비교
+        String storedCode = evService.getStoredCode(email);
+        if (storedCode != null && storedCode.equals(code)) {
+            response.put("success", true);
+        } else {
+            response.put("success", false);
+        }
+        return response;
+    }
+
+    /**
+     * 담당자 : 엄태운
+     * 관련기능 : 비밀번호 재설정 링크 전송
+     */
+    @PostMapping("/send-reset-link")
+    @ResponseBody
+    public String sendResetLink(@RequestBody @Valid FindPwRequest findPwRequest) {
+        log.info("Reset password request for email: {}", findPwRequest.getEmail());
+        Member member = new Member();
+        member.setMemberId(findPwRequest.getMemberId());
+        member.setEmail(findPwRequest.getEmail());
+        Member oneMember = mService.findMemberPw(member);
+        if(oneMember == null) {
+            return "fail";
+        }
+        evService.sendPasswordResetEmail(oneMember.getEmail(), oneMember.getMemberId());
+        return "success";
+    }
+
+    /**
+     * 담당자 : 엄태운
      * 관련기능 : 비밀번호 재설정
      */
     @PostMapping("/reset-pw")
@@ -250,25 +339,6 @@ public class MemberController {
             return "fail";
         }
             return "success";
-    }
-
-    /**
-     * 담당자 : 엄태운
-     * 관련기능 : 비밀번호 재설정 링크 전송
-     */
-    @PostMapping("/send-reset-link")
-    @ResponseBody
-    public String sendResetLink(@RequestBody @Valid FindPwRequest findPwRequest) {
-        log.info("Reset password request for email: {}", findPwRequest.getEmail());
-        Member member = new Member();
-        member.setMemberId(findPwRequest.getMemberId());
-        member.setEmail(findPwRequest.getEmail());
-        Member oneMember = mService.findMemberPw(member);
-        if(oneMember == null) {
-            return "fail";
-        }
-        evService.sendPasswordResetEmail(oneMember.getEmail(), oneMember.getMemberId());
-        return "success";
     }
 
     /**

@@ -26,7 +26,7 @@ function modifyMember() {
         const formData = new FormData(document.querySelector('#update-member-form'));
         $.ajax({
             url: '/modify',
-            method: 'post',
+            method: 'POST',
             data: formData,
             processData: false,
             contentType: false,
@@ -212,3 +212,7 @@ cpwIcon.addEventListener('click', function () {
         this.classList.add('fi-rr-eye-crossed');
     }
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelector('#side-menu-4').classList.add('selected');
+})

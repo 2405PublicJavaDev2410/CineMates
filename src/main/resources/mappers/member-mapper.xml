@@ -24,6 +24,11 @@
         FROM MEMBER_TBL
         WHERE MEMBER_ID = #{memberId}
     </select>
+    <select id="countByEmail" resultType="boolean">
+        SELECT COUNT(*)
+        FROM MEMBER_TBL
+        WHERE EMAIL = #{email}
+    </select>
     <insert id="insertMember">
         INSERT INTO MEMBER_TBL (MEMBER_ID, MEMBER_PW, NAME, BIRTH_DATE, EMAIL, PHONE)
         VALUES (#{memberId}, #{memberPw}, #{name}, #{birthDate}, #{email}, #{phone})

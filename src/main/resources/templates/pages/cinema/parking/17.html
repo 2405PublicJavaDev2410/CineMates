@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>세종</title>
+	<style>
+		body {
+			font-family: 'Arial', sans-serif;
+			margin: 20px;
+			line-height: 1.6;
+			background-color: #f9f9f9;
+			color: #333;
+		}
+
+		h2 {
+			color: #007bff; /* 강조 색상 */
+			font-size: 24px;
+			border-bottom: 2px solid #007bff;
+			padding-bottom: 10px;
+			margin-bottom: 20px;
+		}
+
+		hr {
+			border: 0;
+			height: 1px;
+			background-color: #ddd;
+			margin: 20px 0;
+		}
+
+		pre {
+			background-color: #f0f8ff; /* 가독성을 위한 배경색 */
+			padding: 15px;
+			border-radius: 5px;
+			font-size: 16px;
+			overflow-x: auto;
+			white-space: pre-wrap;
+			word-wrap: break-word;
+		}
+
+		div {
+			text-align: right;
+			margin-bottom: 20px;
+		}
+
+		button {
+			padding: 10px 20px;
+			background-color: #007bff;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			font-size: 16px;
+		}
+
+		button:hover {
+			background-color: #0056b3;
+		}
+
+		/* 주차 안내 박스 */
+		.parking-info {
+			background-color: #fff8dc;
+			padding: 20px;
+			border: 1px solid #ccc;
+			border-radius: 10px;
+			margin-top: 20px;
+		}
+
+		/* 미디어 쿼리: 모바일에서의 최적화 */
+		@media (max-width: 600px) {
+			body {
+				margin: 10px;
+			}
+
+			h2 {
+				font-size: 20px;
+			}
+
+			button {
+				width: 100%;
+				font-size: 18px;
+			}
+
+			pre {
+				font-size: 14px;
+			}
+		}
+	</style>
+	</head>
+	<body>
+	<div><button th:onclick="mapgo([[${cinemaAddress}]])">길찾기</button></div>
+		<h2>대중교통안내</h2>
+		<hr>
+		
+		<pre>
+-버스 212번 이용하여 "가재마을 5단지"에서 하차 후 도보로 이동 (약2분소요)
+-버스 213번 이용하여 "가재마을 4단지"에서 하차 후 도보로 이동 (약2분소요)
+-버스 108번, 500번, 501번, 502번 이용하여 "가재마을 5단지"에서 하차 후 도보로 이동 (약5분 소요)
+-조치원 601, 602, 991번 버스 이용하여 "성남고"에서 하차 후 도보로 이동(약15분소요)
+-대전, 첫마을 한솔동 990번 BRT 이용하여 "성남고"에서 하차 후 도보로 이동 (약15분소요)
+
+
+※ 1호기(~24시 까지만 운영), 6호기(24시 이후도 운영) 사용 가능
+ ※ 건물 內 2호기, 5호기, 3호기 운영 잠정중단
+		</pre>
+		<h2>주차안내</h2>
+		<hr>
+	<pre class="parking-info">
+■ 주차 안내
+- 건물 지하 2층 ~ 지하 5층  주차 가능
+- 고객용 E/V 이용 안내 : 1호기/2호기(~24시 까지만 운영), 5호기/6호기(24시 이후도 운영) 사용 가능
+- 주차요금은 건물 정책에 따라 변경될 수 있습니다.
+
+■ 주차 확인(인증 방법)
+ - 극장 내 주차등록 PC를 이용하여 차량번호 할인 등록
+ - 주차 등록 PC 위치 : 7F 1,2관 입장로 / 7F 로비중앙 / 8F 로비 중앙
+
+■ 주차 요금
+- 차량번호 할인 등록 시 : 입차 시간 기준 3시간 무료
+- 이후 30분당 1,000원
+- 주차 등록 미 진행 후 출차 시 환불 불가
+		</pre>
+		<script>
+        // 팝업창 크기 변경 함수
+       function maximizePopup() {
+		    // 화면의 가로 및 세로 크기 가져오기
+		    var screenWidth = window.screen.availWidth;
+		    var screenHeight = window.screen.availHeight;
+		    
+		    // 팝업 창을 화면의 100%로 확장
+		    window.resizeTo(screenWidth, screenHeight);
+		}
+
+
+			function mapgo(a){
+	    		
+	            window.location.href = "https://map.naver.com/v5/search/"+a;  // 페이지 이동
+	            maximizePopup();  // 페이지 이동 후 팝업창 크기 조절
+
+
+	    		
+
+			}
+		</script>
+	</body>
+</html>

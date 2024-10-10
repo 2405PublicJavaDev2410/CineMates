@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>극장추가</title>
+
+        <style type="text/css">
+            body {
+                font-family: 'Arial', sans-serif;
+                width: 100%;
+                max-width: 500px;
+                margin: 0 auto;
+                padding: 20px;
+                background-color: #f0f0f0;
+                color: #333;
+                box-sizing: border-box;
+            }
+            h1 {
+                color: #2c3e50;
+                text-align: center;
+                margin-bottom: 30px;
+            }
+            form {
+                background-color: white;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            div {
+                margin: 15px 0;
+                text-align: left;
+            }
+            input, select {
+                width: 100%;
+                padding: 10px;
+                margin-top: 5px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+            small {
+                display: block;
+                color: #e74c3c;
+                font-size: 12px;
+                margin-top: 5px;
+            }
+            button {
+
+                width: 45%;
+                padding: 10px;
+                background-color: #3498db;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 16px;
+                margin-top: 20px;
+            }
+            button:hover {
+                background-color: #2980b9;
+            }
+        </style>
+    </head>
+    <body>
+    <h1>극장 수정/삭제</h1>
+    <form action="/cinema/updatescreen" method="post">
+        <div>
+            <label for="screenName">상영관이름</label>
+            <input type="text" name="screenName" id="screenName" th:value="${screen.screenName}">
+        </div>
+        <div>
+            <label for="screenSeat">총좌석</label>
+            <input type="number" name="screenSeat" id="screenSeat" th:value="${screen.screenSeat}">
+        </div>
+        <input type="hidden" name="screenNo" id="screenNo" th:value="${screen.screenNo}">
+        <input type="hidden" name="cinemaNo" id="cinemaNo" th:value="${screen.cinemaNo}">
+        <button>수정</button>
+        <button type="button" th:onclick="deletecinema([[${screen.screenNo}]])">삭제</button>
+    </form>
+    <script>
+        function deletecinema(a){
+            location.href="/cinema/deletescreen"+a;
+        }
+    </script>
+    </body>
+</html>
