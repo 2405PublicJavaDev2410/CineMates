@@ -25,11 +25,13 @@ public interface ReservationMapper {
 
     List<ShowInfoDTO> selectShowInfo(String cinemaName, String title);
 
-    List<ReservationDTO> selectReservationSeat();
+    List<ReservationDTO> selectReservationSeat(String reservationDate);
 
     MemberDTO selectMemberInfo(String memberId);
 
     Map<String, Integer> getReservationCounts();
 
     List<String> selectCinemaName();
+
+    ShowInfoDTO selectMoviePoster(String title);
 }

@@ -9,10 +9,10 @@
                 #{memberId}, #{screenNo}, #{showtimeNo}, #{cinemaNo},#{title},#{screenName},#{cinemaName},#{showtimeTime},#{imp_uid},#{adultReserved},#{childReserved},#{seniorReserved})
     </insert>
 
-    <select id="showReservedSeats" resultType="ReservationDTO">
-        select RESERVATION_SEAT
-        from RESERVATION_TBL
-    </select>
+<!--    <select id="selectReservationSeat" resultType="ReservationDTO">-->
+<!--        select RESERVATION_SEAT-->
+<!--        from RESERVATION_TBL where RESERVATION_DATE =#{reservationDate}-->
+<!--    </select>-->
 
     <!-- 상영관 출력  -->
     <select id="selectCinemas" resultType="String">
@@ -48,11 +48,15 @@
         SELECT r.RESERVATION_SEAT, s.SCREEN_NAME, st.SHOWTIME_TIME
         FROM RESERVATION_TBL r
                  JOIN SHOWTIME_TBL st ON r.SHOWTIME_NO = st.SHOWTIME_NO
-                 JOIN SCREEN_TBL s ON st.SCREEN_NO = s.SCREEN_NO
-
+                 JOIN SCREEN_TBL s ON st.SCREEN_NO = s.SCREEN_NO where RESERVATION_DATE=#{reservationDate}
     </select>
     <!--사용자 정보 출력-->
     <select id="selectMemberInfo" resultType="MemberDTO">
         select * from member_tbl where MEMBER_ID=#{memberId}
     </select>
+    <!--영화 포스터 출력-->
+    <select id="selectMoviePoster" resultType="ShowInfoDTO">
+    SELECT POSTER_URL FROM MOVIE_TBL WHERE TITLE=#{title}
+
+</select>
 </mapper>

@@ -21,4 +21,5 @@ public class ShowInfoDTO {
     private Integer cinemaNo;
     private String cinemaName;
     private Integer showtimeNo;
+    private String posterUrl;
 }

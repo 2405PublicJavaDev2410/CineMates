@@ -38,7 +38,7 @@ public class ReservationController {
         String memberId = (String)session.getAttribute("memberId");
 
         if(memberId==null) {
-            return "redirect:/";
+            return "redirect:/login";
         }
 
         List<String> rList = rService.selectCinemaName();
@@ -57,10 +57,13 @@ public class ReservationController {
     }
 
     @PostMapping("/Ticketing/PersonSeat")
-    public String showPersonSeatPage(@ModelAttribute ReservationDTO rDTO, @RequestParam String reservationSeat, Model model, HttpSession session) {
+    public String showPersonSeatPage(@ModelAttribute ReservationDTO rDTO, @RequestParam String reservationSeat, Model model, HttpSession session,
+                                     @RequestParam String title) {
         String memberId = (String)session.getAttribute("memberId");
         String randomString = generateRandomString(10);
         rDTO.setReservationNo(randomString);
+        ShowInfoDTO sDTO = rService.selectMoviePoster(title);
+        System.out.println("영화 포스터: " + sDTO);
 
         // JSON 문자열을 Map으로 변환
         ObjectMapper mapper = new ObjectMapper();
@@ -74,6 +77,7 @@ public class ReservationController {
 
         // 예약된 좌석 정보를 모델에 추가
         model.addAttribute("reservationSeat", reservedSeats);
+        model.addAttribute("sDTO",sDTO);
 
         System.out.println("rDTO 보여줘라 " + rDTO);
         model.addAttribute("memberId", memberId);
@@ -110,9 +114,12 @@ public class ReservationController {
     }
 
     @GetMapping("/getShowtimes")
-    public ResponseEntity<Map<String, Object>> selectShowInfo(@RequestParam String cinemaName, @RequestParam String title, Model model) {
+    public ResponseEntity<Map<String, Object>> selectShowInfo(
+            @RequestParam String cinemaName,
+            @RequestParam String title,
+            @RequestParam String reservationDate){
         List<ShowInfoDTO> sList = rService.selectShowInfo(cinemaName, title);
-        List<ReservationDTO> rList = rService.selectReservationSeat();
+        List<ReservationDTO> rList = rService.selectReservationSeat(reservationDate);
 
         Map<Integer, List<Integer>> reservedSeatsMap = new HashMap<>();
 
@@ -134,8 +141,6 @@ public class ReservationController {
         response.put("showInfoList", sList);
         response.put("reservationSeat", reservedSeatsMap);
 
-        System.out.println("sList" + sList);
-        System.out.println("reservationSeat: " + reservedSeatsMap);
         return ResponseEntity.ok(response);
     }
 }

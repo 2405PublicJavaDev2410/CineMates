@@ -160,6 +160,7 @@
     <input type="hidden" name="cinemaNo" value="">
     <input type="hidden" name="showtimeNo" value="">
     <input type="hidden" name="reservationSeat" value="">
+<!--    <input type="hidden" name="posterUrl" value="">-->
 </form>
 
 <script>
@@ -342,8 +343,8 @@
         });
 
         function checkAndGetShowtimes() {
-            if (selectedMovie && selectedDate) {
-                getShowtimes(selectedMovie, selectedDate);
+            if (selectedMovie && $('#selectedDate').val()) {
+                getShowtimes(selectedMovie, $('#selectedDate').val());
             }
         }
 
@@ -352,8 +353,10 @@
                 url: '/getShowtimes',
                 method: 'GET',
                 data: {
+                    reservationDate: date,
                     title: movie,
                     cinemaName: $('#cinema-List .selected a').data('cinema-name')
+                    // reservationDate : date
                 },
                 success: function (response) {
                     if (response && response.showInfoList && Array.isArray(response.showInfoList)) {

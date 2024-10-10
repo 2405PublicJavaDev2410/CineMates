@@ -26,8 +26,7 @@ public class ReservationDTO {
     //Movie - 영화
     private Integer movieNo;
     private String title;
-    private String filename;
-    private String fileRename;
+    private String posterUrl;
 
     //Cinema - 극장
     private String cinemaName;

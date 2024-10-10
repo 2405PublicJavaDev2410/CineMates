@@ -6,6 +6,7 @@ import com.filmfellows.cinemates.domain.payment.model.vo.PaymentInfo;
 import com.filmfellows.cinemates.domain.reservation.model.Service.ReservationService;
 import com.filmfellows.cinemates.domain.reservation.model.vo.MemberDTO;
 import com.filmfellows.cinemates.domain.reservation.model.vo.ReservationDTO;
+import com.filmfellows.cinemates.domain.reservation.model.vo.ShowInfoDTO;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.response.IamportResponse;
@@ -42,7 +43,8 @@ public class PaymentController {
     }
 
     @PostMapping("/paymentReady")
-    public String readyTogoPay(@ModelAttribute("ReservationDTO") ReservationDTO rDTO, Model model, HttpSession session) {
+    public String readyTogoPay(@ModelAttribute("ReservationDTO") ReservationDTO rDTO,
+                               @ModelAttribute("ShowInfoDTO") ShowInfoDTO sDTO,Model model, HttpSession session) {
         System.out.println("paymentReady" + rDTO);
         String memberId = (String)session.getAttribute("memberId");
         MemberDTO info = rService.selectMemberInfo(memberId);
@@ -53,18 +55,24 @@ public class PaymentController {
         rDTO.setBuyer_tel(info.getPhone());
 
         session.setAttribute("rDTO", rDTO);
+        session.setAttribute("sDTO", sDTO);
         System.out.println("rDTO 함 보여바라" + rDTO);
+        System.out.println("sDTO Payment" + sDTO);
         model.addAttribute("rDTO", rDTO);
         return "redirect:/payment?reservationNo=" + rDTO.getReservationNo();
     }
 
     @GetMapping("/payment")
-    public String showPayForm(@ModelAttribute ReservationDTO rDTO, Model model, HttpSession session) {
+    public String showPayForm(@ModelAttribute ReservationDTO rDTO,
+                              @ModelAttribute("ShowInfoDTO") ShowInfoDTO sDTO,Model model, HttpSession session) {
         String memberId = (String)session.getAttribute("memberId");
         ReservationDTO DTO = (ReservationDTO) session.getAttribute("rDTO");
+        ShowInfoDTO DTOs = (ShowInfoDTO) session.getAttribute("sDTO");
         model.addAttribute("memberId", memberId);
         System.out.println("showPayForm" + DTO);
+        System.out.println("showPayForm sDTO" + sDTO);
         model.addAttribute("rDTO", DTO);
+        model.addAttribute("sDTO", DTOs);
         return "pages/payment/inipay";
     }
 

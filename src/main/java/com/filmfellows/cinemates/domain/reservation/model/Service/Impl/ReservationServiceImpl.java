@@ -1,6 +1,5 @@
 package com.filmfellows.cinemates.domain.reservation.model.Service.Impl;
 
-import com.filmfellows.cinemates.domain.payment.model.vo.PaymentInfo;
 import com.filmfellows.cinemates.domain.reservation.model.Service.ReservationService;
 import com.filmfellows.cinemates.domain.reservation.model.mapper.ReservationMapper;
 import com.filmfellows.cinemates.domain.reservation.model.vo.MemberDTO;
@@ -54,8 +53,8 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<ReservationDTO> selectReservationSeat() {
-        return rmapper.selectReservationSeat();
+    public List<ReservationDTO> selectReservationSeat(String reservationDate) {
+        return rmapper.selectReservationSeat(reservationDate);
     }
 
     @Override
@@ -66,6 +65,11 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public Map<String, Integer> getReservationCounts() {
         return rmapper.getReservationCounts();
+    }
+
+    @Override
+    public ShowInfoDTO selectMoviePoster(String title) {
+        return rmapper.selectMoviePoster(title);
     }
 
 
