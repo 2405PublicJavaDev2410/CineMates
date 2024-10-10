@@ -18,5 +18,6 @@ public interface MemberMapper {
     Member selectOneByIdAndEmail(@Param("memberId") String memberId, @Param("email") String email);
     int updatePassword(@Param("memberId")String memberId, @Param("memberPw") String newPassword);
     boolean countByMemberId(String memberId);
+    boolean countByEmail(String email);
 
 }

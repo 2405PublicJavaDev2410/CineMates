@@ -1,4 +1,4 @@
-package com.filmfellows.cinemates.domain.mypage.model.vo;
+package com.filmfellows.cinemates.app.mypage.dto;
 
 import lombok.*;
 
@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Qna {
+public class QnaDTO {
     private Integer qnaNo;
     private String title;
     private String content;
@@ -17,4 +17,5 @@ public class Qna {
     private Timestamp modDate;
     private String memberId;
     private Integer parentQnaNo;
+    private String replyStatus; // 답변 상태
 }

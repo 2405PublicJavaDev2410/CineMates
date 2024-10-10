@@ -17,5 +17,6 @@ public interface MemberService {
     Member findMemberPw(Member member);
     int updatePassword(Member member);
     boolean isIdDuplicate(String memberId);
+    boolean isEmailDuplicate(String email);
 
 }

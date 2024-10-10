@@ -7,7 +7,6 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -15,7 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @Transactional
@@ -24,7 +25,37 @@ import java.util.UUID;
 public class EmailVerificationServiceImpl implements EmailVerificationService {
     private final JavaMailSender mailSender;
     private final EmailVerificationMapper evMapper;
+    private final Map<String, String> verificationCodes = new ConcurrentHashMap<>();
 
+    // 이메일 인증번호 보내기
+    @Override
+    public boolean sendVerificationCode(String toEmail) {
+        String verificationCode = generateVerificationCode();
+        // 인증번호를 이메일과 함께 Map에 저장
+        verificationCodes.put(toEmail, verificationCode);
+
+        MimeMessage message = mailSender.createMimeMessage();
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setFrom("thtw28@gmail.com");
+            helper.setTo(toEmail);
+            helper.setSubject("씨네메이트 이메일 인증번호 안내");
+            helper.setText("<html><body style='font-family: Arial, sans-serif;'>" +
+                    "<div style='max-width: 600px; margin: 30px 0; padding: 20px; border: 1px solid #ccc; border-radius: 8px;'>" +
+                    "<h2 style='color: #333;'>이메일 인증번호 안내</h2>" +
+                    "<p style='font-size: 16px; color: #555;'>아래 인증번호를 입력하여 인증을 완료해주세요.</p><br>" +
+                    "<p style='font-size: 16px; color: #D54946;'><strong>인증번호: " + verificationCode + "</strong></p>" +
+                    "</div></body></html>", true);
+            mailSender.send(message);
+            log.info("인증번호 이메일 전송 성공!");
+            return true;
+        } catch (MessagingException e) {
+            log.error("인증번호 이메일 전송 중 에러 발생: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // 비밀번호 재설정 이메일 보내기
     @Override
     public void sendPasswordResetEmail(String toEmail, String memberId) {
         String resetToken = generateResetToken(memberId);
@@ -44,12 +75,18 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
                     "<a href=\"" + resetLink + "\" style='padding: 10px 20px; background-color: #D54946; color: white; text-decoration: none; border-radius: 5px;'>재설정 바로가기</a>" +
                     "</p></div></body></html>", true);
             mailSender.send(message);
-            System.out.println("이메일이 발송 성공!");
+            log.info("이메일 발송 성공!");
         } catch (MessagingException e) {
-            System.out.println("이메일 발송 중 에러 발생: " + e.getMessage());
+            log.error("이메일 발송 중 에러 발생: " + e.getMessage());
         }
     }
 
+    // Map 반환
+    public String getStoredCode(String email) {
+        return verificationCodes.get(email);
+    }
+
+    // 토큰 유효기간 체크
     public boolean isValidToken(String token) {
         PwResetToken resetToken = evMapper.findTokenByToken(token);
         if (resetToken == null) {
@@ -60,6 +97,17 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
         return now.before(resetToken.getExpireTime());
     }
 
+    // 인증번호 검증
+    @Override
+    public boolean verifyCode(String email, String code) {
+        if (verificationCodes.containsKey(email)) {
+            String storedCode = verificationCodes.get(email);
+            return storedCode.equals(code);
+        }
+        return false;
+    }
+
+    // 토큰 검증
     public String verifyToken(String token) {
         PwResetToken resetToken = evMapper.findTokenByToken(token);
         log.info(resetToken.toString());
@@ -70,10 +118,17 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
         return resetToken.getMemberId();
     }
 
+    // 인증번호 생성
+    public String generateVerificationCode() {
+        int randomCode = (int)(Math.random() * 900000) + 100000;
+        return String.valueOf(randomCode);
+    }
+
+    // 토큰 생성
     @Override
     public String generateResetToken(String memberId) {
         String token = UUID.randomUUID().toString();
-        Timestamp expireTime = Timestamp.valueOf(LocalDateTime.now().plusHours(1));
+        Timestamp expireTime = Timestamp.valueOf(LocalDateTime.now().plusMinutes(30));
 
         PwResetToken resetToken = new PwResetToken();
         resetToken.setToken(token);

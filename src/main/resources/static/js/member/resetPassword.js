@@ -15,13 +15,13 @@ function resetPassword() {
     const formData = new FormData(document.querySelector('#reset-member-pw-form'));
     $.ajax({
         url: '/reset-pw',
-        method: 'post',
+        method: 'POST',
         data: JSON.stringify(Object.fromEntries(formData)),
         contentType: 'application/json',
         dataType: 'text',
         success: function(data) {
             if(data === 'success') {
-                alert('비밀번호가 변경이 완료되었습니다. 로그인 화면으로 이동합니다.')
+                alert('비밀번호 변경이 완료되었습니다. 로그인 화면으로 이동합니다.')
                 window.location.href= '/login';
             }else {
                 pwCheckFailureMsg.innerHTML =  '올바른 형식의 비밀번호가 아닙니다. 입력한 내용을 확인해주세요.';
@@ -110,3 +110,35 @@ pwInput.onblur = function() {
 pwCheckInput.onblur = function() {
     pwCheckInput.classList.remove('error-border');
 }
+
+// 비밀번호 마스킹 해제 버튼
+const pwIcon = document.querySelector('.pwIcon');
+
+pwIcon.addEventListener('click', function () {
+    const type = pwInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    pwInput.setAttribute('type', type);
+
+    if (type === 'password') {
+        this.classList.remove('fi-rr-eye-crossed');
+        this.classList.add('fi-rs-eye');
+    } else {
+        this.classList.remove('fi-rs-eye');
+        this.classList.add('fi-rr-eye-crossed');
+    }
+});
+
+// 비밀번호 확인 마스킹 해제 버튼
+const cpwIcon = document.querySelector('.cpwIcon');
+
+cpwIcon.addEventListener('click', function () {
+    const type = pwCheckInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    pwCheckInput.setAttribute('type', type);
+
+    if (type === 'password') {
+        this.classList.remove('fi-rr-eye-crossed');
+        this.classList.add('fi-rs-eye');
+    } else {
+        this.classList.remove('fi-rs-eye');
+        this.classList.add('fi-rr-eye-crossed');
+    }
+});

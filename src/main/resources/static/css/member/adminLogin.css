@@ -1,11 +1,11 @@
-#reset-pw-container {
+#login-container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     font-family: 'NEXON Lv1 Gothic OTF', serif;
 }
-#reset-pw-form {
+#login-form {
     width: 580px;
     background-color: white;
     border-radius: 10px;
@@ -13,32 +13,20 @@
     padding: 80px 80px 70px 80px;
     display: inline-block;
 }
-#reset-pw-form h1 {
+#login-form h1 {
     font-family: 'GmarketSansMedium', serif;
     letter-spacing: 3px;
     font-size: 32px;
     color: #D54946;
 }
-#reset-pw-form p {
-    font-family: 'GmarketSansMedium', serif;
-    letter-spacing: 1px;
-    font-size: 18px;
-    color: #232323;
-}
-#reset-pw-form label {
+#login-form label {
     font-size: 16px;
 }
 .hide {
     display: none;
 }
-.failure-message {
+.message {
     color: #ED1C24;
-    font-size: 14px;
-    margin-top: 5px;
-    margin-left: 5px;
-}
-.success-message {
-    color: #66BB6A;
     font-size: 14px;
     margin-top: 5px;
     margin-left: 5px;
@@ -46,18 +34,6 @@
 .error-border {
     transition: none;
     border: 2px solid #ED1C24;
-}
-.error-border:focus {
-    border: 2px solid #ED1C24;
-    box-shadow: 0 0 3px #ED1C24;
-}
-.success-border {
-    transition: none;
-    border: 2px solid #66BB6A;
-}
-.success-border:focus {
-    border: 2px solid #66BB6A;
-    box-shadow: 0 0 3px #66BB6A;
 }
 .common-input-box {
     padding: 10px;
