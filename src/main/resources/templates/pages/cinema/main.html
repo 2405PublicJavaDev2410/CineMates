@@ -1,8 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{common/layout/defaultLayout}"
+	  layout:fragment="Content">
 	<head>
 	<meta charset="UTF-8">
-	<title>Insert title here</title>
+	<title>극장</title>
 	<style>
 	body {
      	text-align: center;
@@ -118,25 +121,25 @@
 			<li><a th:href="@{/cinema/location?locationcode=8(cinemaNo=${cinema.cinemaNo})}">광주/전라/제주</a></li>
 		</ul>
 		<hr>
-		<button onclick="admin()">극장관리</button>
-		<button th:onclick="adminshowtime([[${cinema.cinemaNo}]])">상영관리</button>
+		<button th:if="${memberId == 'admin'}" onclick="admin()">극장관리</button>
+		<button th:if="${memberId == 'admin'}" th:onclick="adminshowtime([[${cinema.cinemaNo}]])">상영관리</button>
 		<br>
 
 		<div  id="divmain" >
 		<br>
 			<div th:each="cinema:${cList}"><a th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo})}">[[${cinema.cinemaName}]]</a></div>
 		</div>
-		<h1>CINEMA</h1>
-		<div><h1>[[${cinema.cinemaName}]]</h1></div><br>
+		<h1>CINEMA</h1><br>
+		<div><h1>[[${cinema.cinemaName}]]</h1></div><br><br>
 			
 		<div><button th:onclick="parking([[${cinema.cinemaNo}]],[[${cinema.cinemaAddress}]])">위치/길찾기</button></div><br><br>
 		<div id="cinemamain">
-		<br><br><br><br><br><br><br><br><br><br><br><br><br>
+		<br><br><br><br><br><br><br><br><br><br><br>
 			<div >[[${cinema.cinemaAddress}]]</div><br>
 			<div >[[${cinema.cinemaCall}]]</div><br>
 			<div >[[${cinema.cinemaScreens}]]관/[[${cinema.cinemaSeat}]]석</div>
 		</div>
-		<h1>상영정보</h1>
+		<h1>상영정보</h1><br>
 		<a th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${currentdate})}">
 		<div th:text="${#temporals.day(currentdate)}"></div>
 		</a>
@@ -162,39 +165,18 @@
 		<div style="width:80%;text-align:left;">
 		<th th:each="showtime, stat : ${sList}" >
 			<div th:if="(${stat.index == 0} or ${sList[stat.index - 1].screenName != showtime.screenName}) or (${stat.index == 0} or${sList[stat.index - 1].movieNo != showtime.movieNo})" style="width:100%;">[[${showtime.title}]]</div>
+			<div th:if="(${stat.index == 0} or ${sList[stat.index - 1].screenName != showtime.screenName}) or (${stat.index == 0} or${sList[stat.index - 1].movieNo != showtime.movieNo})" style="width:100%;">[[${showtime.screenName}]]/[[${showtime.screenSeat}]]석</div>
 
-			<div th:if="${stat.index == 0} or ${sList[0].screenName==showtime.screenName} or${sList[stat.index - 1].screenName == showtime.screenName}"  style="width:200px;height:100px;float:left;" >
-		    <!-- screenName이 바뀔 때마다 <br> 추가 -->
-		    <!-- 이전 screenName과 현재 screenName 비교 -->
-		    <div th:if="(${stat.index == 0} or ${sList[stat.index - 1].screenName != showtime.screenName}) or (${stat.index == 0} or${sList[stat.index - 1].movieNo != showtime.movieNo})">
-		        <div>[[${showtime.screenName}]]/[[${showtime.screenSeat}]]석</div><br>
-		    </div>
-		    <div th:unless="(${stat.index == 0} or ${sList[stat.index - 1].screenName != showtime.screenName}) or (${stat.index == 0} or${sList[stat.index - 1].movieNo != showtime.movieNo})">
-		        <p style="display:none">aa<p>
-		    </div>
 
-		    <!-- showtimeTime 출력 -->
-		    <a style="display:block; height:45px;">
-		        <div>[[${showtime.showtimeTime}]] <br>[[${showtime.showtimeSeat}]]석</div><br>
+		<div th:if="${stat.index == 0} or ${sList[0].screenName==showtime.screenName} or${sList[stat.index - 1].screenName == showtime.screenName}"  style="width:150px;height:100px;float:left;" >
+		    <a style="display:block; height:65px;">
+		        <div>[[${showtime.showtimeTime}]] <br>[[${showtime.availableSeats}]]석</div><br>
 		    </a>
 		</div>
-		<div th:unless="${stat.index == 0} or ${sList[0].screenName==showtime.screenName} or${sList[stat.index - 1].screenName == showtime.screenName}"  style="display:block"></div>
-		<div th:unless="${stat.index == 0} or ${sList[0].screenName==showtime.screenName} or${sList[stat.index - 1].screenName == showtime.screenName}"  style="width:200px;height:100px; float:left" >
-		    <!-- screenName이 바뀔 때마다 <br> 추가 -->
-		    <!-- 이전 screenName과 현재 screenName 비교 -->
-		    <div th:if="(${stat.index == 0} or ${sList[stat.index - 1].screenName != showtime.screenName}) or (${stat.index == 0} or${sList[stat.index - 1].movieNo != showtime.movieNo})">
-		        <div>[[${showtime.screenName}]]/[[${showtime.screenSeat}]]석</div><br>
-		    </div>
-		    <div th:unless="(${stat.index == 0} or ${sList[stat.index - 1].screenName != showtime.screenName}) or (${stat.index == 0} or${sList[stat.index - 1].movieNo != showtime.movieNo})">
-		        <p style="display:none">aa<p>
-		    </div>
-		    
-		    <!-- showtimeTime 출력 -->
-		    <a style="display:block; height:45px;">
-		        <div>[[${showtime.showtimeTime}]] <br>[[${showtime.showtimeSeat}]]석</div><br>
+		<div th:unless="${stat.index == 0} or ${sList[0].screenName==showtime.screenName} or${sList[stat.index - 1].screenName == showtime.screenName}"  style="width:150px;height:100px; float:left;display:block" >
+		    <a style="display:block; height:65px;">
+		        <div>[[${showtime.showtimeTime}]] <br>[[${showtime.availableSeats}]]석</div><br>
 		    </a>
-
-
 		</div>
 		</th>
 		</div>

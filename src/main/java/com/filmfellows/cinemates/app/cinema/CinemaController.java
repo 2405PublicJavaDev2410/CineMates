@@ -10,6 +10,7 @@ import com.filmfellows.cinemates.domain.cinema.model.service.CinemaService;
 import com.filmfellows.cinemates.domain.cinema.model.vo.Cinema;
 import com.filmfellows.cinemates.domain.cinema.model.vo.Screen;
 import com.filmfellows.cinemates.domain.cinema.model.vo.Showtime;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,8 +35,10 @@ public class CinemaController {
     public String showlocationmain(@RequestParam("locationcode") int locationcode,
                                    @RequestParam(value="cinemaNo", required=false,defaultValue="0") int cinemaNo,
                                    @RequestParam(value="selectDate", required=false) Date selectDate,
-                                   Model model) {
+                                   Model model,
+                                   HttpSession session) {
         System.out.println("selectdate:"+selectDate);
+        String memberId=(String)session.getAttribute("memberId");
         List<Cinema> cList= cService.locationsearch(locationcode);
         if(cinemaNo!=0) {
             Cinema cinema=cService.onecinemasearch(cinemaNo);
@@ -75,6 +78,7 @@ public class CinemaController {
         model.addAttribute("day4",day4);
         model.addAttribute("day5",day5);
         model.addAttribute("day6",day6);
+        model.addAttribute("memberId",memberId);
 
 
 
@@ -229,6 +233,9 @@ public class CinemaController {
     @GetMapping("/updateshowtime{showtimeNo}")
     public String showupdateshowtime(@PathVariable("showtimeNo") int showtimeNo,Model model) {
         Showtime showtime=cService.oneshowtime(showtimeNo);
+        List<Screen> scrList=cService.onecinemascreen(showtime.getCinemaNo());
+
+        model.addAttribute("scrList",scrList);
         model.addAttribute("showtime",showtime);
         return "pages/cinema/admin/updateshowtime";
 

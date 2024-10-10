@@ -12,13 +12,21 @@
   	SELECT * FROM CINEMA_TBL WHERE CINEMA_NO=#{cinemaNo}
   </select>
   <select id="showtimelist">
-      SELECT *
+      SELECT A.*,
+             B.*,
+             B.SCREEN_SEAT - NVL(R.TOTAL_RESERVED_VISITORS, 0) AS AVAILABLE_SEATS,
+             C.TITLE
       FROM SHOWTIME_TBL A
                JOIN SCREEN_TBL B ON A.SCREEN_NO = B.SCREEN_NO
-               JOIN MOVIE_TBL C on A.MOVIE_NO=C.MOVIE_NO
+               JOIN MOVIE_TBL C ON A.MOVIE_NO = C.MOVIE_NO
+               LEFT JOIN (
+          SELECT SHOWTIME_NO, TO_CHAR(RESERVATION_DATE,'YYYY/MM/DD'), SUM(RESERVATION_VISITOR) AS TOTAL_RESERVED_VISITORS
+          FROM RESERVATION_TBL
+          GROUP BY SHOWTIME_NO, RESERVATION_DATE
+      ) R ON A.SHOWTIME_NO = R.SHOWTIME_NO
       WHERE B.CINEMA_NO = #{cinemaNo}
         AND CURRENT_TIMESTAMP BETWEEN A.SHOWTIME_START AND A.SHOWTIME_END
-      ORDER BY A.MOVIE_NO ASC,A.SCREEN_NO, A.SHOWTIME_TIME
+      ORDER BY A.MOVIE_NO ASC, A.SCREEN_NO, A.SHOWTIME_TIME
   </select>
     <select id="allshowtimelist">
         SELECT *
@@ -29,13 +37,22 @@
         ORDER BY A.MOVIE_NO ASC,A.SCREEN_NO, A.SHOWTIME_TIME
     </select>
     <select id="showtimelistdate">
-        SELECT *
+        SELECT A.*,
+               B.*,
+               B.SCREEN_SEAT - NVL(R.TOTAL_RESERVED_VISITORS, 0) AS AVAILABLE_SEATS,
+               C.TITLE
         FROM SHOWTIME_TBL A
                  JOIN SCREEN_TBL B ON A.SCREEN_NO = B.SCREEN_NO
-                 JOIN MOVIE_TBL C on A.MOVIE_NO=C.MOVIE_NO
+                 JOIN MOVIE_TBL C ON A.MOVIE_NO = C.MOVIE_NO
+                 LEFT JOIN (
+            SELECT SHOWTIME_NO, TO_CHAR(RESERVATION_DATE,'YYYY/MM/DD'), SUM(RESERVATION_VISITOR) AS TOTAL_RESERVED_VISITORS
+            FROM RESERVATION_TBL
+            GROUP BY SHOWTIME_NO, RESERVATION_DATE
+        ) R ON A.SHOWTIME_NO = R.SHOWTIME_NO
         WHERE B.CINEMA_NO = #{cinemaNo}
           AND #{selectDate} BETWEEN A.SHOWTIME_START AND A.SHOWTIME_END
-        ORDER BY A.MOVIE_NO ASC,A.SCREEN_NO, A.SHOWTIME_TIME
+        ORDER BY A.MOVIE_NO ASC, A.SCREEN_NO, A.SHOWTIME_TIME
+
     </select>
     <select id="allcinema">
         SELECT * FROM CINEMA_TBL ORDER BY CINEMA_NO ASC
@@ -71,7 +88,9 @@
         DELETE FROM SCREEN_TBL WHERE SCREEN_NO=#{screenNo}
     </delete>
     <select id="oneshowtime">
-            SELECT * FROM SHOWTIME_TBL WHERE SHOWTIME_NO=#{showtimeNo}
+            SELECT * FROM SHOWTIME_TBL A
+            JOIN SCREEN_TBL B ON A.SCREEN_NO = B.SCREEN_NO
+            WHERE SHOWTIME_NO=#{showtimeNo}
     </select>
     <update id="updateshowtime">
         UPDATE SHOWTIME_TBL SET SCREEN_NO=#{screenNo},MOVIE_NO=#{movieNo},SHOWTIME_TIME=#{showtimeTime},SHOWTIME_SEAT=#{showtimeSeat},SHOWTIME_START=#{showtimeStart},SHOWTIME_END=#{showtimeEnd} WHERE SHOWTIME_NO=#{showtimeNo}

@@ -22,5 +22,6 @@ public class Showtime {
     private String screenName;
     private int screenSeat;
     private String title;
+    private int availableSeats;
 
 }
