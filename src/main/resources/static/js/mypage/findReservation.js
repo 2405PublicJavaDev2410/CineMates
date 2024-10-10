@@ -50,3 +50,7 @@ document.getElementById('reserve-number').addEventListener("keydown", function (
         searchMovie();
     }
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelector('#side-menu-1').classList.add('selected');
+})

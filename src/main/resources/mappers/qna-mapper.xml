@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.filmfellows.cinemates.domain.mypage.model.mapper.MyPageMapper">
+    <select id="selectAllQnaById" resultType="QnaDTO">
+        SELECT QNA_NO, TITLE, REG_DATE,
+            CASE
+                WHEN EXISTS (SELECT 1 FROM QNA_TBL WHERE PARENT_QNA_NO = q.QNA_NO)
+                    THEN '답변완료'
+                    ELSE '미답변'
+            END AS REPLY_STATUS
+        FROM QNA_TBL q
+        WHERE MEMBER_ID = #{memberId}
+        AND PARENT_QNA_NO IS NULL
+        ORDER BY QNA_NO DESC
+    </select>
+    <select id="selectAllQna" resultType="QnaDTO">
+        SELECT QNA_NO, TITLE, MEMBER_ID, REG_DATE, PARENT_QNA_NO,
+            CASE
+                WHEN EXISTS (SELECT 1 FROM QNA_TBL WHERE PARENT_QNA_NO = q.QNA_NO)
+                    THEN '답변완료'
+                    ELSE '미답변'
+            END AS REPLY_STATUS
+        FROM QNA_TBL q
+        WHERE PARENT_QNA_NO IS NULL
+        ORDER BY QNA_NO DESC
+    </select>
+    <select id="selectOneQnaByNo" resultType="Qna">
+        SELECT *
+        FROM QNA_TBL
+        WHERE QNA_NO = #{qnaNo}
+    </select>
+    <select id="selectOneReplyByNo">
+        SELECT *
+        FROM QNA_TBL
+        WHERE PARENT_QNA_NO = #{parentQnaNo}
+    </select>
+    <select id="selectQnaFileByNo" resultType="QnaFile">
+        SELECT *
+        FROM QNA_FILE_TBL
+        WHERE QNA_NO = #{qnaNo}
+    </select>
+    <select id="getTotalQnaCount" resultType="_int">
+        SELECT COUNT(*)
+        FROM QNA_TBL
+    </select>
+    <select id="getTotalQnaCountById" resultType="_int">
+        SELECT COUNT(*)
+        FROM QNA_TBL
+        WHERE MEMBER_ID = #{memberId}
+    </select>
+    <insert id="insertQna" useGeneratedKeys="true" keyProperty="qnaNo" keyColumn="QNA_NO">
+        INSERT INTO QNA_TBL (QNA_NO, TITLE, CONTENT, MEMBER_ID)
+        VALUES (SEQ_QNA_NO.NEXTVAL, #{title}, #{content}, #{memberId})
+    </insert>
+    <insert id="insertQnaFile">
+        INSERT INTO QNA_FILE_TBL (QNA_FILE_NO, FILE_NAME, FILE_RENAME, FILE_PATH, QNA_NO)
+        VALUES (SEQ_QNA_FILE_NO.NEXTVAL, #{fileName}, #{fileRename}, #{filePath}, #{qnaNo})
+    </insert>
+    <insert id="insertReply">
+        INSERT INTO QNA_TBL (QNA_NO, TITLE, CONTENT, MEMBER_ID, PARENT_QNA_NO)
+        VALUES (SEQ_QNA_NO.NEXTVAL, #{title}, #{content}, #{memberId}, #{parentQnaNo})
+    </insert>
+    <delete id="deleteQna">
+        DELETE FROM QNA_TBL
+        WHERE QNA_NO = #{qnaNo}
+    </delete>
+</mapper>

@@ -10,7 +10,7 @@ function removeMember() {
         const formData = new FormData(document.querySelector('#remove-member-form'));
         $.ajax({
             url: '/remove',
-            method: 'post',
+            method: 'POST',
             data: JSON.stringify(Object.fromEntries(formData)), // JSON 문자열로 변환
             contentType: 'application/json', // Content-Type 설정
             dataType: 'text', // 서버로부터의 응답 데이터 타입

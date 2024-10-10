@@ -9,7 +9,7 @@ function loginMember() {
     const formData = new FormData(document.querySelector('#login-member-form'));
     $.ajax({
         url: '/login',
-        method: 'post',
+        method: 'POST',
         data: JSON.stringify(Object.fromEntries(formData)),
         contentType: 'application/json',
         dataType: 'text',

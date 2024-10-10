@@ -28,7 +28,7 @@ function findMemberPw() {
     console.log(Object.fromEntries(formData));
     $.ajax({
         url: '/send-reset-link',
-        method: 'post',
+        method: 'POST',
         data: JSON.stringify(Object.fromEntries(formData)),
         contentType: 'application/json',
         dataType: 'text',
@@ -59,7 +59,7 @@ function findMemberId() {
     const formData = new FormData(document.querySelector('#find-member-id-form'));
     $.ajax({
         url: '/find-id',
-        method: 'post',
+        method: 'POST',
         data: JSON.stringify(Object.fromEntries(formData)),
         contentType: 'application/json',
         dataType: 'JSON',
