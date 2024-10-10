@@ -6,7 +6,6 @@
       layout:decorate="~{common/layout/defaultLayout}"
       layout:fragment="Content">
 <link rel="stylesheet" href="/css/movie/movieList.css">
-
 <body>
 <div layout:fragment="content">
     <!-- 여기에 기존의 main 태그 내용을 넣습니다 -->
@@ -32,82 +31,51 @@
         <div class="banner-nav next">&#10095;</div>
         <div class="banner-dots"></div>
     </div>
+
     <div class="main-container">
         <div class="movie-section">
-            <div class="section-title">현재 상영작</div>
-            <div class="movie-list">
-                <div class="movie-poster" th:each="mList : ${mList}">
-                    <div class="poster-image">
-                        <img th:if="${mList.posterUrl != null}" th:src="${mList.posterUrl}" th:alt="${mList.title}" />
-                        <img class="imageNull" th:if="${mList.posterUrl == null}" src="/img/movie/imageNull.png" th:alt="${mList.title}" />
-                    </div>
-                    <div class="movie-info">
-                        <div class="title-container">
-<!--                            <img class="age-rating" th:if="${mList.rating} == 'ALL'" src="/img/chat/all.jpg" alt="전체관람가" />-->
-<!--                            <img class="age-rating" th:if="${mList.rating} == 12" src="/img/chat/12.jpg" alt="12세이상관람가" />-->
-<!--                            <img class="age-rating" th:if="${mList.rating} == 15" src="/img/chat/15.jpg" alt="15세이상관람가" />-->
-<!--                            <img class="age-rating" th:if="${mList.rating} == 19" src="/img/chat/19.jpg" alt="청소년관람불가" />-->
-<!--                            <img class="age-rating" th:if="${mList.rating} == 'NOT RATED'" src="/img/chat/notRated.jpg" alt="15세 이상" />-->
-                            <img class="age-rating" th:src="@{'/img/chat/' + ${mList.rating} + '.jpg'}" th:alt="${mList.rating == 'ALL' ? '전체관람가' : mList.rating + '세 이상관람가'}"/>
-                            <div class="movie-title" th:text="${mList.title}"></div>
-                        </div>
-                        <div class="movie-details">
-                            <span class="booking-rate" th:text="'예매율 '+${mList.reservationRate}"></span>
-                            <span>|</span>
-                            <span th:text="${mList.releaseDate != null ? mList.releaseDate + ' 개봉' : '개봉일 미정'}"></span>
-                        </div>
-                        <button class="booking-button">예매</button>
-                    </div>
+            <div class="section-select">
+                <div class="section-status">
+                    <button class="nowShowing" id="nowShowing">현재 상영작</button>
+                    <button class="commingSoon" id="commingSoon">상영 예정작</button>
+                </div>
+                <div class="section-sorting">
+                    <button class="sort-releaseDate" id="sort-releaseDate">개봉일순</button>
+                    <button class="sort-reservation" id="sort-reservation">예매율순</button>
+<!--                    <span class="bar">|</span>-->
+                    <button class="sort-review" id="sort-review">관람평 많은순</button>
                 </div>
             </div>
+<!--            <form class="movie-list" id="movie-list">-->
+<!--                <div class="movie-poster" th:each="mList : ${mList}">-->
+<!--                    <div class="poster-image">-->
+<!--                        <img th:if="${mList.posterUrl != null}" th:src="${mList.posterUrl}" th:alt="${mList.title}" />-->
+<!--                        <img class="imageNull" th:if="${mList.posterUrl == null}" src="/img/movie/imageNull.png" th:alt="${mList.title}" />-->
+<!--                    </div>-->
+<!--                    <div class="movie-info">-->
+<!--                        <div class="title-container">-->
+<!--                            <img class="age-rating" th:src="@{'/img/chat/' + ${mList.rating} + '.jpg'}" th:alt="${mList.rating == 'ALL' ? '전체관람가' : mList.rating + '세 이상관람가'}"/>-->
+<!--                            <div class="movie-title" th:text="${mList.title}"></div>-->
+<!--                        </div>-->
+<!--                        <div class="movie-details">-->
+<!--                            <span class="booking-rate" th:text="'예매율 '+${mList.reservationRate}"></span>-->
+<!--                            <span class="bar">|</span>-->
+<!--                            <span th:text="${mList.releaseDate != null ? mList.releaseDate + ' 개봉' : '개봉일 미정'}"></span>-->
+<!--                        </div>-->
+<!--                        <button class="booking-button">예매</button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </form>-->
+            <div class="movie-list" id="movie-list"></div>
+<!--            <button id="loadMoreBtn" style="display: none;">더보기</button>-->
         </div>
     </div>
 </div>
 <th:block layout:fragment="script">
     <!--     여기에 기존의 script 내용을 넣습니다-->
-    <script>
-        let currentBanner = 0;
-        const banners = document.querySelectorAll('.banner');
-        const prevBtn = document.querySelector('.banner-nav.prev');
-        const nextBtn = document.querySelector('.banner-nav.next');
-        const dotsContainer = document.querySelector('.banner-dots');
-
-        function showBanner(index) {
-            banners[currentBanner].classList.remove('active');
-            banners[index].classList.add('active');
-            updateDots(index);
-            currentBanner = index;
-        }
-
-        function showNextBanner() {
-            showBanner((currentBanner + 1) % banners.length);
-        }
-
-        function showPrevBanner() {
-            showBanner((currentBanner - 1 + banners.length) % banners.length);
-        }
-
-        function updateDots(index) {
-            const dots = document.querySelectorAll('.banner-dot');
-            dots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === index);
-            });
-        }
-
-        // 배너 점 생성
-        banners.forEach((_, i) => {
-            const dot = document.createElement('div');
-            dot.classList.add('banner-dot');
-            if (i === 0) dot.classList.add('active');
-            dot.addEventListener('click', () => showBanner(i));
-            dotsContainer.appendChild(dot);
-        });
-
-        prevBtn.addEventListener('click', showPrevBanner);
-        nextBtn.addEventListener('click', showNextBanner);
-
-        setInterval(showNextBanner, 5000); // 5초마다 배너 변경
-    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="/js/movie/movieList.js"></script>
 </th:block>
+
 </body>
 </html>

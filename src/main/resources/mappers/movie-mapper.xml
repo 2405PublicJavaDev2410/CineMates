@@ -170,7 +170,7 @@
         SELECT COUNT(*) FROM MOVIE_TBL
     </select>
 
-    <select id="getMovieReservatinRates" resultType="MovieReservationRateDTO">
+    <select id="getMovieReservationRates" resultType="MovieReservationRateDTO">
         WITH BOOKABLE_MOVIES AS (
             SELECT m.MOVIE_NO, m.TITLE,
                    SUM(r.RESERVATION_VISITOR) AS VISITOR_COUNT
@@ -189,5 +189,33 @@
                ROUND((bm.VISITOR_COUNT / tv.TOTAL_COUNT) * 100, 2) AS reservationRate
         FROM BOOKABLE_MOVIES bm, TOTAL_VISITORS tv
         ORDER BY reservationRate DESC
+    </select>
+
+<!--    <select id="selectMoviesByStatus" resultType="MovieListDTO">-->
+<!--            SELECT MOVIE_NO, TITLE, POSTER_URL, RELEASE_DATE, RATING, SCREENING_STATUS-->
+<!--            FROM MOVIE_TBL-->
+<!--            WHERE SCREENING_STATUS LIKE '%' || #{status} || '%'-->
+<!--    </select>-->
+
+    <select id="selectMoviesByStatus" resultType="MovieListDTO">
+        SELECT * FROM (
+                          SELECT
+                              m.*,
+                              ROWNUM AS rn
+                          FROM (
+                                   SELECT
+                                       MOVIE_NO,
+                                       TITLE,
+                                       POSTER_URL,
+                                       RELEASE_DATE,
+                                       RATING,
+                                       SCREENING_STATUS
+                                   FROM MOVIE_TBL
+                                   WHERE SCREENING_STATUS LIKE '%' || #{status} || '%'
+                                   ORDER BY RELEASE_DATE DESC
+                               ) m
+                          WHERE ROWNUM &lt;= #{offset} + #{size}
+                      )
+        WHERE rn > #{offset}
     </select>
 </mapper>

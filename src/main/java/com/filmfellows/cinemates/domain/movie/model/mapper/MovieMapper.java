@@ -32,5 +32,11 @@ public interface MovieMapper {
     List<Movie> selectMovieList(RowBounds rowBounds, Integer currentPage);
     int totalMovieCount();
 
-    List<MovieReservationRateDTO> getMovieReservatinRates();
+    List<MovieReservationRateDTO> getMovieReservationRates();
+
+    List<MovieListDTO> selectComingSoonMovies();
+
+    List<MovieListDTO> selectNowShowingMovies();
+
+    List<MovieListDTO> selectMoviesByStatus(@Param("status") String status, @Param("offset") int offset, @Param("size") int size);
 }

@@ -21,5 +21,11 @@ public interface MovieService {
     List<Movie> selectMovieList(RowBounds rowBounds, Integer currentPage);
     int totalMovieCount();
 
-    List<MovieReservationRateDTO> getMovieReservatinRates();
+    List<MovieReservationRateDTO> getMovieReservationRates();
+
+    List<MovieListDTO> getComingSoonMovies();
+
+    List<MovieListDTO> getNowShowingMovies();
+
+    List<MovieListDTO> getMoviesByStatus(String status, int page, int size);
 }

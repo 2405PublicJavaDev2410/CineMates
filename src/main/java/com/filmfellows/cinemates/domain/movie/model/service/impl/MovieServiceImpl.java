@@ -96,8 +96,24 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<MovieReservationRateDTO> getMovieReservatinRates() {
-        return movieMapper.getMovieReservatinRates();
+    public List<MovieReservationRateDTO> getMovieReservationRates() {
+        return movieMapper.getMovieReservationRates();
+    }
+
+    @Override
+    public List<MovieListDTO> getComingSoonMovies() {
+        return movieMapper.selectComingSoonMovies();
+    }
+
+    @Override
+    public List<MovieListDTO> getNowShowingMovies() {
+        return movieMapper.selectNowShowingMovies();
+    }
+
+    @Override
+    public List<MovieListDTO> getMoviesByStatus(String status, int page, int size) {
+        int offset = page * size;
+        return movieMapper.selectMoviesByStatus(status, offset, size);
     }
 
 
