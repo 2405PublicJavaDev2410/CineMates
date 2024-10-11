@@ -53,7 +53,8 @@ public class ChatController {
         // 채팅방 리스트 전체 조회 비즈니스 로직
         // 서비스에서 Pagination 객체, 조회된 cList 객체 매핑해서 반환
         int boardLimit = 9;
-        Map<String, Object> map = cService.selectChatRoomList(currentPage, boardLimit, null, null, null, null);
+        List<String> emptyList = new ArrayList<>();
+        Map<String, Object> map = cService.selectChatRoomList(currentPage, boardLimit, null, emptyList, emptyList, emptyList);
 
         // 채팅방 태그 조회
         List<ChatTag> tagList = cService.selectChatTagList("default");
@@ -88,8 +89,12 @@ public class ChatController {
     public String selectSearchList(Model model, @RequestParam("tagName") String tagName,
                                    @RequestParam(value="keyword", required = false, defaultValue = "") String keyword, // json 형식 string
                                    @RequestParam(value = "cp", defaultValue = "1") Integer currentPage) {
+
+        System.out.println("postMapping-controller : "+tagName + " , "+keyword);
+
         List<String> keywordArr = new ArrayList<String>();
         if(!keyword.equals("")) {
+            tagName = null;
             // keyword (json) -> List화 시키기
 
 
@@ -117,13 +122,13 @@ public class ChatController {
         List<String> searchRoomList = new ArrayList<>();
         List<String> searchRegionList = new ArrayList<>();
         for(String searchKeyword: keywordArr){
-            if(searchKeyword.contains("영화")){
+            if(searchKeyword.contains("영화:")){
                 int index = searchKeyword.indexOf(':'); // 콜론(:)의 인덱스 찾기
                 searchMovieList.add(index != -1 ? searchKeyword.substring(index + 1) : "") ;
-            }else if(searchKeyword.contains("채팅방이름")){
+            }else if(searchKeyword.contains("채팅방이름:")){
                 int index = searchKeyword.indexOf(':'); // 콜론(:)의 인덱스 찾기
                 searchRoomList.add(index != -1 ? searchKeyword.substring(index + 1) : "") ;
-            }else if(searchKeyword.contains("지역")){
+            }else if(searchKeyword.contains("지역:")){
                 int index = searchKeyword.indexOf(':'); // 콜론(:)의 인덱스 찾기
                 searchRegionList.add(index != -1 ? searchKeyword.substring(index + 1) : "") ;
             }

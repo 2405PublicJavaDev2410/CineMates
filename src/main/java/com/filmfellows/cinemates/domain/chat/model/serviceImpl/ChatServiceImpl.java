@@ -64,20 +64,21 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public Map<String, Object> selectChatRoomList(Integer currentPage, int boardLimit, String tagName, List<String> searchMovieList, List<String> searchRoomList, List<String> searchRegionList) {
         // 전체 채팅방 수 계산
-        int totalCount = cMapper.getTotalCount(tagName);
+        int totalCount = cMapper.getTotalCount(tagName, searchMovieList, searchRoomList, searchRegionList);
+
         Pagination pn = new Pagination(totalCount, currentPage, boardLimit);
 
         int limit = pn.getBoardLimit();
         int offset = (currentPage-1) * limit ;
         RowBounds rowBounds = new RowBounds(offset, limit);
 
+        System.out.println("service : "+searchMovieList+", "+searchRoomList+", "+searchRegionList);
+
+
         // 채팅방 리스트 조회
         List<ChatRoom> cList = cMapper.selectChatRoomList(rowBounds, tagName, searchMovieList, searchRoomList, searchRegionList);
-        System.out.println(tagName==null);
-        System.out.println(searchMovieList);
-        System.out.println(searchRoomList);
-        System.out.println(searchRegionList);
-        System.out.println("cList: " + cList);
+
+        System.out.println("cList 결과 : " + cList);
 
         // 채팅방 개설 상대 시간 계산
         List<RelativeTime> relativeTimeList = new ArrayList<>();

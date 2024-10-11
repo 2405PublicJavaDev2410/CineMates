@@ -79,5 +79,5 @@ public interface ChatMapper {
      * 기능 : 조건별 채팅방 개수
      * @return int
      */
-    int getTotalCount(String tagName);
+    int getTotalCount(String tagName, List<String> searchMovieList, List<String> searchRoomList, List<String> searchRegionList);
 }
