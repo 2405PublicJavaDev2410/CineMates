@@ -15,5 +15,5 @@ public interface PaymentMapper {
 
     void insertPaymentInfo2(Map<String, Object> buyerInfo);
 
-    ReservationDTO selectImpUid(String reservationNo);
+    String selectImpUid(String reservationNo);
 }

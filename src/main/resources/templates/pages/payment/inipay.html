@@ -165,8 +165,8 @@
     }
 
     function cancelPay() {
-        const reservationNumber = prompt("예약 번호를 입력해주세요");
-        if (!reservationNumber) {
+        const reservationNo = prompt("예약 번호를 입력해주세요").trim();
+        if (!reservationNo) {
             alert("올바른 예약 번호를 입력해야 합니다.");
             return;
         }
@@ -175,13 +175,13 @@
         $.ajax({
             url: "/getImpUid",
             type: "GET",
-            data: { reservationNo: reservationNumber }
+            data: {reservationNo: reservationNo}
         })
             .done(function (response) {
-                if (response.imp_uid) {
+                if (response) {
                     // imp_uid를 받아왔다면, 결제 취소를 진행합니다.
                     $.ajax({
-                        url: "/payments/cancel/" + response.imp_uid,
+                        url: "/payments/cancel/" + response,
                         type: "GET",
                         contentType: "application/json",
                         // data:
