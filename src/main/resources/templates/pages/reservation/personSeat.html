@@ -1,49 +1,41 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<!-- Default Layout Import-->
+<html lang="en"
+      layout:decorate="~{common/layout/defaultLayout}"
+      layout:fragment="Content"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>영화 좌석 예매 시스템</title>
-    <style>
-        .seat {
-            width: 30px;
-            height: 30px;
-            margin: 3px;
-            display: inline-block;
-            text-align: center;
-            line-height: 30px;
-            border: 1px solid #ccc;
-            cursor: pointer;
-        }
+    <link href="/css/reservation/personSeat.css" rel="stylesheet">
+    <title>영화 예매</title>
+    <!-- inline CSS 영역-->
+    <style th:inline="css" type="text/css"></style>
 
-        .selected {
-            background-color: #4CAF50;
-            color: white;
-        }
-
-        .reserved {
-            background-color: #f44336;
-            color: white;
-            cursor: not-allowed;
-        }
-    </style>
+    <!-- inline JS 영역-->
+    <script th:inline="javascript" type="text/javascript">
+        let visitorCount = /*[[${rDTO.reservationVisitor}]]*/ 0;
+        var rDTO = /*[[${rDTO}]]*/ {};
+        var reservedSeatsMap = /*[[${reservationSeat}]]*/ {};
+    </script>
+    <script crossorigin="anonymous"  src="/js/reservation/personSeat.js" defer></script>
 </head>
+
 <body>
 <h1>영화 좌석 예매 시스템</h1>
 
 
 <span style="display: flex">
 <strong class="tit">성인</strong>
-    <button onclick='count("plus", "result")' value='+' style="margin-right: 10px">+</button>
+    <button onclick='count("plus", "result")' style="margin-right: 10px" value='+'>+</button>
     <div class="result">0</div>
-    <button onclick='count("minus", "result")' value='-' style="margin-left:10px">-</button>
+    <button onclick='count("minus", "result")' style="margin-left:10px" value='-'>-</button>
 </span>
 
 <span style="display: flex">
 <strong class="tit">어린이</strong>
-    <button onclick='count("plus", "result1")' value='+' style="margin-right: 10px">+</button>
+    <button onclick='count("plus", "result1")' style="margin-right: 10px" value='+'>+</button>
     <div class="result1">0</div>
-    <button onclick='count("minus", "result1")' value='-' style="margin-left:10px">-</button>
+    <button onclick='count("minus", "result1")' style="margin-left:10px" value='-'>-</button>
 </span>
 
 <span style="display: flex">
@@ -53,11 +45,7 @@
     <button onclick='count("minus", "result2")' style="margin-left:10px" value='-'>-</button>
 </span>
 
-
-
 <div id="seatMap"></div>
-<!--    <button onclick="reserveSelectedSeats()">선택한 좌석 예약</button>-->
-<!--    <button onclick="cancelReservation()">예약 취소</button>-->
 <p id="message"></p>
 <form action="/paymentReady" method="POST">
     <button type="submit">예약하기</button>
@@ -74,127 +62,11 @@
     <input name="cinemaNo" th:value="${rDTO.cinemaNo}" type="hidden">
     <input name="reservationDate" th:value="${rDTO.reservationDate}" type="hidden">
     <input name="memberId" th:value="${memberId}" type="hidden">
-    <input type="hidden" id="adultReserved" name="adultReserved" th:value="${rDTO.adultReserved}">
-    <input type="hidden" id="childReserved" name="childReserved" th:value="${rDTO.childReserved}">
-    <input type="hidden" id="seniorReserved" name="seniorReserved" th:value="${rDTO.seniorReserved}">
-    <input type="hidden" id="posterUrl" name="posterUrl" th:value="${sDTO.posterUrl}">
+    <input id="adultReserved" name="adultReserved" th:value="${rDTO.adultReserved}" type="hidden">
+    <input id="childReserved" name="childReserved" th:value="${rDTO.childReserved}" type="hidden">
+    <input id="seniorReserved" name="seniorReserved" th:value="${rDTO.seniorReserved}" type="hidden">
+    <input id="posterUrl" name="posterUrl" th:value="${sDTO.posterUrl}" type="hidden">
 </form>
 
-<script th:inline="javascript">
-    /*<![CDATA[*/
-    let visitorCount = /*[[${rDTO.reservationVisitor}]]*/ 0;
-    const countInput = document.getElementById('countInput');
-    const adult = document.getElementById('adultReserved');
-    const child = document.getElementById('childReserved');
-    const senior = document.getElementById('seniorReserved');
-    const selectedSeatsInput = document.getElementById('selectedSeatsInput');
-
-    function count(value, resultClass) {
-        const resultElement = document.querySelector('.' + resultClass);
-        let currentCount = parseInt(resultElement.innerText);
-        let targetInput;
-
-        // 카테고리에 따른 hidden input 선택
-        switch(resultClass) {
-            case 'result':
-                targetInput = adult;
-                break;
-            case 'result1':
-                targetInput = child;
-                break;
-            case 'result2':
-                targetInput = senior;
-                break;
-        }
-
-        // 더하기/빼기
-        if (value === "plus") {
-            currentCount++;
-            visitorCount++;
-        } else if (value === "minus" && currentCount > 0) {
-            currentCount--;
-            visitorCount--;
-        }
-
-        // 현재 화면에 표시된 값 업데이트
-        resultElement.innerText = currentCount;
-        countInput.value = visitorCount;
-
-        // hidden input 값 업데이트
-        if (targetInput) {
-            targetInput.value = currentCount;
-        }
-    }
-    /*]]>*/
-
-    const rDTO = /*[[${rDTO}]]*/ {};
-    const reservedSeatsMap = /*[[${reservationSeat}]]*/ {};
-    const reservedSeats = reservedSeatsMap[rDTO.showtimeNo] || [];
-    console.log(reservedSeats);
-    const rows = 5;
-    const seatsPerRow = 10;
-    const seats = Array(rows * seatsPerRow).fill(false);
-    let selectedSeats = [];
-
-    function initializeSeatMap() {
-        const seatMap = document.getElementById('seatMap');
-        // 기존 좌석 요소들을 모두 제거
-        seatMap.innerHTML = '';
-
-        for (let i = 0; i < seats.length; i++) {
-            const seat = document.createElement('div');
-            seat.className = 'seat';
-            seat.innerText = i + 1;
-
-            if (reservedSeats.includes(i + 1)) {
-                seat.classList.add('reserved');
-                seats[i] = true; // 예매된 좌석 표시
-            } else {
-                seat.onclick = () => toggleSeat(i);
-            }
-
-            seatMap.appendChild(seat);
-            if ((i + 1) % seatsPerRow === 0) {
-                seatMap.appendChild(document.createElement('br'));
-            }
-        }
-    }
-
-    function toggleSeat(index) {
-        if (seats[index]) {
-            alert("이미 예약된 좌석입니다.");
-            return; // 이미 예약된 좌석은 선택 불가
-        }
-
-        const maxSeats = parseInt(visitorCount);
-        const seatElement = document.getElementsByClassName('seat')[index];
-
-        if (selectedSeats.includes(index)) {
-            selectedSeats = selectedSeats.filter(seatIndex => seatIndex !== index);
-            seatElement.classList.remove('selected');
-        } else if (selectedSeats.length < maxSeats) {
-            selectedSeats.push(index);
-            seatElement.classList.add('selected');
-        } else {
-            alert(`최대 ${maxSeats}개의 좌석만 선택할 수 있습니다.`);
-            return;
-        }
-        updateSelectedSeatsInput();
-    }
-
-    function updateSelectedSeatsInput() {
-        selectedSeatsInput.value = selectedSeats.map(index => index + 1).join(',');
-        setMessage(`선택된 좌석: ${selectedSeatsInput.value}`);
-    }
-
-    // 페이지 로드 시 좌석 맵 초기화
-    document.addEventListener('DOMContentLoaded', initializeSeatMap);
-
-    function setMessage(msg) {
-        document.getElementById('message').innerText = msg;
-    }
-
-    initializeSeatMap();
-</script>
 </body>
 </html>

@@ -9,11 +9,11 @@ import java.util.Map;
 
 @Mapper
 public interface PaymentMapper {
-    void insertPaymentInfo(PaymentInfo paymentInfo);
+
 
     List<ReservationDTO> searchPayment(ReservationDTO rDto);
 
-    void insertPaymentInfo2(Map<String, Object> buyerInfo);
+    void insertPaymentInfo(Map<String, Object> buyerInfo);
 
     String selectImpUid(String reservationNo);
 

@@ -1,0 +1,91 @@
+/*공통*/
+li {
+    list-style: none;
+}
+.main{
+    background-color: white;
+    display: flex;
+}
+/*달력*/
+.calendar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.month-display {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.week-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.days-container {
+    display: flex;
+    gap: 5px;
+}
+
+.day {
+    width: 40px;
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+}
+
+.day.active {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
+
+.weekday {
+    font-size: 12px;
+    color: #666;
+}
+
+.date {
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+.arrow {
+    cursor: pointer;
+    font-size: 20px;
+    user-select: none;
+    padding: 10px;
+}
+/*상영 시간*/
+.selected {
+    background-color: #e0e0e0;
+    font-weight: bold;
+}
+
+.showtime-link {
+    text-decoration: none;
+    color: black;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.showtime-link.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.showtime-link:hover {
+    background-color: #e9ecef;
+}
+
+.showtime-link.active:hover {
+    background-color: #0056b3;
+}

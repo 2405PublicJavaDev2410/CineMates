@@ -24,7 +24,6 @@ public class PaymentService {
 
     private IamportClient iamportClient;
 
-    private PaymentInfo paymentInfo;
     @Value("${IMP_API_KEY}")
     String apiKey;
     @Value("${IMP_API_SECRETKEY}")
@@ -39,15 +38,7 @@ public class PaymentService {
     private PaymentMapper pmapper;
     @Autowired
     private ReservationMapper rmapper;
-
-    public void saveBuyerInfo(PaymentInfo paymentInfo) {
-        if (paymentInfo.getAmount() == null) {
-            throw new IllegalArgumentException("Amount cannot be null");
-        }
-        pmapper.insertPaymentInfo(paymentInfo);
-        System.out.println("Service: save_buyerInfo 메소드 종료");
-    }
-
+    // 제품 확인 메소드
     public IamportResponse<Payment> validateIamport(String imp_uid) {
         try {
             IamportResponse<Payment> payment = iamportClient.paymentByImpUid(imp_uid);
@@ -58,7 +49,7 @@ public class PaymentService {
             return null;
         }
     }
-
+    // 결제 취소 메소드
     public IamportResponse<Payment> cancelPayment(String imp_uid) {
         try {
             CancelData cancelData = new CancelData(imp_uid, true);
@@ -71,19 +62,16 @@ public class PaymentService {
             return null;
         }
     }
-
-    public List<ReservationDTO> searchPayment(ReservationDTO rDto) {
-        return pmapper.searchPayment(rDto);
-    }
-    @Transactional
+    // 결제 정보 와 주문 정보 저장 메소드
     public void saveBuyerAndOrderInfo(Map<String, Object> buyerInfo, Map<String, Object> reserveInfo) {
         rmapper.insertReservationInfo(reserveInfo);
-        pmapper.insertPaymentInfo2(buyerInfo);
+        pmapper.insertPaymentInfo(buyerInfo);
     }
-
+    // imp_uid 조회 메소드
     public String selectImpUid(String reservationNo) {
         return pmapper.selectImpUid(reservationNo);
     }
+    // 결제 취소 후 결제 db에 저장된 정보와 작성자 기준 예매 정보 삭제 메소드
     @Transactional
     public void deleteReserveAndPaymentInfo(String impUid) {
         rmapper.deleteReservationInfo(impUid);
