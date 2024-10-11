@@ -1,5 +1,6 @@
 package com.filmfellows.cinemates.app.chat;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.filmfellows.cinemates.app.chat.dto.ChatRoomMovie;
@@ -52,7 +53,7 @@ public class ChatController {
         // 채팅방 리스트 전체 조회 비즈니스 로직
         // 서비스에서 Pagination 객체, 조회된 cList 객체 매핑해서 반환
         int boardLimit = 9;
-        Map<String, Object> map = cService.selectChatRoomList(currentPage, boardLimit, null);
+        Map<String, Object> map = cService.selectChatRoomList(currentPage, boardLimit, null, null, null, null);
 
         // 채팅방 태그 조회
         List<ChatTag> tagList = cService.selectChatTagList("default");
@@ -73,7 +74,8 @@ public class ChatController {
 
         List<ChatTag> tagListDistinctList = cService.selectChatTagList("distinct");
         int boardLimit = 5;
-        Map<String, Object> map = cService.selectChatRoomList(currentPage, boardLimit, "없음");
+        // 페이지 로드 시에 pn을 보내는데 이때 tagName "없음"을 보내어 아무 리스트도 출력이 안되게끔 만들어줌
+        Map<String, Object> map = cService.selectChatRoomList(currentPage, boardLimit, "없음", null, null, null);
         model.addAttribute("pn", map.get("pn"));
         System.out.println(map.get("pn"));
         model.addAttribute("tagListDistinctList", tagListDistinctList);
@@ -83,7 +85,42 @@ public class ChatController {
 //    ajax 검색 리스트 출력
     @PostMapping("/chat/search")
     public String selectSearchList(Model model, @RequestParam("tagName") String tagName,
-                                   @RequestParam(value = "cp", defaultValue = "1") Integer currentPage){
+                                   @RequestParam(value="keyword", defaultValue = "") String keyword, // json 형식 string
+                                   @RequestParam(value = "cp", defaultValue = "1") Integer currentPage) throws JsonProcessingException {
+
+        // keyword (json) -> List화 시키기
+        List<String> keywordArr = new ArrayList<String>();
+
+        // jackson 객체
+        ObjectMapper objectMapper = new ObjectMapper();
+        // JSON 문자열을 List<Map<String, String>> 형태로 변환
+        List<Map<String, String>> keywordList = objectMapper.readValue(keyword, new TypeReference<List<Map<String, String>>>(){});
+
+        System.out.println(keywordList);
+
+        // value 필드만 추출하여 List로 변환
+        keywordArr = keywordList.stream().map(map -> map.get("value"))
+                .toList();
+
+        System.out.println(keywordArr);
+
+        List<String> searchMovieList = new ArrayList<>();
+        List<String> searchRoomList = new ArrayList<>();
+        List<String> searchRegionList = new ArrayList<>();
+        for(String searchKeyword: keywordArr){
+            if(searchKeyword.contains("영화")){
+                int index = searchKeyword.indexOf(':'); // 콜론(:)의 인덱스 찾기
+                searchMovieList.add(index != -1 ? searchKeyword.substring(index + 1) : "") ;
+            }else if(searchKeyword.contains("채팅방이름")){
+                int index = searchKeyword.indexOf(':'); // 콜론(:)의 인덱스 찾기
+                searchRoomList.add(index != -1 ? searchKeyword.substring(index + 1) : "") ;
+            }else if(searchKeyword.contains("지역")){
+                int index = searchKeyword.indexOf(':'); // 콜론(:)의 인덱스 찾기
+                searchRegionList.add(index != -1 ? searchKeyword.substring(index + 1) : "") ;
+            }
+        }
+
+
 
         // 전체 프로필 정보 조회 -> 채팅방 정보에 출력
         List<ProfileImg> profileList = cService.selectProfileList();
@@ -91,12 +128,12 @@ public class ChatController {
         // 채팅방 리스트 전체 조회 비즈니스 로직
         // 서비스에서 Pagination 객체, 조회된 cList 객체 매핑해서 반환
         int boardLimit = 5;
-        Map<String, Object> map = cService.selectChatRoomList(currentPage, boardLimit, tagName);
-
+        Map<String, Object> map = cService.selectChatRoomList(currentPage, boardLimit, tagName, searchMovieList, searchRoomList, searchRegionList);
 
 
         // 채팅방 태그 조회
         List<ChatTag> tagList = cService.selectChatTagList("default");
+
 
         model.addAttribute("profileList", profileList);
         model.addAttribute("tagList", tagList);

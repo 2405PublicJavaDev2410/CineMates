@@ -62,7 +62,7 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public Map<String, Object> selectChatRoomList(Integer currentPage, int boardLimit, String tagName) {
+    public Map<String, Object> selectChatRoomList(Integer currentPage, int boardLimit, String tagName, List<String> searchMovieList, List<String> searchRoomList, List<String> searchRegionList) {
         // 전체 채팅방 수 계산
         int totalCount = cMapper.getTotalCount(tagName);
         Pagination pn = new Pagination(totalCount, currentPage, boardLimit);
@@ -72,7 +72,7 @@ public class ChatServiceImpl implements ChatService {
         RowBounds rowBounds = new RowBounds(offset, limit);
 
         // 채팅방 리스트 조회
-        List<ChatRoom> cList = cMapper.selectChatRoomList(rowBounds, tagName);
+        List<ChatRoom> cList = cMapper.selectChatRoomList(rowBounds, tagName, searchMovieList, searchRoomList, searchRegionList);
 
         // 채팅방 개설 상대 시간 계산
         List<RelativeTime> relativeTimeList = new ArrayList<>();

@@ -32,7 +32,7 @@
     </select>
 
 <!--   채팅방 전체 조회 -->
-    <select id="selectChatRoomList" resultType="ChatRoom">
+    <select id="selectChatRoomList" resultType="ChatRoom" parameterType="map">
         SELECT chat.ROOM_NO, chat.ROOM_NAME, chat.ROOM_WRITER, chat.ROOM_DATE, chat.ROOM_CATEGORY,
                chat.MOVIE_NO, movie.TITLE, movie.POSTER_URL,
                chat.CINEMA_LOCATION_CODE,
@@ -42,7 +42,31 @@
                  JOIN CINEMA_TBL cinema ON chat.CINEMA_NO = cinema.CINEMA_NO
             <if test="tagName != null">
                 JOIN CHAT_ROOM_TAG_TBL tag ON chat.ROOM_NO = tag.ROOM_NO
-                WHERE tag.TAG_NAME = #{tagName}
+            </if>
+        WHERE 1=1
+--           태그 검색 시 실행되는 쿼리문
+            <if test="tagName != null">
+                AND tag.TAG_NAME = #{tagName}
+            </if>
+
+--          키워드 검색 시 실행되는 쿼리문
+            <if test="searchMovieList != null and searchMovieList.size() > 0">
+                AND movie.TITLE IN
+                <foreach item="movie" collection="searchMovieList" open="(" separator="," close=")">
+                    #{movie}
+                </foreach>
+            </if>
+            <if test="searchRoomList != null and searchRoomList.size() > 0">
+                AND chat.ROOM_NAME IN
+                <foreach item="room" collection="searchRoomList" open="(" separator="," close=")">
+                    #{room}
+                </foreach>
+            </if>
+            <if test="searchRegionList != null and searchRegionList.size() > 0">
+                AND cinema.CINEMA_ADDRESS IN
+                <foreach item="region" collection="searchRegionList" open="(" separator="," close=")">
+                    #{region}
+                </foreach>
             </if>
         ORDER BY chat.ROOM_DATE DESC
     </select>
