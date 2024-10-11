@@ -1,9 +1,11 @@
 package com.filmfellows.cinemates.domain.reservation.model.Service;
 
+import com.filmfellows.cinemates.domain.reservation.model.vo.MemberDTO;
 import com.filmfellows.cinemates.domain.reservation.model.vo.ReservationDTO;
 import com.filmfellows.cinemates.domain.reservation.model.vo.ShowInfoDTO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ReservationService {
     /**
@@ -63,5 +65,34 @@ public interface ReservationService {
      *
      * @return List<ShowInfoDTO>
      */
-    List<ReservationDTO> selectReservationSeat();
+    List<ReservationDTO> selectReservationSeat(String reservationDate);
+
+    /**
+     * 멤버 정보 조회
+     *
+     * @param memberId
+     * @return String
+     */
+    MemberDTO selectMemberInfo(String memberId);
+
+    /**
+     * 예약 수 구하기
+     * @return Map<String,Integer>
+     */
+    Map<String, Integer> getReservationCounts();
+
+    /**
+     * 영화 포스터 조회
+     * @param title
+     * @return
+     */
+    ShowInfoDTO selectMoviePoster(String title);
+
+    /**
+     * 예매번호로 예매 정보 조회
+     *
+     * @param reservationNo
+     * @return
+     */
+    ReservationDTO selectReservationInfo(String reservationNo);
 }

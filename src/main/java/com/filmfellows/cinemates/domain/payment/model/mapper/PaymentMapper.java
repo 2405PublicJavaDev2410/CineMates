@@ -11,9 +11,11 @@ import java.util.Optional;
 
 @Mapper
 public interface PaymentMapper {
-        void insertPaymentInfo(PaymentInfo paymentInfo);
+    void insertPaymentInfo(PaymentInfo paymentInfo);
 
-        List<ReservationDTO> searchPayment(ReservationDTO rDto);
+    List<ReservationDTO> searchPayment(ReservationDTO rDto);
 
     void insertPaymentInfo2(Map<String, Object> buyerInfo);
+
+    int selectImpUid(String reservationNo);
 }

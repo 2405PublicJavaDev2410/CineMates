@@ -11,8 +11,12 @@ import java.sql.Date;
 @Setter
 @Repository
 public class ReservationDTO {
+    //Reservation - 예약
     private String reservationNo;
     private Integer reservationVisitor;
+    private Integer adultReserved;
+    private Integer childReserved;
+    private Integer seniorReserved;
     private String reservationSeat;
     private String reservationDate;
 
@@ -22,8 +26,7 @@ public class ReservationDTO {
     //Movie - 영화
     private Integer movieNo;
     private String title;
-    private String filename;
-    private String fileRename;
+    private String posterUrl;
 
     //Cinema - 극장
     private String cinemaName;
@@ -41,4 +44,5 @@ public class ReservationDTO {
 
     //ShowTime - 상영
     private String showtimeTime;
+    private Integer showtimeNo;
 }
