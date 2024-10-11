@@ -38,5 +38,8 @@ public interface MovieMapper {
 
     List<MovieListDTO> selectNowShowingMovies();
 
-    List<MovieListDTO> selectMoviesByStatus(@Param("status") String status, @Param("offset") int offset, @Param("size") int size);
+    List<MovieListDTO> selectMoviesByStatusAndSort(@Param("status") String status,
+                                            @Param("offset") int offset,
+                                            @Param("size") int size,
+                                            @Param("sortBy") String sortBy);
 }

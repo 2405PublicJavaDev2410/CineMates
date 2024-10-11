@@ -197,25 +197,71 @@
 <!--            WHERE SCREENING_STATUS LIKE '%' || #{status} || '%'-->
 <!--    </select>-->
 
-    <select id="selectMoviesByStatus" resultType="MovieListDTO">
+<!--    <select id="selectMoviesByStatus" resultType="MovieListDTO">-->
+<!--        SELECT * FROM (-->
+<!--                          SELECT-->
+<!--                              m.*,-->
+<!--                              ROWNUM AS rn-->
+<!--                          FROM (-->
+<!--                                   SELECT-->
+<!--                                       MOVIE_NO,-->
+<!--                                       TITLE,-->
+<!--                                       POSTER_URL,-->
+<!--                                       RELEASE_DATE,-->
+<!--                                       RATING,-->
+<!--                                       SCREENING_STATUS-->
+<!--                                   FROM MOVIE_TBL-->
+<!--                                   WHERE SCREENING_STATUS LIKE '%' || #{status} || '%'-->
+<!--                                   ORDER BY RELEASE_DATE DESC-->
+<!--                               ) m-->
+<!--                          WHERE ROWNUM &lt;= #{offset} + #{size}-->
+<!--                      )-->
+<!--        WHERE rn > #{offset}-->
+<!--    </select>-->
+
+    <select id="selectMoviesByStatusAndSort" resultType="MovieListDTO">
         SELECT * FROM (
-                          SELECT
-                              m.*,
-                              ROWNUM AS rn
-                          FROM (
-                                   SELECT
-                                       MOVIE_NO,
-                                       TITLE,
-                                       POSTER_URL,
-                                       RELEASE_DATE,
-                                       RATING,
-                                       SCREENING_STATUS
-                                   FROM MOVIE_TBL
-                                   WHERE SCREENING_STATUS LIKE '%' || #{status} || '%'
-                                   ORDER BY RELEASE_DATE DESC
-                               ) m
-                          WHERE ROWNUM &lt;= #{offset} + #{size}
-                      )
-        WHERE rn > #{offset}
+        SELECT m.*, ROWNUM AS RN
+        FROM (
+        SELECT m.MOVIE_NO, m.TITLE, m.POSTER_URL, m.RELEASE_DATE, m.RATING, m.SCREENING_STATUS,
+        NVL(r.RESERVATION_RATE, 0) AS RESERVATION_RATE,
+        NVL(rev.REVIEW_COUNT, 0) AS REVIEW_COUNT
+        FROM MOVIE_TBL m
+        LEFT JOIN (
+        SELECT MOVIE_NO,
+        ROUND((VISITOR_COUNT / NULLIF(TOTAL_COUNT, 0)) * 100, 2) AS RESERVATION_RATE
+        FROM (
+        SELECT m.MOVIE_NO,
+        SUM(NVL(r.RESERVATION_VISITOR, 0)) AS VISITOR_COUNT,
+        SUM(SUM(NVL(r.RESERVATION_VISITOR, 0))) OVER () AS TOTAL_COUNT
+        FROM MOVIE_TBL m
+        LEFT JOIN RESERVATION_TBL r ON m.MOVIE_NO = r.MOVIE_NO
+        WHERE m.IS_BOOKABLE = 'Y'
+        GROUP BY m.MOVIE_NO
+        )
+        ) r ON m.MOVIE_NO = r.MOVIE_NO
+        LEFT JOIN (
+        SELECT MOVIE_NO, COUNT(*) AS REVIEW_COUNT
+        FROM REVIEW_TBL
+        GROUP BY MOVIE_NO
+        ) rev ON m.MOVIE_NO = rev.MOVIE_NO
+        WHERE m.SCREENING_STATUS = #{status}
+        ORDER BY
+        <choose>
+            <when test="sortBy == 'reviewCount'">
+                rev.REVIEW_COUNT DESC NULLS LAST
+            </when>
+            <when test="sortBy == 'releaseDate'">
+                m.RELEASE_DATE ASC NULLS LAST
+            </when>
+            <otherwise>
+                r.RESERVATION_RATE DESC NULLS LAST
+            </otherwise>
+        </choose>
+        ) m
+        WHERE ROWNUM &lt;= #{offset} + #{size}
+        )
+        WHERE RN > #{offset}
     </select>
+
 </mapper>

@@ -12,16 +12,16 @@
     <div class="banner-wrapper">
         <div class="banner-container">
             <div class="banner active">
-                <img src="/img/movie//banner/AmazonBullseye_19204202.jpg" alt="배너 1" />
+                <img src="/img/movie/banner/AmazonBullseye_19204202.jpg" alt="배너 1" />
             </div>
             <div class="banner">
-                <img src="/img/movie//banner/GrandMa_1920420.jpg" alt="배너 2" />
+                <img src="/img/movie/banner/GrandMa_1920420.jpg" alt="배너 2" />
             </div>
             <div class="banner">
-                <img src="/img/movie//banner/MyLovelyPartner_19204203.jpg" alt="배너 3" />
+                <img src="/img/movie/banner/MyLovelyPartner_19204203.jpg" alt="배너 3" />
             </div>
             <div class="banner">
-                <img src="/img/movie//banner/MyPet_1920420.jpg" alt="배너 4" />
+                <img src="/img/movie/banner/MyPet_1920420.jpg" alt="배너 4" />
             </div>
             <div class="banner">
                 <img src="/img/movie/banner/MyPet_1920420.jpg" alt="배너 5" />
@@ -67,13 +67,15 @@
 <!--                </div>-->
 <!--            </form>-->
             <div class="movie-list" id="movie-list"></div>
-<!--            <button id="loadMoreBtn" style="display: none;">더보기</button>-->
+            <div class="load-more-container" id="load-more-container">
+                <button class="loadMoreBtn" id="loadMoreBtn">더보기</button>
+            </div>
+<!--            <button class="loadMoreBtn" id="loadMoreBtn" style="display: block;">더보기</button>-->
         </div>
     </div>
 </div>
 <th:block layout:fragment="script">
     <!--     여기에 기존의 script 내용을 넣습니다-->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" src="/js/movie/movieList.js"></script>
 </th:block>
 

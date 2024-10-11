@@ -111,9 +111,9 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<MovieListDTO> getMoviesByStatus(String status, int page, int size) {
+    public List<MovieListDTO> getMoviesByStatusAndSort(String status, int page, int size, String sortBy) {
         int offset = page * size;
-        return movieMapper.selectMoviesByStatus(status, offset, size);
+        return movieMapper.selectMoviesByStatusAndSort(status, offset, size, sortBy);
     }
 
 

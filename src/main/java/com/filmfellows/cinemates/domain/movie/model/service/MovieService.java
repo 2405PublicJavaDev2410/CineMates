@@ -27,5 +27,5 @@ public interface MovieService {
 
     List<MovieListDTO> getNowShowingMovies();
 
-    List<MovieListDTO> getMoviesByStatus(String status, int page, int size);
+    List<MovieListDTO> getMoviesByStatusAndSort(String status, int page, int size, String sortBy);
 }

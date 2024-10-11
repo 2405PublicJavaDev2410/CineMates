@@ -1,124 +1,72 @@
-// 영화 리스트
-// document.addEventListener('DOMContentLoaded', function() {
-//     const nowShowingBtn = document.querySelector('#nowShowing');
-//     const comingSoonBtn = document.querySelector('#commingSoon');
-//     const movieListForm = document.querySelector('#movie-list'); // 수정: form 요소 선택
-//     const sortReservationBtn = document.querySelector('#sort-reservation');
-//     const sortReviewBtn = document.querySelector('#sort-review');
-//     const sortReleaseDateBtn = document.querySelector('#sort-releaseDate');
-//     // 페이지 로드 시 기본적으로 현재 상영작 표시
-//     fetchMovies('NOW SHOWING');
-//
-//     nowShowingBtn.addEventListener('click', function() {
-//         fetchMovies('NOW SHOWING');
-//     });
-//
-//     comingSoonBtn.addEventListener('click', function() {
-//         fetchMovies('COMING SOON');
-//     });
-//
-//     function fetchMovies(status) {
-//         $.ajax({
-//             url: '/movie-list',
-//             method: 'GET',
-//             data: { status: status },
-//             headers: {
-//                 'X-Requested-With': 'XMLHttpRequest'
-//             },
-//             success: function(data) {
-//                 updateMovieList(data);
-//                 updateButtonStatus(status);
-//             },
-//             error: function(xhr, status, error) {
-//                 console.error('Error:', error);
-//             }
-//         });
-//     }
-//
-//     function updateMovieList(movies) {
-//         movieListForm.innerHTML = ''; // form 내용 초기화
-//         movies.forEach(movie => {
-//             const movieElement = createMovieElement(movie);
-//             movieListForm.appendChild(movieElement); // form에 영화 요소 추가
-//         });
-//     }
-//
-//     function createMovieElement(movie) {
-//         const movieDiv = document.createElement('div');
-//         movieDiv.className = 'movie-poster';
-//         movieDiv.innerHTML = `
-//             <div class="poster-image">
-//                 <img src="${movie.posterUrl || '/img/movie/imageNull.png'}" alt="${movie.title}" />
-//             </div>
-//             <div class="movie-info">
-//                 <div class="title-container">
-//                     <img class="age-rating" src="/img/chat/${movie.rating}.jpg" alt="${movie.rating === 'ALL' ? '전체관람가' : movie.rating + '세 이상관람가'}" />
-//                     <div class="movie-title">${movie.title}</div>
-//                 </div>
-//                 <div class="movie-details">
-//                     <span class="booking-rate">예매율 ${movie.reservationRate}</span>
-//                     <span class="bar">|</span>
-//                     <span>${movie.releaseDate ? movie.releaseDate + ' 개봉' : '개봉일 미정'}</span>
-//                 </div>
-//                 <button class="booking-button">예매</button>
-//             </div>
-//         `;
-//         return movieDiv;
-//     }
-//
-//     function updateButtonStatus(status) {
-//         if (status === 'NOW SHOWING') {
-//             nowShowingBtn.classList.add('active');
-//             comingSoonBtn.classList.remove('active');
-//             sortReleaseDateBtn.classList.add('hide');
-//             sortReviewBtn.classList.remove('hide');
-//         } else {
-//             comingSoonBtn.classList.add('active');
-//             nowShowingBtn.classList.remove('active');
-//             sortReviewBtn.classList.add('hide');
-//             sortReleaseDateBtn.classList.remove('hide');
-//         }
-//     }
-//
-// });
-
+// 영화 상태, 정렬에 따른 리스트
 
 document.addEventListener('DOMContentLoaded', function() {
-    const movieList = document.getElementById('movie-list');
-    const loadMoreBtn = document.createElement('button');
-    loadMoreBtn.textContent = '더보기';
-    loadMoreBtn.id = 'loadMoreBtn';
-    loadMoreBtn.style.display = 'none'; // 초기에는 숨김
-    document.body.appendChild(loadMoreBtn);
+    const movieList = document.querySelector('#movie-list');
+    // const loadMoreBtn = document.querySelector('#loadMoreBtn');
+    const nowShowingBtn = document.querySelector('#nowShowing');
+    const comingSoonBtn = document.querySelector('#commingSoon');
+    const sortReservationBtn = document.querySelector('#sort-reservation');
+    const sortReviewBtn = document.querySelector('#sort-review');
+    const sortReleaseDateBtn = document.querySelector('#sort-releaseDate');
+
+    const loadMoreContainer = document.querySelector('#load-more-container');
 
     let currentPage = 0;
     const pageSize = 20;
     let currentStatus = 'NOW SHOWING';
+    let currentSortBy = 'reservationRate';
+    let hasMoreMovies = true;
 
-    function fetchMovies(status, page) {
+    function fetchMovies(status, page, sortBy, append = false) {
         $.ajax({
             url: '/movie-list',
             method: 'GET',
             data: {
                 status: status,
                 page: page,
-                size: pageSize
+                size: pageSize,
+                sortBy: sortBy
             },
             success: function(data) {
-                if (page === 0) {
-                    movieList.innerHTML = ''; // 첫 페이지일 경우 리스트 초기화
+                updateButtonStatus(status, sortBy);
+                if (!append) {
+                    movieList.innerHTML = '';
                 }
-                appendMovies(data);
-                if (data.length === pageSize) {
-                    loadMoreBtn.style.display = 'block'; // 더 볼 데이터가 있으면 버튼 표시
+                if (data.length > 0) {
+                    appendMovies(data);
+                    hasMoreMovies = data.length === pageSize;
+                    // loadMoreBtn.style.display = hasMoreMovies ? 'block' : 'none';
+                    loadMoreContainer.style.display = hasMoreMovies ? 'flex' : 'none';
                 } else {
-                    loadMoreBtn.style.display = 'none'; // 더 이상 데이터가 없으면 버튼 숨김
+                    hasMoreMovies = false;
+                    // loadMoreBtn.style.display = 'none';
+                    loadMoreContainer.style.display = 'none';
                 }
             },
             error: function(xhr, status, error) {
                 console.error('Error:', error);
             }
         });
+    }
+
+    function updateButtonStatus(status, sortBy) {
+        if (status === 'NOW SHOWING') {
+            nowShowingBtn.classList.add('active');
+            comingSoonBtn.classList.remove('active');
+            sortReleaseDateBtn.classList.add('hide');
+            sortReviewBtn.classList.remove('hide');
+            sortReservationBtn.classList.remove('hide');
+        } else {
+            comingSoonBtn.classList.add('active');
+            nowShowingBtn.classList.remove('active');
+            sortReviewBtn.classList.add('hide');
+            sortReleaseDateBtn.classList.remove('hide');
+            sortReservationBtn.classList.add('active');
+        }
+
+        sortReservationBtn.classList.toggle('active', sortBy === 'reservationRate');
+        sortReviewBtn.classList.toggle('active', sortBy === 'reviewCount');
+        sortReleaseDateBtn.classList.toggle('active', sortBy === 'releaseDate');
     }
 
     function appendMovies(movies) {
@@ -152,32 +100,49 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     loadMoreBtn.addEventListener('click', function() {
-        currentPage++;
-        fetchMovies(currentStatus, currentPage);
+        if (hasMoreMovies) {
+            currentPage++;
+            fetchMovies(currentStatus, currentPage, currentSortBy, true);
+        }
+    });
+
+    nowShowingBtn.addEventListener('click', function() {
+        currentStatus = 'NOW SHOWING';
+        currentPage = 0;
+        currentSortBy = 'reservationRate';
+        hasMoreMovies = true;
+        fetchMovies(currentStatus, currentPage, currentSortBy);
+    });
+
+    comingSoonBtn.addEventListener('click', function() {
+        currentStatus = 'COMING SOON';
+        currentPage = 0;
+        currentSortBy = 'releaseDate';
+        hasMoreMovies = true;
+        fetchMovies(currentStatus, currentPage, currentSortBy);
+    });
+
+    sortReservationBtn.addEventListener('click', function() {
+        currentSortBy = 'reservationRate';
+        currentPage = 0;
+        fetchMovies(currentStatus, currentPage, currentSortBy);
+    });
+
+    sortReviewBtn.addEventListener('click', function() {
+        currentSortBy = 'reviewCount';
+        currentPage = 0;
+        fetchMovies(currentStatus, currentPage, currentSortBy);
+    });
+
+    sortReleaseDateBtn.addEventListener('click', function() {
+        currentSortBy = 'releaseDate';
+        currentPage = 0;
+        fetchMovies(currentStatus, currentPage, currentSortBy);
     });
 
     // 초기 로드
-    fetchMovies(currentStatus, currentPage);
-
-    // 상영 상태 변경 버튼 이벤트 리스너
-    document.getElementById('nowShowing').addEventListener('click', function() {
-        currentStatus = 'NOW SHOWING';
-        currentPage = 0;
-        fetchMovies(currentStatus, currentPage);
-    });
-
-    document.getElementById('commingSoon').addEventListener('click', function() {
-        currentStatus = 'COMING SOON';
-        currentPage = 0;
-        fetchMovies(currentStatus, currentPage);
-    });
+    fetchMovies(currentStatus, currentPage, currentSortBy);
 });
-
-
-
-
-
-
 
 
 

@@ -1,10 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
+<!-- Default Layout Import-->
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/defaultLayout}"
+      layout:fragment="Content">
+<link rel="stylesheet" href="/css/movie/movieDetail.css">
 <body>
-$END$
+<div layout:fragment="content">
+    <!-- 여기에 기존의 main 태그 내용을 넣습니다 -->
+    <div class="movie-details-container">
+        <div class="movie-top-section">
+            <div class="poster-image">
+                <img src="/img/movie/포스터2.jpg" alt="">
+            </div>
+            <div class="movie-details">
+                <div class="movie-title"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block layout:fragment="script">
+    <!--     여기에 기존의 script 내용을 넣습니다-->
+    <script type="text/javascript" src="/js/movie/movieList.js"></script>
+</th:block>
+
 </body>
 </html>
