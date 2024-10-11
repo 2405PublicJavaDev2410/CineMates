@@ -109,6 +109,7 @@ public class PaymentController {
             throws IamportResponseException, IOException {
         System.out.println("Cancel: " + imp_uid);
         IamportResponse<Payment> response = paymentService.cancelPayment(imp_uid);
+        paymentService.deleteReserveAndPaymentInfo(imp_uid);
         return ResponseEntity.ok("취소 완!");
     }
 
@@ -116,6 +117,7 @@ public class PaymentController {
     public ResponseEntity<String> getImpUid(@RequestParam String reservationNo) {
         System.out.println("getReservationNo: " + reservationNo);
         String impUid= paymentService.selectImpUid(reservationNo);
+
         System.out.println("impUid : " + impUid);
         return ResponseEntity.ok(impUid);
     }

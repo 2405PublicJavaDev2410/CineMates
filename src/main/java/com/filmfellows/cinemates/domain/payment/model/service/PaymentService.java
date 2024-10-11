@@ -84,4 +84,9 @@ public class PaymentService {
     public String selectImpUid(String reservationNo) {
         return pmapper.selectImpUid(reservationNo);
     }
+    @Transactional
+    public void deleteReserveAndPaymentInfo(String impUid) {
+        rmapper.deleteReservationInfo(impUid);
+        pmapper.deletePaymentInfo(impUid);
+    }
 }

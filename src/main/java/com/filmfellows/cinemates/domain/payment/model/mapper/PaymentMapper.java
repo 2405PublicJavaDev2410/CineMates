@@ -16,4 +16,6 @@ public interface PaymentMapper {
     void insertPaymentInfo2(Map<String, Object> buyerInfo);
 
     String selectImpUid(String reservationNo);
+
+    void deletePaymentInfo(String impUid);
 }

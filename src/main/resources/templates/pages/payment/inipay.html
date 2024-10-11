@@ -179,28 +179,30 @@
         })
             .done(function (response) {
                 if (response) {
-                    // imp_uid를 받아왔다면, 결제 취소를 진행합니다.
-                    $.ajax({
-                        url: "/payments/cancel/" + response,
-                        type: "GET",
-                        contentType: "application/json",
-                        // data:
+                    if (confirm("정말 취소 하시겠습니까?")) {
+                        // imp_uid를 받아왔다면, 결제 취소를 진행합니다.
+                        $.ajax({
+                            url: "/payments/cancel/" + response,
+                            type: "GET",
+                            contentType: "application/json",
+                            // data:
                             // JSON.stringify({
                             // merchant_uid: response.merchant_uid,
                             // cancel_request_amount: response.amount,
                             // reason: "고객 요청",
-                        // }),
-                        // dataType: "json"
-                    })
-                        .done(function (data) {
-                            alert("취소가 완료되었습니다!");
-                            console.log(data);
+                            // }),
+                            // dataType: "json"
                         })
-                        .fail(function (jqXHR, textStatus) {
-                            alert("결제 취소에 실패했습니다: " + textStatus);
-                        });
-                } else {
-                    alert("유효한 예약 번호가 아닙니다.");
+                            .done(function (data) {
+                                alert("취소가 완료되었습니다!");
+                                console.log(data);
+                            })
+                            .fail(function (jqXHR, textStatus) {
+                                alert("결제 취소에 실패했습니다: " + textStatus);
+                            });
+                    } else {
+                        alert("유효한 예약 번호가 아닙니다.");
+                    }
                 }
             })
             .fail(function (jqXHR, textStatus) {
