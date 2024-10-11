@@ -5,6 +5,7 @@ import com.filmfellows.cinemates.domain.member.model.mapper.MemberMapper;
 import com.filmfellows.cinemates.domain.member.model.service.MemberService;
 import com.filmfellows.cinemates.domain.member.model.vo.Member;
 import com.filmfellows.cinemates.domain.member.model.vo.ProfileImg;
+import com.filmfellows.cinemates.domain.naverapi.model.vo.NaverProfile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -120,6 +121,21 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public boolean isEmailDuplicate(String email) {
         return mMapper.countByEmail(email);
+    }
+
+    @Override
+    public String findSnsIdByEmailAndType(String email, String snsType) {
+        return mMapper.selectSnsIdByEmailAndType(email, snsType);
+    }
+
+    @Override
+    public NaverProfile loginSnsMember(String snsId) {
+        return mMapper.selectOneSnsById(snsId);
+    }
+
+    @Override
+    public int registerSnsMember(NaverProfile naverProfile) {
+        return mMapper.insertSnsMember(naverProfile);
     }
 
 }

@@ -174,7 +174,7 @@ function emailCheckForPw() {
 
 // 아이디 마스킹 처리
 function maskMemberId(memberId) {
-    return memberId.replace(/(?<=^.{1}).(?=.{2})|(?<=^.{2}).(?=.{1})/g, '*');
+    return memberId.replace(/(?<=^.{2}).(?=.{1})|(?<=^.{3}).(?=.{0})/g, '*');
 }
 
 // 입력창을 벗어나면 빨간 테두리 삭제

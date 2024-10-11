@@ -2,8 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.filmfellows.cinemates.domain.member.model.mapper.MemberMapper">
     <select id="selectOneById" resultType="Member">
-        SELECT * FROM MEMBER_TBL
+        SELECT *
+        FROM MEMBER_TBL
         WHERE MEMBER_ID = #{memberId}
+    </select>
+    <select id="selectOneSnsById" resultType="NaverProfile">
+        SELECT *
+        FROM SNS_INFO_TBL
+        WHERE SNS_ID = #{snsId}
     </select>
     <select id="selectOneByNameAndEmail" resultType="Member">
         SELECT * FROM MEMBER_TBL
@@ -29,9 +35,19 @@
         FROM MEMBER_TBL
         WHERE EMAIL = #{email}
     </select>
+    <select id="selectSnsIdByEmailAndType">
+        SELECT SNS_ID
+        FROM SNS_INFO_TBL
+        WHERE EMAIL = #{email}
+        AND SNS_TYPE = #{snsType}
+    </select>
     <insert id="insertMember">
         INSERT INTO MEMBER_TBL (MEMBER_ID, MEMBER_PW, NAME, BIRTH_DATE, EMAIL, PHONE)
         VALUES (#{memberId}, #{memberPw}, #{name}, #{birthDate}, #{email}, #{phone})
+    </insert>
+    <insert id="insertSnsMember">
+        INSERT INTO SNS_INFO_TBL (SNS_ID, SNS_TYPE, NAME, PROFILE_IMG, EMAIL, BIRTH_DATE, MOBILE)
+        VALUES (#{snsId}, #{snsType}, #{name}, #{profileImg}, #{email}, #{birthDate}, #{mobile})
     </insert>
     <update id="updateMember">
         UPDATE MEMBER_TBL

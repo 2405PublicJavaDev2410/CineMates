@@ -5,6 +5,9 @@ import com.filmfellows.cinemates.domain.emailverification.model.service.EmailVer
 import com.filmfellows.cinemates.domain.member.model.service.MemberService;
 import com.filmfellows.cinemates.domain.member.model.vo.Member;
 import com.filmfellows.cinemates.domain.member.model.vo.ProfileImg;
+import com.filmfellows.cinemates.domain.naverapi.model.service.NaverApiService;
+import com.filmfellows.cinemates.domain.naverapi.model.vo.NaverApi;
+import com.filmfellows.cinemates.domain.naverapi.model.vo.NaverProfile;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +23,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Controller
 @Slf4j
@@ -27,14 +31,49 @@ import java.util.Map;
 public class MemberController {
     private final MemberService mService;
     private final EmailVerificationService evService;
+    private final NaverApi naverApi;
+    private final NaverApiService naverApiService;
 
     /**
      * 담당자 : 엄태운
      * 관련기능 : 로그인 페이지 이동
      */
     @GetMapping("/login")
-    public String showLogin() {
+    public String showLogin(Model model) {
+        String state = UUID.randomUUID().toString();
+        String naverLoginUrl = String.format("https://nid.naver.com/oauth2.0/authorize?client_id=%s&redirect_uri=%s&response_type=code&state=%s",
+                naverApi.getNaverClientId(), naverApi.getNaverRedirectUri(), state);
+        model.addAttribute("naverLoginUrl", naverLoginUrl);
         return "pages/member/login";
+    }
+
+    /**
+     * 담당자 : 엄태운
+     * 관련기능 : 네이버 로그인 후 인증 처리
+     */
+    @GetMapping("/naver/callback")
+    public String naverLoginCallback(@RequestParam("code") String code,
+                                     @RequestParam("state") String state,
+                                     HttpSession session, Model model) {
+        // 1. 액세스 토큰 발급 요청
+        String accessToken = naverApiService.getAccessToken(code, state);
+        System.out.println(accessToken);
+//        log.info(accessToken);
+        // 2. 액세스 토큰을 이용해 사용자 정보 조회
+        NaverProfile naverProfile = naverApiService.getUserInfo(accessToken);
+        String snsId = mService.findSnsIdByEmailAndType(naverProfile.getEmail(), naverProfile.getSnsType());
+        // 사용자 정보로 로그인 또는 회원가입 처리
+        if (snsId != null) {
+            NaverProfile nMember = mService.loginSnsMember(snsId);
+            session.setAttribute("memberId", nMember.getSnsId());
+            session.setAttribute("name", nMember.getName());
+            // 로그인 시 메인에 회원 정보 전달
+            model.addAttribute("member", nMember);
+        } else {
+            mService.registerSnsMember(naverProfile);
+        }
+        // 3. 로그인 후 홈으로 리다이렉트
+        return "redirect:/";
     }
 
     /**

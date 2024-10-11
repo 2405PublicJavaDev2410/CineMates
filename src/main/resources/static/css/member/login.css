@@ -62,3 +62,29 @@
 #login-form ul li a:hover {
     color: #EA4E4A;
 }
+.divider-container {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 40px 0;
+    position: relative;
+}
+.divider {
+    flex-grow: 1;
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 0;
+}
+.divider-text {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff;
+    padding: 0 20px;
+    white-space: nowrap;
+}
+#naver-login-btn {
+    width: 220px;
+    display: block;
+    margin: 0 auto;
+}
