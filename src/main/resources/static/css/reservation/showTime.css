@@ -2,10 +2,27 @@
 li {
     list-style: none;
 }
-.main{
-    background-color: white;
+
+.main {
     display: flex;
+    justify-content: center;
+    padding: 20px;
 }
+
+.container {
+    width: 100%;
+    background-color: #444;
+}
+
+.cinema-Container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 1200px;
+    margin: 0 auto;
+}
+
 /*달력*/
 .calendar {
     display: flex;
@@ -63,6 +80,7 @@ li {
     user-select: none;
     padding: 10px;
 }
+
 /*상영 시간*/
 .selected {
     background-color: #e0e0e0;
