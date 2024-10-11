@@ -6,8 +6,11 @@ import com.filmfellows.cinemates.app.chat.dto.CinemaInfoByRegion;
 import com.filmfellows.cinemates.app.chat.dto.RegionAndCinemaCount;
 import com.filmfellows.cinemates.domain.chat.model.vo.ChatRoom;
 import com.filmfellows.cinemates.domain.chat.model.vo.ChatTag;
+import com.filmfellows.cinemates.domain.member.model.vo.ProfileImg;
+import org.apache.ibatis.session.RowBounds;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ChatService {
 
@@ -48,15 +51,24 @@ public interface ChatService {
 
     /**
      * 담당자 : 이충무
-     * 기능 : 채팅방 전체 리스트 조회
-     * @return List<ChatRoom> (채팅방 전체 리스트)
+     * 기능 : 채팅방 검색 리스트 조회
+     * @return List<ChatRoom> (채팅방 검색 리스트)
      */
-    List<ChatRoom> selectChatRoomList();
+    Map<String, Object> selectChatRoomList(Integer currentPage, int boardLimit, String tagName, List<String> searchMovieList, List<String> searchRoomList, List<String> searchRegionList);
 
     /**
      * 담당자 : 이충무
      * 기능 : 채팅방 태그 조회
-     * @return List<ChatRoom> (채팅방 태그 리스트)
+     * @return List<ChatTag> (채팅방 태그 리스트)
      */
-    List<ChatRoom> selectChatTagList();
+    List<ChatTag> selectChatTagList(String status);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : 채팅방 프로필 조회
+     * @return List<ProfileImg> (채팅방 프로필 리스트)
+     */
+    List<ProfileImg> selectProfileList();
+
+
 }

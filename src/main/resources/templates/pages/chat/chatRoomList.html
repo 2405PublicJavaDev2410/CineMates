@@ -8,146 +8,15 @@
     <head>
         <title>채팅방 목록</title>
         <script src="https://kit.fontawesome.com/7d4169cb69.js" crossorigin="anonymous"></script>
+        <!-- css link-->
+        <link rel="stylesheet" href="/css/chat/chatList.css">
         <!-- inline CSS 영역-->
-        <style th:inline="css" type="text/css">
-
-            .chatRoomList-main{
-                width: 100%;
-            }
-
-            /*list, card 기준이 되는 relative 컨테이너*/
-            #position-box{
-                position: relative;
-                width: 100%;
-                height: 1200px;
-                overflow: hidden;
-            }
-
-
-
-            /* list 전환 버튼 css */
-            #listSwitchContainer{
-                display: flex;
-                justify-content: space-between;
-                width: 230px;
-                height: 45px;
-                align-items: center;
-                text-align: center;
-                line-height: 45px;
-            }
-
-            .listSwitch-btn{
-                width: 110px;
-                height: 100%;
-                background-color: #ececec;
-                font-size: 18px;
-                border: none;
-                border-radius: 10px;
-                transition: all 200ms;
-                cursor: pointer;
-            }
-            .listSwitch-btn span{
-                display: inline-block;
-                margin-left: 10px;
-            }
-            .listSwitch-btn:hover{
-                transform:scale(1.05);
-                color: white;
-                font-size: 20px;
-                font-weight: bold;
-                background-color: #EA4E4A;
-            }
-
-            #toCard-btn.active, #toList-btn.active{
-                transform:scale(1.05);
-                color: white;
-                font-size: 20px;
-                font-weight: bold;
-                background-color: #EA4E4A;
-            }
-
-            /* list형, card형 css */
-            #toList-container{
-                position: absolute;
-                top:10px;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                z-index: 3;
-            }
-            #toCard-container{
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 20px;
-                position: absolute;
-                top:10px;
-                left: 0;
-                width: 100%;
-                z-index: 2;
-            }
-            /* list형 기본 스타일 */
-            .list-item {
-                width: 90%;
-                background-color: #f0f0f0;
-                padding: 20px;
-                border-radius: 8px;
-                /*transition: opacity 0.5s ease, transform 0.5s ease;*/
-                opacity: 1;
-                /*transform: scale(1);*/
-                margin-bottom: 20px;
-
-                visibility: visible; /* 처음엔 숨겨져 있음 */
-                transform: translateY(20px);
-                transition: opacity 0.5s ease, transform 0.5s ease, visibility 0s 0.5s; /* visibility는 0.5초 후에 표시 */
-            }
-            /* list형 fade-in 스타일 */
-            .list-item.fade-in {
-                visibility: visible; /* 0.5초 후에 보이게 */
-                opacity: 1;
-                transform: translateY(0);
-                transition: opacity 0.5s ease, transform 0.5s ease; /* 부드럽게 등장 */
-            }
-            /* list형 fade-out 스타일 */
-            .list-item.fade-out {
-                opacity: 0;
-                transform: scale(0.9);
-                visibility: hidden;
-            }
-
-
-            /* card형 기본 스타일 */
-            .card-item {
-                width: 30%;
-                height: 300px;
-                background-color: #ffe5b4;
-                padding: 20px;
-                border-radius: 8px;
-
-                opacity: 0;
-                visibility: hidden; /* 처음엔 숨겨져 있음 */
-                transform: translateY(20px);
-                transition: opacity 0.5s ease, transform 0.5s ease, visibility 0s 0.5s; /* visibility는 0.5초 후에 표시 */
-            }
-
-            /* card형 fade-in 스타일 */
-            .card-item.fade-in {
-                visibility: visible; /* 0.5초 후에 보이게 */
-                opacity: 1;
-                transform: translateY(0);
-                transition: opacity 0.5s ease, transform 0.5s ease; /* 부드럽게 등장 */
-            }
-            /* card형 fade-out 스타일 */
-            .card-item.fade-out {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-
+        <style>
         </style>
+
 
         <!-- inline JS 영역-->
         <script th:inline="javascript" type="text/javascript">
-
             // list -> card 전환 function
             function switchToCardView() {
                 const listItems = document.querySelectorAll('.list-item');
@@ -155,12 +24,19 @@
                 const listContainer = document.querySelector('#toList-container');
                 const toListBtn = document.querySelector('#toList-btn');
                 const toCardBtn = document.querySelector('#toCard-btn');
+
                 // 버튼 활성화 시 클래스 추가 (활성화 스타일 적용)
                 toListBtn.classList.remove('active');
                 toCardBtn.classList.add('active');
+
+
+                const url = new URL(window.location);
+                url.searchParams.set('viewMode', 'card'); // 쿼리스트링의 viewMode 값 변경
+                history.pushState(null, '', url); // 페이지 새로고침 없이 URL 변경
+
                 // 전환되는 동안 버튼 비활성화
                 if(!cardItems[0].classList.contains('fade-in')){
-                    btnDisabled(listItems, cardItems);
+                    btnDisabled(listItems, cardItems, "paging");
                 }
 
                 // 리스트형 아이템 흐려지게
@@ -176,6 +52,7 @@
 
                 listContainer.style.zIndex = '1';
 
+
                 // 카드형 아이템 순차적으로 나타나게
                 cardItems.forEach((item, index) => {
                     setTimeout(() => {
@@ -183,7 +60,7 @@
                             item.classList.add('fade-in');
                             item.classList.remove('fade-out');
                         }
-                    }, (listItems.length * 100) + (index * 150)); // 리스트가 사라진 후 150ms 간격으로 나타남
+                    }, 200 + (index * 150)); // 리스트가 사라진 후 150ms 간격으로 나타남
                 });
             }
 
@@ -195,13 +72,18 @@
                 const cardContainer = document.querySelector('#toCard-container');
                 const toListBtn = document.querySelector('#toList-btn');
                 const toCardBtn = document.querySelector('#toCard-btn');
+
                 // 버튼 활성화 시 클래스 추가 (활성화 스타일 적용)
                 toCardBtn.classList.remove('active');
                 toListBtn.classList.add('active');
 
+                const url = new URL(window.location);
+                url.searchParams.set('viewMode', 'list'); // 쿼리스트링의 viewMode 값 변경
+                history.pushState(null, '', url); // 페이지 새로고침 없이 URL 변경
+
                 // 전환되는 동안 버튼 비활성화
                 if(!listItems[0].classList.contains('fade-in')){
-                    btnDisabled(listItems, cardItems);
+                    btnDisabled(listItems, cardItems, "paging");
                 }
 
                 // card형 아이템 흐려지게
@@ -217,6 +99,7 @@
                 cardContainer.style.zIndex = '1';
                 listContainer.style.zIndex = '3';
 
+
                 // list형 아이템 순차적으로 나타나게
                 listItems.forEach((item, index) => {
                     setTimeout(() => {
@@ -224,7 +107,7 @@
                             item.classList.add('fade-in');
                             item.classList.remove('fade-out');
                         }
-                    }, (cardItems.length * 100) + (index * 150)); // 리스트가 사라진 후 150ms 간격으로 나타남
+                    }, 200 + (index * 150)); // 리스트가 사라진 후 150ms 간격으로 나타남
                 });
 
 
@@ -232,13 +115,20 @@
             }
 
             // 버튼 비활성화
-            function btnDisabled(listItems, cardItems){
+            function btnDisabled(listItems, cardItems, status){
                 const listSwitchBtn = document.querySelectorAll('.listSwitch-btn');
                 listSwitchBtn.forEach(item=>{
                     item.disabled = true;
                 });
+
                 // 애니메이션이 끝난 후 버튼 활성화
-                const totalDuration = (listItems.length * 100) + (cardItems.length * 150) + 500;
+                let totalDuration = 0;
+                if(status === 'load'){
+                    totalDuration = (cardItems.length * 150);
+                }else if(status === 'paging'){
+                    totalDuration = 500+(cardItems.length * 150);
+                }
+
                 setTimeout(() => {
                     listSwitchBtn.forEach(item=>{
                         item.disabled = false;
@@ -246,69 +136,249 @@
                 }, totalDuration); // 애니메이션 시간에 맞춰 비활성화 해제
             }
 
+
+
+        //    페이지네이션
+            function navigatePage(page){
+                let toListBtn = document.querySelector('#toList-btn');
+                let toCardBtn = document.querySelector('#toCard-btn');
+
+                if(toListBtn.classList.contains('active')){
+                    location.href=`/chat/list?cp=${page}&viewMode=list`;
+                }else if(toCardBtn.classList.contains('active')){
+                    location.href=`/chat/list?cp=${page}&viewMode=card`;
+                }else{
+                    console.log("location 실패")
+                }
+            }
+
+           window.addEventListener('load',()=>{
+               const listContainer = document.querySelector('#toList-container');
+               const cardContainer = document.querySelector('#toCard-container');
+               let listItems = document.querySelectorAll('.list-item');
+               let cardItems = document.querySelectorAll('.card-item');
+               let toListBtn = document.querySelector('#toList-btn');
+               let toCardBtn = document.querySelector('#toCard-btn');
+               let viewMode = /*[[${viewMode}]]*/;
+
+               if(viewMode === 'list'){
+                   cardContainer.style.zIndex = '1';
+                   listContainer.style.zIndex = '3';
+                   listItems.forEach((item, index)=>{
+                       setTimeout(()=>{
+                           item.classList.remove('fade-out');
+                           item.classList.add('fade-in');
+                       }, 200+(index * 100))
+
+                       if(!toListBtn.classList.contains('active')){
+                           toCardBtn.classList.remove('active');
+                           toListBtn.classList.add('active');
+                       }
+
+
+                   });
+
+               }else if(viewMode === 'card'){
+                   listContainer.style.zIndex = '1';
+                   cardItems.forEach((item, index)=>{
+                       setTimeout(()=>{
+                           item.classList.remove('fade-out');
+                           item.classList.add('fade-in');
+                       }, 200+(index * 100))
+
+                   if(!toCardBtn.classList.contains('active')){
+                       toCardBtn.classList.add('active');
+                       toListBtn.classList.remove('active');
+                       }
+                   });
+               }
+
+               // 로드되는 동안 버튼 비활성화
+               btnDisabled(listItems, cardItems, "load");
+
+
+
+               // 카드형 리스트 채팅방 정보
+               const roomCardInfos = document.querySelectorAll('.toCard-item-info');
+               roomCardInfos.forEach((item,index) => {
+                   item.addEventListener('mouseover',()=>{
+                       let itemCardTitles = document.querySelectorAll('.itemCard-title');
+                       let itemCardRecentContents = document.querySelectorAll('.itemCard-recentContent');
+                       let itemCardRoomDates = document.querySelectorAll('.itemCard-roomDate');
+
+
+                           itemCardTitles[index].style.display="block";
+                           itemCardRecentContents[index].style.display="block";
+                           itemCardRoomDates[index].style.display="block";
+
+
+                       item.addEventListener('mouseout',()=>{
+                               itemCardTitles[index].style.display="none";
+                               itemCardRecentContents[index].style.display="none";
+                               itemCardRoomDates[index].style.display="none";
+
+                       });
+                   });
+
+               })
+
+               let cardMouseover = document.querySelectorAll('.card-mouseover');
+               cardMouseover.forEach(item=>{
+
+                   item.addEventListener('mouseover',()=>{
+                       item.classList.add('visible');
+                        console.log("hi")
+                       item.addEventListener('mouseout',()=>{
+                           item.classList.remove('visible');
+                           item.classList.remove('visible');
+                           item.classList.remove('visible');
+
+                       });
+                   })
+
+               })
+
+
+           });
+
+
+
+
         </script>
     </head>
 
     <body>
         <h1>ChatList 영역입니다.</h1>
         <div class="chatRoomList-main">
-            <div>
-                <div>검색</div>
-                <div>내 채팅방</div>
-                <div>전체</div>
+            <div class="listMenuContainer">
+                <div class="listMenu-item" onclick="location.href=`/chat/search`;"><i class="fa-solid fa-magnifying-glass" style="padding-right: 10px"></i>검색</div>
+                <div class="listMenu-item">내 채팅방</div>
+                <div class="listMenu-item" style="width: 100px; color:white; background-color: #466288; cursor:auto">전체</div>
             </div>
+
             <br><br><br>
+
             <div id="listSwitchContainer">
-                <button type="button" class="listSwitch-btn active" id="toList-btn" onclick="switchToListView();">
+                <button type="button" class="listSwitch-btn" id="toList-btn" onclick="switchToListView();">
                     <i class="fa-solid fa-list"></i><span>목록형</span>
                 </button>
                 <button type="button" class="listSwitch-btn" id="toCard-btn" onclick="switchToCardView();">
                     <i class="fa-solid fa-table-cells"></i><span>카드형</span>
                 </button>
             </div>
+
             <div id="position-box">
 <!--                리스트형 레이아웃-->
-                <div class="chatRoomList-container" id="toList-container">
-                    <div th:if="${chatRoomList != null}" th:each="chatRoom : ${chatRoomList}" class="chatRoom-item list-item fade-in">
-                        <div>방장 이미지</div>
-                        <div th:text="'채팅방 이름 : '+${chatRoom.roomName}"></div>
-                        <div th:text="'채팅방 생성 날짜 : '+${chatRoom.roomDate}"></div>
-                        <div>채팅방 최근채팅내용</div>
-                        <div>태그 :
-                            <span th:each="tag : ${tagList}" th:if="${tag.roomNo == chatRoom.roomNo}" th:text="'#'+${tag.tagName}+' '"></span>
+
+                    <div class="chatRoomList-container" id="toList-container">
+                        <div th:if="${chatRoomList != null}" th:each="chatRoom : ${chatRoomList}" class="chatRoom-item list-item fade-out">
+                            <div class="itemBtnFlexContainer">
+                                <div class="item-flex-container">
+
+                                    <div class="flex-item-memberProfile" th:each="memberProfile : ${profileList}">
+                                        <th:block  th:if="${memberProfile.memberId != chatRoom.roomWriter}">
+                                            <img alt="프로필" src="/img/chat/defaultProfile2.png" style="width: 100%; height: 100%; border-radius: 30%;">
+                                        </th:block>
+                                        <th:block  th:if="${memberProfile.memberId == chatRoom.roomWriter}">
+                                            <img th:src="@{|${memberProfile.filePath}${memberProfile.fileRename}|}" alt="프로필" style="width: 100%; height: 100%; border-radius: 30%;">
+                                        </th:block>
+                                    </div>
+                                    <div class="flex-item-chatInfoBox">
+                                        <div class="chatRoomName" th:text="${chatRoom.roomName}"></div>
+
+                                        <div class="chatTagList">태그 :
+                                            <span th:each="tag : ${tagList}" th:if="${tag.roomNo == chatRoom.roomNo}" th:text="'#'+${tag.tagName}+' '"></span>
+                                        </div>
+                                        <div style="display: flex">
+                                            <div style="margin-right: 50px">참여인원: 00명 참여중</div>
+                                            <div th:text="${chatRoom.title}+' ('+${chatRoom.cinemaAddress}+' / '+${chatRoom.cinemaName}+')'"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="joinBtn">참여</div>
+                                </div>
+                            </div>
+
+                            <!--                        <div>방장 이미지</div>-->
+
+                            <!--                        <div th:text="'채팅방 생성 날짜 : '+${chatRoom.roomDate}"></div>-->
+                            <!--                        <div>채팅방 최근채팅내용</div>-->
+
+                            <!--                        <div th:text="'영화이름 : '+${chatRoom.movieNo}"></div>-->
+                            <!--                        <div th:text="'지역 : '+${chatRoom.cinemaLocationCode}"></div>-->
+                            <!--                        <div th:text="'극장 : '+${chatRoom.cinemaNo}"></div>-->
                         </div>
-                        <div th:text="'영화이름 : '+${chatRoom.movieNo}"></div>
-                        <div>영화이미지</div>
-                        <div th:text="'지역 : '+${chatRoom.cinemaLocationCode}"></div>
-                        <div th:text="'극장 : '+${chatRoom.cinemaNo}"></div>
-                        <br><br>
+
+
                     </div>
-                </div>
-<!--                카드형 레이아웃-->
-                <div class="chatRoomList-container" id="toCard-container">
-                    <div th:if="${chatRoomList != null}" th:each="chatRoom : ${chatRoomList}" class="chatRoom-item card-item fade-out">
-                        <div>방장 이미지</div>
-                        <div th:text="'채팅방 이름 : '+${chatRoom.roomName}"></div>
-                        <div th:text="'채팅방 생성 날짜 : '+${chatRoom.roomDate}"></div>
-                        <div>채팅방 최근채팅내용</div>
-                        <div>태그 :
-                            <span th:each="tag : ${tagList}" th:if="${tag.roomNo == chatRoom.roomNo}" th:text="'#'+${tag.tagName}+' '"></span>
+
+
+                    <!--                카드형 레이아웃-->
+                    <div class="chatRoomList-container" id="toCard-container">
+                        <div th:if="${chatRoomList != null}" th:each="chatRoom : ${chatRoomList}" class="chatRoom-item card-item fade-out">
+                            <div class="card-mouseover">
+                                <div class="card-mouseover-text" th:if="${chatRoom.roomCategory == 'reservation'}" th:text="'모집방'"></div>
+                                <div class="card-mouseover-text" th:if="${chatRoom.roomCategory == 'talk'}" th:text="'소통방'"></div>
+                                <div class="card-mouseover-text joinBtn2">참여하기</div>
+                            </div>
+                            <div th:style="'width:100%; height: 400px; background-image: url('+${chatRoom.posterUrl}+'); background-position: center; background-size: cover; border-radius:20px;'">
+                            </div>
+
+                            <div class="toCard-item-info">
+                                <div class="itemCard-title" th:text="'< '+${chatRoom.title}+' >'"></div>
+                                <div style="font-size: 25px; font-weight:bold" th:text="${#strings.length(chatRoom.roomName) > 15 ? chatRoom.roomName.substring(0, 15) + ' . . .' : chatRoom.roomName}"></div>
+
+                                <div class="itemCard-recentContent" >채팅방 최근채팅내용</div>
+
+                                <div>
+                                    <span th:each="tag : ${tagList}" th:if="${tag.roomNo == chatRoom.roomNo}" th:text="'#'+${tag.tagName}+' '"></span>
+                                </div>
+
+                                <div style="">00명 참여중</div>
+                                <div th:text="${chatRoom.cinemaAddress}+' / '+${chatRoom.cinemaName}"></div>
+                                <th:block th:each="rTime : ${relativeTimeList}">
+                                    <div class="itemCard-roomDate" th:if="${chatRoom.roomDate == rTime.roomDate}" th:text="'개설일 : '+${rTime.relativeTime}"></div>
+                                </th:block>
+
+
+                            </div>
+
+
                         </div>
-                        <div th:text="'영화이름 : '+${chatRoom.movieNo}"></div>
-                        <div>영화이미지</div>
-                        <div th:text="'지역 : '+${chatRoom.cinemaLocationCode}"></div>
-                        <div th:text="'극장 : '+${chatRoom.cinemaNo}"></div>
-                        <br><br>
+                    </div>
+
+
+            </div>
+
+
+            <div>
+                <div class="paginationBox" th:unless="${#lists.isEmpty(chatRoomList)}">
+                    <div>
+                        <a th:if="${pn.currentPage != 1}"  href="javascript:void(0)" th:onclick="navigatePage(1)">&#10094&#10094</a>
+                        <a th:if="${pn.getStartNavi() != 1}"  href="javascript:void(0)" th:onclick="navigatePage([[${pn.prevPage}]])">&#10094</a>
+
+                        <span th:each="p : ${#numbers.sequence(pn.startNavi, pn.endNavi)}">
+                            <span th:if="${p == pn.currentPage}">
+                                <span id="currentPageId">
+                                    [[${p}]]
+                                </span>
+                            </span>
+                            <span th:if="${p != pn.currentPage}">
+                                <a href="javascript:void(0)" th:text="${p}" th:onclick="navigatePage([[${p}]]);"></a>
+                            </span>
+                        </span>
+
+                        <a th:if="${pn.getEndNavi() != pn.MaxPage}"  href="javascript:void(0)"  th:onclick="navigatePage([[${pn.nextPage}]])">&#10095</a>
+                        <a th:if="${pn.currentPage != pn.maxPage}"  href="javascript:void(0)" th:onclick="navigatePage([[${pn.maxPage}]])">&#10095&#10095</a>
+
                     </div>
                 </div>
             </div>
 
 
-
-
         </div>
-
-
 
 
 

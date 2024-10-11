@@ -1,5 +1,6 @@
 package com.filmfellows.cinemates.app.chat;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.filmfellows.cinemates.app.chat.dto.ChatRoomMovie;
@@ -9,14 +10,16 @@ import com.filmfellows.cinemates.app.chat.dto.ReservationInfoAndChatInfo;
 import com.filmfellows.cinemates.domain.chat.model.service.ChatService;
 import com.filmfellows.cinemates.domain.chat.model.vo.ChatRoom;
 import com.filmfellows.cinemates.domain.chat.model.vo.ChatTag;
+import com.filmfellows.cinemates.domain.member.model.vo.ProfileImg;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,16 +34,115 @@ public class ChatController {
 
 
     @GetMapping("/chat/list")
-    public String showChatRoomList(Model model){
+    public String showChatRoomList(Model model, HttpSession session,
+                                   @RequestParam(value = "cp", defaultValue = "1") Integer currentPage,
+                                   @RequestParam(value="viewMode", defaultValue = "list") String viewMode
+                                   ) {
+
+        System.out.println("cp : " + currentPage);
+        System.out.println("viewMode : " + viewMode);
+        // 로그인 확인
+        String memberId = (String) session.getAttribute("memberId");
+        if(memberId == null) {
+            return "redirect:/login";
+        }
+        // 전체 프로필 정보 조회 -> 채팅방 정보에 출력
+        List<ProfileImg> profileList = cService.selectProfileList();
+        System.out.println(profileList);
+
         // 채팅방 리스트 전체 조회 비즈니스 로직
-        List<ChatRoom> chatRoomList = cService.selectChatRoomList();
+        // 서비스에서 Pagination 객체, 조회된 cList 객체 매핑해서 반환
+        int boardLimit = 9;
+        Map<String, Object> map = cService.selectChatRoomList(currentPage, boardLimit, null, null, null, null);
 
         // 채팅방 태그 조회
-        List<ChatRoom> tagList = cService.selectChatTagList();
+        List<ChatTag> tagList = cService.selectChatTagList("default");
 
+
+
+        model.addAttribute("profileList", profileList);
         model.addAttribute("tagList", tagList);
-        model.addAttribute("chatRoomList", chatRoomList);
+        model.addAttribute("chatRoomList", map.get("cList"));
+        model.addAttribute("pn", map.get("pn"));
+        model.addAttribute("relativeTimeList", map.get("relativeTimeList"));
+        model.addAttribute("viewMode", viewMode);
         return "pages/chat/chatRoomList";
+    }
+
+    @GetMapping("/chat/search")
+    public String showSearchList(Model model, @RequestParam(value = "cp", defaultValue = "1") Integer currentPage){
+
+        List<ChatTag> tagListDistinctList = cService.selectChatTagList("distinct");
+        int boardLimit = 5;
+        // 페이지 로드 시에 pn을 보내는데 이때 tagName "없음"을 보내어 아무 리스트도 출력이 안되게끔 만들어줌
+        Map<String, Object> map = cService.selectChatRoomList(currentPage, boardLimit, "없음", null, null, null);
+        model.addAttribute("pn", map.get("pn"));
+        System.out.println(map.get("pn"));
+        model.addAttribute("tagListDistinctList", tagListDistinctList);
+        return "pages/chat/searchChat";
+    }
+
+//    ajax 검색 리스트 출력
+    @PostMapping("/chat/search")
+    public String selectSearchList(Model model, @RequestParam("tagName") String tagName,
+                                   @RequestParam(value="keyword", defaultValue = "") String keyword, // json 형식 string
+                                   @RequestParam(value = "cp", defaultValue = "1") Integer currentPage) throws JsonProcessingException {
+
+        // keyword (json) -> List화 시키기
+        List<String> keywordArr = new ArrayList<String>();
+
+        // jackson 객체
+        ObjectMapper objectMapper = new ObjectMapper();
+        // JSON 문자열을 List<Map<String, String>> 형태로 변환
+        List<Map<String, String>> keywordList = objectMapper.readValue(keyword, new TypeReference<List<Map<String, String>>>(){});
+
+        System.out.println(keywordList);
+
+        // value 필드만 추출하여 List로 변환
+        keywordArr = keywordList.stream().map(map -> map.get("value"))
+                .toList();
+
+        System.out.println(keywordArr);
+
+        List<String> searchMovieList = new ArrayList<>();
+        List<String> searchRoomList = new ArrayList<>();
+        List<String> searchRegionList = new ArrayList<>();
+        for(String searchKeyword: keywordArr){
+            if(searchKeyword.contains("영화")){
+                int index = searchKeyword.indexOf(':'); // 콜론(:)의 인덱스 찾기
+                searchMovieList.add(index != -1 ? searchKeyword.substring(index + 1) : "") ;
+            }else if(searchKeyword.contains("채팅방이름")){
+                int index = searchKeyword.indexOf(':'); // 콜론(:)의 인덱스 찾기
+                searchRoomList.add(index != -1 ? searchKeyword.substring(index + 1) : "") ;
+            }else if(searchKeyword.contains("지역")){
+                int index = searchKeyword.indexOf(':'); // 콜론(:)의 인덱스 찾기
+                searchRegionList.add(index != -1 ? searchKeyword.substring(index + 1) : "") ;
+            }
+        }
+
+
+
+        // 전체 프로필 정보 조회 -> 채팅방 정보에 출력
+        List<ProfileImg> profileList = cService.selectProfileList();
+
+        // 채팅방 리스트 전체 조회 비즈니스 로직
+        // 서비스에서 Pagination 객체, 조회된 cList 객체 매핑해서 반환
+        int boardLimit = 5;
+        Map<String, Object> map = cService.selectChatRoomList(currentPage, boardLimit, tagName, searchMovieList, searchRoomList, searchRegionList);
+
+
+        // 채팅방 태그 조회
+        List<ChatTag> tagList = cService.selectChatTagList("default");
+
+
+        model.addAttribute("profileList", profileList);
+        model.addAttribute("tagList", tagList);
+        model.addAttribute("chatRoomList", map.get("cList"));
+        model.addAttribute("pn", map.get("pn"));
+        model.addAttribute("relativeTimeList", map.get("relativeTimeList"));
+//      tagName으로 검색한 이후 페이지네비게이션에서 tagName을 기억해야하기때문에 다시 전달해줌
+        model.addAttribute("tagName", tagName);
+        return "pages/chat/searchChat::#list-pagination-container";
     }
 
     @GetMapping("/chat/room")
@@ -62,14 +164,21 @@ public class ChatController {
             return "pages/chat/createChatForm";
     }
 
+    /**
+     * 담당자 : 이충무
+     * 관련기능 : 채팅방 개설 기능
+     * model : ReservationInfoAndChatInfo
+     */
     @PostMapping("/chat/create")
-    public String insertChatRoom(@ModelAttribute("ReservationInfoAndChatInfo") ReservationInfoAndChatInfo revAndChatInfo){
-        System.out.println(revAndChatInfo);
+    public String insertChatRoom(@ModelAttribute("ReservationInfoAndChatInfo") ReservationInfoAndChatInfo revAndChatInfo,HttpSession session){
+        // 로그인 확인 -> 채팅방 개설 시 작성자로 저장
+        String roomWriter = (String) session.getAttribute("memberId");
+        
         // DTO -> VO
-        ChatRoom chatRoom = new ChatRoom(null,
+        ChatRoom chatRoom = new ChatRoom(null, roomWriter,
                 revAndChatInfo.getRoomName(),
-                null,revAndChatInfo.getRoomCategory(), revAndChatInfo.getMovieNo(),
-                revAndChatInfo.getCinemaLocationCode(), revAndChatInfo.getCinemaNo()
+                null,revAndChatInfo.getRoomCategory(), revAndChatInfo.getMovieNo(), null, null,
+                revAndChatInfo.getCinemaLocationCode(), null, revAndChatInfo.getCinemaNo(), null
         );
 
         int insertChatRoomResult = cService.insertChatRoom(chatRoom);
@@ -92,7 +201,6 @@ public class ChatController {
             tagNameArr = list.stream().map(map -> map.get("value"))
                     .toList();
 
-
             // 각 배열의 값을 하나씩 table에 insert 시켜주기
             for(String tagName : tagNameArr) {
                 ChatTag chatTag = new ChatTag();
@@ -102,15 +210,10 @@ public class ChatController {
                 if(tagResult > 0) System.out.println("tag등록 성공!!");
             }
 
-
         } catch(Exception e){
             e.printStackTrace();
         }
     }
-
-
-
-
 
         return "redirect:/chat/createForm?roomCategory="+revAndChatInfo.getRoomCategory();
 //        return "pages/chat/chatRoomList";
@@ -154,7 +257,6 @@ public class ChatController {
         model.addAttribute("regionAndCinemaCountList", regionAndCinemaCountList);
         return "pages/chat/createChatForm::#region-list-container";
     }
-
 
 
 
