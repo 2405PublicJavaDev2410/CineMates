@@ -85,6 +85,7 @@ li {
 .selected {
     background-color: #e0e0e0;
     font-weight: bold;
+    background:url(https://www.lottecinema.co.kr/NLCHS/Content/images/icon/check.png) no-repeat 150px 2px;
 }
 
 .showtime-link {
