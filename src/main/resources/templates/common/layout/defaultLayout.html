@@ -10,15 +10,19 @@
     </head>
 
     <body>
+<!--        <div class="container">-->
             <!--Header 영역을 참조합니다.-->
             <header th:replace="~{common/fragments/header :: HeaderFragment}"></header>
 
-        <div class="container">
             <!--Content 내용 영역을 참조합니다-->
-            <th:block layout:fragment="Content"></th:block>
-        </div>
+            <!-- main container 화면 전체 쓰기 : 본인 css파일에서 .container{width:100%} 로 덮어씌우기-->
+            <div class="container">
+                <th:block layout:fragment="Content"></th:block>
+            </div>
+
 
             <!--Footer 영역을 참조합니다.-->
             <footer th:replace="~{common/fragments/footer :: FooterFragment}"></footer>
+<!--        </div>-->
     </body>
 </html>

@@ -5,22 +5,243 @@
       layout:fragment="Content"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>채팅방 찾기</title>
+    <head>
+        <title>채팅방 찾기</title>
+        <script src="https://kit.fontawesome.com/7d4169cb69.js" crossorigin="anonymous"></script>
 
-    <!-- inline CSS 영역-->
-    <style th:inline="css" type="text/css">
+        <script src="https://unpkg.com/@yaireo/tagify"></script>
+        <!-- 폴리필 (구버젼 브라우저 지원) -->
+        <script src="https://unpkg.com/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+        <link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
 
-    </style>
 
-    <!-- inline JS 영역-->
-    <script th:inline="javascript" type="text/javascript">
+        <!-- css link-->
+        <link rel="stylesheet" href="/css/chat/searchList.css">
 
-    </script>
-</head>
+        <!-- inline CSS 영역-->
+        <style th:inline="css" type="text/css">
 
-<body>
-<h1>searchChat 영역입니다.</h1>
+        </style>
 
-</body>
+        <!-- inline JS 영역-->
+        <script th:inline="javascript" type="text/javascript">
+
+
+            // resultBox 애니메이션
+            // function resultBoxAnimation() {
+            //     const resultBox = document.querySelector('#search-result-box');
+            //     if (!resultBox.classList.contains('visible')) {
+            //         setTimeout(() => {
+            //             resultBox.classList.add('visible');
+            //         }, 1000);
+            //
+            //     } else {
+            //             resultBox.classList.remove('visible');
+            //         setTimeout(() => {
+            //             resultBox.classList.add('visible');
+            //
+            //         }, 1000);
+            //
+            //
+            //     }
+            // }
+
+            // tag click 검색
+            // tagName -> tag검색 시 사용
+            // page -> 페이징 네비에서 전달
+
+            // 키워드 검색 시 사용
+            function searchByType(tagName, page, type){
+                let searchBar = document.querySelector('input[name=searchKeyword]');
+
+                let keyword = searchBar.value;
+                // 키워드 검색
+                if(type === "searchByKeyword"){
+                    searchTagByOne(keyword, null, page);
+                } else if(type === "searchByTag"){
+                    searchTagByOne("", tagName, page);
+                } else{
+                    console.log("검색어를 입력하거나 태그를 눌러주세요");
+                }
+
+            }
+
+            // 태그 검색 시 사용
+            function searchTagByOne(keyword, tagName, page){
+                // resultBoxAnimation();
+                console.log(keyword);
+                $.ajax({
+                    url : "/chat/search",
+                    data : {
+                        "tagName": tagName,
+                        "cp" : page,
+                        "keyword":keyword,
+                    },
+                    type : "POST",
+                    success : function(data){ // 서버로부터 return된 값은 직렬화된 json data로 들어옴
+                            $('#list-pagination-container').replaceWith(data);
+                            console.log(data);
+                            let listItems = document.querySelectorAll('.list-item');
+
+                            listItems.forEach((item, index)=>{
+                                setTimeout(()=>{
+                                    item.classList.remove('fade-out');
+                                    item.classList.add('fade-in');
+                                }, 400+(index * 100));
+                            });
+
+                        // 아이템 출력 애니메이션
+
+
+                    },
+                    error : function(){
+                        console.log("서버 전송 실패");
+                    }
+                });
+            }
+
+            // 페이지 로드 이후 실행
+            window.addEventListener('load', ()=>{
+                let input = document.querySelector('input[name=searchKeyword]');
+
+                let tagify = new Tagify(input, {
+                    // 'title:', 'movie:', 'cinema:'로 시작하는 패턴만 태그로 등록 가능
+                    pattern: /^(채팅방이름:|영화:|지역:).+$/,
+                    // 'title:', 'movie:', 'cinema:' 드롭다운 메뉴로 제공
+                    whitelist: ['채팅방이름:', '영화:', '지역:'],
+                    enforceWhitelist: false,  // 필터가 아닌 검색어도 입력 가능
+                    dropdown: {
+                        enabled: 1,           // 입력창을 클릭할 때 자동으로 드롭다운 열림
+                        position: 'text',     // 입력된 텍스트의 위치에 드롭다운 표시
+                        highlightFirst: true, // 첫 번째 아이템 자동으로 하이라이트
+                        maxItems: 5,          // 최대 표시할 아이템 수
+                    },
+                    editTags: true,         // 선택 후 태그 수정 비활성화 (텍스트 입력만 가능)
+                });
+
+                // input에 포커스될 때 드롭다운 메뉴 표시
+                tagify.on('focus', function(e) {
+                    // 텍스트 입력이 없을 때만 전체 드롭다운을 표시
+                    if (!input.value.trim()) {
+                        tagify.dropdown.show.call(tagify);  // 전체 드롭다운 메뉴 보여주기
+                    }
+                });
+
+                // 태그 선택 시 바로 등록되지 않고, 선택한 텍스트만 입력창에 추가됨
+                tagify.on('dropdown:select', function(e){
+                    let selectedValue = e.detail.data.value;
+
+                    // 선택된 값만 입력창에 추가
+                    input.value = selectedValue;  // 선택한 필터 뒤에 공백 추가
+                    tagify.dropdown.hide();  // 드롭다운 숨기기
+                });
+
+                // 입력 이벤트 처리 (자동완성 기능 포함)
+                input.addEventListener('input', function(e){
+                    // 태그 자동완성 기능 활성화
+                    let searchQuery = e.target.value;
+                    if (searchQuery.length > 0) {
+                        tagify.dropdown.show(searchQuery); // 드롭다운에 필터링된 결과 표시
+                    }
+                });
+            })
+
+
+
+        </script>
+    </head>
+
+    <body>
+
+
+        <h1>searchChat 영역입니다.</h1>
+        <div class="listMenuContainer">
+            <div class="listMenu-item" style=" background-color:#466288; color:white; cursor:auto;"><i class="fa-solid fa-magnifying-glass" style="padding-right: 10px;"></i>검색</div>
+            <div class="listMenu-item">내 채팅방</div>
+            <div class="listMenu-item" style="width: 100px;" onclick="location.href=`/chat/list`">전체</div>
+        </div>
+        <div class="chatRoom-searchBox">
+            <input name="searchKeyword" placeholder="관심있는 키워드로 채팅방 검색 (⬇: 드롭다운메뉴, tab : 검색어 등록, enter : 검색) ex) 영화:어바웃타임" autofocus required>
+            <div onclick="searchByType(null, 1, 'searchByKeyword');">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+        </div>
+        <h1 style="width: 90%; margin:0 auto;">
+            이런 주제 어때요?
+        </h1>
+        <div style="width: 90%; margin: 15px auto 50px; display: flex; flex-wrap: wrap; gap: 10px">
+            <span class="chatRoom-tag" id="" th:each="distinctTag:${tagListDistinctList}" th:text="'# '+ ${distinctTag.tagName}" th:onclick="searchTagByOne('',[[${distinctTag.tagName}]],1);"></span>
+        </div>
+
+        <div id="search-result-box">
+            <div id="list-pagination-container">
+                <div class="chatRoomList-container" id="toList-container">
+                    <div th:if="${chatRoomList != null}" th:each="chatRoom : ${chatRoomList}" class="chatRoom-item list-item fade-out">
+                        <div class="itemBtnFlexContainer">
+                            <div class="item-flex-container">
+
+                                <div class="flex-item-memberProfile" th:each="memberProfile : ${profileList}">
+                                    <th:block  th:if="${memberProfile.memberId != chatRoom.roomWriter}">
+                                        <img alt="프로필" src="/img/chat/defaultProfile2.png" style="width: 100%; height: 100%; border-radius: 30%;">
+                                    </th:block>
+                                    <th:block  th:if="${memberProfile.memberId == chatRoom.roomWriter}">
+                                        <img th:src="@{|${memberProfile.filePath}${memberProfile.fileRename}|}" alt="프로필" style="width: 100%; height: 100%; border-radius: 30%;">
+                                    </th:block>
+                                </div>
+
+                                <div class="flex-item-chatInfoBox">
+                                    <div class="chatRoomName" th:text="${chatRoom.roomName}"></div>
+
+                                    <div class="chatTagList">태그 :
+                                        <span th:each="tag : ${tagList}" th:if="${tag.roomNo == chatRoom.roomNo}" th:text="'#'+${tag.tagName}+' '"></span>
+                                    </div>
+                                    <div style="display: flex">
+                                        <div style="margin-right: 50px">참여인원: 00명 참여중 | 1시간전</div>
+                                        <div th:text="${chatRoom.title}+' ('+${chatRoom.cinemaAddress}+' / '+${chatRoom.cinemaName}+')'"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="joinBtn">참여</div>
+                            </div>
+                        </div>
+                        <!--                        <div th:text="'채팅방 생성 날짜 : '+${chatRoom.roomDate}"></div>-->
+                        <!--                        <div>채팅방 최근채팅내용</div>-->
+                    </div>
+                </div>
+<!--                paging navigation-->
+                <div class="paginationBox" th:unless="${#lists.isEmpty(chatRoomList)}">
+                    <div>
+                        <a th:if="${pn.currentPage != 1}"  href="javascript:void(0)" th:onclick="searchByType() searchTagByOne([[${tagName}]], 1)">&#10094&#10094</a>
+                        <a th:if="${pn.getStartNavi() != 1}"  href="javascript:void(0)" th:onclick="searchTagByOne([[${tagName}]],[[${pn.prevPage}]])">&#10094</a>
+
+                        <span th:each="p : ${#numbers.sequence(pn.startNavi, pn.endNavi)}">
+                            <span th:if="${p == pn.currentPage}">
+                                <span id="currentPageId">
+                                    [[${p}]]
+                                </span>
+                            </span>
+                            <span th:if="${p != pn.currentPage}">
+                                <a href="javascript:void(0)" th:text="${p}" th:onclick="searchTagByOne([[${tagName}]],[[${p}]]);"></a>
+                            </span>
+                        </span>
+
+                        <a th:if="${pn.getEndNavi() != pn.MaxPage}"  href="javascript:void(0)"  th:onclick="searchTagByOne([[${tagName}]], [[${pn.nextPage}]])">&#10095</a>
+                        <a th:if="${pn.currentPage != pn.maxPage}"  href="javascript:void(0)" th:onclick="searchTagByOne([[${tagName}]], [[${pn.maxPage}]])">&#10095&#10095</a>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+        <h1 style="width: 90%; margin:0 auto;">
+           소통중인 채팅방
+        </h1>
+
+    </body>
 </html>

@@ -1,0 +1,299 @@
+:root{
+    --tagify-dd-color-primary: #f9f9f9;
+    --tagify-dd-bg-color:none;
+}
+/* tagify css 변경 */
+.tagify{
+    width: 94%;
+    border: none;
+    border-radius: 10px;
+    background-color: #f4f4f4;
+    font-size: 18px;
+    transition: all 300ms;
+
+}
+
+.tagify--focus{
+    box-shadow: 0 0 3px #466288;
+}
+
+.tagify__dropdown__item {
+    font-size: 16px;      /* 텍스트 크기 변경 */
+    color: #333;          /* 텍스트 색상 변경 */
+    padding: 10px 15px;   /* 패딩을 추가해 항목 높이 조절 */
+    transition: all 200ms;
+    margin: 2px;
+}
+
+/* 드롭다운 항목에 마우스를 올렸을 때 스타일 */
+.tagify__dropdown__item--active {
+    background-color: #466288;  /* 마우스 호버 시 배경색 변경 */
+    color: white;                /* 호버 시 텍스트 색상 변경 */
+    font-weight: bold;
+
+}
+
+.tagify__dropdown {
+    background-color: #f9f9f9;  /* 드롭다운 배경색 */
+    border: none;     /* 테두리 색상 */
+    border-radius: 8px;         /* 모서리 둥글게 */
+    box-shadow: 5px 5px #2c2c2c;
+    padding: 3px;              /* 내부 여백 */
+    max-height: 300px;          /* 드롭다운 창의 최대 높이 */
+    overflow-y: auto;           /* 항목이 많을 경우 스크롤 추가 */
+}
+
+h1{
+    font-family: 'GmarketSansMedium', sans-serif;
+}
+/* 검색, 내 채팅방, 전체 메뉴 버튼*/
+.listMenuContainer {
+    margin: 0 auto;
+    display: flex;
+    width: 90%;
+    height: 50px;
+    font-size: 20px;
+}
+
+.listMenu-item {
+    user-select: none;
+    width: 120px;
+    height: 100%;
+    text-align: center;
+    line-height: 50px;
+    background-color: #ececec;
+    border-radius: 100px;
+    transition: all 200ms;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.listMenu-item:hover {
+    background-color: #466288;
+    color: white;
+    transform: scale(1.02);
+}
+
+.chatRoom-searchBox{
+    width: 90%;
+    height: 50px;
+    margin: 20px auto 50px;
+    display: flex;
+    justify-content: space-between;
+}
+.chatRoom-searchBox > input{
+    width: 94%;
+    height: 100%;
+    padding-left: 10px;
+    outline: none;
+    border: none;
+    border-radius: 10px;
+    background-color: #f4f4f4;
+    font-size: 18px;
+    transition: all 300ms;
+}
+.chatRoom-searchBox > input:focus{
+        box-shadow: 0 0 3px #466288;
+}
+
+.chatRoom-searchBox > div{
+    cursor: pointer;
+    border-radius: 10px;
+    width: 50px;
+    height: 100%;
+    background-color: #f4f4f4;
+    text-align: center;
+    line-height: 60px;
+    transition: all 200ms;
+}
+.chatRoom-searchBox > div:hover{
+    color: white;
+    background-color: #466288;
+}
+.chatRoom-searchBox .fa-magnifying-glass{
+    font-size:30px;
+}
+
+.chatRoom-tag{
+    display: inline-block;
+    font-size: 18px;
+    color: gray;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #f4f4f4;
+    transition: all 200ms;
+}
+.chatRoom-tag:hover{
+    color: white;
+    font-weight: bold;
+    transform: scale(1.02);
+    background-color: #466288;
+    cursor: pointer;
+
+}
+
+#search-result-box{
+    width: 90%;
+    min-height: 300px;
+    max-height: 1000px;
+    margin: 0 auto;
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+    /*transition: max-height 500ms, min-height 500ms;*/
+}
+
+#search-result-box.active{
+    min-height: 300px;
+    max-height: 1000px;
+}
+/*#search-result-box.visible{*/
+/*    transition: all 1000ms;*/
+/*    max-height: 1000px;*/
+/*    visibility: visible;*/
+/*}*/
+
+#list-pagination-container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* 페이징 처리 */
+
+.paginationBox a {
+    display: inline-block;
+    text-align: center;
+    line-height: 30px;
+    font-size: 20px;
+    min-width: 30px;
+    height: 30px;
+    text-decoration: none;
+    color: #6e6e6e;
+}
+
+.paginationBox a:hover {
+    color: #EA4E4A;
+}
+
+.paginationBox #currentPageId {
+    display: inline-block;
+    text-align: center;
+    line-height: 30px;
+    font-size: 20px;
+    min-width: 30px;
+    height: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    /*border-radius:50%;*/
+    /*background-color:#EA4E4A;*/
+    color: #EA4E4A;
+}
+
+.paginationBox {
+    text-align: center;
+    height: 120px;
+    line-height: 100px;
+}
+
+
+
+/* 검색 리스트 */
+#toList-container {
+    margin: 0 auto;
+    width: 100%;
+    z-index: 3;
+}
+
+.list-item {
+    width: 90%;
+    height: 150px;
+    background-color: white;
+    padding: 15px;
+    border-radius: 15px;
+    /*transition: opacity 0.5s ease, transform 0.5s ease;*/
+    opacity: 1;
+    /*transform: scale(1);*/
+    margin: 0 auto;
+    margin-bottom: 20px;
+
+    visibility: visible; /* 처음엔 숨겨져 있음 */
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease, visibility 0s 0.5s; /* visibility는 0.5초 후에 표시 */
+}
+
+.list-item.fade-in:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 5px 5px rgb(162, 162, 162);
+
+}
+
+/* list형 fade-in 스타일 */
+.list-item.fade-in {
+    visibility: visible; /* 0.5초 후에 보이게 */
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.2s; /* 부드럽게 등장 */
+}
+
+/* list형 fade-out 스타일 */
+.list-item.fade-out {
+    opacity: 0;
+    transform: scale(0.9);
+    visibility: hidden;
+}
+
+/* list item flex */
+.item-flex-container {
+    display: flex;
+    justify-content: left;
+    width: 100%;
+    height: 100%;
+    font-size: 20px;
+}
+
+.flex-item-memberProfile {
+    width: 120px;
+    height: 120px;
+    margin-right: 20px;
+}
+
+.chatRoomName {
+    font-size: 25px;
+    /*font-weight: bold;*/
+}
+
+.chatTagList {
+    color: #6e6e6e;
+}
+
+.flex-item-chatInfoBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.itemBtnFlexContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.joinBtn {
+    width: 60px;
+    height: 40px;
+    background-color: #6e6e6e;
+    border-radius: 10px;
+    text-align: center;
+    line-height: 40px;
+    cursor: pointer;
+    transition: all 200ms;
+}
+
+.joinBtn:hover {
+    color: white;
+    font-weight: bold;
+    background: #EA4E4A;
+    transform: scale(1.02);
+}
