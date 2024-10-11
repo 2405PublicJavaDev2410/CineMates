@@ -51,17 +51,19 @@
             // page -> 페이징 네비에서 전달
 
             // 키워드 검색 시 사용
-            function searchByType(tagName, page, type){
+            function searchByType(tagName, page){
                 let searchBar = document.querySelector('input[name=searchKeyword]');
 
                 let keyword = searchBar.value;
-                // 키워드 검색
-                if(type === "searchByKeyword"){
-                    searchTagByOne(keyword, null, page);
-                } else if(type === "searchByTag"){
-                    searchTagByOne("", tagName, page);
+
+                if(tagName == null){
+                    // 키워드 검색
+                    console.log("키워드검색완료");
+                    searchTagByOne(keyword, tagName, page);
                 } else{
-                    console.log("검색어를 입력하거나 태그를 눌러주세요");
+                    // 태그 검색
+                    console.log("태그검색완료");
+                    searchTagByOne("", tagName, page);
                 }
 
             }
@@ -214,8 +216,8 @@
 <!--                paging navigation-->
                 <div class="paginationBox" th:unless="${#lists.isEmpty(chatRoomList)}">
                     <div>
-                        <a th:if="${pn.currentPage != 1}"  href="javascript:void(0)" th:onclick="searchByType() searchTagByOne([[${tagName}]], 1)">&#10094&#10094</a>
-                        <a th:if="${pn.getStartNavi() != 1}"  href="javascript:void(0)" th:onclick="searchTagByOne([[${tagName}]],[[${pn.prevPage}]])">&#10094</a>
+                        <a th:if="${pn.currentPage != 1}"  href="javascript:void(0)" th:onclick="searchByType([[${tagName}]],1)">&#10094&#10094</a>
+                        <a th:if="${pn.getStartNavi() != 1}"  href="javascript:void(0)" th:onclick="searchByType([[${tagName}]],[[${pn.prevPage}]])">&#10094</a>
 
                         <span th:each="p : ${#numbers.sequence(pn.startNavi, pn.endNavi)}">
                             <span th:if="${p == pn.currentPage}">
@@ -224,12 +226,12 @@
                                 </span>
                             </span>
                             <span th:if="${p != pn.currentPage}">
-                                <a href="javascript:void(0)" th:text="${p}" th:onclick="searchTagByOne([[${tagName}]],[[${p}]]);"></a>
+                                <a href="javascript:void(0)" th:text="${p}" th:onclick="searchByType([[${tagName}]],[[${p}]]);"></a>
                             </span>
                         </span>
 
-                        <a th:if="${pn.getEndNavi() != pn.MaxPage}"  href="javascript:void(0)"  th:onclick="searchTagByOne([[${tagName}]], [[${pn.nextPage}]])">&#10095</a>
-                        <a th:if="${pn.currentPage != pn.maxPage}"  href="javascript:void(0)" th:onclick="searchTagByOne([[${tagName}]], [[${pn.maxPage}]])">&#10095&#10095</a>
+                        <a th:if="${pn.getEndNavi() != pn.MaxPage}"  href="javascript:void(0)"  th:onclick="searchByType([[${tagName}]], [[${pn.nextPage}]])">&#10095</a>
+                        <a th:if="${pn.currentPage != pn.maxPage}"  href="javascript:void(0)" th:onclick="searchByType([[${tagName}]], [[${pn.maxPage}]])">&#10095&#10095</a>
 
                     </div>
                 </div>

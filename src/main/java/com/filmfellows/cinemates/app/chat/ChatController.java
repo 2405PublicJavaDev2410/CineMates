@@ -79,30 +79,39 @@ public class ChatController {
         model.addAttribute("pn", map.get("pn"));
         System.out.println(map.get("pn"));
         model.addAttribute("tagListDistinctList", tagListDistinctList);
+        model.addAttribute("tagName", null);
         return "pages/chat/searchChat";
     }
 
 //    ajax 검색 리스트 출력
     @PostMapping("/chat/search")
     public String selectSearchList(Model model, @RequestParam("tagName") String tagName,
-                                   @RequestParam(value="keyword", defaultValue = "") String keyword, // json 형식 string
-                                   @RequestParam(value = "cp", defaultValue = "1") Integer currentPage) throws JsonProcessingException {
-
-        // keyword (json) -> List화 시키기
+                                   @RequestParam(value="keyword", required = false, defaultValue = "") String keyword, // json 형식 string
+                                   @RequestParam(value = "cp", defaultValue = "1") Integer currentPage) {
         List<String> keywordArr = new ArrayList<String>();
+        if(!keyword.equals("")) {
+            // keyword (json) -> List화 시키기
 
-        // jackson 객체
-        ObjectMapper objectMapper = new ObjectMapper();
-        // JSON 문자열을 List<Map<String, String>> 형태로 변환
-        List<Map<String, String>> keywordList = objectMapper.readValue(keyword, new TypeReference<List<Map<String, String>>>(){});
 
-        System.out.println(keywordList);
+            // jackson 객체
+            ObjectMapper objectMapper = new ObjectMapper();
+            // JSON 문자열을 List<Map<String, String>> 형태로 변환
+            List<Map<String, String>> keywordList = null;
 
-        // value 필드만 추출하여 List로 변환
-        keywordArr = keywordList.stream().map(map -> map.get("value"))
-                .toList();
+            try {
+                keywordList = objectMapper.readValue(keyword, new TypeReference<List<Map<String, String>>>(){});
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
 
-        System.out.println(keywordArr);
+
+            // value 필드만 추출하여 List로 변환
+            keywordArr = keywordList.stream().map(map -> map.get("value"))
+                    .toList();
+
+            System.out.println(keywordArr);
+        }
+
 
         List<String> searchMovieList = new ArrayList<>();
         List<String> searchRoomList = new ArrayList<>();
@@ -133,7 +142,8 @@ public class ChatController {
 
         // 채팅방 태그 조회
         List<ChatTag> tagList = cService.selectChatTagList("default");
-
+        System.out.println(searchRoomList);
+        System.out.println(map.get("cList"));
 
         model.addAttribute("profileList", profileList);
         model.addAttribute("tagList", tagList);

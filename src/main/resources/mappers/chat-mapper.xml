@@ -45,7 +45,7 @@
             </if>
         WHERE 1=1
 --           태그 검색 시 실행되는 쿼리문
-            <if test="tagName != null">
+            <if test="tagName != null || tagName == ''">
                 AND tag.TAG_NAME = #{tagName}
             </if>
 
@@ -57,9 +57,9 @@
                 </foreach>
             </if>
             <if test="searchRoomList != null and searchRoomList.size() > 0">
-                AND chat.ROOM_NAME IN
-                <foreach item="room" collection="searchRoomList" open="(" separator="," close=")">
-                    #{room}
+                AND chat.ROOM_NAME LIKE
+                <foreach item="room" collection="searchRoomList" separator=" OR ">
+                    '%'||#{room}||'%'
                 </foreach>
             </if>
             <if test="searchRegionList != null and searchRegionList.size() > 0">

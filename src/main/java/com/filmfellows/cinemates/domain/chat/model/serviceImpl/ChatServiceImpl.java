@@ -73,6 +73,11 @@ public class ChatServiceImpl implements ChatService {
 
         // 채팅방 리스트 조회
         List<ChatRoom> cList = cMapper.selectChatRoomList(rowBounds, tagName, searchMovieList, searchRoomList, searchRegionList);
+        System.out.println(tagName==null);
+        System.out.println(searchMovieList);
+        System.out.println(searchRoomList);
+        System.out.println(searchRegionList);
+        System.out.println("cList: " + cList);
 
         // 채팅방 개설 상대 시간 계산
         List<RelativeTime> relativeTimeList = new ArrayList<>();
