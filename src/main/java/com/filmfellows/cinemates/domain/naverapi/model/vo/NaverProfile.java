@@ -1,13 +1,15 @@
 package com.filmfellows.cinemates.domain.naverapi.model.vo;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.sql.Timestamp;
 
 @Getter
+@NoArgsConstructor
+@ToString
 public class NaverProfile {
     private String snsId;
     private String snsType;
@@ -19,7 +21,7 @@ public class NaverProfile {
     private Timestamp connectDate;
 
     // JSON 객체로 parsing 후 필드에 값을 넣어줌
-    public NaverProfile(JsonElement response) {
+    public NaverProfile(JsonObject response) {
         this.snsId = getStringOrNull(response, "id");
         this.snsType = "NAVER";
         this.name = getStringOrNull(response, "name");
@@ -29,8 +31,7 @@ public class NaverProfile {
         this.mobile = getStringOrNull(response, "mobile");
     }
 
-    private String getStringOrNull(JsonElement jsonElement, String key) {
-        return jsonElement.getAsJsonObject().has(key) ?
-                jsonElement.getAsJsonObject().get(key).getAsString() : null;
+    private String getStringOrNull(JsonObject jsonObject, String key) {
+        return jsonObject.has(key) ? jsonObject.get(key).getAsString() : null;
     }
 }

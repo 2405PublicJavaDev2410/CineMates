@@ -57,20 +57,24 @@ public class MemberController {
                                      HttpSession session, Model model) {
         // 1. 액세스 토큰 발급 요청
         String accessToken = naverApiService.getAccessToken(code, state);
-        System.out.println(accessToken);
-//        log.info(accessToken);
+        System.out.println("accessToken : " + accessToken);
         // 2. 액세스 토큰을 이용해 사용자 정보 조회
         NaverProfile naverProfile = naverApiService.getUserInfo(accessToken);
         String snsId = mService.findSnsIdByEmailAndType(naverProfile.getEmail(), naverProfile.getSnsType());
         // 사용자 정보로 로그인 또는 회원가입 처리
+        System.out.println("snsId : " + snsId);
         if (snsId != null) {
             NaverProfile nMember = mService.loginSnsMember(snsId);
+            log.info(nMember.toString());
             session.setAttribute("memberId", nMember.getSnsId());
             session.setAttribute("name", nMember.getName());
             // 로그인 시 메인에 회원 정보 전달
             model.addAttribute("member", nMember);
         } else {
             mService.registerSnsMember(naverProfile);
+            session.setAttribute("memberId", naverProfile.getSnsId());
+            session.setAttribute("name", naverProfile.getName());
+            model.addAttribute("member", naverProfile);
         }
         // 3. 로그인 후 홈으로 리다이렉트
         return "redirect:/";
