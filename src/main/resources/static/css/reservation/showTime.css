@@ -3,15 +3,15 @@ li {
     list-style: none;
 }
 
-.main {
-    display: flex;
-    justify-content: center;
-    padding: 20px;
-}
-
 .container {
     width: 100%;
     background-color: #444;
+}
+
+.hidden {
+    width: 1200px;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .cinema-Container {
@@ -20,7 +20,43 @@ li {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
     width: 1200px;
+    height: 870px;
     margin: 0 auto;
+    /*display: flex;*/
+    /*justify-content: center;*/
+}
+
+/*지역 */
+.regionDiv {
+    width: 350px;
+}
+
+.group-top {
+    color: white;
+    background-color: black;
+    text-align: center;
+}
+
+.regionDiv_region {
+    border: 1px solid black;
+}
+
+/*영화관*/
+.cinemaDiv {
+    width: 350px;
+}
+
+.cinemaDiv_cinema {
+    border: 1px solid blue;
+}
+
+/*영화 */
+.movieDiv {
+    width: 350px;
+}
+
+.movieDiv_movie {
+    border: 1px solid red;
 }
 
 /*달력*/
@@ -29,6 +65,7 @@ li {
     flex-direction: column;
     align-items: center;
     gap: 10px;
+    float: left;
 }
 
 .month-display {
@@ -85,7 +122,7 @@ li {
 .selected {
     background-color: #e0e0e0;
     font-weight: bold;
-    background:url(https://www.lottecinema.co.kr/NLCHS/Content/images/icon/check.png) no-repeat 150px 2px;
+    background: url(https://www.lottecinema.co.kr/NLCHS/Content/images/icon/check.png) no-repeat 150px 2px;
 }
 
 .showtime-link {

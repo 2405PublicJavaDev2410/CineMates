@@ -1,6 +1,4 @@
-/*<![CDATA[*/
-var cinemas = /*[[${rList}]]*/ [];
-/*]]>*/
+
 $(document).ready(function () {
     // 지역에 따른 극장 출력
     $('#region-list').on('click', 'a', function (e) {

@@ -24,43 +24,58 @@
 
     </script>
 </head>
-
 <body>
-
-    <div class="cinema-Container">
-        <form action="/Ticketing/PersonSeat" method="POST">
-            <ul id="region-list">
-                <li>
-                    <a data-cinema-address="서울" href="#none">서울</a>
-                </li>
-                <li>
-                    <a data-cinema-address="인천" href="#none">인천</a>
-                </li>
-                <li>
-                    <a data-cinema-address="경기" href="#none">경기</a>
-                </li>
-                <li>
-                    <a data-cinema-address="충청/대전/세종" href="#none">충청/대전/세종</a>
-                </li>
-                <li>
-                    <a data-cinema-address="전라/광주/전북/제주" href="#none">전라/광주/제주</a>
-                </li>
-                <li>
-                    <a data-cinema-address="경상북도/대구" href="#none">경북/대구</a>
-                </li>
-                <li>
-                    <a data-cinema-address="부산/울산" href="#none">부산/울산</a>
-                </li>
-                <li>
-                    <a data-cinema-address="강원" href="#none">강원</a>
-                </li>
-<!--                <li>-->
-<!--                    <a data-cinema-address="제주" href="#none">제주</a>-->
-<!--                </li>-->
-            </ul>
-            <ul id="cinema-List"></ul>
-            <div class="Movie-container">
+<div class="cinema-Container">
+    <form action="/Ticketing/PersonSeat" method="POST">
+        <div class="hidden">
+            <div class="regionDiv">
+                <div class="group-top">
+                    <h4>영화관</h4>
+                </div>
+                <div class="regionDiv_region">
+                    <ul id="region-list">
+                        <li>
+                            <a data-cinema-address="서울" href="#none">서울</a>
+                        </li>
+                        <li>
+                            <a data-cinema-address="인천" href="#none">인천</a>
+                        </li>
+                        <li>
+                            <a data-cinema-address="경기" href="#none">경기</a>
+                        </li>
+                        <li>
+                            <a data-cinema-address="충청/대전/세종" href="#none">충청/대전/세종</a>
+                        </li>
+                        <li>
+                            <a data-cinema-address="전라/광주/전북/제주" href="#none">전라/광주/제주</a>
+                        </li>
+                        <li>
+                            <a data-cinema-address="경상북도/대구" href="#none">경북/대구</a>
+                        </li>
+                        <li>
+                            <a data-cinema-address="부산/울산" href="#none">부산/울산</a>
+                        </li>
+                        <li>
+                            <a data-cinema-address="강원" href="#none">강원</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="cinemaDiv">
+            <div class="group-top">
+                <h4>영화 선택</h4>
+            </div>
+                <div class="cinemaDiv_cinema">
+                <ul id="cinema-List"></ul>
+                </div>
+            </div>
+            <div class="movieDiv">
+            <div class="group-top">
+                <h4>상영 시간</h4>
+            </div>
+                <div class="movieDiv_movie">
                 <ul id="movie-List"></ul>
+                </div>
             </div>
             <div class="calendar">
                 <div class="month-display" id="month-display"></div>
@@ -85,7 +100,8 @@
             <input name="cinemaNo" type="hidden" value="">
             <input name="showtimeNo" type="hidden" value="">
             <input name="reservationSeat" type="hidden" value="">
-        </form>
-    </div>
+        </div>
+    </form>
+</div>
 </body>
 </html>
