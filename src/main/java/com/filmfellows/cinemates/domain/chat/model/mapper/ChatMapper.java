@@ -53,12 +53,17 @@ public interface ChatMapper {
     /**
      * 담당자 : 이충무
      * 기능 : 채팅방 검색 리스트 조회 mapper
-     * @return List<ChatRoom> (채팅방 전체 리스트)
+     * @return List<ChatRoom> (채팅방 검색 리스트)
      */
-    List<ChatRoom> selectChatRoomList();
-
     List<ChatRoom> selectChatRoomList(RowBounds rowBounds, String tagName, List<String> searchMovieList, List<String> searchRoomList, List<String> searchRegionList);
 
+    /**
+     * 담당자 : 이충무
+     * 기능 : 내 채팅방 리스트 조회 mapper
+     * @return List<ChatRoom> (내 채팅방 리스트)
+     */
+    List<ChatRoom> selectMyChatRoomList(RowBounds rowBounds, String writer);
+        
     /**
      * 담당자 : 이충무
      * 기능 : 채팅방 태그 조회 mapper
@@ -80,4 +85,11 @@ public interface ChatMapper {
      * @return int
      */
     int getTotalCount(String tagName, List<String> searchMovieList, List<String> searchRoomList, List<String> searchRegionList);
+   
+    /**
+     * 담당자 : 이충무
+     * 기능 : 내 채팅방 개수
+     * @return int
+     */
+    int getMyTotalCount(String writer);
 }

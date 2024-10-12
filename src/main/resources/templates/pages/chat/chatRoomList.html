@@ -10,6 +10,8 @@
         <script src="https://kit.fontawesome.com/7d4169cb69.js" crossorigin="anonymous"></script>
         <!-- css link-->
         <link rel="stylesheet" href="/css/chat/chatList.css">
+        <!-- script src-->
+        <script crossorigin="anonymous" src="/js/chat/listMenuBtn.js" defer></script>
         <!-- inline CSS 영역-->
         <style>
         </style>
@@ -24,6 +26,10 @@
                 const listContainer = document.querySelector('#toList-container');
                 const toListBtn = document.querySelector('#toList-btn');
                 const toCardBtn = document.querySelector('#toCard-btn');
+
+                // positionbox data-mode 값 변경 (컨테이너 크기 동적으로 바꾸기 위함)
+                let positionBox = document.querySelector('#position-box');
+                positionBox.setAttribute('data-mode', 'card');
 
                 // 버튼 활성화 시 클래스 추가 (활성화 스타일 적용)
                 toListBtn.classList.remove('active');
@@ -72,6 +78,10 @@
                 const cardContainer = document.querySelector('#toCard-container');
                 const toListBtn = document.querySelector('#toList-btn');
                 const toCardBtn = document.querySelector('#toCard-btn');
+
+                // positionbox data-mode 값 변경 (컨테이너 크기 동적으로 바꾸기 위함)
+                let positionBox = document.querySelector('#position-box');
+                positionBox.setAttribute('data-mode', 'list');
 
                 // 버튼 활성화 시 클래스 추가 (활성화 스타일 적용)
                 toCardBtn.classList.remove('active');
@@ -150,6 +160,7 @@
                 }else{
                     console.log("location 실패")
                 }
+
             }
 
            window.addEventListener('load',()=>{
@@ -160,6 +171,12 @@
                let toListBtn = document.querySelector('#toList-btn');
                let toCardBtn = document.querySelector('#toCard-btn');
                let viewMode = /*[[${viewMode}]]*/;
+
+               // positionbox data-mode 값 변경 (컨테이너 크기 동적으로 바꾸기 위함)
+               let positionBox = document.querySelector('#position-box');
+               positionBox.setAttribute('data-mode', viewMode); // 페이지 이동시 초기화되므로 viewMode값을 불러와 처리
+                // resize
+               reSizePositionBox();
 
                if(viewMode === 'list'){
                    cardContainer.style.zIndex = '1';
@@ -238,8 +255,28 @@
 
                })
 
-
            });
+
+
+        function reSizePositionBox(){
+            let positionBox = document.querySelector('#position-box');
+            let listBox = document.querySelector('#toList-container');
+            let cardBox = document.querySelector('#toCard-container');
+            let listBoxHeight = listBox.getBoundingClientRect().height;
+            let cardBoxHeight = cardBox.getBoundingClientRect().height;
+
+            let mode = positionBox.getAttribute('data-mode');
+
+            if(mode === "list"){
+                console.log("listHeight "+listBoxHeight);
+                positionBox.style.height = listBoxHeight+50+"px";
+            }else if(mode === "card"){
+                console.log("cardHeight "+cardBoxHeight);
+                positionBox.style.height = cardBoxHeight+50+"px";
+            }
+        }
+
+
 
 
 
@@ -248,26 +285,27 @@
     </head>
 
     <body>
-        <h1>ChatList 영역입니다.</h1>
         <div class="chatRoomList-main">
             <div class="listMenuContainer">
                 <div class="listMenu-item" onclick="location.href=`/chat/search`;"><i class="fa-solid fa-magnifying-glass" style="padding-right: 10px"></i>검색</div>
-                <div class="listMenu-item">내 채팅방</div>
-                <div class="listMenu-item" style="width: 100px; color:white; background-color: #466288; cursor:auto">전체</div>
+                <div class="listMenu-item" id="myBtn" onclick="showListByMyOrAll('my')">내 채팅방</div>
+                <div class="listMenu-item" id="allBtn" onclick="showListByMyOrAll('all')">전체</div>
             </div>
+
+            <h1 class="page-title">전체 채팅방</h1>
 
             <br><br><br>
 
             <div id="listSwitchContainer">
-                <button type="button" class="listSwitch-btn" id="toList-btn" onclick="switchToListView();">
+                <button type="button" class="listSwitch-btn" id="toList-btn" onclick="switchToListView(); reSizePositionBox('list');">
                     <i class="fa-solid fa-list"></i><span>목록형</span>
                 </button>
-                <button type="button" class="listSwitch-btn" id="toCard-btn" onclick="switchToCardView();">
+                <button type="button" class="listSwitch-btn" id="toCard-btn" onclick="switchToCardView(); reSizePositionBox('card');">
                     <i class="fa-solid fa-table-cells"></i><span>카드형</span>
                 </button>
             </div>
 
-            <div id="position-box">
+            <div id="position-box" data-mode="list">
 <!--                리스트형 레이아웃-->
 
                     <div class="chatRoomList-container" id="toList-container">

@@ -62,9 +62,18 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public Map<String, Object> selectChatRoomList(Integer currentPage, int boardLimit, String tagName, List<String> searchMovieList, List<String> searchRoomList, List<String> searchRegionList) {
+    public Map<String, Object> selectChatRoomList(Integer currentPage, int boardLimit, String tagName, List<String> searchMovieList, List<String> searchRoomList, List<String> searchRegionList, Map<String, String> writerInfo) {
         // 전체 채팅방 수 계산
-        int totalCount = cMapper.getTotalCount(tagName, searchMovieList, searchRoomList, searchRegionList);
+        int totalCount = 0;
+        if (writerInfo == null) {
+            totalCount = cMapper.getTotalCount(tagName, searchMovieList, searchRoomList, searchRegionList);
+        } else if (writerInfo.get("status").equals("all")) {
+            totalCount = cMapper.getTotalCount(tagName, searchMovieList, searchRoomList, searchRegionList);
+        } else if (writerInfo.get("status").equals("my")) {
+//            내 채팅방 리스트 개수
+            totalCount = cMapper.getMyTotalCount(writerInfo.get("writer"));
+        }
+
 
         Pagination pn = new Pagination(totalCount, currentPage, boardLimit);
 
@@ -76,7 +85,15 @@ public class ChatServiceImpl implements ChatService {
 
 
         // 채팅방 리스트 조회
-        List<ChatRoom> cList = cMapper.selectChatRoomList(rowBounds, tagName, searchMovieList, searchRoomList, searchRegionList);
+        List<ChatRoom> cList = null;
+        if (writerInfo == null) {
+            cList = cMapper.selectChatRoomList(rowBounds, tagName, searchMovieList, searchRoomList, searchRegionList);
+        } else if(writerInfo.get("status").equals("all")){
+            cList = cMapper.selectChatRoomList(rowBounds, tagName, searchMovieList, searchRoomList, searchRegionList);
+        }else if(writerInfo.get("status").equals("my")){
+//            내 채팅방 리스트 개수
+            cList = cMapper.selectMyChatRoomList(rowBounds, writerInfo.get("writer"));
+        }
 
         System.out.println("cList 결과 : " + cList);
 

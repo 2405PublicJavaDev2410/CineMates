@@ -71,6 +71,21 @@
         ORDER BY chat.ROOM_DATE DESC
     </select>
 
+<!--    내 채팅방 조회-->
+    <select id="selectMyChatRoomList" resultType="ChatRoom">
+        SELECT chat.ROOM_NO, chat.ROOM_NAME, chat.ROOM_WRITER, chat.ROOM_DATE, chat.ROOM_CATEGORY,
+        chat.MOVIE_NO, movie.TITLE, movie.POSTER_URL,
+        chat.CINEMA_LOCATION_CODE,
+        SUBSTR(cinema.CINEMA_ADDRESS, 1, INSTR(cinema.CINEMA_ADDRESS, ' ') - 1) CINEMA_ADDRESS, cinema.CINEMA_NO, cinema.CINEMA_NAME
+        FROM CHAT_ROOM_TBL chat
+        JOIN MOVIE_TBL movie ON chat.MOVIE_NO = movie.MOVIE_NO
+        JOIN CINEMA_TBL cinema ON chat.CINEMA_NO = cinema.CINEMA_NO
+
+        WHERE chat.ROOM_WRITER = #{writer}
+
+        ORDER BY chat.ROOM_DATE DESC
+    </select>
+
 <!--   채팅방 태그 조회 -->
     <select id="selectChatTagList" resultType="ChatTag">
         <if test="status == 'default'">
@@ -101,6 +116,8 @@
         SELECT * FROM PROFILE_IMG_TBL
     </select>
 
+
+<!--    채팅방 개수 조회-->
     <select id="getTotalCount" resultType="_int">
         <if test="tagName != null">
             SELECT COUNT(distinct chat.ROOM_NAME)  FROM CHAT_ROOM_TBL chat
@@ -136,6 +153,9 @@
                 </foreach>
             </if>
         </if>
+    </select>
 
+    <select id="getMyTotalCount" resultType="_int">
+        SELECT COUNT(*) FROM CHAT_ROOM_TBL WHERE ROOM_WRITER = #{writer}
     </select>
 </mapper>

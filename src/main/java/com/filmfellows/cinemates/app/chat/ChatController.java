@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Writer;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,16 +37,20 @@ public class ChatController {
     @GetMapping("/chat/list")
     public String showChatRoomList(Model model, HttpSession session,
                                    @RequestParam(value = "cp", defaultValue = "1") Integer currentPage,
-                                   @RequestParam(value="viewMode", defaultValue = "list") String viewMode
+                                   @RequestParam(value="viewMode", defaultValue = "list") String viewMode,
+                                   @RequestParam(value="status", required = false, defaultValue = "all") String status
                                    ) {
 
-        System.out.println("cp : " + currentPage);
-        System.out.println("viewMode : " + viewMode);
         // 로그인 확인
         String memberId = (String) session.getAttribute("memberId");
         if(memberId == null) {
             return "redirect:/login";
         }
+        Map<String, String> writerInfo = new HashMap<>();
+        writerInfo.put("writer", memberId);
+        writerInfo.put("status", status);
+
+
         // 전체 프로필 정보 조회 -> 채팅방 정보에 출력
         List<ProfileImg> profileList = cService.selectProfileList();
         System.out.println(profileList);
@@ -54,7 +59,7 @@ public class ChatController {
         // 서비스에서 Pagination 객체, 조회된 cList 객체 매핑해서 반환
         int boardLimit = 9;
         List<String> emptyList = new ArrayList<>();
-        Map<String, Object> map = cService.selectChatRoomList(currentPage, boardLimit, null, emptyList, emptyList, emptyList);
+        Map<String, Object> map = cService.selectChatRoomList(currentPage, boardLimit, null, emptyList, emptyList, emptyList, writerInfo);
 
         // 채팅방 태그 조회
         List<ChatTag> tagList = cService.selectChatTagList("default");
@@ -76,7 +81,7 @@ public class ChatController {
         List<ChatTag> tagListDistinctList = cService.selectChatTagList("distinct");
         int boardLimit = 5;
         // 페이지 로드 시에 pn을 보내는데 이때 tagName "없음"을 보내어 아무 리스트도 출력이 안되게끔 만들어줌
-        Map<String, Object> map = cService.selectChatRoomList(currentPage, boardLimit, "없음", null, null, null);
+        Map<String, Object> map = cService.selectChatRoomList(currentPage, boardLimit, "없음", null, null, null, null);
         model.addAttribute("pn", map.get("pn"));
         System.out.println(map.get("pn"));
         model.addAttribute("tagListDistinctList", tagListDistinctList);
@@ -142,7 +147,7 @@ public class ChatController {
         // 채팅방 리스트 전체 조회 비즈니스 로직
         // 서비스에서 Pagination 객체, 조회된 cList 객체 매핑해서 반환
         int boardLimit = 5;
-        Map<String, Object> map = cService.selectChatRoomList(currentPage, boardLimit, tagName, searchMovieList, searchRoomList, searchRegionList);
+        Map<String, Object> map = cService.selectChatRoomList(currentPage, boardLimit, tagName, searchMovieList, searchRoomList, searchRegionList, null);
 
 
         // 채팅방 태그 조회

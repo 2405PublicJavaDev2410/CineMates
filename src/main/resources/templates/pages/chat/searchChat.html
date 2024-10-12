@@ -7,6 +7,7 @@
       xmlns:th="http://www.thymeleaf.org">
     <head>
         <title>채팅방 찾기</title>
+
         <script src="https://kit.fontawesome.com/7d4169cb69.js" crossorigin="anonymous"></script>
 
         <script src="https://unpkg.com/@yaireo/tagify"></script>
@@ -17,6 +18,8 @@
 
         <!-- css link-->
         <link rel="stylesheet" href="/css/chat/searchList.css">
+        <!-- script src-->
+        <script crossorigin="anonymous" src="/js/chat/listMenuBtn.js" defer></script>
 
         <!-- inline CSS 영역-->
         <style th:inline="css" type="text/css">
@@ -181,8 +184,8 @@
 
         <div class="listMenuContainer">
             <div class="listMenu-item" style=" background-color:#466288; color:white; cursor:auto;"><i class="fa-solid fa-magnifying-glass" style="padding-right: 10px;"></i>검색</div>
-            <div class="listMenu-item">내 채팅방</div>
-            <div class="listMenu-item" style="width: 100px;" onclick="location.href=`/chat/list`">전체</div>
+            <div class="listMenu-item" id="myBtn" onclick="showListByMyOrAll('my')">내 채팅방</div>
+            <div class="listMenu-item" id="allBtn" onclick="showListByMyOrAll('all')">전체</div>
         </div>
         <div class="chatRoom-searchBox">
             <input name="searchKeyword" placeholder="관심있는 키워드로 채팅방 검색 (⬇: 드롭다운메뉴, tab : 검색어 등록, enter : 검색) ex) 영화:어바웃타임" autofocus required>

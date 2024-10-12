@@ -54,7 +54,7 @@ public interface ChatService {
      * 기능 : 채팅방 검색 리스트 조회
      * @return List<ChatRoom> (채팅방 검색 리스트)
      */
-    Map<String, Object> selectChatRoomList(Integer currentPage, int boardLimit, String tagName, List<String> searchMovieList, List<String> searchRoomList, List<String> searchRegionList);
+    Map<String, Object> selectChatRoomList(Integer currentPage, int boardLimit, String tagName, List<String> searchMovieList, List<String> searchRoomList, List<String> searchRegionList, Map<String,String> writerInfo);
 
     /**
      * 담당자 : 이충무
