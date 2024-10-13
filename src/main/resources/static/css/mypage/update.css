@@ -137,3 +137,14 @@
 .common-primary-btn:hover {
     background-color: #E12C25;
 }
+#sns-section {
+    background-color: #ececec;
+    border-radius: 10px;
+    padding: 40px 20px;
+    margin-top: 50px;
+    text-align: center;
+}
+#go-register-btn {
+    margin: 30px auto 0;
+    width: 220px;
+}

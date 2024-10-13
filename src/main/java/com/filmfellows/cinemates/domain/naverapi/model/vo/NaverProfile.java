@@ -3,15 +3,18 @@ package com.filmfellows.cinemates.domain.naverapi.model.vo;
 import com.google.gson.JsonObject;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.sql.Timestamp;
 
+@Setter
 @Getter
 @NoArgsConstructor
 @ToString
 public class NaverProfile {
     private String snsId;
+    private String memberId;
     private String snsType;
     private String name;
     private String profileImg;

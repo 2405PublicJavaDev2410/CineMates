@@ -101,6 +101,12 @@ public class MyPageController {
         Qna qna = myService.selectOneQnaByNo(qnaNo);
         QnaFile qnaFile = myService.selectQnaFileByNo(qnaNo);
         model.addAttribute("qna", qna);
+        if(qna.getParentQnaNo() == null) {
+            Qna reply = myService.selectOneReplyByNo(qnaNo);
+            if(reply != null) {
+                model.addAttribute("reply", reply);
+            }
+        }
         if(qnaFile != null) {
             model.addAttribute("qnaFile", qnaFile);
         }

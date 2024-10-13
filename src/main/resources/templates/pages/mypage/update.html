@@ -13,67 +13,74 @@
     <div th:replace="~{pages/mypage/mySideBar :: my-sidebar}"></div>
     <!-- 메인 -->
     <main id="main-container">
+        <!-- 일반 회원 정보가 있는 경우 -->
         <div class="update-form">
             <p id="update-title">회원 정보 수정</p><br><br>
-            <form id="update-member-form" enctype="multipart/form-data">
-                <div class="input-group">
-                    <label><b>아이디</b></label>
-                    <span th:text="${member.memberId}"></span>
-                </div>
+            <div id="member-section" th:if="${member != null}">
+                <form id="update-member-form" enctype="multipart/form-data">
+                    <div class="input-group">
+                        <label><b>아이디</b></label>
+                        <span th:text="${member.memberId}"></span>
+                    </div>
 
-                <div class="input-group pwd-group">
-                    <label><b>비밀번호</b></label>
-                    <input type="password" class="common-input-box" id="pw-input" name="memberPw" placeholder="대문자, 숫자, 특수문자를 조합한 영문 8자~16자" maxlength="16">
-                    <i class="fi fi-rs-eye toggle-password pwIcon"></i>
-                </div>
-                <div class="success-message hide message" id="pw-success-message"></div>
-                <div class="failure-message hide message" id="pw-failure-message"></div>
+                    <div class="input-group pwd-group">
+                        <label><b>비밀번호</b></label>
+                        <input type="password" class="common-input-box" id="pw-input" name="memberPw" placeholder="대문자, 숫자, 특수문자를 조합한 영문 8자~16자" maxlength="16">
+                        <i class="fi fi-rs-eye toggle-password pwIcon"></i>
+                    </div>
+                    <div class="success-message hide message" id="pw-success-message"></div>
+                    <div class="failure-message hide message" id="pw-failure-message"></div>
 
-                <div class="input-group pwd-group">
-                    <label><b>비밀번호 확인</b></label>
-                    <input type="password" class="common-input-box" id="pw-check-input" placeholder="비밀번호 확인">
-                    <i class="fi fi-rs-eye toggle-password cpwIcon"></i>
-                </div>
-                <div class="success-message hide message" id="pw-check-success-message"></div>
-                <div class="failure-message hide message" id="pw-check-failure-message"></div>
+                    <div class="input-group pwd-group">
+                        <label><b>비밀번호 확인</b></label>
+                        <input type="password" class="common-input-box" id="pw-check-input" placeholder="비밀번호 확인">
+                        <i class="fi fi-rs-eye toggle-password cpwIcon"></i>
+                    </div>
+                    <div class="success-message hide message" id="pw-check-success-message"></div>
+                    <div class="failure-message hide message" id="pw-check-failure-message"></div>
 
-                <div class="input-group">
-                    <label><b>이름</b></label>
-                    <span th:text="${member.name}"></span>
-                </div>
+                    <div class="input-group">
+                        <label><b>이름</b></label>
+                        <span th:text="${member.name}"></span>
+                    </div>
 
-                <div class="input-group">
-                    <label><b>생년월일</b></label>
-                    <span th:text="${birthDate}"></span>
-                </div>
+                    <div class="input-group">
+                        <label><b>생년월일</b></label>
+                        <span th:text="${birthDate}"></span>
+                    </div>
 
-                <div class="input-group">
-                    <label><b>이메일</b></label>
-                    <span th:text="${member.email}"></span>
-                </div>
+                    <div class="input-group">
+                        <label><b>이메일</b></label>
+                        <span th:text="${member.email}"></span>
+                    </div>
 
-                <div class="input-group">
-                    <label><b>핸드폰 번호</b></label>
-                    <input type="text" class="common-input-box" id="phone-input"
-                       name="phone" placeholder="(-)빼고 입력"
-                        th:value="${member.phone}">
-                </div>
-                <div class="success-message hide message" id="phone-success-message"></div>
-                <div class="failure-message hide message" id="phone-failure-message"></div>
+                    <div class="input-group">
+                        <label><b>핸드폰 번호</b></label>
+                        <input type="text" class="common-input-box" id="phone-input"
+                           name="phone" placeholder="(-)빼고 입력"
+                            th:value="${member.phone}">
+                    </div>
+                    <div class="success-message hide message" id="phone-success-message"></div>
+                    <div class="failure-message hide message" id="phone-failure-message"></div>
 
-                <div class="input-group file-group">
-                    <label><b>프로필 사진</b></label>
-                    <label for="profileImg" id="select-file-btn">파일 선택</label>
-                    <input type="file" id="profileImg" name="profileImg" accept="image/*">
-                </div>
-                <div id="thumbnail-container">
-                    <img id="profile-thumbnail" alt="사진 미리보기"
-                         th:src="@{${profileImg != null ? profileImg.filePath + profileImg.fileRename : ''}}"
-                         th:style="${profileImg != null ? 'display: block;' : 'display: none;'}">
-                </div>
-                <br><br><br>
-                <button type="button" class="common-primary-btn" onclick="modifyMember()">회원 정보 수정</button>
-            </form>
+                    <div class="input-group file-group">
+                        <label><b>프로필 사진</b></label>
+                        <label for="profileImg" id="select-file-btn">파일 선택</label>
+                        <input type="file" id="profileImg" name="profileImg" accept="image/*">
+                    </div>
+                    <div id="thumbnail-container">
+                        <img id="profile-thumbnail" alt="사진 미리보기"
+                             th:src="@{${profileImg != null ? profileImg.filePath + profileImg.fileRename : ''}}"
+                             th:style="${profileImg != null ? 'display: block;' : 'display: none;'}">
+                    </div>
+                    <br><br><br>
+                    <button type="button" class="common-primary-btn" onclick="modifyMember()">회원 정보 수정</button>
+                </form>
+            </div>
+            <div id="sns-section" th:if="${nMember != null}">
+                <span>회원정보 수정은 일반 회원에게만 제공됩니다. 일반 회원가입을 원하시면 아래 버튼을 클릭하세요.</span>
+                <button type="button" class="common-primary-btn" id="go-register-btn" onclick="goToRegister()">Cinemates 일반 회원가입</button>
+            </div>
         </div>
     </main>
 </div>

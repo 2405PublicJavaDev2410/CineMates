@@ -23,6 +23,8 @@ public interface MemberMapper {
     // 소셜 로그인
     String selectSnsIdByEmailAndType(@Param("email") String email, @Param("snsType") String snsType);
     NaverProfile selectOneSnsById(String snsId);
+    int insetSnsIdToMember(String snsId);
     int insertSnsMember(NaverProfile naverProfile);
+    int deleteSnsMember(String snsId);
 
 }

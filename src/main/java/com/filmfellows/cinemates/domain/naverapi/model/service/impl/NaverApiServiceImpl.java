@@ -77,4 +77,29 @@ public class NaverApiServiceImpl implements NaverApiService {
         return new NaverProfile(responseObject);
     }
 
+    // 로그인 연동 해제(탈퇴)
+    @Override
+    public String revokeNaverAccessToken(String accessToken) {
+        String reqUrl = "https://nid.naver.com/oauth2.0/token";
+        // RestTemplate 인스턴스 생성
+        RestTemplate restTemplate = new RestTemplate();
+        // Http 헤더 객체 생성
+        HttpHeaders headers = new HttpHeaders();
+
+        // Http 바디 객체 생성
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("grant_type", "delete");
+        params.add("client_id", naverApi.getNaverClientId());
+        params.add("client_secret", naverApi.getNaverClientSecret());
+        params.add("access_token", accessToken);
+
+        // HTTP 바디와 헤더 파라미터를 묶어 HttpEntity 객체 생성
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
+        // HTTP 요청 및 응답 처리
+        ResponseEntity<String> response
+            = restTemplate.exchange(reqUrl, HttpMethod.POST, request, String.class);
+        // 요청 본문 반환
+        return response.getBody();
+    }
+
 }

@@ -68,12 +68,22 @@ public class MemberController {
             log.info(nMember.toString());
             session.setAttribute("memberId", nMember.getSnsId());
             session.setAttribute("name", nMember.getName());
+            session.setAttribute("token", accessToken);
             // 로그인 시 메인에 회원 정보 전달
             model.addAttribute("member", nMember);
+            System.out.println("토큰 : " + session.getAttribute("token"));
         } else {
-            mService.registerSnsMember(naverProfile);
+            // 기존 MEMBER_TBL의 MEMBER_ID에 SNS_ID 저장
+            int result = mService.insertSnsIdToMember(naverProfile.getSnsId());
+            if(result == 1) {
+                // SNS_IFO_TBL에 정보 저장
+                naverProfile.setMemberId(naverProfile.getSnsId());
+                System.out.println(naverProfile);
+                mService.insertSnsMember(naverProfile);
+            }
             session.setAttribute("memberId", naverProfile.getSnsId());
             session.setAttribute("name", naverProfile.getName());
+            session.setAttribute("token", accessToken);
             model.addAttribute("member", naverProfile);
         }
         // 3. 로그인 후 홈으로 리다이렉트
@@ -105,13 +115,20 @@ public class MemberController {
     @GetMapping("/my-page/update")
     public String showModifyMember(HttpSession session, Model model) {
         String memberId = session.getAttribute("memberId").toString();
+        String regex = "^[A-Za-z0-9]{5,10}$";
+        boolean isValid = memberId.matches(regex);
+        if(isValid) {
         Member member = mService.getOneMember(memberId);
         ProfileImg profileImg = mService.getOneProfileImg(memberId);
-        String birthDate = convertTimestampToString(member.getBirthDate());
+        String birthDate = member.getBirthDate() != null ? convertTimestampToString(member.getBirthDate()) : "";
         model.addAttribute("member", member);
         model.addAttribute("birthDate", birthDate);
-        if(profileImg != null) {
-            model.addAttribute("profileImg", profileImg);
+            if(profileImg != null) {
+                model.addAttribute("profileImg", profileImg);
+            }
+        }else {
+            NaverProfile nMember = mService.loginSnsMember(memberId);
+            model.addAttribute("nMember", nMember);
         }
         return "pages/mypage/update";
     }
@@ -123,8 +140,15 @@ public class MemberController {
     @GetMapping("/my-page/remove")
     public String showRemoveMember(HttpSession session, Model model) {
         String memberId = session.getAttribute("memberId").toString();
-        Member member = mService.getOneMember(memberId);
-        model.addAttribute("member", member);
+        String regex = "^[A-Za-z0-9]{5,10}$";
+        boolean isValid = memberId.matches(regex);
+        if(isValid) {
+            Member member = mService.getOneMember(memberId);
+            model.addAttribute("member", member);
+        }else {
+            NaverProfile nMember = mService.loginSnsMember(memberId);
+            model.addAttribute("nMember", nMember);
+        }
         return "pages/mypage/remove";
     }
 
@@ -243,6 +267,29 @@ public class MemberController {
 
     /**
      * 담당자 : 엄태운
+     * 관련기능 : 네이버 회원탈퇴
+     */
+    @PostMapping("/naver/remove")
+    @ResponseBody
+    public String deleteNaverMember(HttpSession session) {
+        String accessToken = (String) session.getAttribute("token");
+        String memberId = (String) session.getAttribute("memberId");
+        log.info("엑세스 토큰 : " + accessToken);
+        if (accessToken != null) {
+            String result = naverApiService.revokeNaverAccessToken(accessToken);
+            if(result != null) {
+                mService.deleteSnsMember(memberId);
+            }
+            session.invalidate();
+            return "success";
+        }
+       return "fail";
+    }
+
+
+
+    /**
+     * 담당자 : 엄태운
      * 관련기능 : 로그인
      */
     @PostMapping("/login")
@@ -270,8 +317,10 @@ public class MemberController {
      * 담당자 : 엄태운
      * 관련기능 : 로그아웃
      */
-    public String logoutMember() {
-        return "";
+    @GetMapping("/logout")
+    public String logoutMember(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
     }
 
     /**

@@ -134,8 +134,18 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public int registerSnsMember(NaverProfile naverProfile) {
+    public int insertSnsIdToMember(String snsId) {
+        return mMapper.insetSnsIdToMember(snsId);
+    }
+
+    @Override
+    public int insertSnsMember(NaverProfile naverProfile) {
         return mMapper.insertSnsMember(naverProfile);
+    }
+
+    @Override
+    public int deleteSnsMember(String snsId) {
+        return mMapper.deleteSnsMember(snsId);
     }
 
 }

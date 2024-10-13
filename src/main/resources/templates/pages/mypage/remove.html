@@ -27,20 +27,27 @@
 회원 탈퇴 후에는 복구가 불가능합니다. 탈퇴 전에 다시 한 번 신중하게 생각해주시기 바랍니다.
 탈퇴로 인한 데이터 및 서비스 손실에 대해서는 책임지지 않습니다.</pre>
             </div><br>
-            <form id="remove-member-form">
-                <div class="input-group id-group">
-                    <label><b>아이디</b></label>
-                    <span th:text="${member.memberId}"></span>
-                </div>
-                <div class="input-group pwd-group">
-                    <label><b>비밀번호</b></label>
-                    <input type="password" class="common-input-box" id="pw-input" name="memberPw" placeholder="비밀번호를 입력해주세요">
-                    <i class="fi fi-rs-eye toggle-password pwIcon"></i>
-                    <span class="failure-message hide message" id="pw-failure-message"></span>
-                </div>
-                <br><br>
-                <button type="button" class="submit-btn" id="remove-btn" onclick="removeMember()">회원탈퇴</button>
-            </form>
+            <!-- 일반 회원 정보가 있는 경우 -->
+            <div id="member-section" th:if="${member != null}">
+                <form id="remove-member-form">
+                    <div class="input-group id-group">
+                        <label><b>아이디</b></label>
+                        <span th:text="${member.memberId}"></span>
+                    </div>
+                    <div class="input-group pwd-group">
+                        <label><b>비밀번호</b></label>
+                        <input type="password" class="common-input-box" id="pw-input" name="memberPw" placeholder="비밀번호를 입력해주세요">
+                        <i class="fi fi-rs-eye toggle-password pwIcon"></i>
+                        <span class="failure-message hide message" id="pw-failure-message"></span>
+                    </div>
+                    <br><br>
+                    <button type="button" class="submit-btn" id="remove-btn" onclick="removeMember(event)">회원탈퇴</button>
+                </form>
+            </div>
+            <!-- 네이버 회원 정보가 있는 경우 -->
+            <div id="sns-section" th:if="${nMember != null}">
+                <button type="button" class="submit-btn" id="remove-sns-btn" onclick="removeNaverMember(event)">회원탈퇴</button>
+            </div>
         </div>
     </main>
 </div>

@@ -22,5 +22,8 @@ public interface MemberService {
     // 소셜 로그인
     String findSnsIdByEmailAndType(String email, String snsType);
     NaverProfile loginSnsMember(String snsId);
-    int registerSnsMember(NaverProfile naverProfile);
+    int insertSnsIdToMember(String snsId);
+    int insertSnsMember(NaverProfile naverProfile);
+    int deleteSnsMember(String snsId);
+
 }

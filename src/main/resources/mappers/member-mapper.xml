@@ -15,19 +15,22 @@
     </select>
     <!-- 이름, 이메일로 일반 회원정보 조회(아이디 찾기) -->
     <select id="selectOneByNameAndEmail" resultType="Member">
-        SELECT * FROM MEMBER_TBL
+        SELECT *
+        FROM MEMBER_TBL
         WHERE NAME = #{name}
         AND EMAIL = #{email}
     </select>
     <!-- 아이디, 이메일로 일반 회원정보 조회(비밀번호 찾기) -->
     <select id="selectOneByIdAndEmail" resultType="Member">
-        SELECT * FROM MEMBER_TBL
+        SELECT *
+        FROM MEMBER_TBL
         WHERE MEMBER_ID = #{memberId}
         AND EMAIL = #{email}
     </select>
     <!-- 아이디로 프로필 사진 조회(로그인, 정보수정) -->
     <select id="selectOneProfileImgById" resultType="ProfileImg">
-        SELECT * FROM PROFILE_IMG_TBL
+        SELECT *
+        FROM PROFILE_IMG_TBL
         WHERE MEMBER_ID = #{memberId}
     </select>
     <!-- 아이디 중복 검사(일반 회원가입) -->
@@ -54,10 +57,15 @@
         INSERT INTO MEMBER_TBL (MEMBER_ID, MEMBER_PW, NAME, BIRTH_DATE, EMAIL, PHONE)
         VALUES (#{memberId}, #{memberPw}, #{name}, #{birthDate}, #{email}, #{phone})
     </insert>
-    <!-- 소셜 회원가입 -->
+    <!-- 소셜 회원가입(MEMBER 테이블) -->
+    <insert id="insetSnsIdToMember">
+        INSERT INTO MEMBER_TBL (MEMBER_ID)
+        VALUES (#{memberId})
+    </insert>
+    <!-- 소셜 회원가입(SNS_INFO 테이블) -->
     <insert id="insertSnsMember">
-        INSERT INTO SNS_INFO_TBL (SNS_ID, SNS_TYPE, NAME, PROFILE_IMG, EMAIL, BIRTH_DATE, MOBILE)
-        VALUES (#{snsId}, #{snsType}, #{name}, #{profileImg}, #{email}, #{birthDate}, #{mobile})
+        INSERT INTO SNS_INFO_TBL (SNS_ID, MEMBER_ID, SNS_TYPE, NAME, PROFILE_IMG, EMAIL, BIRTH_DATE, MOBILE)
+        VALUES (#{snsId}, #{memberId}, #{snsType}, #{name}, #{profileImg}, #{email}, #{birthDate}, #{mobile})
     </insert>
     <!-- 회원 정보수정 -->
     <update id="updateMember">
@@ -91,4 +99,8 @@
         SET FILE_NAME = #{fileName}, FILE_RENAME = #{fileRename}, FILE_PATH = #{filePath}
         WHERE MEMBER_ID = #{memberId}
     </update>
+    <delete id="deleteSnsMember">
+        DELETE FROM MEMBER_TBL
+        WHERE MEMBER_ID = #{snsId}
+    </delete>
 </mapper>
