@@ -1,4 +1,4 @@
-package com.filmfellows.cinemates.domain.naverapi.model.vo;
+package com.filmfellows.cinemates.domain.naverlogin.model.vo;
 
 import com.google.gson.JsonObject;
 import lombok.Getter;

@@ -44,9 +44,9 @@
                     <button type="button" class="submit-btn" id="remove-btn" onclick="removeMember(event)">회원탈퇴</button>
                 </form>
             </div>
-            <!-- 네이버 회원 정보가 있는 경우 -->
+            <!-- 소셜 회원 정보가 있는 경우 -->
             <div id="sns-section" th:if="${nMember != null}">
-                <button type="button" class="submit-btn" id="remove-sns-btn" onclick="removeNaverMember(event)">회원탈퇴</button>
+                <button type="button" class="submit-btn" id="remove-sns-btn" onclick="removeSnsMember(event)">회원탈퇴</button>
             </div>
         </div>
     </main>

@@ -2,12 +2,15 @@ package com.filmfellows.cinemates.app.member;
 
 import com.filmfellows.cinemates.app.member.dto.*;
 import com.filmfellows.cinemates.domain.emailverification.model.service.EmailVerificationService;
+import com.filmfellows.cinemates.domain.kakaologin.model.service.KakaoApiService;
+import com.filmfellows.cinemates.domain.kakaologin.model.vo.KakaoApi;
+import com.filmfellows.cinemates.domain.kakaologin.model.vo.KakaoProfile;
 import com.filmfellows.cinemates.domain.member.model.service.MemberService;
 import com.filmfellows.cinemates.domain.member.model.vo.Member;
 import com.filmfellows.cinemates.domain.member.model.vo.ProfileImg;
-import com.filmfellows.cinemates.domain.naverapi.model.service.NaverApiService;
-import com.filmfellows.cinemates.domain.naverapi.model.vo.NaverApi;
-import com.filmfellows.cinemates.domain.naverapi.model.vo.NaverProfile;
+import com.filmfellows.cinemates.domain.naverlogin.model.service.NaverApiService;
+import com.filmfellows.cinemates.domain.naverlogin.model.vo.NaverApi;
+import com.filmfellows.cinemates.domain.naverlogin.model.vo.NaverProfile;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +36,8 @@ public class MemberController {
     private final EmailVerificationService evService;
     private final NaverApi naverApi;
     private final NaverApiService naverApiService;
+    private final KakaoApi kakaoApi;
+    private final KakaoApiService kakaoApiService;
 
     /**
      * 담당자 : 엄태운
@@ -43,7 +48,10 @@ public class MemberController {
         String state = UUID.randomUUID().toString();
         String naverLoginUrl = String.format("https://nid.naver.com/oauth2.0/authorize?client_id=%s&redirect_uri=%s&response_type=code&state=%s",
                 naverApi.getNaverClientId(), naverApi.getNaverRedirectUri(), state);
+        String kakaoLoginUrl = String.format("https://kauth.kakao.com/oauth/authorize?client_id=%s&redirect_uri=%s&response_type=code&state=%s",
+                kakaoApi.getKakaoApiKey(), kakaoApi.getKakaoRedirectUri(), state);
         model.addAttribute("naverLoginUrl", naverLoginUrl);
+        model.addAttribute("kakaoLoginUrl", kakaoLoginUrl);
         return "pages/member/login";
     }
 
@@ -64,10 +72,11 @@ public class MemberController {
         // 사용자 정보로 로그인 또는 회원가입 처리
         System.out.println("snsId : " + snsId);
         if (snsId != null) {
-            NaverProfile nMember = mService.loginSnsMember(snsId);
+            NaverProfile nMember = mService.loginNaverMember(snsId);
             log.info(nMember.toString());
             session.setAttribute("memberId", nMember.getSnsId());
             session.setAttribute("name", nMember.getName());
+            session.setAttribute("snsType", nMember.getSnsType());
             session.setAttribute("token", accessToken);
             // 로그인 시 메인에 회원 정보 전달
             model.addAttribute("member", nMember);
@@ -79,12 +88,57 @@ public class MemberController {
                 // SNS_IFO_TBL에 정보 저장
                 naverProfile.setMemberId(naverProfile.getSnsId());
                 System.out.println(naverProfile);
-                mService.insertSnsMember(naverProfile);
+                mService.insertNaverMember(naverProfile);
             }
             session.setAttribute("memberId", naverProfile.getSnsId());
             session.setAttribute("name", naverProfile.getName());
+            session.setAttribute("snsType", naverProfile.getSnsType());
             session.setAttribute("token", accessToken);
             model.addAttribute("member", naverProfile);
+        }
+        // 3. 로그인 후 홈으로 리다이렉트
+        return "redirect:/";
+    }
+
+    /**
+     * 담당자 : 엄태운
+     * 관련기능 : 카카오 로그인 후 인증 처리
+     */
+    @GetMapping("/kakao/callback")
+    public String kakaoLoginCallback(@RequestParam("code") String code,
+                                     HttpSession session, Model model) {
+        String accessToken = kakaoApiService.getAccessToken(code);
+        System.out.println("accessToken : " + accessToken);
+
+        KakaoProfile kakaoProfile = kakaoApiService.getUserInfo(accessToken);
+        System.out.println("카카오 프로필 " + kakaoProfile);
+        String snsId = mService.findSnsIdByEmailAndType(kakaoProfile.getEmail(), kakaoProfile.getSnsType());
+        // 사용자 정보로 로그인 또는 회원가입 처리
+        System.out.println("snsId : " + snsId);
+        if (snsId != null) {
+            KakaoProfile kMember = mService.loginKakaoMember(snsId);
+            log.info(kMember.toString());
+            session.setAttribute("memberId", kMember.getSnsId());
+            session.setAttribute("name", kMember.getName());
+            session.setAttribute("snsType", kMember.getSnsType());
+            session.setAttribute("token", accessToken);
+            // 로그인 시 메인에 회원 정보 전달
+            model.addAttribute("member", kMember);
+            System.out.println("토큰 : " + session.getAttribute("token"));
+        } else {
+            // 기존 MEMBER_TBL의 MEMBER_ID에 SNS_ID 저장
+            int result = mService.insertSnsIdToMember(kakaoProfile.getSnsId());
+            if(result == 1) {
+                // SNS_IFO_TBL에 정보 저장
+                kakaoProfile.setMemberId(kakaoProfile.getSnsId());
+                System.out.println(kakaoProfile);
+                mService.insertKakaoMember(kakaoProfile);
+            }
+            session.setAttribute("memberId", kakaoProfile.getSnsId());
+            session.setAttribute("name", kakaoProfile.getName());
+            session.setAttribute("snsType", kakaoProfile.getSnsType());
+            session.setAttribute("token", accessToken);
+            model.addAttribute("member", kakaoProfile);
         }
         // 3. 로그인 후 홈으로 리다이렉트
         return "redirect:/";
@@ -127,7 +181,7 @@ public class MemberController {
                 model.addAttribute("profileImg", profileImg);
             }
         }else {
-            NaverProfile nMember = mService.loginSnsMember(memberId);
+            NaverProfile nMember = mService.loginNaverMember(memberId);
             model.addAttribute("nMember", nMember);
         }
         return "pages/mypage/update";
@@ -146,7 +200,7 @@ public class MemberController {
             Member member = mService.getOneMember(memberId);
             model.addAttribute("member", member);
         }else {
-            NaverProfile nMember = mService.loginSnsMember(memberId);
+            NaverProfile nMember = mService.loginNaverMember(memberId);
             model.addAttribute("nMember", nMember);
         }
         return "pages/mypage/remove";
@@ -267,16 +321,22 @@ public class MemberController {
 
     /**
      * 담당자 : 엄태운
-     * 관련기능 : 네이버 회원탈퇴
+     * 관련기능 : 소셜계정 회원탈퇴
      */
-    @PostMapping("/naver/remove")
+    @PostMapping("/sns/remove")
     @ResponseBody
     public String deleteNaverMember(HttpSession session) {
         String accessToken = (String) session.getAttribute("token");
         String memberId = (String) session.getAttribute("memberId");
+        String snsType = (String) session.getAttribute("snsType");
         log.info("엑세스 토큰 : " + accessToken);
         if (accessToken != null) {
-            String result = naverApiService.revokeNaverAccessToken(accessToken);
+            String result = null;
+
+            if("NAVER".equals(snsType)) {
+                result = naverApiService.revokeNaverAccessToken(accessToken);
+            }
+
             if(result != null) {
                 mService.deleteSnsMember(memberId);
             }
@@ -285,8 +345,6 @@ public class MemberController {
         }
        return "fail";
     }
-
-
 
     /**
      * 담당자 : 엄태운

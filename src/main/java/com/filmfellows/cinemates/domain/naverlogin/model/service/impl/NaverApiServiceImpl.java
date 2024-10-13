@@ -1,9 +1,8 @@
-package com.filmfellows.cinemates.domain.naverapi.model.service.impl;
+package com.filmfellows.cinemates.domain.naverlogin.model.service.impl;
 
-import com.filmfellows.cinemates.domain.member.model.service.MemberService;
-import com.filmfellows.cinemates.domain.naverapi.model.service.NaverApiService;
-import com.filmfellows.cinemates.domain.naverapi.model.vo.NaverApi;
-import com.filmfellows.cinemates.domain.naverapi.model.vo.NaverProfile;
+import com.filmfellows.cinemates.domain.naverlogin.model.service.NaverApiService;
+import com.filmfellows.cinemates.domain.naverlogin.model.vo.NaverApi;
+import com.filmfellows.cinemates.domain.naverlogin.model.vo.NaverProfile;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;

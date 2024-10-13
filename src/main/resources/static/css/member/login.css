@@ -84,7 +84,14 @@
     white-space: nowrap;
 }
 #naver-login-btn {
-    width: 220px;
+    width: 180px;
+    margin-left: 20px;
     display: block;
-    margin: 0 auto;
+    float: left;
+}
+#kakao-login-btn {
+    width: 180px;
+    margin-left: 20px;
+    display: block;
+    float: left;
 }

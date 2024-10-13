@@ -61,10 +61,10 @@ function removeMember(e) {
     }
 }
 
-function removeNaverMember() {
+function removeSnsMember() {
     if (confirm("정말 탈퇴하시겠습니까?")) {
         $.ajax({
-            url: '/naver/remove',
+            url: '/sns/remove',
             type: 'POST',
             success: function(data) {
                 if (data === 'success') {

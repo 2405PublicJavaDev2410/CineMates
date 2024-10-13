@@ -1,8 +1,9 @@
 package com.filmfellows.cinemates.domain.member.model.service;
 
+import com.filmfellows.cinemates.domain.kakaologin.model.vo.KakaoProfile;
 import com.filmfellows.cinemates.domain.member.model.vo.Member;
 import com.filmfellows.cinemates.domain.member.model.vo.ProfileImg;
-import com.filmfellows.cinemates.domain.naverapi.model.vo.NaverProfile;
+import com.filmfellows.cinemates.domain.naverlogin.model.vo.NaverProfile;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -21,9 +22,11 @@ public interface MemberService {
     boolean isEmailDuplicate(String email);
     // 소셜 로그인
     String findSnsIdByEmailAndType(String email, String snsType);
-    NaverProfile loginSnsMember(String snsId);
+    NaverProfile loginNaverMember(String snsId);
+    KakaoProfile loginKakaoMember(String snsId);
     int insertSnsIdToMember(String snsId);
-    int insertSnsMember(NaverProfile naverProfile);
+    int insertNaverMember(NaverProfile naverProfile);
+    int insertKakaoMember(KakaoProfile kakaoProfile);
     int deleteSnsMember(String snsId);
 
 }

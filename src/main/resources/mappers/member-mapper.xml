@@ -7,8 +7,13 @@
         FROM MEMBER_TBL
         WHERE MEMBER_ID = #{memberId}
     </select>
-    <!-- 아이디로 소셜 회원정보 조회(로그인) -->
-    <select id="selectOneSnsById" resultType="NaverProfile">
+    <!-- 아이디로 네이버 회원정보 조회(로그인) -->
+    <select id="selectOneNaverById" resultType="NaverProfile">
+        SELECT *
+        FROM SNS_INFO_TBL
+        WHERE SNS_ID = #{snsId}
+    </select>
+    <select id="selectOneKakaoById" resultType="KakaoProfile">
         SELECT *
         FROM SNS_INFO_TBL
         WHERE SNS_ID = #{snsId}
@@ -58,12 +63,17 @@
         VALUES (#{memberId}, #{memberPw}, #{name}, #{birthDate}, #{email}, #{phone})
     </insert>
     <!-- 소셜 회원가입(MEMBER 테이블) -->
-    <insert id="insetSnsIdToMember">
+    <insert id="insertSnsIdToMember">
         INSERT INTO MEMBER_TBL (MEMBER_ID)
         VALUES (#{memberId})
     </insert>
-    <!-- 소셜 회원가입(SNS_INFO 테이블) -->
-    <insert id="insertSnsMember">
+    <!-- 네이버 회원가입(SNS_INFO 테이블) -->
+    <insert id="insertNaverMember">
+        INSERT INTO SNS_INFO_TBL (SNS_ID, MEMBER_ID, SNS_TYPE, NAME, PROFILE_IMG, EMAIL, BIRTH_DATE, MOBILE)
+        VALUES (#{snsId}, #{memberId}, #{snsType}, #{name}, #{profileImg}, #{email}, #{birthDate}, #{mobile})
+    </insert>
+    <!-- 카카오 회원가입(SNS_INFO 테이블) -->
+    <insert id="insertKakaoMember">
         INSERT INTO SNS_INFO_TBL (SNS_ID, MEMBER_ID, SNS_TYPE, NAME, PROFILE_IMG, EMAIL, BIRTH_DATE, MOBILE)
         VALUES (#{snsId}, #{memberId}, #{snsType}, #{name}, #{profileImg}, #{email}, #{birthDate}, #{mobile})
     </insert>
