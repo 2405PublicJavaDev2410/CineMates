@@ -46,4 +46,6 @@ public interface CinemaMapper {
     int deleteshowtime(int showtimeNo);
 
     List<Showtime> showtimelistdate(int cinemaNo, Date selectDate);
+
+    List<Showtime> showtimelistcurrent(int cinemaNo);
 }

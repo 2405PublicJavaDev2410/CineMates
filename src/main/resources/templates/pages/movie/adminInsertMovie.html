@@ -47,26 +47,36 @@
             <input type="text" name="actors" placeholder=",로 구분 ex) 김배우, 강배우, 이배우" />
             <label for="">장르</label>
             <input type="text" name="genre" placeholder=",로 구분 ex) 액션, 범죄" />
-            <label for="">제작국가</label>
+            <label for="">제작 국가</label>
             <input type="text" name="productionCountry" placeholder=",로 구분 ex) 한국, 미국" />
             <label for="">상영등급</label>
             <div class="category-info">
               <select name="rating" class="rating" >
-                <option name="rating" value="" disabled>등급</option>
-                <option name="rating" value="NOT RATED">등급 미정</option>
-                <option name="rating" value="ALL">전체관람가</option>
-                <option name="rating" value="12">12세이상관람가</option>
-                <option name="rating" value="15">15세이상관람가</option>
-                <option name="rating" value="19">청소년관람불가</option>
+                <option value="" disabled>등급</option>
+                <option value="NOT RATED">등급 미정</option>
+                <option value="ALL">전체관람가</option>
+                <option value="12">12세이상관람가</option>
+                <option value="15">15세이상관람가</option>
+                <option value="19">청소년관람불가</option>
               </select>
             </div>
+
+              <label for="">예매상태</label>
+              <div class="category-info">
+                  <select name="isBookable" class="isBookable">
+                      <option value="" disabled>예매 상태</option>
+                      <option value="Y">가능</option>
+                      <option value="N" selected>불가능</option>
+                  </select>
+              </div>
+
             <label for="">상영상태</label>
             <div class="category-info">
               <select name="screeningStatus" class="screeningStatus">
-                <option name="screeningStatus" value="" disabled>상영 상태</option>
-                <option name="screeningStatus" value="COMING SOON">개봉예정</option>
-                <option name="screeningStatus" value="NOW SHOWING">상영중</option>
-                <option name="screeningStatus" value="ON HOLD">상영정지</option>
+                <option value="" disabled>상영 상태</option>
+                <option value="COMING SOON">개봉예정</option>
+                <option value="NOW SHOWING">상영중</option>
+                <option value="ON HOLD" selected>상영정지</option>
               </select>
             </div>
             <div>

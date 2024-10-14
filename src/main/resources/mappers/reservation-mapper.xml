@@ -75,4 +75,8 @@
     <select id="selectReservationInfo">
         SELECT * FROM RESERVATION_TBL join PAYMENT_TBL p using (reservation_No) join movie_tbl m ON p.name = m.TITLE WHERE RESERVATION_NO=#{reservationNo}
     </select>
+
+    <delete id="deleteReservationInfo">
+        DELETE FROM RESERVATION_TBL WHERE IMP_UID = #{imp_uid}
+    </delete>
 </mapper>

@@ -34,7 +34,7 @@
             </div>
             <div class="detail-bottom">
                 <p id="reply-title"><b>답변내용</b></p>
-                <p id="reply-content">곧 나옵니다.트랜스포머 언제 나와요?트랜스포머 언제 나와요?트랜스포머 언제 나와요?트랜스포머 언제 나와요?트랜스포머 언제 나와요?트랜스포머 언제 나와요?트랜스포머 언제 나와요?트랜스포머 언제 나와요?트랜스포머 언제 나와요?트랜스포머 언제 나와요?트랜스포머 언제 나와요?트랜스포머 언제 나와요?트랜스포머 언제 나와요?</p>
+                <p id="reply-content"th:if="${reply != null}" th:text="${reply.content != null ? reply.content : null}"></p>
             </div>
         </div>
         <div class="button-category">

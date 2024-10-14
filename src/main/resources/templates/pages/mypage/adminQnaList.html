@@ -11,7 +11,7 @@
         <h1>문의 내역</h1>
         <div class="search-input-container">
             <div class="input-section">
-                <form action="search-qna" method="post">
+                <form action="/admin/search-qna" method="post">
                     <input type="text" name="searchKeyword" class="common-input" placeholder="제목으로 검색"/>
                     <button type="submit" class="search-btn">검색</button>
                 </form>
@@ -36,18 +36,20 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="qna : ${qList}">
+                <tr th:each="qna : ${qList}"
+                    th:style="${qna.replyStatus == '미답변' ? 'background-color: #F7F6F4;' : 'background-color: #ffffff;'}">
                     <td th:text="${qna.qnaNo}"></td>
                     <td><a class="qna-detail-link"
                            th:href="@{/admin/qna-detail/{qnaNo}(qnaNo=${qna.qnaNo})}"
                            th:text="${qna.title}"></a></td>
                     <td th:text="${qna.memberId}"></td>
                     <td th:text="${#dates.format(qna.regDate, 'yyyy-MM-dd')}"></td>
-                    <td th:text="${qna.replyStatus}"></td>
+                    <td th:text="${qna.replyStatus}"
+                        ></td>
                 </tr>
                 </tbody>
             </table>
-            <ul class="common-pagination">
+            <ul class="common-pagination" th:if="${pn.totalCount > 0}">
                 <li class="common-pagination-li-end">
                     <a th:href="@{/admin/qna-list(cp=${pn.prevPage})}" th:if="${pn.startNavi}">&#10094</a>
                 </li>
