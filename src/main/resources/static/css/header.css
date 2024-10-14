@@ -21,6 +21,7 @@
 }
 .header-logo img {
     height: 60px;
+    color: #D54946;
 }
 
 .header-login-area {
@@ -60,7 +61,7 @@
     transform: translateX(-50%);
     width: 0;
     height: 3px;
-    background: #ff4732;
+    background: #D54946;
     transition: all .3s ease-out;
 }
 .nav-menu a:hover:after {

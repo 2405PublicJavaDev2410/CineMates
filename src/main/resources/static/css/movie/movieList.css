@@ -104,8 +104,8 @@ main {
     font-weight: bold;
     font-family: 'GmarketSansMedium', serif;
     border: none;
-    border-bottom: 2px solid transparent; /* 투명한 bottom border 추가 */
-    transition: all 0.5s ease; /* 부드러운 전환 효과 */
+    border-bottom: 2px solid transparent;
+    transition: all 0.5s ease;
 }
 
 .section-sorting {
@@ -123,8 +123,8 @@ main {
     /*font-weight: bold;*/
     font-family: 'GmarketSansMedium', serif;
     border: none;
-    border-bottom: 2px solid transparent; /* 투명한 bottom border 추가 */
-    transition: all 0.3s ease; /* 부드러운 전환 효과 */
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
 }
 
 .section-sorting span {
@@ -135,7 +135,7 @@ main {
 .section-sorting button.active{
     /*color: #D54946;*/
     color: black;
-    border-bottom: 2px solid #D54946; /* active 상태에서만 border 표시 */
+    border-bottom: 2px solid #D54946;
 }
 
 .bar{
