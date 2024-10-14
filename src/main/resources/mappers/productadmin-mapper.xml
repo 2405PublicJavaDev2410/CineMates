@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.filmfellows.cinemates.domain.productadmin.model.mapper.ProductadminMapper">
+    <select id="allproduct">
+        SELECT * FROM PRODUCT_TBL
+    </select>
+    <select id="oneproduct">
+        SELECT * FROM PRODUCT_TBL WHERE PRODUCT_NO=#{productNo}
+    </select>
+    <update id="updateproduct">
+        UPDATE PRODUCT_TBL SET CATEGORY_NAME=#{categoryName},PRODUCT_NAME=#{productName},PRICE=#{price},DISCOUNT_AMOUNT=#{discountAmount},IMAGE_URL=#{imageUrl},DESCRIPTION=#{description}
+        WHERE PRODUCT_NO=#{productNo}
+    </update>
+    <insert id="insertproduct">
+        INSERT INTO PRODUCT_TBL VALUES(SEQ_PRODUCT_NO.NEXTVAL,#{categoryName},#{productName},#{price},#{discountAmount},DEFAULT,#{imageUrl},#{description})
+    </insert>
+    <delete id="deleteproduct">
+        DELETE FROM PRODUCT_TBL WHERE PRODUCT_NO=#{productNo}
+    </delete>
+
+  
+  </mapper>

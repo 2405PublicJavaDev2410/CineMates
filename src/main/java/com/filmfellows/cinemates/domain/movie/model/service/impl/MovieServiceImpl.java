@@ -1,6 +1,8 @@
 package com.filmfellows.cinemates.domain.movie.model.service.impl;
 
 import com.filmfellows.cinemates.app.movie.dto.MovieDTO;
+import com.filmfellows.cinemates.app.movie.dto.MovieListDTO;
+import com.filmfellows.cinemates.app.movie.dto.MovieReservationRateDTO;
 import com.filmfellows.cinemates.domain.movie.model.mapper.MovieMapper;
 import com.filmfellows.cinemates.domain.movie.model.service.MovieService;
 import com.filmfellows.cinemates.domain.movie.model.vo.Movie;
@@ -21,10 +23,10 @@ public class MovieServiceImpl implements MovieService {
 
     private final MovieMapper movieMapper;
 
-//    @Override
-//    public List<Movie> selectMovieList() {
-//        return movieMapper.selectMovieList();
-//    }
+    @Override
+    public List<MovieListDTO> selectAllMovieList() {
+        return movieMapper.selectAllMovieList();
+    }
 
     @Override
     public List<MovieDTO> selectMovieDetail(Long movieNo) {
@@ -91,6 +93,27 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public int totalMovieCount() {
         return movieMapper.totalMovieCount();
+    }
+
+    @Override
+    public List<MovieReservationRateDTO> getMovieReservationRates() {
+        return movieMapper.getMovieReservationRates();
+    }
+
+    @Override
+    public List<MovieListDTO> getComingSoonMovies() {
+        return movieMapper.selectComingSoonMovies();
+    }
+
+    @Override
+    public List<MovieListDTO> getNowShowingMovies() {
+        return movieMapper.selectNowShowingMovies();
+    }
+
+    @Override
+    public List<MovieListDTO> getMoviesByStatusAndSort(String status, int page, int size, String sortBy) {
+        int offset = page * size;
+        return movieMapper.selectMoviesByStatusAndSort(status, offset, size, sortBy);
     }
 
 

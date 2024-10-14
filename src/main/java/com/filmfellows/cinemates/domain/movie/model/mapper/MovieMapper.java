@@ -1,6 +1,8 @@
 package com.filmfellows.cinemates.domain.movie.model.mapper;
 
 import com.filmfellows.cinemates.app.movie.dto.MovieDTO;
+import com.filmfellows.cinemates.app.movie.dto.MovieListDTO;
+import com.filmfellows.cinemates.app.movie.dto.MovieReservationRateDTO;
 import com.filmfellows.cinemates.domain.movie.model.vo.Movie;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -11,7 +13,7 @@ import java.util.Map;
 
 @Mapper
 public interface MovieMapper {
-//    List<Movie> selectMovieList();
+    List<MovieListDTO> selectAllMovieList();
     // [관리자] 영화 세부정보
     List<MovieDTO> selectMovieDetail(Long movieNo);
     // [관리자] 영화 정보 수정
@@ -29,4 +31,15 @@ public interface MovieMapper {
     // [관리자] 영화 리스트
     List<Movie> selectMovieList(RowBounds rowBounds, Integer currentPage);
     int totalMovieCount();
+
+    List<MovieReservationRateDTO> getMovieReservationRates();
+
+    List<MovieListDTO> selectComingSoonMovies();
+
+    List<MovieListDTO> selectNowShowingMovies();
+
+    List<MovieListDTO> selectMoviesByStatusAndSort(@Param("status") String status,
+                                            @Param("offset") int offset,
+                                            @Param("size") int size,
+                                            @Param("sortBy") String sortBy);
 }

@@ -24,6 +24,7 @@ public class Movie {
     private String actors;
     private String genre;
     private String productionCountry;
+    private String isBookable;
     private String screeningStatus;
 
 //    private String formattedReleaseDate;

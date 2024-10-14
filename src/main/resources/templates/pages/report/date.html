@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>날짜 선택</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      text-align: center;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px;
+      font-size: 14px;
+      cursor: pointer;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 4px;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+  </style>
+</head>
+<body>
+<h2>날짜 선택</h2>
+<input type="date" id="selectedDate"><br><br>
+
+<button th:onclick="submitDate([[${memberId}]])">날짜 선택</button>
+
+<script>
+  function submitDate(a) {
+    var dateValue = document.getElementById('selectedDate').value;
+
+    // 날짜를 선택하지 않았으면 경고
+    if (!dateValue) {
+      alert("날짜를 선택해주세요.");
+      return;
+    }
+    if (window.opener) {
+      console.log("window.opener exists");
+    } else {
+      console.error("window.opener does not exist or is null");
+    }
+
+    // URL에서 reportId 값을 가져옴
+    const reportId = a;
+    console.log(a);
+    // 부모 창이 존재하는지 확인
+    if (window.opener && !window.opener.closed) {
+      // 부모 창에 날짜와 reportId 전달
+      window.opener.datego(a,dateValue);
+
+
+      window.close(); // 팝업 창 닫기
+    } else {
+      alert("부모 창이 존재하지 않습니다.");
+    }
+  }
+</script>
+</body>
+</html>
