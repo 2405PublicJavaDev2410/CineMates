@@ -218,17 +218,38 @@ $(document).ready(function () {
             return;
         }
 
+        // 현재 시간을 가져오는 함수
+        function getCurrentTime() {
+            const now = new Date();
+            return now.getHours() * 60 + now.getMinutes(); // 현재 시간을 분 단위로 변환
+        }
+
+// 상영 시간을 분 단위로 변환하는 함수
+        function convertToMinutes(timeString) {
+            const [hours, minutes] = timeString.split(':').map(Number);
+            return hours * 60 + minutes;
+        }
+
         let showtimesList = $('<ul id="showtimes-List"></ul>');
+        const currentTimeInMinutes = getCurrentTime();
+
         showInfoList.forEach((info) => {
-            showtimesList.append(`
-                <li>
-                    <a role="button" href="#none" class="showtime-link"><strong>${info.showtimeTime}</strong>
-                    <dl>좌석: ${info.availableSeats}/${info.screenSeat || '정보 없음'}</dl>
-                    <dt>상영관: ${info.screenName || '정보 없음'}</dt>
-                    </a>
-                </li>
-            `);
+            const showtimeInMinutes = convertToMinutes(info.showtimeTime);
+
+            if (showtimeInMinutes >= currentTimeInMinutes) {
+                showtimesList.append(`
+            <li>
+                <a role="button" href="#none" class="showtime-link"><strong>${info.showtimeTime}</strong>
+                <dl>좌석: ${info.availableSeats}/${info.screenSeat || '정보 없음'}</dl>
+                <dt>상영관: ${info.screenName || '정보 없음'}</dt>
+                </a>
+            </li>
+        `);
+            }
         });
+        if (showtimesList.children().length === 0) {
+            showtimesList.append('<li>오늘 남은 상영 일정이 없습니다.</li>');
+        }
         $('#showtimes-container').empty().append(showtimesList);
 
         // 상영 시간 선택 이벤트 리스너 추가

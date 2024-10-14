@@ -214,20 +214,20 @@ li {
     margin-left:8px;
 }
 
-#showtimes-List > li > div:first-child {
-    font-weight: bold;
-    font-size: 1em;
-}
+/*#showtimes-List > li > div:first-child {*/
+/*    font-weight: bold;*/
+/*    font-size: 1em;*/
+/*}*/
 
-#showtimes-List > li > div:nth-child(2) {
-    color: #666;
-    font-size: 0.8em;
-}
+/*#showtimes-List > li > div:nth-child(2) {*/
+/*    color: #666;*/
+/*    font-size: 0.8em;*/
+/*}*/
 
-#showtimes-List > li > div:nth-child(3) {
-    color: #007bff;
-    font-size: 0.8em;
-}
+/*#showtimes-List > li > div:nth-child(3) {*/
+/*    color: #007bff;*/
+/*    font-size: 0.8em;*/
+/*}*/
 #goPersonSeat{
     margin-top:15px;
     width:200px;
