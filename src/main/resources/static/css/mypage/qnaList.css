@@ -20,7 +20,7 @@
 .qna-list-form {
     font-family: 'NEXON Lv1 Gothic OTF', serif;
     margin-left: 40px;
-    padding: 20px;
+    padding: 20px 0 20px 20px;
 }
 .qna-header {
     margin-bottom: 20px;
@@ -54,6 +54,10 @@
 .search-container {
     position: relative;
     margin-bottom: 30px;
+    display: flex;
+    justify-content: flex-end;
+}
+.search-container form {
     display: flex;
     justify-content: flex-end;
 }
@@ -93,26 +97,26 @@
 }
 
 /*  테이블 */
-#qna-table {
+.qna-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
     letter-spacing: 1px;
     font-family: 'NEXON Lv1 Gothic OTF', serif;
 }
-#qna-table thead th {
+.qna-table thead th {
     background-color: #464646;
     color: #ffffff;
     text-align: center;
     padding: 12px;
     font-size: 14px;
 }
-#qna-table tbody td {
+.qna-table tbody td {
     padding: 12px;
     font-size: 14px;
     border-bottom: 1px solid #dddddd;
 }
-#qna-table tbody td:nth-child(2) {
+.qna-table tbody td:nth-child(2) {
     max-width: 324px;
 }
 #qna-list-body {
@@ -128,39 +132,10 @@
     white-space: nowrap;
     cursor: pointer;
 }
-
-/* 페이지네이션 */
-.common-pagination-li-end {
-    display: inline-block;
-    margin-right: 5px;
-    margin-left: 5px;
-}
-.common-pagination {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    justify-content: center;
-    padding-top: 16px;
-    padding-bottom: 16px;
-}
-.common-pagination-li {
-    width: 30px;
-    height: 30px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-.common-pagination-li a{
-    text-decoration: none;
-    width: 100%;
+#no-search-result {
     text-align: center;
-}
-.common-pagination-li-end a {
-    text-decoration: none;
-    color: black;
-}
-.common-pagination-li-active a {
-    color: #EA4E4A;
-    font-weight: bold;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 16px;
+    width: 740px;
 }

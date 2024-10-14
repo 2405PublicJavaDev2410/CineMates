@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -48,6 +49,16 @@ public class MyPageServiceImpl implements MyPageService {
     @Override
     public QnaFile selectQnaFileByNo(int qnaNo) {
         return myMapper.selectQnaFileByNo(qnaNo);
+    }
+
+    @Override
+    public List<QnaDTO> searchQnaByIdAndKeyword(String memberId, String searchCondition, String searchKeyword, RowBounds rBounds) {
+        return myMapper.selectQnaByIdAndKeyword(memberId, searchCondition, searchKeyword, rBounds);
+    }
+
+    @Override
+    public List<QnaDTO> searchQnaByKeyword(String searchKeyword, RowBounds rBounds) {
+        return myMapper.selectQnaByKeyword(searchKeyword, rBounds);
     }
 
     @Override
@@ -91,5 +102,15 @@ public class MyPageServiceImpl implements MyPageService {
     @Override
     public int getTotalQnaCount() {
         return myMapper.getTotalQnaCount();
+    }
+
+    @Override
+    public int getTotalQnaCountByIdAndKeyword(String memberId, String searchCondition, String searchKeyword) {
+        return myMapper.getTotalQnaCountByIdAndKeyword(memberId, searchCondition, searchKeyword);
+    }
+
+    @Override
+    public int getTotalQnaCountByKeyword(String searchKeyword) {
+        return myMapper.getTotalQnaCountByKeyword(searchKeyword);
     }
 }

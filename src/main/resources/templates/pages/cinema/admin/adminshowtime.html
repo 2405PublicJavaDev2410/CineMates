@@ -3,7 +3,6 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{common/layout/defaultLayout}"
       layout:fragment="Content">
-<link rel="stylesheet" href="/css/movie/adminMovieList.css">
 
   <head>
       <meta charset="UTF-8">
@@ -48,6 +47,7 @@
               transition: background-color 0.3s;
               text-align: center;
               margin-right: 5px
+
           }
           a:hover {
               background-color: #ff6f61; /* 마우스 호버시 색상 변경 */
@@ -157,7 +157,7 @@
       </tr>
       <tr th:each="show:${allsList}">
           <td>[[${show.showtimeNo}]]</td>
-          <td><a style="background: none; color: inherit; padding: 0; margin: 0; border: none; text-decoration: underline; cursor: pointer;" href="" th:onclick="updateshowtime([[${show.showtimeNo}]])">[[${show.screenName}]]</a></td>
+          <td><a style="background: none; color: #ff6f61; padding: 0; margin: 0; border: none; text-decoration: underline; cursor: pointer;" href="" th:onclick="updateshowtime([[${show.showtimeNo}]])">[[${show.screenName}]]</a></td>
           <td>[[${show.title}]]</td>
           <td>[[${show.showtimeSeat}]]</td>
           <td>[[${show.showtimeTime}]]</td>

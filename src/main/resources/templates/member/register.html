@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>씨네메이트</title>
+    <link rel='stylesheet'
+          href='https://cdn-uicons.flaticon.com/2.5.1/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link rel='stylesheet'
+          href='https://cdn-uicons.flaticon.com/2.5.1/uicons-regular-straight/css/uicons-regular-straight.css'>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        @font-face {
+            font-family: 'GmarketSansMedium';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'NEXON Lv1 Gothic OTF';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv1 Gothic OTF.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+        #signup-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'NEXON Lv1 Gothic OTF', serif;
+        }
+        #signup-form {
+            width: 750px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px gainsboro;
+            padding: 80px 120px;
+            display: inline-block;
+        }
+        #signup-form h1 {
+            font-family: 'GmarketSansMedium', serif;
+            letter-spacing: 3px;
+            font-size: 34px;
+            color: #D54946;
+        }
+        .input-group {
+            margin: 15px 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .input-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        #signup-form h1 {
+            font-family: 'GmarketSansMedium', serif;
+            letter-spacing: 3px;
+            font-size: 34px;
+            color: #D54946;
+        }
+        .input-group label {
+            font-size: 18px;
+        }
+        .common-input-box {
+            display: block;
+            width: 100%;
+            height: 48px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin: 10px 0;
+            font-family: 'NEXON Lv1 Gothic OTF', serif;
+            font-size: 16px;
+            letter-spacing: 1px;
+            transition: border 0.3s ease, box-shadow 0.3s ease;
+        }
+        .common-input-box:focus {
+            outline: none;
+            border: 1px solid #D54946;
+            box-shadow: 0 0 3px #D54946;
+        }
+        .pwd-group {
+            position: relative;
+            width: 100%;
+        }
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 64%;
+            left: 92%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #888;
+            font-size: 20px;
+        }
+        .email-group, .auth-group {
+            display: flex;
+            justify-content: space-evenly;
+        }
+        .email-btn, .auth-btn {
+            width: 25%;
+            height: 48px;
+            margin-top: 10px;
+            border: none;
+            color: white;
+            font-size: 16px;
+            letter-spacing: 1px;
+            border-radius: 10px;
+            font-family: 'NEXON Lv1 Gothic OTF', serif;
+            background-color: #EA4E4A;
+            margin-left: 10px;
+        }
+        .email-btn:hover {
+            background-color: #E12C25;
+            cursor: pointer;
+        }
+        .auth-btn:hover {
+            background-color: #E12C25;
+            cursor: pointer;
+        }
+        .asterisk {
+            color: red;
+        }
+        #select-file-btn {
+            margin-top: 10px;
+            padding: 11px 10px;
+            width: 100px;
+            font-size: 16px;
+            text-align: center;
+            color: #fff;
+            background-color: #6e6e6e;
+            cursor: pointer;
+            height: 40px;
+            border-radius: 10px;
+        }
+        .file-group input[type="file"] {
+            position: absolute;
+            width: 0;
+            height: 0;
+            padding: 0;
+            overflow: hidden;
+            border: 0;
+        }
+        #thumbnail-container {
+            margin-top: 10px;
+        }
+        #profile-thumbnail {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10%;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        .common-primary-btn {
+            cursor: pointer;
+            width: 100%;
+            height: 60px;
+            background-color: #EA4E4A;
+            font-family: 'NEXON Lv1 Gothic OTF', serif;
+            font-size: 20px;
+            letter-spacing: 1px;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            margin: 10px 0;
+        }
+        .common-primary-btn:hover {
+            background-color: #E12C25;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div id="signup-container">
+            <div id="signup-form">
+                <h1>회원가입</h1>
+                <br><br>
+                <form action="/member/register" method="post" enctype="multipart/form-data">
+                    <div class="input-group">
+                        <label>아이디<span class="asterisk"> *</span></label>
+                        <input type="text" class="common-input-box" id="memberId" name="memberId" placeholder="아이디">
+                    </div>
+
+                    <div class="input-group pwd-group">
+                        <label>비밀번호<span class="asterisk"> *</span></label>
+                        <input type="password" class="common-input-box" id="memberPw" name="memberPw" placeholder="영문, 숫자, 특수문자 2가지 이상 포함한 8자~16자">
+                        <i class="fi fi-rs-eye toggle-password pwIcon"></i>
+                    </div>
+
+                    <div class="input-group pwd-group">
+                        <label>비밀번호 확인<span class="asterisk"> *</span></label>
+                        <input type="password" class="common-input-box" id="passwordCheck" placeholder="비밀번호 확인">
+                        <i class="fi fi-rs-eye toggle-password cpwIcon"></i>
+                    </div>
+
+                    <div class="input-group">
+                        <label>이름<span class="asterisk"> *</span></label>
+                        <input type="text" class="common-input-box" name="userName" placeholder="이름">
+                    </div>
+
+                    <div class="input-group">
+                        <label>생년월일<span class="asterisk"> *</span></label>
+                        <input type="text" class="common-input-box" id="birthDate" name="birthDate" placeholder="생년월일 8자리">
+                    </div>
+
+                    <div class="input-group email-group">
+                        <label>이메일<span class="asterisk"> *</span></label>
+                        <div class="input-container">
+                            <input type="text" class="common-input-box" id="email" name="email" placeholder="이메일 주소">
+                            <button type="button" class="common-secondary-btn email-btn" id="email-btn">인증요청</button>
+                        </div>
+                    </div>
+
+                    <div class="input-group auth-group">
+                        <label>인증번호 입력<span class="asterisk"> *</span></label>
+                        <div class="input-container">
+                            <input type="text" class="common-input-box" id="auth-code"  name="authCode" placeholder="인증번호 6자리">
+                            <button type="button" class="common-secondary-btn auth-btn" id="auth-btn">인증</button>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>전화번호<span class="asterisk"> *</span></label>
+                        <input type="text" class="common-input-box" id="phone" name="phone" placeholder="(-)빼고 입력">
+                    </div>
+
+                    <div class="input-group file-group">
+                        <label>프로필 사진</label>
+                        <label for="profileImg" id="select-file-btn">파일 선택</label>
+                        <input type="file" id="profileImg" name="profileImg" accept="image/*">
+                    </div>
+                    <div id="thumbnail-container">
+                        <img id="profile-thumbnail" alt="사진 미리보기" style="display: none;">
+                    </div><br><br>
+                    <button type="button" class="common-primary-btn">가입 완료</button>
+                </form>
+            </div>
+        </div>
+    </main>
+    <script>
+        document.getElementById('profileImg').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            const thumbnail = document.getElementById('profile-thumbnail');
+            const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+
+            if (file) {
+                // 허용되지 않은 파일 형식인 경우 경고창 표시
+                if (!allowedTypes.includes(file.type)) {
+                    alert('JPG, PNG, GIF 형식의 이미지만 업로드할 수 있습니다.');
+                    event.target.value = '';
+                    thumbnail.style.display = 'none';
+                    return;
+                }
+
+                const reader = new FileReader();
+                // 썸네일 이미지 표시
+                reader.onload = function (e) {
+                    thumbnail.src = e.target.result;
+                    thumbnail.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            } else {
+                // 파일이 없을 경우 썸네일 숨기기
+                thumbnail.src = '';
+                thumbnail.style.display = 'none';
+            }
+        })
+
+        const pwIcon = document.querySelector('.pwIcon');
+        const pwInput = document.querySelector('#memberPw');
+
+        // 비밀번호 마스킹 해제 버튼
+        pwIcon.addEventListener('click', function () {
+            const type = pwInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            pwInput.setAttribute('type', type);
+
+            if (type === 'password') {
+                this.classList.remove('fi-rr-eye-crossed');
+                this.classList.add('fi-rs-eye');
+            } else {
+                this.classList.remove('fi-rs-eye');
+                this.classList.add('fi-rr-eye-crossed');
+            }
+        });
+
+        // 비밀번호 확인 마스킹 해제 버튼
+        const cpwIcon = document.querySelector('.cpwIcon');
+        const cpwInput = document.querySelector('#passwordCheck');
+
+        cpwIcon.addEventListener('click', function () {
+            const type = cpwInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            cpwInput.setAttribute('type', type);
+
+            if (type === 'password') {
+                this.classList.remove('fi-rr-eye-crossed');
+                this.classList.add('fi-rs-eye');
+            } else {
+                this.classList.remove('fi-rs-eye');
+                this.classList.add('fi-rr-eye-crossed');
+            }
+        });
+    </script>
+</body>
+</html>

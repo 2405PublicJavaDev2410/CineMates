@@ -1,14 +1,12 @@
 package com.filmfellows.cinemates.domain.productadmin.model.service.impl;
 
 
-import com.filmfellows.cinemates.domain.cinema.model.mapper.CinemaMapper;
 import com.filmfellows.cinemates.domain.productadmin.model.mapper.ProductadminMapper;
 import com.filmfellows.cinemates.domain.productadmin.model.service.ProductAdminService;
-import com.filmfellows.cinemates.domain.productadmin.model.vo.Product;
+import com.filmfellows.cinemates.domain.productadmin.model.vo.Product2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,25 +19,25 @@ public class ProductadminServiceImpl implements ProductAdminService {
         this.mapper=mapper;
     }
     @Override
-    public List<Product> allproduct() {
-        List<Product> pList = mapper.allproduct();
+    public List<Product2> allproduct() {
+        List<Product2> pList = mapper.allproduct();
         return pList;
     }
 
     @Override
-    public Product oneproduct(int productNo) {
-        Product product=mapper.oneproduct(productNo);
+    public Product2 oneproduct(int productNo) {
+        Product2 product=mapper.oneproduct(productNo);
         return product;
     }
 
     @Override
-    public int updateproduct(Product product) {
+    public int updateproduct(Product2 product) {
         int result=mapper.updateproduct(product);
         return result;
     }
 
     @Override
-    public int insertproduct(Product product) {
+    public int insertproduct(Product2 product) {
         int result=mapper.insertproduct(product);
         return result;
     }

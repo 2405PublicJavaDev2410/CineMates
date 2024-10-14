@@ -24,7 +24,7 @@
                  JOIN SHOWTIME_TBL USING (SCREEN_NO)
                  JOIN MOVIE_TBL M USING (MOVIE_NO)
         WHERE CINEMA_NAME = #{cinemaName}
-          AND SCREENING_STATUS = 'NOW SHOWING'
+--           AND SCREENING_STATUS = 'NOW SHOWING'
     </select>
     <!--영화 이름과 번호 출력-->
     <select id="selectCinemaName" resultType="String">
@@ -75,4 +75,8 @@
     <select id="selectReservationInfo">
         SELECT * FROM RESERVATION_TBL join PAYMENT_TBL p using (reservation_No) join movie_tbl m ON p.name = m.TITLE WHERE RESERVATION_NO=#{reservationNo}
     </select>
+
+    <delete id="deleteReservationInfo">
+        DELETE FROM RESERVATION_TBL WHERE IMP_UID = #{imp_uid}
+    </delete>
 </mapper>

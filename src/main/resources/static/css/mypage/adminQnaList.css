@@ -27,6 +27,13 @@ h1 {
 .input-section input[type='text'] {
     width: 350px;
 }
+.common-table td:nth-child(3) {
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+}
 .search-btn {
     background-color: #464646;
     border-radius: 5px;
@@ -35,4 +42,10 @@ h1 {
     color: white;
     border: none;
     cursor: pointer;
+}
+#no-search-result {
+    text-align: center;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 16px;
 }

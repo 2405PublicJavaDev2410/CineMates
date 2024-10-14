@@ -36,4 +36,6 @@ public interface ReservationMapper {
     ShowInfoDTO selectMoviePoster(String title);
 
     ReservationDTO selectReservationInfo(String reservationNo);
+
+    void deleteReservationInfo(String impUid);
 }

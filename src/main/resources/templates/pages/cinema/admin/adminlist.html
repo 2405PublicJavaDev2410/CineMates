@@ -3,7 +3,6 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{common/layout/defaultLayout}"
       layout:fragment="Content">
-<link rel="stylesheet" href="/css/movie/adminMovieList.css">
 
 <head>
   <meta charset="UTF-8">
@@ -116,10 +115,10 @@
   // 극장 추가 팝업 창
   function insertcinema(){
     var popupW = 600;
-    var popupH = 800;
+    var popupH = 870;
     var left = Math.ceil((window.screen.width - popupW) / 2);
     var top = Math.ceil((window.screen.height - popupH) / 2);
-    writeWindow = window.open("/cinema/insert", "pop", "width=600,height=800,left=" + left + ",top=" + top + "");
+    writeWindow = window.open("/cinema/insert", "pop", "width=600,height=870,left=" + left + ",top=" + top + "");
   }
 
   // 극장 업데이트 팝업 창

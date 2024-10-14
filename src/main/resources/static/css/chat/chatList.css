@@ -3,6 +3,12 @@
     font-family: 'NEXON Lv1 Gothic OTF', serif;
 }
 
+h1.page-title {
+    font-family: 'GmarketSansMedium', sans-serif;
+    text-align: center;
+    margin: 30px;
+}
+
 /* 페이징 처리 */
 .paginationBox a {
     display: inline-block;
@@ -62,7 +68,8 @@
 
 .listMenu-item {
     user-select: none;
-    width: 120px;
+    /*width: 120px;*/
+    padding: 0 30px;
     height: 100%;
     text-align: center;
     line-height: 50px;
@@ -71,6 +78,13 @@
     transition: all 200ms;
     margin: 5px;
     cursor: pointer;
+}
+
+.listMenu-item.activeBtn {
+    /*width: 100px;*/
+    color: white;
+    background-color: #466288;
+    cursor: auto
 }
 
 .listMenu-item:hover {
@@ -131,7 +145,7 @@
     top: 10px;
     left: 0;
     width: 100%;
-    height: 100%;
+    /*height: 100%;*/
     z-index: 3;
 }
 
@@ -144,6 +158,7 @@
     top: 10px;
     left: 0;
     width: 100%;
+    /*height: 100%;*/
     z-index: 2;
 }
 

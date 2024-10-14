@@ -88,7 +88,7 @@ const nameRule = (str) => {
 }
 // 아이디 정규식
 const idRule = (str) => {
-    return /^[A-Za-z0-9]{5,10}$/.test(str);
+    return /^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z0-9]{5,10}$/.test(str);
 }
 // 이메일 정규식
 const emailRule = (str) => {
@@ -174,7 +174,7 @@ function emailCheckForPw() {
 
 // 아이디 마스킹 처리
 function maskMemberId(memberId) {
-    return memberId.replace(/(?<=^.{1}).(?=.{2})|(?<=^.{2}).(?=.{1})/g, '*');
+    return memberId.replace(/(?<=^.{2}).(?=.{1})|(?<=^.{3}).(?=.{0})/g, '*');
 }
 
 // 입력창을 벗어나면 빨간 테두리 삭제
