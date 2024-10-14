@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<!-- Default Layout Import-->
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/defaultLayout}"
+      layout:fragment="Content">
+<link rel="stylesheet" href="/css/movie/movieList.css">
+<body>
+<div layout:fragment="content">
+    <!-- 여기에 기존의 main 태그 내용을 넣습니다 -->
+    <div class="banner-wrapper">
+        <div class="banner-container">
+            <div class="banner active">
+                <img src="/img/movie/banner/AmazonBullseye_19204202.jpg" alt="배너 1" />
+            </div>
+            <div class="banner">
+                <img src="/img/movie/banner/GrandMa_1920420.jpg" alt="배너 2" />
+            </div>
+            <div class="banner">
+                <img src="/img/movie/banner/MyLovelyPartner_19204203.jpg" alt="배너 3" />
+            </div>
+            <div class="banner">
+                <img src="/img/movie/banner/MyPet_1920420.jpg" alt="배너 4" />
+            </div>
+            <div class="banner">
+                <img src="/img/movie/banner/MyPet_1920420.jpg" alt="배너 5" />
+            </div>
+        </div>
+        <div class="banner-nav prev">&#10094;</div>
+        <div class="banner-nav next">&#10095;</div>
+        <div class="banner-dots"></div>
+    </div>
+
+    <div class="main-container">
+        <div class="movie-section">
+            <div class="section-select">
+                <div class="section-status">
+                    <button class="nowShowing" id="nowShowing">현재 상영작</button>
+                    <button class="commingSoon" id="commingSoon">상영 예정작</button>
+                </div>
+                <div class="section-sorting">
+                    <button class="sort-releaseDate" id="sort-releaseDate">개봉일순</button>
+                    <button class="sort-reservation" id="sort-reservation">예매율순</button>
+<!--                    <span class="bar">|</span>-->
+                    <button class="sort-review" id="sort-review">관람평 많은순</button>
+                </div>
+            </div>
+<!--            <form class="movie-list" id="movie-list">-->
+<!--                <div class="movie-poster" th:each="mList : ${mList}">-->
+<!--                    <div class="poster-image">-->
+<!--                        <img th:if="${mList.posterUrl != null}" th:src="${mList.posterUrl}" th:alt="${mList.title}" />-->
+<!--                        <img class="imageNull" th:if="${mList.posterUrl == null}" src="/img/movie/imageNull.png" th:alt="${mList.title}" />-->
+<!--                    </div>-->
+<!--                    <div class="movie-info">-->
+<!--                        <div class="title-container">-->
+<!--                            <img class="age-rating" th:src="@{'/img/chat/' + ${mList.rating} + '.jpg'}" th:alt="${mList.rating == 'ALL' ? '전체관람가' : mList.rating + '세 이상관람가'}"/>-->
+<!--                            <div class="movie-title" th:text="${mList.title}"></div>-->
+<!--                        </div>-->
+<!--                        <div class="movie-details">-->
+<!--                            <span class="booking-rate" th:text="'예매율 '+${mList.reservationRate}"></span>-->
+<!--                            <span class="bar">|</span>-->
+<!--                            <span th:text="${mList.releaseDate != null ? mList.releaseDate + ' 개봉' : '개봉일 미정'}"></span>-->
+<!--                        </div>-->
+<!--                        <button class="booking-button">예매</button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </form>-->
+            <div class="movie-list" id="movie-list"></div>
+            <div class="load-more-container" id="load-more-container">
+                <button class="loadMoreBtn" id="loadMoreBtn">더보기</button>
+            </div>
+<!--            <button class="loadMoreBtn" id="loadMoreBtn" style="display: block;">더보기</button>-->
+        </div>
+    </div>
+</div>
+<th:block layout:fragment="script">
+    <!--     여기에 기존의 script 내용을 넣습니다-->
+    <script type="text/javascript" src="/js/movie/movieList.js"></script>
+</th:block>
+
+</body>
+</html>

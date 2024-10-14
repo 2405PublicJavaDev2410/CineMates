@@ -51,7 +51,7 @@
 <div id="dibody">
   <h1>신고하기</h1>
 
-  <form action="/report/report" method="post">
+  <form action="/report/report" method="post" onsubmit="return validateForm()">
     <label for="cuss">욕설,비방,차별,혐오</label>
     <input type="radio" name="reportOption" id="cuss" value="욕설,비방,차별,혐오"><br>
     <label for="impo">불법정보</label>
@@ -66,7 +66,7 @@
     <input type="radio" name="reportOption" id="etc" value="기타" onclick="showTextbox()"><br>
     <input type="text" name="reportContent" id="etc2"><br><br>
 
-    <button id="subm">확인</button><br><br>
+    <button type="submit" id="subm">확인</button><br><br>
   </form>
 
   <button onclick="cancel();">취소</button>
@@ -96,6 +96,25 @@
 
     function cancel(){
       alert("취소하셨습니다.");
+    }
+
+    // 폼 검증 함수: radio 버튼이 선택되었는지 확인
+    function validateForm() {
+      var radios = document.getElementsByName('reportOption');
+      var formValid = false;
+
+      for (var i = 0; i < radios.length; i++) {
+        if (radios[i].checked) {
+          formValid = true;
+          break;
+        }
+      }
+
+      if (!formValid) {
+        alert("하나의 신고 항목을 선택해주세요.");
+        return false; // 폼 제출을 막음
+      }
+      return true; // 폼 제출을 허용
     }
   </script>
 </div>

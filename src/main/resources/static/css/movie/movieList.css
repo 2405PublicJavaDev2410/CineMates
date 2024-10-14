@@ -1,0 +1,275 @@
+main {
+    margin: 0;
+    padding: 0;
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+    background-color: #f0f0f0;
+}
+
+.main-container {
+    width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.banner-wrapper {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.banner-container {
+    width: 1920px;
+    height: 420px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.banner {
+    display: none;
+    width: 100%;
+    height: 100%;
+}
+
+.banner.active {
+    display: block;
+}
+
+.banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.banner-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 30px;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.banner-nav.prev {
+    left: 20px;
+}
+
+.banner-nav.next {
+    right: 20px;
+}
+
+.banner-dots {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+}
+
+.banner-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+}
+
+.banner-dot.active {
+    background-color: white;
+}
+
+.movie-section {
+    margin-top: 20px;
+}
+
+.section-select {
+    display: flex;
+    justify-content: space-between;
+}
+
+.section-status {
+    margin-bottom: 30px;
+    display: flex;
+}
+
+.section-status button{
+    color: #858585;
+    margin-right: 30px;
+    cursor: pointer;
+    background-color: white;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: 'GmarketSansMedium', serif;
+    border: none;
+    border-bottom: 2px solid transparent;
+    transition: all 0.5s ease;
+}
+
+.section-sorting {
+    font-size: 14px;
+    /*font-weight: bold;*/
+    margin-bottom: 30px;
+    display: flex;
+}
+
+.section-sorting button {
+    margin-right: 15px;
+    color: #858585;
+    cursor: pointer;
+    background-color: white;
+    /*font-weight: bold;*/
+    font-family: 'GmarketSansMedium', serif;
+    border: none;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.section-sorting span {
+    margin-right: 15px;
+}
+
+.section-status button.active,
+.section-sorting button.active{
+    /*color: #D54946;*/
+    color: black;
+    border-bottom: 2px solid #D54946;
+}
+
+.bar{
+    color: #666;
+    font-size: 12px;
+}
+
+.hide {
+    display: none;
+}
+
+.movie-list {
+    display: flex;
+    flex-wrap: wrap;
+    /*gap: 20px;*/
+    gap: 46px;
+    margin-bottom: 30px;
+}
+
+.movie-poster {
+    /*width: calc(20% - 16px);*/
+    width: 22%;
+    margin-bottom: 20px;
+}
+
+.poster-image {
+    position: relative;
+    width: 100%;
+}
+
+.poster-image img {
+    width: 100%;
+    /*height: auto;*/
+    height: 364.55px;
+    /*height: 308.56px;*/
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.movie-info {
+    margin-top: 10px;
+}
+
+.title-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.age-rating {
+    width: 24px;
+    height: 24px;
+    margin-right: 5px;
+}
+
+.movie-title {
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+    font-weight: bold;
+    flex-grow: 1;
+    font-size: 18px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.movie-details {
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+    display: flex;
+    justify-content: space-evenly;
+    font-size: 14px;
+    color: #666;
+    font-weight: bold;
+}
+
+.movie-details .bar {
+    font-weight: normal;
+}
+
+.booking-rate {
+    /* color: #503396; */
+}
+
+.booking-button {
+    background-color: #ea4e4a;
+    color: white;
+    border: none;
+    padding: 8px 0;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+    height: 30px;
+    font-size: 16px;
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+}
+
+.booking-button:hover {
+    background-color: #E12C25;
+}
+
+.load-more-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.loadMoreBtn {
+    background-color: #233245;
+    color: white;
+    border: none;
+    padding: 8px 0;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 30%;
+    height: 40px;
+    font-size: 16px;
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+}
+
+.loadMoreBtn:hover {
+    background-color: #242424;
+}
+
+@media (max-width: 1920px) {
+    .container {
+        width: 100%;
+    }
+}
+
+.movie-title img {
+    height: 28px;
+}
+
+.poster-image .imageNull {
+    object-fit: scale-down;
+}

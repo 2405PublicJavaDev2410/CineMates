@@ -131,4 +131,10 @@ public class CinemaServiceImpl implements CinemaService {
         List<Showtime> sList=mapper.showtimelistdate(cinemaNo,selectDate);
         return sList;
     }
+
+    @Override
+    public List<Showtime> showtimelistcurrent(int cinemaNo) {
+        List<Showtime> sList=mapper.showtimelistcurrent(cinemaNo);
+        return sList;
+    }
 }

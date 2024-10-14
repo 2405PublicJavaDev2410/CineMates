@@ -119,5 +119,11 @@ public interface CinemaService {
      * return result
      */
     List<Showtime> showtimelistdate(int cinemaNo, Date selectDate);
+    /**
+     * 극장 상영 정보조회(오늘날짜면 현재 시간 이후것만)
+     * pram cinemaNo
+     * return Cinema
+     */
+    List<Showtime> showtimelistcurrent(int cinemaNo);
 }
 

@@ -27,7 +27,7 @@ public class AdminMyPageController {
      */
     @GetMapping("/admin/qna-list")
     public String showQnaList(Model model,
-          @RequestParam(value = "cp", required = false, defaultValue = "1") Integer currentPage) {
+            @RequestParam(value = "cp", required = false, defaultValue = "1") Integer currentPage) {
         int totalCount = myService.getTotalQnaCount();
         int boardLimit = 10;
         Pagination pn = new Pagination(totalCount, currentPage, boardLimit);
@@ -37,6 +37,25 @@ public class AdminMyPageController {
         model.addAttribute("qList", qList);
         model.addAttribute("pn", pn);
         return "pages/mypage/adminQnaList";
+    }
+
+    /**
+     * [관리자] 문의 검색
+     */
+    @PostMapping("/admin/search-qna")
+    public String searchQna(Model model,
+            @RequestParam("searchKeyword") String searchKeyword,
+            @RequestParam(value = "cp", required = false, defaultValue = "1") Integer currentPage) {
+        int totalCount = myService.getTotalQnaCountByKeyword(searchKeyword);
+        int boardLimit = 10;
+        Pagination pn = new Pagination(totalCount, currentPage, boardLimit);
+        int offset = (currentPage - 1) * boardLimit;
+        RowBounds rBounds = new RowBounds(offset, boardLimit);
+        List<QnaDTO> sList = myService.searchQnaByKeyword(searchKeyword, rBounds);
+        model.addAttribute("sList", sList);
+        model.addAttribute("pn", pn);
+        model.addAttribute("searchKeyword", searchKeyword);
+        return "pages/mypage/adminQnaSearchList";
     }
 
     /**

@@ -146,6 +146,9 @@ function phoneCheck() {
     return true;
 }
 
+function goToRegister() {
+    location.href="/register";
+}
 
 // 파일 업로드
 document.getElementById('profileImg').addEventListener('change', function(event) {
