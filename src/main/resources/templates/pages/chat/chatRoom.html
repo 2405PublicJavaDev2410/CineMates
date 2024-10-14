@@ -9,6 +9,18 @@
         <title>채팅방</title>
         <!-- inline CSS 영역-->
         <style th:inline="css" type="text/css">
+            .chat-room-container{
+                display: flex;
+                margin: 20px 0;
+            }
+            .reservation-info{
+                width: 45%;
+                height: 800px;
+            }
+            .chat-screen{
+                width: 45%;
+                height: 800px;
+            }
 
         </style>
 
@@ -19,7 +31,11 @@
     </head>
 
     <body>
-        <h1>ChatRoom 영역입니다.</h1>
+        <h1 style="text-align: center; margin-top: 50px">채팅방</h1>
+        <div class="chat-room-container">
+            <div class="reservation-info">영수증</div>
+            <div class="chat-screen">채팅방</div>
+        </div>
 
     </body>
 </html>
