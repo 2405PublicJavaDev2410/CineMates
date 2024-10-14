@@ -2,6 +2,7 @@ package com.filmfellows.cinemates.domain.reservation.model.Service.Impl;
 
 import com.filmfellows.cinemates.domain.reservation.model.Service.ReservationService;
 import com.filmfellows.cinemates.domain.reservation.model.mapper.ReservationMapper;
+import com.filmfellows.cinemates.domain.reservation.model.vo.MemberDTO;
 import com.filmfellows.cinemates.domain.reservation.model.vo.ReservationDTO;
 import com.filmfellows.cinemates.domain.reservation.model.vo.ShowInfoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +53,28 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<ReservationDTO> selectReservationSeat() {
-        return rmapper.selectReservationSeat();
+    public List<ReservationDTO> selectReservationSeat(String reservationDate) {
+        return rmapper.selectReservationSeat(reservationDate);
+    }
+
+    @Override
+    public MemberDTO selectMemberInfo(String memberId) {
+        return rmapper.selectMemberInfo(memberId);
+    }
+
+    @Override
+    public Map<String, Integer> getReservationCounts() {
+        return rmapper.getReservationCounts();
+    }
+
+    @Override
+    public ShowInfoDTO selectMoviePoster(String title) {
+        return rmapper.selectMoviePoster(title);
+    }
+
+    @Override
+    public ReservationDTO selectReservationInfo(String reservationNo) {
+        return rmapper.selectReservationInfo(reservationNo);
     }
 
 
