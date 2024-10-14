@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
+<link rel="stylesheet" href="/css/movie/adminMovieList.css">
+
     <head>
         <meta charset="UTF-8">
         <title>상영일정수정/삭제</title>
@@ -60,13 +62,32 @@
                 background-color: #2980b9;
             }
         </style>
+        <script>
+            function updateSeatCount() {
+                const screenSelect = document.getElementById("screenName");
+                const selectedOption = screenSelect.options[screenSelect.selectedIndex];
+                const selectedScreen = selectedOption.dataset;
+
+                // 좌석 수와 상영관 번호 모두 가져오기
+                const screenNo = selectedScreen.screenNo;  // screenNo 값 가져오기
+
+                // 예: 상영관 번호를 다른 input에 설정
+                document.getElementById("screenNo").value = screenNo;
+            }
+        </script>
     </head>
     <body>
     <h1>극장 수정/삭제</h1>
     <form action="/cinema/updateshowtime" method="post">
         <div>
-            <label for="screenNo">극장코드</label>
-            <input type="number" name="screenNo" id="screenNo" th:value="${showtime.screenNo}">
+            <label for="screenName">상영관 이름</label>
+            <select name="screenName" id="screenName" onchange="updateSeatCount()">
+                <option value="" disabled selected>[[${showtime.screenName}]]</option>
+                <option th:each="screen : ${scrList}"
+                        th:value="${screen.screenName}"
+                        th:data-seat="${screen.screenSeat}"
+                        th:data-screen-no="${screen.screenNo}">[[${screen.screenName}]]</option>
+            </select>
         </div>
         <div>
             <label for="movieNo">영화코드</label>
@@ -93,6 +114,7 @@
 
         </div>
         <input type="hidden" name="showtimeNo" th:value="${showtime.showtimeNo}">
+        <input type="hidden" name="screenNo" id="screenNo" th:value="${showtime.screenNo}" readonly>
 
         <button>수정</button>
         <button type="button" th:onclick="deleteshowtime([[${showtime.showtimeNo}]])">삭제</button>

@@ -1,21 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>신고 리스트</title>
-    </head>
-    <body>
-        <table>
-            <tr>
-                <th>신고번호</th>
-                <th>신고ID</th>
-                <th>신고유형</th>
-                <th>신고내용(기타)</th>
-                <th>신고시간</th>
-            </tr>
-            <tr>
-                <td>[[${}]]</td>
-            </tr>
-        </table>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <title>신고 리스트</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            color: #333;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<h1>신고 리스트</h1>
+<table>
+    <tr>
+        <th>신고번호</th>
+        <th>신고ID</th>
+        <th>신고유형</th>
+        <th>신고내용(기타)</th>
+        <th>신고시간</th>
+        <th>신고횟수</th>
+        <th>신고상태</th>
+        <th>액션</th>
+    </tr>
+    <tr th:each="report:${rList}">
+        <td>[[${report.reportNo}]]</td>
+        <td>[[${report.reportId}]]</td>
+        <td>[[${report.reportOption}]]</td>
+        <td>[[${report.reportContent}]]</td>
+        <td>[[${report.reportDate}]]</td>
+        <td>[[${report.reportCount}]]</td>
+        <td>[[${report.reportStatus}]]</td>
+        <td><button th:onclick="report([[${report.reportId}]],[[${report.reportCount}]],[[${report.reportNo}]])">신고</button></td>
+    </tr>
+</table>
+<script>
+    function datego(reportId, reportDate) {
+        console.log(reportDate);
+        console.log(reportId);
+        location.href = "/report/outreportid" + reportId + "?reportDate=" + reportDate;
+    }
+    function report(a,b,c){
+        console.log(b);
+        if(b>=2){
+            openDatePopup(a);
+        }else{
+            location.href="/report/reportid"+a+"?reportNo="+c;
+        }
+        function openDatePopup(a) {
+            var popupW = 400;
+            var popupH = 300;
+            var left = (screen.width - popupW) / 2;
+            var top = (screen.height - popupH) / 2;
+            window.open("/report/overreportid" + a, "popup", "width=" + popupW + ", height=" + popupH + ", top=" + top + ", left=" + left);
+        }
+    }
+</script>
+</body>
 </html>

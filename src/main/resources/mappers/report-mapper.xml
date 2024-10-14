@@ -3,11 +3,33 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
-  <mapper namespace="com.filmfellows.cinemates.domain.report.model.mapper.ReportMapper">
+<mapper namespace="com.filmfellows.cinemates.domain.report.model.mapper.ReportMapper">
 
-  <select id="reportlist">
-  	SELECT * FROM REPORT_TBL
-  </select>
+    <select id="reportlist">
+        SELECT * FROM REPORT_TBL A JOIN MEMBER_TBL B ON A.REPORT_ID=B.MEMBER_ID
+    </select>
+    <insert id="reportinsert">
+        INSERT INTO REPORT_TBL VALUES(SEQ_REPORT_NO.NEXTVAL,#{reportId},#{reportOption},#{reportContent},DEFAULT,DEFAULT)
+    </insert>
+    <update id="reportid">
+        UPDATE MEMBER_TBL
+        SET REPORT_COUNT = REPORT_COUNT + 1
+        WHERE MEMBER_ID = #{memberId}
+    </update>
+    <update id="outreportid">
+        UPDATE MEMBER_TBL
+        SET REPORT_COUNT = 0,BAN_PERIOD=#{reportDate}
+        WHERE MEMBER_ID = #{reportId}
+    </update>
+    <update id="updatereportid">
+        UPDATE REPORT_TBL SET REPORT_STATUS='완료' WHERE REPORT_NO=#{reportNo}
+    </update>
+    <update id="allupdatereportid">
+        UPDATE REPORT_TBL SET REPORT_STATUS='완료' WHERE REPORT_ID=#{reportId}
+    </update>
+
+
+
 
   
-  </mapper>
+</mapper>
