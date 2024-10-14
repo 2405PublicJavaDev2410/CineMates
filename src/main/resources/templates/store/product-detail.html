@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+<!--    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>-->
+    <title th:text="${product.productName} + ' - CGV 스토어'">상품 상세 - CGV 스토어</title>
+    <link rel="stylesheet" th:href="@{/css/store/productDetail.css}">
+</head>
+<body>
+<main role="main">
+    <section class="product-detail">
+        <h1 class="product-title" th:text="${product.productName}">상품명</h1>
+
+        <div class="product-info">
+            <div class="product-image">
+                <img th:src="${product.imageUrl}" th:alt="${product.productName}">
+            </div>
+
+            <div class="product-details">
+                <p>가격: <span th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + '원'"></span></p>
+                <p>상품구성: <span th:text="${product.description}"></span></p>
+                <p>상품번호: <span th:text="${product.productNo}"></span></p>
+
+                <form id="purchaseForm" th:action="@{'/store/purchase/initiate'}" method="post">
+                    <input type="hidden" name="productNo" th:value="${product.productNo}">
+                    <div class="quantity-selector">
+                        <button type="button" class="quantity-btn minus">-</button>
+                        <input type="number" id="quantity" name="quantity" value="1" min="1" max="10" readonly>
+                        <button type="button" class="quantity-btn plus">+</button>
+                    </div>
+
+                    <p>총 구매금액: <span id="totalPrice" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + '원'"></span></p>
+
+                    <div class="action-buttons">
+                        <button type="button" id="addToCart" th:data-product-no="${product.productNo}">장바구니</button>
+                        <a th:href="@{'/store/gift/' + ${product.productNo}}" id="giftButton" th:data-product-no="${product.productNo}">선물하기</a>
+                        <button type="submit" id="buyButton" th:data-product-no="${product.productNo}">구매하기</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const productPrice = /*[[${product.price}]]*/ 0;
+    /*]]>*/
+</script>
+<script th:src="@{/js/store/product-detail.js}"></script>
+</body>
+</html>

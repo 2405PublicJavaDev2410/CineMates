@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.filmfellows.cinemates.domain.store.model.mapper.ProductMapper">
+
+    <select id="selectProductsByCategory" resultType="Product">
+        SELECT *
+        FROM (
+        SELECT
+        PRODUCT_NO as productNo,
+        CATEGORY_NAME as categoryName,
+        PRODUCT_NAME as productName,
+        PRICE as price,
+        DISCOUNT_AMOUNT as discountAmount,
+        DISCOUNTED_PRICE as discountedPrice,
+        IMAGE_URL as imageUrl,
+        DESCRIPTION as description
+        FROM PRODUCT_TBL
+        WHERE CATEGORY_NAME = #{category}
+        ORDER BY PRODUCT_NO
+        )
+        <where>
+            <if test="limit != null and limit > 0">
+                ROWNUM &lt;= #{limit}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectProductDetail" resultType="Product">
+        SELECT
+            PRODUCT_NO as productNo,
+            PRODUCT_NAME as productName,
+            CATEGORY_NAME as categoryName,
+            PRICE,
+            DISCOUNT_AMOUNT as discountAmount,
+            PRICE - DISCOUNT_AMOUNT as discountedPrice,
+            IMAGE_URL as imageUrl,
+            DESCRIPTION
+        FROM
+            PRODUCT_TBL
+        WHERE
+            PRODUCT_NO = #{productNo}
+    </select>
+
+    <select id="selectProductsByProductNos" resultType="Product" parameterType="list">
+        SELECT
+            PRODUCT_NO as productNo,
+            PRODUCT_NAME as productName,
+            CATEGORY_NAME as categoryName,
+            PRICE,
+            DISCOUNT_AMOUNT as discountAmount,
+            PRICE - DISCOUNT_AMOUNT as discountedPrice,
+            IMAGE_URL as imageUrl,
+            DESCRIPTION
+        FROM
+            PRODUCT_TBL
+        WHERE
+            PRODUCT_NO IN
+            <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+    </select>
+</mapper>

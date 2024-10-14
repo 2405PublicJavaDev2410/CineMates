@@ -24,7 +24,7 @@
                  JOIN SHOWTIME_TBL USING (SCREEN_NO)
                  JOIN MOVIE_TBL M USING (MOVIE_NO)
         WHERE CINEMA_NAME = #{cinemaName}
-          AND SCREENING_STATUS = 'NOW SHOWING'
+--           AND SCREENING_STATUS = 'NOW SHOWING'
     </select>
     <!--영화 이름과 번호 출력-->
     <select id="selectCinemaName" resultType="String">
@@ -107,4 +107,8 @@
         GROUP BY
             R.MEMBER_ID, R.TITLE, R.RESERVATION_NO, P.PAYMENT_DATE, R.RESERVATION_DATE, R.SHOWTIME_TIME, R.CINEMA_NAME, R.SCREEN_NAME, R.RESERVATION_SEAT, M.POSTER_URL
     </select>
+
+    <delete id="deleteReservationInfo">
+        DELETE FROM RESERVATION_TBL WHERE IMP_UID = #{imp_uid}
+    </delete>
 </mapper>

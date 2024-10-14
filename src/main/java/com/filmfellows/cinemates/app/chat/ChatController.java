@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Writer;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,16 +37,20 @@ public class ChatController {
     @GetMapping("/chat/list")
     public String showChatRoomList(Model model, HttpSession session,
                                    @RequestParam(value = "cp", defaultValue = "1") Integer currentPage,
-                                   @RequestParam(value="viewMode", defaultValue = "list") String viewMode
+                                   @RequestParam(value="viewMode", defaultValue = "list") String viewMode,
+                                   @RequestParam(value="status", required = false, defaultValue = "all") String status
                                    ) {
 
-        System.out.println("cp : " + currentPage);
-        System.out.println("viewMode : " + viewMode);
         // 로그인 확인
         String memberId = (String) session.getAttribute("memberId");
         if(memberId == null) {
             return "redirect:/login";
         }
+        Map<String, String> writerInfo = new HashMap<>();
+        writerInfo.put("writer", memberId);
+        writerInfo.put("status", status);
+
+
         // 전체 프로필 정보 조회 -> 채팅방 정보에 출력
         List<ProfileImg> profileList = cService.selectProfileList();
         System.out.println(profileList);
@@ -53,7 +58,8 @@ public class ChatController {
         // 채팅방 리스트 전체 조회 비즈니스 로직
         // 서비스에서 Pagination 객체, 조회된 cList 객체 매핑해서 반환
         int boardLimit = 9;
-        Map<String, Object> map = cService.selectChatRoomList(currentPage, boardLimit, null, null, null, null);
+        List<String> emptyList = new ArrayList<>();
+        Map<String, Object> map = cService.selectChatRoomList(currentPage, boardLimit, null, emptyList, emptyList, emptyList, writerInfo);
 
         // 채팅방 태그 조회
         List<ChatTag> tagList = cService.selectChatTagList("default");
@@ -75,46 +81,59 @@ public class ChatController {
         List<ChatTag> tagListDistinctList = cService.selectChatTagList("distinct");
         int boardLimit = 5;
         // 페이지 로드 시에 pn을 보내는데 이때 tagName "없음"을 보내어 아무 리스트도 출력이 안되게끔 만들어줌
-        Map<String, Object> map = cService.selectChatRoomList(currentPage, boardLimit, "없음", null, null, null);
+        Map<String, Object> map = cService.selectChatRoomList(currentPage, boardLimit, "없음", null, null, null, null);
         model.addAttribute("pn", map.get("pn"));
         System.out.println(map.get("pn"));
         model.addAttribute("tagListDistinctList", tagListDistinctList);
+        model.addAttribute("tagName", null);
         return "pages/chat/searchChat";
     }
 
 //    ajax 검색 리스트 출력
     @PostMapping("/chat/search")
     public String selectSearchList(Model model, @RequestParam("tagName") String tagName,
-                                   @RequestParam(value="keyword", defaultValue = "") String keyword, // json 형식 string
-                                   @RequestParam(value = "cp", defaultValue = "1") Integer currentPage) throws JsonProcessingException {
+                                   @RequestParam(value="keyword", required = false, defaultValue = "") String keyword, // json 형식 string
+                                   @RequestParam(value = "cp", defaultValue = "1") Integer currentPage) {
 
-        // keyword (json) -> List화 시키기
+        System.out.println("postMapping-controller : "+tagName + " , "+keyword);
+
         List<String> keywordArr = new ArrayList<String>();
+        if(!keyword.equals("")) {
+            tagName = null;
+            // keyword (json) -> List화 시키기
 
-        // jackson 객체
-        ObjectMapper objectMapper = new ObjectMapper();
-        // JSON 문자열을 List<Map<String, String>> 형태로 변환
-        List<Map<String, String>> keywordList = objectMapper.readValue(keyword, new TypeReference<List<Map<String, String>>>(){});
 
-        System.out.println(keywordList);
+            // jackson 객체
+            ObjectMapper objectMapper = new ObjectMapper();
+            // JSON 문자열을 List<Map<String, String>> 형태로 변환
+            List<Map<String, String>> keywordList = null;
 
-        // value 필드만 추출하여 List로 변환
-        keywordArr = keywordList.stream().map(map -> map.get("value"))
-                .toList();
+            try {
+                keywordList = objectMapper.readValue(keyword, new TypeReference<List<Map<String, String>>>(){});
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
 
-        System.out.println(keywordArr);
+
+            // value 필드만 추출하여 List로 변환
+            keywordArr = keywordList.stream().map(map -> map.get("value"))
+                    .toList();
+
+            System.out.println(keywordArr);
+        }
+
 
         List<String> searchMovieList = new ArrayList<>();
         List<String> searchRoomList = new ArrayList<>();
         List<String> searchRegionList = new ArrayList<>();
         for(String searchKeyword: keywordArr){
-            if(searchKeyword.contains("영화")){
+            if(searchKeyword.contains("영화:")){
                 int index = searchKeyword.indexOf(':'); // 콜론(:)의 인덱스 찾기
                 searchMovieList.add(index != -1 ? searchKeyword.substring(index + 1) : "") ;
-            }else if(searchKeyword.contains("채팅방이름")){
+            }else if(searchKeyword.contains("채팅방이름:")){
                 int index = searchKeyword.indexOf(':'); // 콜론(:)의 인덱스 찾기
                 searchRoomList.add(index != -1 ? searchKeyword.substring(index + 1) : "") ;
-            }else if(searchKeyword.contains("지역")){
+            }else if(searchKeyword.contains("지역:")){
                 int index = searchKeyword.indexOf(':'); // 콜론(:)의 인덱스 찾기
                 searchRegionList.add(index != -1 ? searchKeyword.substring(index + 1) : "") ;
             }
@@ -128,12 +147,13 @@ public class ChatController {
         // 채팅방 리스트 전체 조회 비즈니스 로직
         // 서비스에서 Pagination 객체, 조회된 cList 객체 매핑해서 반환
         int boardLimit = 5;
-        Map<String, Object> map = cService.selectChatRoomList(currentPage, boardLimit, tagName, searchMovieList, searchRoomList, searchRegionList);
+        Map<String, Object> map = cService.selectChatRoomList(currentPage, boardLimit, tagName, searchMovieList, searchRoomList, searchRegionList, null);
 
 
         // 채팅방 태그 조회
         List<ChatTag> tagList = cService.selectChatTagList("default");
-
+        System.out.println(searchRoomList);
+        System.out.println(map.get("cList"));
 
         model.addAttribute("profileList", profileList);
         model.addAttribute("tagList", tagList);

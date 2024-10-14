@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-<link rel="stylesheet" href="/css/movie/adminMovieList.css">
 
     <head>
         <meta charset="UTF-8">
         <title>상영일정수정/삭제</title>
 
-        <style type="text/css">
+        <style >
             body {
                 font-family: 'Arial', sans-serif;
                 width: 100%;
@@ -20,7 +19,7 @@
             h1 {
                 color: #2c3e50;
                 text-align: center;
-                margin-bottom: 30px;
+                margin-bottom: 15px;
             }
             form {
                 background-color: white;
@@ -115,9 +114,10 @@
         </div>
         <input type="hidden" name="showtimeNo" th:value="${showtime.showtimeNo}">
         <input type="hidden" name="screenNo" id="screenNo" th:value="${showtime.screenNo}" readonly>
-
+        <div style="text-align: center;">
         <button>수정</button>
         <button type="button" th:onclick="deleteshowtime([[${showtime.showtimeNo}]])">삭제</button>
+        </div>
     </form>
     <script>
         function deleteshowtime(a){

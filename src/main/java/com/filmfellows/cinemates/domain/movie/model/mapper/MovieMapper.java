@@ -42,4 +42,10 @@ public interface MovieMapper {
                                             @Param("offset") int offset,
                                             @Param("size") int size,
                                             @Param("sortBy") String sortBy);
+
+    int selectTrailerCount(Long movieNo);
+
+    int selectStillcutCount(Long movieNo);
+
+    List<MovieDTO> selectMovieDetailAndPages(Long movieNo, int offset, int size);
 }

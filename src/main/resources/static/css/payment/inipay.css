@@ -1,0 +1,7 @@
+.reservation-detail {
+    display: none;
+}
+
+.reservation-detail:not(:empty) {
+    display: inline-block;
+}
