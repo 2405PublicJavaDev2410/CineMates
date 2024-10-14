@@ -43,7 +43,10 @@ public class MemberController {
      * 관련기능 : 로그인 페이지 이동
      */
     @GetMapping("/login")
-    public String showLogin(Model model) {
+    public String showLogin(Model model, HttpSession session) {
+        if (session != null) {
+            session.invalidate();
+        }
         String state = UUID.randomUUID().toString();
         String naverLoginUrl = String.format("https://nid.naver.com/oauth2.0/authorize?client_id=%s&redirect_uri=%s&response_type=code&state=%s",
                 naverApi.getNaverClientId(), naverApi.getNaverRedirectUri(), state);
@@ -167,20 +170,21 @@ public class MemberController {
      */
     @GetMapping("/my-page/update")
     public String showModifyMember(HttpSession session, Model model) {
-        String memberId = session.getAttribute("memberId").toString();
-        String regex = "^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z0-9]{5,10}$";
-        boolean isValid = memberId.matches(regex);
-        if(isValid) {
-        Member member = mService.getOneMember(memberId);
-        ProfileImg profileImg = mService.getOneProfileImg(memberId);
-        String birthDate = member.getBirthDate() != null ? convertTimestampToString(member.getBirthDate()) : "";
-        model.addAttribute("member", member);
-        model.addAttribute("birthDate", birthDate);
+        String memberId = (String) session.getAttribute("memberId");
+        String snsType = (String) session.getAttribute("snsType");
+        if (memberId == null) {
+            return "redirect:/login";
+        }
+        if(snsType == null) {
+            Member member = mService.getOneMember(memberId);
+            ProfileImg profileImg = mService.getOneProfileImg(memberId);
+            String birthDate = member.getBirthDate() != null ? convertTimestampToString(member.getBirthDate()) : "";
+            model.addAttribute("member", member);
+            model.addAttribute("birthDate", birthDate);
             if(profileImg != null) {
                 model.addAttribute("profileImg", profileImg);
             }
         }else {
-            String snsType = session.getAttribute("snsType").toString();
             model.addAttribute("snsType", snsType);
         }
         return "pages/mypage/update";
@@ -192,14 +196,15 @@ public class MemberController {
      */
     @GetMapping("/my-page/remove")
     public String showRemoveMember(HttpSession session, Model model) {
-        String memberId = session.getAttribute("memberId").toString();
-        String regex = "^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z0-9]{5,10}$";
-        boolean isValid = memberId.matches(regex);
-        if(isValid) {
+        String memberId = (String) session.getAttribute("memberId");
+        String snsType = (String) session.getAttribute("snsType");
+        if (memberId == null) {
+            return "redirect:/login";
+        }
+        if(snsType == null) {
             Member member = mService.getOneMember(memberId);
             model.addAttribute("member", member);
         }else {
-            String snsType = session.getAttribute("snsType").toString();
             model.addAttribute("snsType", snsType);
         }
         return "pages/mypage/remove";
@@ -331,11 +336,12 @@ public class MemberController {
         log.info("엑세스 토큰 : " + accessToken);
         if (accessToken != null) {
             String result = null;
-
             if("NAVER".equals(snsType)) {
+                // 네이버 연동 해제
                 result = naverApiService.revokeNaverAccessToken(accessToken);
             }else if ("KAKAO".equals(snsType)) {
-//                result = kakaoApiService.revokeKakaoAccessToken(accessToken); // 카카오 연동 해제 로직 추가
+                // 카카오 연동 해제
+                result = kakaoApiService.revokeKakaoAccessToken(accessToken);
             }
             if(result != null) {
                 mService.deleteSnsMember(memberId);

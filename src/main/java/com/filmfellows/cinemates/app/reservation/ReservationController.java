@@ -143,14 +143,4 @@ public class ReservationController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/search")
-    public String showSearchPage(){
-        return "pages/reservation/selectReservationInfo";
-    }
-
-    @GetMapping("/Ticketing/search")
-    public ResponseEntity<ReservationDTO> selectReservationInfo(String reservationNo){
-        ReservationDTO rDTO = rService.selectReservationInfo(reservationNo);
-        return ResponseEntity.ok(rDTO);
-    }
 }

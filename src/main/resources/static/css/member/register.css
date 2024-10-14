@@ -150,6 +150,7 @@
 .common-primary-btn {
     letter-spacing: 1px;
     margin: 10px 0;
+    border-radius: 8px;
 }
 .common-primary-btn:hover {
     background-color: #E12C25;
