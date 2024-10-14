@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta name="_csrf" charset="UTF-8">
+    <title>장바구니</title>
+    <style>
+        table {width : 100%; border-collapse: collapse; }
+        th, td {border : 1px solid #ddd; padding : 8px; text-align: left; }
+        .quantity-btn { cursor : pointer; }
+    </style>
+</head>
+<body>
+<main role="main">
+    <h1>장바구니</h1>
+
+    <table>
+        <thead>
+        <tr>
+            <th><input type="checkbox" id="selectAll"> 전체선택</th>
+            <th>상품정보</th>
+            <th>수량</th>
+            <th>가격</th>
+            <th>할인</th>
+            <th>구매금액</th>
+            <th>선택</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${cartItems}">
+            <td><input type="checkbox" name="selectedItems" th:value="${item.cartNo}"></td>
+            <td>
+                <img th:src="${item.product.imageUrl}" alt="상품 이미지" class="product-image" style="width: 100px; height: auto;">
+                <span th:text="${item.product.productName}"></span>
+            </td>
+            <td>
+                <button class="quantity-btn decrease" th:data-cart-no="${item.cartNo}">-</button>
+                <span th:text="${item.quantity}" th:id="'quantity-' + ${item.cartNo}"></span>
+                <button class="quantity-btn increase" th:data-cart-no="${item.cartNo}">+</button>
+            </td>
+            <td th:text="${#numbers.formatDecimal(item.product.price, 0, 'COMMA', 0, 'POINT')} + '원'" th:data-price="${item.product.price}"></td>
+            <td th:text="${#numbers.formatDecimal(item.product.discountAmount, 0, 'COMMA', 0, 'POINT')} + '원'" th:data-discount="${item.product.discountAmount}"></td>
+            <td th:text="${#numbers.formatDecimal(item.product.price * item.quantity, 0, 'COMMA', 0, 'POINT')} + '원'" th:id="'total-' + ${item.cartNo}"></td>
+            <td><button th:onclick="'removeItem(' + ${item.cartNo} + ')'">삭제</button></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="cart-summary">
+        <p>총 상품금액: <span id="totalAmount">0원</span></p>
+        <p>총 할인금액: <span id="totalDiscount">0원</span></p>
+        <p>결제 예정금액: <span id="finalPrice">0원</span></p>
+    </div>
+
+    <div class="cart-actions">
+        <button onclick="deleteSelected()">선택상품 삭제</button>
+        <button onclick="clearCart()">장바구니 비우기</button>
+        <button onclick="orderSelected()">선택상품 구매</button>
+        <button onclick="orderAll()">전체상품 구매</button>
+    </div>
+</main>
+<script th:src="@{/js/store/cart.js}"></script>
+</body>
+</html>

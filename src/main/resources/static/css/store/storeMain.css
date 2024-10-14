@@ -1,0 +1,142 @@
+/* 전체 레이아웃 */
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff; /* 배경색을 흰색으로 변경 */
+    color: #333333; /* 기본 텍스트 색상 설정 */
+}
+
+[role="main"] {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+/* 상단 카테고리 내비게이션 */
+.store-top-menu {
+    background-color: #f8f8f8; /* 배경색을 약간 회색으로 변경하여 구분 */
+    border-bottom: 1px solid #e4e4e4;
+    margin-bottom: 20px;
+}
+
+.store-top-menu .content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 10px 0;
+}
+
+.category-list {
+    display: flex;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.category-list li {
+    margin-right: 20px;
+}
+
+.category-list a {
+    text-decoration: none;
+    color: #333333;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 5px 0;
+}
+
+.category-list a:hover {
+    color: #fb4357;
+    border-bottom: 2px solid #fb4357;
+}
+
+.cart-link {
+    text-decoration: none;
+    color: #fb4357;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* 상품 그리드 */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.product-item {
+    display: flex;
+    background-color: #fff;
+    border: 1px solid #e4e4e4;
+    border-radius: 5px;
+    padding: 15px;
+    align-items: center;
+}
+
+.product-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-right: 15px;
+}
+
+.product-info {
+    flex: 1;
+}
+
+.product-item h3 {
+    font-size: 16px;
+    margin: 0 0 5px 0;
+    color: #222;
+}
+
+.product-description {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.product-price {
+    font-size: 14px;
+    font-weight: bold;
+    color: #fb4357;
+    margin-bottom: 10px;
+}
+
+.btn-detail {
+    display: inline-block;
+    background-color: #fb4357;
+    color: #fff;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 980px) {
+    [role="main"] {
+        padding: 20px;
+    }
+
+    .store-top-menu .content {
+        padding: 10px 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .category-list {
+        flex-wrap: wrap;
+    }
+
+    .category-list li {
+        margin-bottom: 10px;
+    }
+
+    .product-grid {
+        grid-template-columns: 1fr;
+    }
+}

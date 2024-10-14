@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.filmfellows.cinemates.domain.store.model.mapper.GiftMapper">
+
+    <insert id="insertGift" parameterType="Gift">
+        <selectKey keyProperty="giftNo" resultType="int" order="BEFORE">
+            SELECT SEQ_GIFT_NO.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO GIFT_TBL (
+        GIFT_NO, SENDER_ID, RECIPIENT_ID, RECIPIENT_NAME, RECIPIENT_PHONE,
+        MESSAGE, TOTAL_AMOUNT, TOTAL_DISCOUNT_AMOUNT, FINAL_AMOUNT,
+        PAYMENT_METHOD, IS_TRANSFERRED
+        ) VALUES (
+        #{giftNo}, #{senderId}, #{recipientId}, #{recipientName}, #{recipientPhone},
+        #{message}, #{totalAmount}, #{totalDiscountAmount}, #{finalAmount},
+        #{paymentMethod}, #{isTransferred}
+        )
+    </insert>
+
+    <insert id="insertGiftProducts" parameterType="java.util.List">
+        INSERT ALL
+        <foreach collection="list" item="product" separator=" ">
+            INTO GIFT_ITEM_TBL (
+            GIFT_ITEM_NO, GIFT_NO, PRODUCT_NO, QUANTITY, PRICE, DISCOUNT_AMOUNT
+            ) VALUES (
+            SEQ_GIFT_ITEM_NO.NEXTVAL, #{product.giftNo}, #{product.productNo},
+            #{product.quantity}, #{product.price}, #{product.discountAmount}
+            )
+        </foreach>
+        SELECT * FROM DUAL
+    </insert>
+
+    <update id="updateGift" parameterType="Gift">
+        UPDATE GIFT_TBL
+        SET RECIPIENT_ID = #{recipientId},
+            RECIPIENT_NAME = #{recipientName},
+            RECIPIENT_PHONE = #{recipientPhone},
+            MESSAGE = #{message},
+            TOTAL_AMOUNT = #{totalAmount},
+            TOTAL_DISCOUNT_AMOUNT = #{totalDiscountAmount},
+            FINAL_AMOUNT = #{finalAmount},
+            PAYMENT_METHOD = #{paymentMethod},
+            IS_TRANSFERRED = #{isTransferred},
+            UPDATE_DATE = SYSTIMESTAMP
+        WHERE GIFT_NO = #{giftNo}
+    </update>
+
+    <select id="selectOneByGiftNo" resultType="Gift">
+        SELECT * FROM GIFT_TBL WHERE GIFT_NO = #{giftNo}
+    </select>
+
+    <!-- 선물받는 회원 정보 조회 쿼리문-->
+    <select id="findMemberByNameAndPhone" resultType="Member">
+        SELECT * FROM MEMBER_TBL
+        WHERE NAME = #{name}
+          AND PHONE = #{phone}
+    </select>
+
+</mapper>
