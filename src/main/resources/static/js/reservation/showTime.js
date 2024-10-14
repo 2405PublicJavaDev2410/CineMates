@@ -218,13 +218,14 @@ $(document).ready(function () {
             return;
         }
 
-        let showtimesList = $('<ul id="showtimes-list"></ul>');
+        let showtimesList = $('<ul id="showtimes-List"></ul>');
         showInfoList.forEach((info) => {
             showtimesList.append(`
                 <li>
-                    <a role="button" href="#none" class="showtime-link">${info.showtimeTime}</a>
+                    <a role="button" href="#none" class="showtime-link"><strong>${info.showtimeTime}</strong>
                     <dl>좌석: ${info.availableSeats}/${info.screenSeat || '정보 없음'}</dl>
                     <dt>상영관: ${info.screenName || '정보 없음'}</dt>
+                    </a>
                 </li>
             `);
         });

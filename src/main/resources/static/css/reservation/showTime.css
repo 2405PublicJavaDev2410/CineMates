@@ -1,4 +1,7 @@
 /*공통*/
+*{
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+}
 li {
     list-style: none;
 }
@@ -9,11 +12,13 @@ li {
 }
 
 .hidden {
-    width: 1200px;
+    width: 1160px;
     display: flex;
     flex-wrap: wrap;
 }
-
+.hidden-region{
+    display: flex;
+}
 .cinema-Container {
     background-color: white;
     border-radius: 8px;
@@ -25,10 +30,17 @@ li {
     /*display: flex;*/
     /*justify-content: center;*/
 }
-
+.selected {
+    background-color: #e0e0e0;
+    font-weight: bold;
+    background: url(https://www.lottecinema.co.kr/NLCHS/Content/images/icon/check.png) no-repeat 150px 2px;
+}
 /*지역 */
 .regionDiv {
     width: 350px;
+    height:700px;
+    border:1px solid black;
+    flex:1;
 }
 
 .group-top {
@@ -39,6 +51,11 @@ li {
 
 .regionDiv_region {
     border: 1px solid black;
+    flex:1;
+}
+.regionDiv_region ul li {
+    font-size: 22px;
+    margin:10px;
 }
 
 /*영화관*/
@@ -48,32 +65,54 @@ li {
 
 .cinemaDiv_cinema {
     border: 1px solid blue;
+    flex:1;
 }
-
+.cinemaDiv_cinema ul li{
+    font-size: 20px;
+    margin:10px;
+}
 /*영화 */
 .movieDiv {
     width: 350px;
+    height: 700px;
+    border:1px solid green;
+    flex:1;
 }
 
 .movieDiv_movie {
     border: 1px solid red;
 }
-
+.movieDiv_movie ul li {
+    font-size: 22px;
+    margin:10px;
+}
+#movie-List .selected {
+    background-color: #e0e0e0;
+    font-weight: bold;
+    background: url(https://www.lottecinema.co.kr/NLCHS/Content/images/icon/check.png) no-repeat 335px 2px;
+}
 /*달력*/
 .calendar {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    float: left;
+    /*float: left;*/
+    border: 1px solid yellow;
+    height: 140px;
+
 }
 
 .month-display {
     font-size: 18px;
     font-weight: bold;
+    position: relative;
+    top:10px;
 }
 
 .week-container {
+    position: relative;
+    top:10px;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -119,12 +158,12 @@ li {
 }
 
 /*상영 시간*/
-.selected {
-    background-color: #e0e0e0;
-    font-weight: bold;
-    background: url(https://www.lottecinema.co.kr/NLCHS/Content/images/icon/check.png) no-repeat 150px 2px;
+.showtimeDiv{
+    height: 700px;
+    border:1px solid blue;
+    flex:1;
+    overflow: hidden;
 }
-
 .showtime-link {
     text-decoration: none;
     color: black;
@@ -132,16 +171,65 @@ li {
     border-radius: 5px;
     transition: background-color 0.3s;
 }
+.showtime-link strong{
+    position: relative;
+    right:5px;
+}
+.showtime-link dl ,.showtime-link dt{
+    margin-top:5px;
+    font-size: small;
+}
+/*.showtime-link.active {*/
+/*    background-color: #007bff;*/
+/*    color: white;*/
+/*}*/
 
-.showtime-link.active {
-    background-color: #007bff;
-    color: white;
+/*.showtime-link:hover {*/
+/*    background-color: #e9ecef;*/
+/*}*/
+
+/*.showtime-link.active:hover {*/
+/*    background-color: #0056b3;*/
+/*}*/
+
+#showtimes-container {
+    width: 100%;
 }
 
-.showtime-link:hover {
-    background-color: #e9ecef;
+#showtimes-List {
+    display: flex;
+    flex-wrap: wrap;
+    list-style-type: none;
+    padding: 0;
+    gap: 10px;
 }
 
-.showtime-link.active:hover {
-    background-color: #0056b3;
+#showtimes-List > li {
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    border-radius: 5px;
+    min-width: 80px;
+    text-align: center;
+    background-color: #f0f0f0;
+    margin-left:8px;
+}
+
+#showtimes-List > li > div:first-child {
+    font-weight: bold;
+    font-size: 1em;
+}
+
+#showtimes-List > li > div:nth-child(2) {
+    color: #666;
+    font-size: 0.8em;
+}
+
+#showtimes-List > li > div:nth-child(3) {
+    color: #007bff;
+    font-size: 0.8em;
+}
+#goPersonSeat{
+    margin-top:15px;
+    width:200px;
+    height: 80px;
 }
