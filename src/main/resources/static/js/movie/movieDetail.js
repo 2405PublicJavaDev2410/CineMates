@@ -1,3 +1,54 @@
+document.addEventListener('DOMContentLoaded', function() {
+    const stillList = document.querySelector("#stillList");
+    const loadMoreContainer = document.querySelector('#load-more-container');
+
+    let currentPage = 0;
+    const pageSize = 5;
+    let hasMoreStillcut = true;
+
+    function  fetchStillcuts(page, append = false) {
+        $.ajax({
+            url: '/movie-detail',
+            method: 'GET',
+            data: {
+                page: page,
+                size: pageSize
+            },
+            success: function (data){
+                updateButtonStatus(status, sortBy);
+                if (!append) {
+                    movieList.innerHTML = '';
+                }
+                if (data.length > 0) {
+                    appendMovies(data);
+                    hasMoreMovies = data.length === pageSize;
+                    // loadMoreBtn.style.display = hasMoreMovies ? 'block' : 'none';
+                    loadMoreContainer.style.display = hasMoreMovies ? 'flex' : 'none';
+                } else {
+                    hasMoreMovies = false;
+                    // loadMoreBtn.style.display = 'none';
+                    loadMoreContainer.style.display = 'none';
+                }
+            },
+            error: function (xhr, error){
+                console.error('ERROR:', error);
+            }
+        });
+    }
+
+    function updateButtonStatus(status, sortBy) {
+        if (status === 'NOW SHOWING') {
+          sList.remove('hide');
+        } else {
+           n.classList.add('active');
+        }
+
+       DateBtn.classList.toggle('active', sortBy === 'releaseDate');
+    }
+
+
+    });
+
 document.addEventListener('DOMContentLoaded', () => {
     const tabButtons = document.querySelectorAll('.tab-button');
     const tabContents = document.querySelectorAll('.tab-content');

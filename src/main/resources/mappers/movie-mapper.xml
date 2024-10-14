@@ -58,9 +58,8 @@
         WHERE m.MOVIE_NO = #{movieNo}
         ORDER BY
             m.MOVIE_NO, s.STILLCUT_NO, t.TRAILER_NO
-
-    <!-- 어드민 영화 리스트 조회 -->
     </select>
+    <!-- 어드민 영화 리스트 조회 -->
     <select id="selectMovieList" resultType="Movie">
         SELECT MOVIE_NO, TITLE, RELEASE_DATE, SCREENING_STATUS FROM MOVIE_TBL
     </select>
@@ -264,4 +263,57 @@
         WHERE RN > #{offset}
     </select>
 
+    <select id="selectTrailerCount" resultType="_int">
+        SELECT COUNT(mt.TRAILER_NO) AS trailer_count
+        FROM MOVIE_TRAILER_TBL mt
+        WHERE mt.MOVIE_NO = #{movieNo}
+    </select>
+    <select id="selectStillcutCount" resultType="_int">
+        SELECT COUNT(mt.STILLCUT_NO) AS stillcut_count
+        FROM MOVIE_STILLCUT_TBL mt
+        WHERE mt.MOVIE_NO = #{movieNo}
+    </select>
+
+    <select id="selectMovieDetailAndPages" resultMap="movieResultMap">
+        WITH MovieDetails AS (
+            SELECT
+                m.MOVIE_NO,
+                m.TITLE,
+                m.POSTER_URL,
+                m.RELEASE_DATE,
+                m.RUNNING_TIME,
+                m.RATING,
+                m.SYNOPSIS,
+                m.DIRECTOR,
+                m.ACTORS,
+                m.GENRE,
+                m.PRODUCTION_COUNTRY,
+                m.IS_BOOKABLE,
+                m.SCREENING_STATUS,
+                s.STILLCUT_NO,
+                s.STILLCUT_URL,
+                t.TRAILER_NO,
+                t.TRAILER_TYPE,
+                t.TRAILER_THUMBNAIL_URL,
+                t.TRAILER_URL,
+                ROW_NUMBER() OVER (
+                    PARTITION BY m.MOVIE_NO
+                    ORDER BY s.STILLCUT_NO, t.TRAILER_NO
+                ) AS row_num
+            FROM
+                MOVIE_TBL m
+                LEFT JOIN MOVIE_STILLCUT_TBL s ON m.MOVIE_NO = s.MOVIE_NO
+                LEFT JOIN MOVIE_TRAILER_TBL t ON m.MOVIE_NO = t.MOVIE_NO
+            WHERE
+                m.MOVIE_NO = :movieNo
+        )
+        SELECT * FROM (
+            SELECT MovieDetails.*, ROWNUM AS rnum
+            FROM MovieDetails
+            WHERE ROWNUM &lt;= :offset + :size
+        )
+        WHERE rnum > :offset
+        ORDER BY
+            MOVIE_NO, STILLCUT_NO, TRAILER_NO
+    </select>
 </mapper>

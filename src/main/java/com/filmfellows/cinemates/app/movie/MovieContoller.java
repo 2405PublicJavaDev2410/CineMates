@@ -1,5 +1,6 @@
 package com.filmfellows.cinemates.app.movie;
 
+import com.filmfellows.cinemates.app.movie.dto.MovieDTO;
 import com.filmfellows.cinemates.app.movie.dto.MovieListDTO;
 import com.filmfellows.cinemates.app.movie.dto.MovieReservationRateDTO;
 import com.filmfellows.cinemates.domain.movie.model.service.MovieService;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -55,8 +57,16 @@ public class MovieContoller {
             return "pages/movie/movieList"; // Thymeleaf 템플릿 이름
         }
     }
-    @GetMapping("/movie-detail")
-    public String showMovieDetail(){
+    @GetMapping("/movie-detail/{movieNo}")
+    public String showMovieDetail(@PathVariable Long movieNo, Model model,
+                                  @RequestParam(defaultValue = "0") int page,
+                                  @RequestParam(defaultValue = "5") int size) {
+        List<MovieDTO> movieInfo = movieService.selectMovieDetailAndPages(movieNo, page, size);
+        int trailerCount = movieService.getTrailrtConunt(movieNo);
+        int stillcutCount = movieService.getStillcutCount(movieNo);
+        model.addAttribute("movieInfo", movieInfo);
+        model.addAttribute("trailerCount", trailerCount);
+        model.addAttribute("stillcutCount", stillcutCount);
         return "pages/movie/movieDetail";
     }
 }
