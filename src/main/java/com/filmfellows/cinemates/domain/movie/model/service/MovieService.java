@@ -28,4 +28,9 @@ public interface MovieService {
     List<MovieListDTO> getNowShowingMovies();
 
     List<MovieListDTO> getMoviesByStatusAndSort(String status, int page, int size, String sortBy);
+
+    int getTrailrtConunt(Long movieNo);
+
+    int getStillcutCount(Long movieNo);
+    List<MovieDTO> selectMovieDetailAndPages(Long movieNo, int page, int size);
 }

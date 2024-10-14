@@ -116,5 +116,21 @@ public class MovieServiceImpl implements MovieService {
         return movieMapper.selectMoviesByStatusAndSort(status, offset, size, sortBy);
     }
 
+    @Override
+    public int getTrailrtConunt(Long movieNo) {
+        return movieMapper.selectTrailerCount(movieNo);
+    }
+
+    @Override
+    public int getStillcutCount(Long movieNo) {
+        return movieMapper.selectStillcutCount(movieNo);
+    }
+
+    @Override
+    public List<MovieDTO> selectMovieDetailAndPages(Long movieNo, int page, int size) {
+        int offset = page * size;
+        return movieMapper.selectMovieDetailAndPages(movieNo, offset, size);
+    }
+
 
 }

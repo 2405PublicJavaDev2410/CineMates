@@ -192,6 +192,7 @@ main {
 }
 
 .movie-title {
+    width: 230px;
     font-family: 'NEXON Lv1 Gothic OTF', serif;
     font-weight: bold;
     flex-grow: 1;
