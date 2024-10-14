@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-<link rel="stylesheet" href="/css/movie/adminMovieList.css">
 
     <head>
         <meta charset="UTF-8">
         <title>상영관수정/삭제</title>
 
-        <style type="text/css">
+        <style>
             body {
                 width: 100%;
                 max-width: 500px;
@@ -19,7 +18,7 @@
             h1 {
                 color: #2c3e50;
                 text-align: center;
-                margin-bottom: 30px;
+                margin-bottom: 15px;
             }
             form {
                 background-color: white;
@@ -63,7 +62,7 @@
         </style>
     </head>
     <body>
-    <h1>극장 수정/삭제</h1>
+    <h1>상영관 수정/삭제</h1>
     <form action="/cinema/updatescreen" method="post">
         <div>
             <label for="screenName">상영관이름</label>
@@ -75,8 +74,10 @@
         </div>
         <input type="hidden" name="screenNo" id="screenNo" th:value="${screen.screenNo}">
         <input type="hidden" name="cinemaNo" id="cinemaNo" th:value="${screen.cinemaNo}">
+        <div style="text-align: center;">
         <button>수정</button>
         <button type="button" th:onclick="deletecinema([[${screen.screenNo}]])">삭제</button>
+        </div>
     </form>
     <script>
         function deletecinema(a){

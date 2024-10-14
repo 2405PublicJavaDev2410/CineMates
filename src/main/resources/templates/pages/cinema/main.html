@@ -3,7 +3,6 @@
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{common/layout/defaultLayout}"
 	  layout:fragment="Content">
-<link rel="stylesheet" href="/css/movie/adminMovieList.css">
 	<head>
 	<meta charset="UTF-8">
 	<title>극장</title>
@@ -13,8 +12,7 @@
      	text-align: center;
      	background-color: white; /* 전체 배경을 어두운 색으로 */
      	color: black; /* 텍스트를 흰색으로 */
-    	margin: 0;
-        padding: 0;
+
     }
     hr {
         border: none;
@@ -26,8 +24,6 @@
         /* 네비게이션 리스트 */
     ul {
 		background-color: #444;
-        padding: 0;
-        margin: 0;
         list-style-type: none;
 		height: 50px;
     }
@@ -148,12 +144,12 @@
 
 		<div  id="divmain" >
 		<br>
-			<div th:each="cinema:${cList}"><a th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo})}">[[${cinema.cinemaName}]]</a></div>
+			<div th:each="cinema:${cList}"><a style="background: none; color: #E12C25; padding: 0; margin: 10px; border: none; text-decoration: underline; cursor: pointer;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo})}">[[${cinema.cinemaName}]]</a></div>
 		</div>
-		<h1>CINEMA</h1>
+		<h1>극   장</h1><br><br>
 		<h1>[[${cinema.cinemaName}]]</h1><br>
 			
-		<div><button th:onclick="parking([[${cinema.cinemaNo}]],[[${cinema.cinemaAddress}]])">위치/길찾기</button></div><br><br>
+		<div><button th:onclick="parking([[${cinema.cinemaNo}]],[[${cinema.cinemaAddress}]])">위치/길찾기</button></div><br>
 		<div id="cinemamain">
 		<br><br><br><br><br><br><br><br><br><br><br>
 			<div >[[${cinema.cinemaAddress}]]</div><br>
@@ -180,8 +176,8 @@
 		<a th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day5})}">
 		<div th:text="${#temporals.day(day5)}"></div>
 		</a>
-		<a th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day6})}">
-		<div th:text="${#temporals.day(day6)}"></div>
+		<a  style="background-color: gray; display:inline-block;height: 100px;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day6})}">
+		<div ><span style="font-size: 10px;">[[${#temporals.dayOfWeekName(day6)}]]</span><br><strong>[[${#temporals.day(day6)}]]</strong></div>
 		</a>
 
 		<br><br><br>
