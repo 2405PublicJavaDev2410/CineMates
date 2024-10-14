@@ -34,27 +34,32 @@ public class CinemaController {
     @GetMapping("/location")
     public String showlocationmain(@RequestParam("locationcode") int locationcode,
                                    @RequestParam(value="cinemaNo", required=false,defaultValue="0") int cinemaNo,
-                                   @RequestParam(value="selectDate", required=false) Date selectDate,
+                                   @RequestParam(value="selectDate", required=false) LocalDate selectDate,
                                    Model model,
                                    HttpSession session) {
         System.out.println("selectdate:"+selectDate);
         String memberId=(String)session.getAttribute("memberId");
         List<Cinema> cList= cService.locationsearch(locationcode);
+        LocalDate currentdate= LocalDate.now();
+        System.out.println("currentdate:"+currentdate);
         if(cinemaNo!=0) {
             Cinema cinema=cService.onecinemasearch(cinemaNo);
             model.addAttribute("cinema",cinema);
 
-            if(selectDate==null) {
-                List<Showtime> sList=cService.showtimelist(cinemaNo);
+            if(selectDate==null||selectDate.equals(currentdate)) {
+                System.out.println("이쪽으로 들어왔어 :"+currentdate);
+                List<Showtime> sList=cService.showtimelistcurrent(cinemaNo);
                 if(sList.size()>0) {
                     model.addAttribute("sList",sList);
+                    model.addAttribute("selectDate",currentdate);
                 }else {
                     sList=null;
                 }
             }else{
-                List<Showtime> sList=cService.showtimelistdate(cinemaNo,selectDate);
+                List<Showtime> sList=cService.showtimelistdate(cinemaNo, Date.valueOf(selectDate));
                 if(sList.size()>0) {
                     model.addAttribute("sList",sList);
+                    model.addAttribute("selectDate",selectDate);
                 }else {
                     sList=null;
                 }
@@ -62,7 +67,7 @@ public class CinemaController {
         }else {
 
         }
-        LocalDate currentdate= LocalDate.now();
+
 
         LocalDate day1= currentdate.plusDays(1);
         LocalDate day2= currentdate.plusDays(2);
