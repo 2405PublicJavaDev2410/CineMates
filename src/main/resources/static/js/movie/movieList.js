@@ -192,5 +192,3 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 5초마다 배너 변경
     setInterval(showNextBanner, 5000);
-
-

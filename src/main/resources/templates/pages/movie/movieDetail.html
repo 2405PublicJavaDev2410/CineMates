@@ -10,8 +10,9 @@
 <div layout:fragment="content" th:if="${not #lists.isEmpty(movieInfo)}">
     <div class="container" th:each="movieInfo : ${movieInfo}">
         <div class="movie-header">
-            <img th:src="${movieInfo?.posterUrl}" th:alt="${movieInfo?.title + ' 포스터'}" class="movie-poster">
+            <img th:src="${movieInfo?.posterUrl}" th:alt="${movieInfo?.title + ' 포스터'}" class="movie-poster" id="moviePoster">
             <div class="movie-info">
+<!--                <input id="movieNo" type="hidden" th:value="${movieInfo?.movieNo}">-->
                 <h1 class="movie-title" th:text="${movieInfo?.title}"></h1>
                 <p class="movie-meta" th:with="ratingText=${
                     movieInfo?.rating == 'NOT RATED' ? '등급미정' :
@@ -19,7 +20,6 @@
                     movieInfo?.rating == '19' ? '청소년관람불가' :
                     movieInfo?.rating + '세이상관람가'
                 }">
-<!--                    <span th:text="${movieInfo?.releaseDate == 'null' ? '' : ${movieInfo?.releaseDate}  + ' 개봉'}"></span>-->
                     <span th:text="${movieInfo?.releaseDate != null ? movieInfo.releaseDate + ' 개봉' : '개봉일 미정'}"></span>
                     <span th:text="'| ' + ${ratingText} + ' |'"></span>
                     <span th:text="${movieInfo?.runningTime + '분'}"></span>
@@ -60,23 +60,34 @@
                         </div>
                     </div>
                     <div class="trailer-list-container">
-                        <div class="trailer-list"  th:if="${not #lists.isEmpty(movieInfo.trailers)}">
-                            <div class="trailer-item" th:each="trailer : ${movieInfo.trailers}">
-                                <div class="trailer-thumbnail">
+                        <div class="trailer-list" th:if="${not #lists.isEmpty(movieInfo.trailers)}">
+                            <div class="trailer-item" th:each="trailer, iterStat : ${movieInfo.trailers}">
+                                <div class="trailer-thumbnail" th:data-trailer-url="${trailer.trailerUrl}">
                                     <img th:src="${trailer.trailerThumbnailUrl}" th:alt="${trailer.trailerType}">
-                                    <div class="play-icon"></div>
+                                    <div class="play-icon">
+                                        <img src="/img/movie/play-icon.png">
+                                    </div>
                                 </div>
-<!--                                <video class="trailer-video"-->
-<!--                                       th:src="${trailer.trailerUrl}"-->
-<!--                                       th:poster="${trailer.trailerThumbnailUrl}"-->
-<!--                                       th:aria-label="${'트레일러: ' + trailer.trailerType}"-->
-<!--                                       controls-->
-<!--                                       preload="none">-->
-<!--                                    당신의 브라우저는 HTML5 비디오를 지원하지 않습니다.-->
-<!--                                </video>-->
                                 <p class="trailer-title" th:text="${trailer.trailerType}"></p>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <!-- 포스터 모달 추가 -->
+                <div id="imageModal" class="img-modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <img id="modalImage" src="" alt="영화 포스터">
+                    </div>
+                </div>
+
+<!--                비디오 모달-->
+                <div id="videoModal" class="video-modal">
+                    <div class="modal-content">
+                        <span class="video-close">&times;</span>
+                        <video id="modalVideo" controls>
+                            <source src="" type="video/mp4">
+                        </video>
                     </div>
                 </div>
 
@@ -84,15 +95,18 @@
                     <h2>스틸컷</h2>
                     <span class="total-count" th:text="'(' + ${stillcutCount} + ')'"></span>
                 </div>
-                <div class="still-list" id="stillList" th:if="${not #lists.isEmpty(movieInfo.stillcuts)}">
-                    <div class="still-item" th:each="stillcut, status : ${movieInfo.stillcuts}">
-                        <img th:src="${stillcut.stillcutUrl}" th:alt="${stillcut.stillcutNo}">
+                <div th:fragment="stillcutList" id="stillList" class="still-list">
+                    <div class="still-item" th:each="stillcut : ${stillcuts}">
+                        <img th:src="${stillcut.stillcutUrl}" th:alt="${'Stillcut ' + stillcut.stillcutNo}">
                     </div>
                 </div>
-                <div class="load-more-container" id="load-more-container">
+                <div class="load-more-container" id="load-more-container" th:if="${hasMoreStillcuts}">
                     <button class="loadMoreBtn" id="loadMoreBtn">더보기</button>
                 </div>
+                <input type="hidden" id="movieNo" th:value="${movieInfo.movieNo}">
             </div>
+
+<!--            리뷰 탭-->
             <div class="tab-content hidden" id="reviewsTab">
                 <div class="review-section">
                     <button class="review-write-button">리뷰 작성</button>

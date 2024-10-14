@@ -3,6 +3,7 @@ package com.filmfellows.cinemates.domain.movie.model.service.impl;
 import com.filmfellows.cinemates.app.movie.dto.MovieDTO;
 import com.filmfellows.cinemates.app.movie.dto.MovieListDTO;
 import com.filmfellows.cinemates.app.movie.dto.MovieReservationRateDTO;
+import com.filmfellows.cinemates.app.movie.dto.ReviewDTO;
 import com.filmfellows.cinemates.domain.movie.model.mapper.MovieMapper;
 import com.filmfellows.cinemates.domain.movie.model.service.MovieService;
 import com.filmfellows.cinemates.domain.movie.model.vo.Movie;
@@ -127,9 +128,14 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<MovieDTO> selectMovieDetailAndPages(Long movieNo, int page, int size) {
+    public List<MovieDTO.StillcutDTO> selectStillcutsPaginated(Long movieNo, int page, int size) {
         int offset = page * size;
-        return movieMapper.selectMovieDetailAndPages(movieNo, offset, size);
+        return movieMapper.selectStillcutsPaginated(movieNo, offset, size);
+    }
+
+    @Override
+    public List<ReviewDTO> getReviewByMovieNo(Long movieNo) {
+        return movieMapper.selectReviewByMovieNo(movieNo);
     }
 
 

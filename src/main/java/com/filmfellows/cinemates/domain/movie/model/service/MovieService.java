@@ -3,6 +3,7 @@ package com.filmfellows.cinemates.domain.movie.model.service;
 import com.filmfellows.cinemates.app.movie.dto.MovieDTO;
 import com.filmfellows.cinemates.app.movie.dto.MovieListDTO;
 import com.filmfellows.cinemates.app.movie.dto.MovieReservationRateDTO;
+import com.filmfellows.cinemates.app.movie.dto.ReviewDTO;
 import com.filmfellows.cinemates.domain.movie.model.vo.Movie;
 import org.apache.ibatis.session.RowBounds;
 
@@ -32,5 +33,8 @@ public interface MovieService {
     int getTrailrtConunt(Long movieNo);
 
     int getStillcutCount(Long movieNo);
-    List<MovieDTO> selectMovieDetailAndPages(Long movieNo, int page, int size);
+
+    List<MovieDTO.StillcutDTO> selectStillcutsPaginated(Long movieNo, int page, int size);
+
+    List<ReviewDTO> getReviewByMovieNo(Long movieNo);
 }

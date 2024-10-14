@@ -3,6 +3,7 @@ package com.filmfellows.cinemates.domain.movie.model.mapper;
 import com.filmfellows.cinemates.app.movie.dto.MovieDTO;
 import com.filmfellows.cinemates.app.movie.dto.MovieListDTO;
 import com.filmfellows.cinemates.app.movie.dto.MovieReservationRateDTO;
+import com.filmfellows.cinemates.app.movie.dto.ReviewDTO;
 import com.filmfellows.cinemates.domain.movie.model.vo.Movie;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -47,5 +48,9 @@ public interface MovieMapper {
 
     int selectStillcutCount(Long movieNo);
 
-    List<MovieDTO> selectMovieDetailAndPages(Long movieNo, int offset, int size);
+    List<MovieDTO.StillcutDTO> selectStillcutsPaginated(@Param("movieNo") Long movieNo,
+                                                        @Param("offset") int offset,
+                                                        @Param("size") int size);
+
+    List<ReviewDTO> selectReviewByMovieNo(Long movieNo);
 }

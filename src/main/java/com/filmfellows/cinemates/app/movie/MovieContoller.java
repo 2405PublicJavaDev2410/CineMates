@@ -3,6 +3,7 @@ package com.filmfellows.cinemates.app.movie;
 import com.filmfellows.cinemates.app.movie.dto.MovieDTO;
 import com.filmfellows.cinemates.app.movie.dto.MovieListDTO;
 import com.filmfellows.cinemates.app.movie.dto.MovieReservationRateDTO;
+import com.filmfellows.cinemates.app.movie.dto.ReviewDTO;
 import com.filmfellows.cinemates.domain.movie.model.service.MovieService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -54,17 +55,31 @@ public class MovieContoller {
         } else {
             // 일반 요청인 경우 HTML 페이지 렌더링
             model.addAttribute("mList", mList);
-            return "pages/movie/movieList"; // Thymeleaf 템플릿 이름
+            return "pages/movie/movieList";
         }
     }
     @GetMapping("/movie-detail/{movieNo}")
     public String showMovieDetail(@PathVariable Long movieNo, Model model,
                                   @RequestParam(defaultValue = "0") int page,
-                                  @RequestParam(defaultValue = "5") int size) {
-        List<MovieDTO> movieInfo = movieService.selectMovieDetailAndPages(movieNo, page, size);
+                                  @RequestParam(defaultValue = "5") int size,
+                                  @RequestParam(required = false) Boolean isAjax) {
+        List<MovieDTO> movieInfo = movieService.selectMovieDetail(movieNo);
+        List<MovieDTO.StillcutDTO> stillcuts = movieService.selectStillcutsPaginated(movieNo, page, size);
+        boolean hasMoreStillcuts = stillcuts.size() == size;
+
+        if (Boolean.TRUE.equals(isAjax)) {
+            model.addAttribute("stillcuts", stillcuts);
+            return "fragments/stillcutList :: stillcutList";
+        }
+
+        List<ReviewDTO> reviewList = movieService.getReviewByMovieNo(movieNo);
+
+
         int trailerCount = movieService.getTrailrtConunt(movieNo);
         int stillcutCount = movieService.getStillcutCount(movieNo);
         model.addAttribute("movieInfo", movieInfo);
+        model.addAttribute("stillcuts", stillcuts);
+        model.addAttribute("hasMoreStillcuts", hasMoreStillcuts);
         model.addAttribute("trailerCount", trailerCount);
         model.addAttribute("stillcutCount", stillcutCount);
         return "pages/movie/movieDetail";
