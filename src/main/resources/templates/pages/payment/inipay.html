@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!-- Default Layout Import-->
+<html lang="en"
+      layout:decorate="~{common/layout/defaultLayout}"
+      layout:fragment="Content"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="./css/payment/inipay.css" rel="stylesheet">
+    <!-- inline CSS 영역-->
+    <style th:inline="css" type="text/css">
+    </style>
+
+    <!-- inline JS 영역-->
+    <script th:inline="javascript" type="text/javascript">
+    </script>
+    <script crossOrigin="anonymous" src="/js/payment/inipay.js" defer></script>
+    <script
+            crossorigin="anonymous"
+            integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+            referrerpolicy="no-referrer"
+            src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+</head>
+
+<body>
+<h1>예매 결제</h1>
+<button th:onclick="requestPay()">결제하기</button>
+<button th:onClick="cancelPay()">취소하기</button>
+<input id="reservationNo" name="reservationNo" th:value="${rDTO.reservationNo}" type="hidden">
+<input id="reservationVisitor" name="reservationVisitor" th:value="${rDTO.reservationVisitor}" type="hidden">
+<input id="reservationSeat" name="reservationSeat" th:value="${rDTO.reservationSeat}" type="hidden">
+<input id="screenNo" name="screenNo" th:value="${rDTO.screenNo}" type="hidden">
+<input id="movieNo" name="movieNo" th:value="${rDTO.movieNo}" type="hidden">
+<input id="showtimeTime" name="showtimeTime" th:value="${rDTO.showtimeTime}" type="hidden">
+<input id="showtimeNo" name="showtimeNo" th:value="${rDTO.showtimeNo}" type="hidden">
+<input id="title" name="title" th:value="${rDTO.title}" type="hidden">
+<input id="screenName" name="screenName" th:value="${rDTO.screenName}" type="hidden">
+<input id="cinemaName" name="cinemaName" th:value="${rDTO.cinemaName}" type="hidden">
+<input id="cinemaNo" name="cinemaNo" th:value="${rDTO.cinemaNo}" type="hidden">
+<input id="memberId" name="memberId" th:value="${memberId}" type="hidden">
+<input id="reservationDate" name="reservationDate" th:value="${rDTO.reservationDate}" type="hidden">
+<input id="buyer_tel" name="buyer_tel" th:value="${rDTO.buyer_tel}" type="hidden">
+<input id="buyer_email" name="buyer_email" th:value="${rDTO.buyer_email}" type="hidden">
+<input id="buyer_name" name="buyer_name" th:value="${rDTO.buyer_name}" type="hidden">
+<input id="adultReserved" name="adultReserved" th:value="${rDTO.adultReserved}" type="hidden">
+<input id="childReserved" name="adultReserved" th:value="${rDTO.childReserved}" type="hidden">
+<input id="seniorReserved" name="adultReserved" th:value="${rDTO.seniorReserved}" type="hidden">
+<div>
+    <img alt="" th:src="@{${sDTO.posterUrl}}">
+    <span th:text="${rDTO.reservationSeat}"></span>
+    <span th:text="${rDTO.reservationDate}"></span>
+    <span th:text="${rDTO.screenName}"></span>
+    <span th:text="${rDTO.showtimeTime}"></span>
+    <span th:text="${rDTO.cinemaName}"></span>
+    <!--  값이 null 이면 안보이게.    -->
+    <span class="reservation-detail"
+          th:text="${rDTO.adultReserved != null} ? '어른: ' + ${rDTO.adultReserved}"></span>
+    <span class="reservation-detail"
+          th:text="${rDTO.childReserved != null} ? '아이: ' + ${rDTO.childReserved}"></span>
+    <span class="reservation-detail"
+          th:text="${rDTO.seniorReserved != null} ? '경로: ' + ${rDTO.seniorReserved}"></span>
+</div>
+</body>
+</html>

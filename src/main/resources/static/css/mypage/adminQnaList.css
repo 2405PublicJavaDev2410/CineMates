@@ -1,0 +1,51 @@
+.qna-container {
+    margin-bottom: 50px;
+}
+h1 {
+    font-family: 'GmarketSansMedium', sans-serif;
+    padding-bottom: 50px;
+    padding-top: 20px;
+    text-align: center;
+}
+.search-input-container {
+    display: flex;
+    justify-content: center;
+}
+.input-section {
+    display: flex;
+}
+.input-section {
+    display: inline-flex;
+    margin-left: 25px;
+    font-size: 0.9em;
+}
+.input-section input[type='text'], .input-section button {
+    padding: 8px;
+    margin-left: 5px;
+    font-family: "NEXON Lv1 Gothic OTF", serif;
+}
+.input-section input[type='text'] {
+    width: 350px;
+}
+.common-table td:nth-child(3) {
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+}
+.search-btn {
+    background-color: #464646;
+    border-radius: 5px;
+    height: 38px;
+    width: 60px;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+#no-search-result {
+    text-align: center;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 16px;
+}

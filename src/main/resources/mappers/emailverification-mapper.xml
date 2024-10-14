@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.filmfellows.cinemates.domain.emailverification.model.mapper.EmailVerificationMapper">
+    <!-- 토큰 등록 여부 확인 -->
+    <select id="findTokenByToken" resultType="PwResetToken">
+        SELECT *
+        FROM PW_RESET_TOKEN_TBL
+        WHERE TOKEN = #{token}
+    </select>
+    <!-- 토큰 등록 -->
+    <insert id="insertToken">
+        INSERT INTO PW_RESET_TOKEN_TBL (TOKEN_NO, MEMBER_ID, TOKEN, CREATE_TIME, EXPIRE_TIME)
+        VALUES (SEQ_TOKEN_NO.NEXTVAL, #{memberId}, #{token}, SYSTIMESTAMP, #{expireTime})
+    </insert>
+</mapper>

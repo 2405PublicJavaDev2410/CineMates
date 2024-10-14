@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>계양</title>
+	<style>
+		body {
+			font-family: 'Arial', sans-serif;
+			margin: 20px;
+			line-height: 1.6;
+			background-color: #f9f9f9;
+			color: #333;
+		}
+
+		h2 {
+			color: #007bff; /* 강조 색상 */
+			font-size: 24px;
+			border-bottom: 2px solid #007bff;
+			padding-bottom: 10px;
+			margin-bottom: 20px;
+		}
+
+		hr {
+			border: 0;
+			height: 1px;
+			background-color: #ddd;
+			margin: 20px 0;
+		}
+
+		pre {
+			background-color: #f0f8ff; /* 가독성을 위한 배경색 */
+			padding: 15px;
+			border-radius: 5px;
+			font-size: 16px;
+			overflow-x: auto;
+			white-space: pre-wrap;
+			word-wrap: break-word;
+		}
+
+		div {
+			text-align: right;
+			margin-bottom: 20px;
+		}
+
+		button {
+			padding: 10px 20px;
+			background-color: #007bff;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			font-size: 16px;
+		}
+
+		button:hover {
+			background-color: #0056b3;
+		}
+
+		/* 주차 안내 박스 */
+		.parking-info {
+			background-color: #fff8dc;
+			padding: 20px;
+			border: 1px solid #ccc;
+			border-radius: 10px;
+			margin-top: 20px;
+		}
+
+		/* 미디어 쿼리: 모바일에서의 최적화 */
+		@media (max-width: 600px) {
+			body {
+				margin: 10px;
+			}
+
+			h2 {
+				font-size: 20px;
+			}
+
+			button {
+				width: 100%;
+				font-size: 18px;
+			}
+
+			pre {
+				font-size: 14px;
+			}
+		}
+	</style>
+	</head>
+	<body>
+	<div><button th:onclick="mapgo([[${cinemaAddress}]])">길찾기</button></div>
+		<h2>대중교통안내</h2>
+		<hr>
+		
+		<pre>
+■ 인근역에서의 교통 ■
+[작전역에서 오는 경우]
+도보 : 작전역 하차 후 2번 출구로 나와 직진 후 한림병원 방향으로 좌회전 하여 직진(10~15분 소요)
+버스 : 1번, 4번, 8번 출구로 나와 588번(마을버스)을 타고 동보아파트 하차
+          좌회전해서 도보로 5분 소요 3번출구로 나와 770-1을 타고 CNM계양역에서 하차
+
+[경인교대역에서 오는 경우]
+도보 : 경인교대역 하차 후 2번 출구로 나와 우회전 후 직진, 계양 경찰서 방향으로 우회전하여 직진(10~15분 소요)
+버스 : 1번출구로 나와 588번(마을버스) 승차하여 동보아파트 하차 후 좌회전하여 도보로 5분 소요
+
+[임학역에서 오는 경우]
+도보 : 임학역 하차 후 2번, 3번 출구로 나와 임학사거리 길 건너, 그랜드 마트쪽으로 직진(10~15소요)
+
+[계산역에서 오는 경우]
+버스 : 계산역 하차 후 2번 출구로 나와 111번/ 111-1번/ 66번 승차후 계양등기소 하차
+		</pre>
+		<h2>주차안내</h2>
+		<hr>
+	<pre class="parking-info">
+'■ 주차 안내
+메트로몰 건물 정면 왼쪽 편에 위치
+
+■ 주차 확인(인증방법)
+- CNM APP 모바일티켓/티켓판매기 '주차인증'으로 인증 가능
+  (안될시 전용 엘리베이터로 8층 매표소 이동 후 차량 번호를 통한 주차 인증 진행)
+
+■ 이용요금
+- 평일/주말 및 공휴일: 당일 관람 티켓 소지 후 주차인증시, 최초 4시간 무료
+(초과 시 30분당 500원)
+		</pre>
+		<script>
+        // 팝업창 크기 변경 함수
+       function maximizePopup() {
+		    // 화면의 가로 및 세로 크기 가져오기
+		    var screenWidth = window.screen.availWidth;
+		    var screenHeight = window.screen.availHeight;
+		    
+		    // 팝업 창을 화면의 100%로 확장
+		    window.resizeTo(screenWidth, screenHeight);
+		}
+
+
+			function mapgo(a){
+	    		
+	            window.location.href = "https://map.naver.com/v5/search/"+a;  // 페이지 이동
+	            maximizePopup();  // 페이지 이동 후 팝업창 크기 조절
+
+
+	    		
+
+			}
+		</script>
+	</body>
+</html>

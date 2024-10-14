@@ -12,54 +12,70 @@
         <div id="signup-form">
             <h1>회원가입</h1>
             <br><br>
-            <form action="/register" method="post" enctype="multipart/form-data">
+            <form id="register-member-form" enctype="multipart/form-data">
                 <div class="input-group">
                     <label>아이디<span class="asterisk"> *</span></label>
-                    <input type="text" class="common-input-box" id="memberId" name="memberId" placeholder="아이디">
+                    <input type="text" class="common-input-box" id="id-input" name="memberId" placeholder="영문, 숫자를 조합한 5 ~ 10자" maxlength="10">
                 </div>
+                <div class="success-message hide message" id="id-success-message"></div>
+                <div class="failure-message hide message" id="id-failure-message"></div>
 
                 <div class="input-group pwd-group">
                     <label>비밀번호<span class="asterisk"> *</span></label>
-                    <input type="password" class="common-input-box" id="memberPw" name="memberPw" placeholder="영문, 숫자, 특수문자 2가지 이상 포함한 8자~16자">
+                    <input type="password" class="common-input-box" id="pw-input" name="memberPw" placeholder="대문자, 숫자, 특수문자를 조합한 영문 8자~16자" maxlength="16">
                     <i class="fi fi-rs-eye toggle-password pwIcon"></i>
                 </div>
+                <div class="success-message hide message" id="pw-success-message"></div>
+                <div class="failure-message hide message" id="pw-failure-message"></div>
 
                 <div class="input-group pwd-group">
                     <label>비밀번호 확인<span class="asterisk"> *</span></label>
-                    <input type="password" class="common-input-box" id="checkPassword" name="checkPassword" placeholder="비밀번호 확인">
+                    <input type="password" class="common-input-box" id="pw-check-input" name="checkPassword" placeholder="비밀번호 확인">
                     <i class="fi fi-rs-eye toggle-password cpwIcon"></i>
                 </div>
+                <div class="success-message hide message" id="pw-check-success-message"></div>
+                <div class="failure-message hide message" id="pw-check-failure-message"></div>
 
                 <div class="input-group">
                     <label>이름<span class="asterisk"> *</span></label>
-                    <input type="text" class="common-input-box" name="name" placeholder="이름">
+                    <input type="text" class="common-input-box" id="name-input" name="name" placeholder="이름">
                 </div>
+                <div class="success-message hide message" id="name-success-message"></div>
+                <div class="failure-message hide message" id="name-failure-message"></div>
 
                 <div class="input-group">
                     <label>생년월일<span class="asterisk"> *</span></label>
-                    <input type="text" class="common-input-box" id="birthDate" name="birthDate" placeholder="생년월일 8자리">
+                    <input type="text" class="common-input-box" id="birth-date-input" name="birthDate" placeholder="생년월일 8자리">
                 </div>
+                <div class="success-message hide message" id="birth-date-success-message"></div>
+                <div class="failure-message hide message" id="birth-date-failure-message"></div>
 
                 <div class="input-group email-group">
                     <label>이메일<span class="asterisk"> *</span></label>
                     <div class="input-container">
-                        <input type="text" class="common-input-box" id="email" name="email" placeholder="이메일 주소">
-                        <button type="button" class="common-secondary-btn email-btn" id="email-btn">인증요청</button>
+                        <input type="text" class="common-input-box" id="email-input" name="email" placeholder="이메일 주소">
+                        <button type="button" class="common-secondary-btn email-btn" id="email-btn" onclick="sendCode()">인증요청</button>
                     </div>
                 </div>
+                <div class="success-message hide message" id="email-success-message"></div>
+                <div class="failure-message hide message" id="email-failure-message"></div>
 
                 <div class="input-group auth-group">
                     <label>인증번호 입력<span class="asterisk"> *</span></label>
                     <div class="input-container">
-                        <input type="text" class="common-input-box" id="auth-code"  name="authCode" placeholder="인증번호 6자리">
-                        <button type="button" class="common-secondary-btn auth-btn" id="auth-btn">인증</button>
+                        <input type="text" class="common-input-box" id="ver-code-input"  name="verificationCode" placeholder="인증번호 6자리">
+                        <button type="button" class="common-secondary-btn auth-btn" id="ver-btn" onclick="verifyCode()">인증</button>
                     </div>
                 </div>
+                <div class="success-message hide message" id="ver-code-success-message"></div>
+                <div class="failure-message hide message" id="ver-code-failure-message"></div>
 
                 <div class="input-group">
-                    <label>전화번호<span class="asterisk"> *</span></label>
-                    <input type="text" class="common-input-box" id="phone" name="phone" placeholder="(-)빼고 입력">
+                    <label>핸드폰 번호<span class="asterisk"> *</span></label>
+                    <input type="text" class="common-input-box" id="phone-input" name="phone" placeholder="(-)빼고 입력">
                 </div>
+                <div class="success-message hide message" id="phone-success-message"></div>
+                <div class="failure-message hide message" id="phone-failure-message"></div>
 
                 <div class="input-group file-group">
                     <label>프로필 사진</label>
@@ -69,7 +85,7 @@
                 <div id="thumbnail-container">
                     <img id="profile-thumbnail" alt="사진 미리보기" style="display: none;">
                 </div><br><br>
-                <button class="common-primary-btn">가입 완료</button>
+                <button type="button" class="common-primary-btn" onclick="registerMember()">가입 완료</button>
             </form>
         </div>
     </div>

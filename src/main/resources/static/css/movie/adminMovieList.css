@@ -1,0 +1,158 @@
+
+.main-container {
+    margin-bottom: 50px;
+}
+
+/* 화면 타이틀 */
+h1 {
+    font-family: 'GmarketSansMedium', sans-serif;
+    padding-bottom: 50px;
+    padding-top: 20px;
+    text-align: center;
+}
+
+
+/* 검색과 글쓰기 섹션 */
+.search-register-container {
+    display: flex;
+    justify-content: center;
+}
+
+.search-section {
+    display: flex;
+}
+
+.register-section {
+    display: inline-flex;
+    margin-left: 25px;
+    font-size: 0.9em;
+}
+
+.search-section select,
+.search-section input[type='text'],
+.search-section button {
+    padding: 8px;
+    margin-left: 5px;
+}
+
+.search-section select {
+    width: 100px;
+}
+
+.search-section input[type='text'] {
+    width: 350px;
+}
+
+.search-btn {
+    background-color: #464646;
+     border-radius: 5px;
+    height: 38px;
+    width: 60px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
+}
+
+/* 글쓰기 버튼 */
+.register-btn {
+    background-color: #EA4E4A;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    height: 38px;
+    width: 80px;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
+}
+
+.common-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.common-table th,
+.common-table td {
+    padding: 12px;
+    text-align: center;
+    font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
+    border: none;
+}
+
+.common-table th {
+    background-color: #ffffff;
+    font-size: 16px;
+    border-bottom: 2px solid #D54946;
+}
+
+.common-table td {
+    font-size: 14px;
+}
+
+.common-table tr {
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.common-table tr:hover {
+    background-color: #e2e2e26c;
+}
+
+/*페이지네이션*/
+
+.common-pagination-li-end {
+    display: inline-block;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.common-pagination {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    justify-content: center;
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+.common-pagination-li {
+    width: 30px;
+    height: 30px;
+    /*border-radius: 50%;*/
+    /*border: 1px solid #E8E9ED;*/
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.common-pagination-li a{
+    text-decoration: none;
+    /*color: #78797B;*/
+    
+    width: 100%;
+    text-align: center;
+}
+
+.common-pagination-li-end a {
+    text-decoration: none;
+    color: black;
+}
+
+/*.common-pagination-li-active {*/
+/*    !*background-color: #EA4E4A;*!*/
+/*    border: transparent;*/
+/*}*/
+
+.common-pagination-li-active a {
+    /*color: white;*/
+    color: #EA4E4A;
+    font-weight: bold;
+}
+

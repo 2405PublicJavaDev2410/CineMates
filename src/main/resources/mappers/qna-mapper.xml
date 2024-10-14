@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.filmfellows.cinemates.domain.mypage.model.mapper.MyPageMapper">
+    <!-- 내 전체 문의 조회 -->
+    <select id="selectAllQnaById" resultType="QnaDTO">
+        SELECT QNA_NO, TITLE, REG_DATE,
+            CASE
+                WHEN EXISTS (SELECT 1 FROM QNA_TBL WHERE PARENT_QNA_NO = q.QNA_NO)
+                    THEN '답변완료'
+                    ELSE '미답변'
+            END AS REPLY_STATUS
+        FROM QNA_TBL q
+        WHERE MEMBER_ID = #{memberId}
+        AND PARENT_QNA_NO IS NULL
+        ORDER BY QNA_NO DESC
+    </select>
+    <!-- 전체 문의 조회 -->
+    <select id="selectAllQna" resultType="QnaDTO">
+        SELECT QNA_NO, TITLE, MEMBER_ID, REG_DATE, PARENT_QNA_NO,
+            CASE
+                WHEN EXISTS (SELECT 1 FROM QNA_TBL WHERE PARENT_QNA_NO = q.QNA_NO)
+                    THEN '답변완료'
+                    ELSE '미답변'
+            END AS REPLY_STATUS
+        FROM QNA_TBL q
+        WHERE PARENT_QNA_NO IS NULL
+        ORDER BY
+            CASE
+                WHEN EXISTS (SELECT 1 FROM QNA_TBL WHERE PARENT_QNA_NO = q.QNA_NO)
+                    THEN 1
+                ELSE 0
+                END ASC, <!-- 미답변(0)을 먼저, 답변완료(1)를 나중에 정렬 -->
+            QNA_NO DESC
+    </select>
+    <!-- 내 문의에서 검색된 조건으로 문의 조회 -->
+    <select id="selectQnaByIdAndKeyword" resultType="QnaDTO">
+        SELECT QNA_NO, TITLE, MEMBER_ID, REG_DATE, PARENT_QNA_NO,
+            CASE
+                WHEN EXISTS (SELECT 1 FROM QNA_TBL WHERE PARENT_QNA_NO = q.QNA_NO)
+                    THEN '답변완료'
+                    ELSE '미답변'
+            END AS REPLY_STATUS
+        FROM QNA_TBL q
+        WHERE MEMBER_ID = #{memberId}
+            AND PARENT_QNA_NO IS NULL
+            <!-- 미답변 선택 시 QnaNo가 ParentQnaNo에 없는 데이터를 반환 -->
+            <if test="searchCondition == 'no-reply'">
+                AND NOT EXISTS (SELECT 1 FROM QNA_TBL WHERE PARENT_QNA_NO = q.QNA_NO)
+            </if>
+            <!-- 답변완료 선택 시 QnaNo가 ParentQnaNo에 있는 데이터를 반환 -->
+            <if test="searchCondition == 'replied'">
+                AND EXISTS (SELECT 1 FROM QNA_TBL WHERE PARENT_QNA_NO = q.QNA_NO)
+            </if>
+            <!-- 키워드가 있을 때만 제목 검색 -->
+            <if test="searchKeyword != null and searchKeyword != ''">
+                AND TITLE LIKE '%' || #{searchKeyword} || '%'
+            </if>
+        ORDER BY QNA_NO DESC
+    </select>
+    <!-- 키워드로만 문의 조회 -->
+    <select id="selectQnaByKeyword">
+        SELECT QNA_NO, TITLE, MEMBER_ID, REG_DATE, PARENT_QNA_NO,
+            CASE
+                WHEN EXISTS (SELECT 1 FROM QNA_TBL WHERE PARENT_QNA_NO = q.QNA_NO)
+                    THEN '답변완료'
+                    ELSE '미답변'
+            END AS REPLY_STATUS
+        FROM QNA_TBL q
+        WHERE PARENT_QNA_NO IS NULL
+        AND TITLE LIKE '%' || #{searchKeyword} || '%'
+        ORDER BY
+            CASE
+                WHEN EXISTS (SELECT 1 FROM QNA_TBL WHERE PARENT_QNA_NO = q.QNA_NO)
+                    THEN 1
+                ELSE 0
+                END ASC,
+            QNA_NO DESC
+    </select>
+    <!-- 문의 상세 조회 -->
+    <select id="selectOneQnaByNo" resultType="Qna">
+        SELECT *
+        FROM QNA_TBL
+        WHERE QNA_NO = #{qnaNo}
+    </select>
+    <!-- 문의 답변 조회 -->
+    <select id="selectOneReplyByNo">
+        SELECT *
+        FROM QNA_TBL
+        WHERE PARENT_QNA_NO = #{parentQnaNo}
+    </select>
+    <!-- 문의 첨부파일 조회 -->
+    <select id="selectQnaFileByNo" resultType="QnaFile">
+        SELECT *
+        FROM QNA_FILE_TBL
+        WHERE QNA_NO = #{qnaNo}
+    </select>
+    <!-- 문의 총 개수 조회 -->
+    <select id="getTotalQnaCount" resultType="_int">
+        SELECT COUNT(*)
+        FROM QNA_TBL
+    </select>
+    <!-- 내 문의 총 개수 조회 -->
+    <select id="getTotalQnaCountById" resultType="_int">
+        SELECT COUNT(*)
+        FROM QNA_TBL
+        WHERE MEMBER_ID = #{memberId}
+    </select>
+    <!-- 검색된 내 문의 총 개수 조회 -->
+    <select id="getTotalQnaCountByIdAndKeyword" resultType="_int">
+        SELECT COUNT(*)
+        FROM QNA_TBL q
+        WHERE MEMBER_ID = #{memberId}
+        AND PARENT_QNA_NO IS NULL
+            <if test="searchCondition == 'no-reply'">
+                AND NOT EXISTS (SELECT 1 FROM QNA_TBL WHERE PARENT_QNA_NO = q.QNA_NO)
+            </if>
+            <if test="searchCondition == 'replied'">
+                AND EXISTS (SELECT 1 FROM QNA_TBL WHERE PARENT_QNA_NO = q.QNA_NO)
+            </if>
+            <if test="searchKeyword != null and searchKeyword != ''">
+                AND TITLE LIKE '%' || #{searchKeyword} || '%'
+            </if>
+    </select>
+    <!-- 키워드로 검색한 문의 총 개수 조회 -->
+    <select id="getTotalQnaCountByKeyword" resultType="_int">
+        SELECT COUNT(*)
+        FROM QNA_TBL q
+        WHERE PARENT_QNA_NO IS NULL
+            <if test="searchKeyword != null and searchKeyword != ''">
+                AND TITLE LIKE '%' || #{searchKeyword} || '%'
+            </if>
+    </select>
+    <!-- 문의 등록 -->
+    <insert id="insertQna" useGeneratedKeys="true" keyProperty="qnaNo" keyColumn="QNA_NO">
+        INSERT INTO QNA_TBL (QNA_NO, TITLE, CONTENT, MEMBER_ID)
+        VALUES (SEQ_QNA_NO.NEXTVAL, #{title}, #{content}, #{memberId})
+    </insert>
+    <!-- 문의 첨부파일 등록 -->
+    <insert id="insertQnaFile">
+        INSERT INTO QNA_FILE_TBL (QNA_FILE_NO, FILE_NAME, FILE_RENAME, FILE_PATH, QNA_NO)
+        VALUES (SEQ_QNA_FILE_NO.NEXTVAL, #{fileName}, #{fileRename}, #{filePath}, #{qnaNo})
+    </insert>
+    <!-- 답변 등록 -->
+    <insert id="insertReply">
+        INSERT INTO QNA_TBL (QNA_NO, TITLE, CONTENT, MEMBER_ID, PARENT_QNA_NO)
+        VALUES (SEQ_QNA_NO.NEXTVAL, #{title}, #{content}, #{memberId}, #{parentQnaNo})
+    </insert>
+    <!-- 문의 삭제 -->
+    <delete id="deleteQna">
+        DELETE FROM QNA_TBL
+        WHERE QNA_NO = #{qnaNo}
+    </delete>
+</mapper>

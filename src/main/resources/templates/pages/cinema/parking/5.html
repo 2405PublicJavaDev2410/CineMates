@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>용산아이파크몰</title>
+	<style>
+		body {
+			font-family: 'Arial', sans-serif;
+			margin: 20px;
+			line-height: 1.6;
+			background-color: #f9f9f9;
+			color: #333;
+		}
+
+		h2 {
+			color: #007bff; /* 강조 색상 */
+			font-size: 24px;
+			border-bottom: 2px solid #007bff;
+			padding-bottom: 10px;
+			margin-bottom: 20px;
+		}
+
+		hr {
+			border: 0;
+			height: 1px;
+			background-color: #ddd;
+			margin: 20px 0;
+		}
+
+		pre {
+			background-color: #f0f8ff; /* 가독성을 위한 배경색 */
+			padding: 15px;
+			border-radius: 5px;
+			font-size: 16px;
+			overflow-x: auto;
+			white-space: pre-wrap;
+			word-wrap: break-word;
+		}
+
+		div {
+			text-align: right;
+			margin-bottom: 20px;
+		}
+
+		button {
+			padding: 10px 20px;
+			background-color: #007bff;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			font-size: 16px;
+		}
+
+		button:hover {
+			background-color: #0056b3;
+		}
+
+		/* 주차 안내 박스 */
+		.parking-info {
+			background-color: #fff8dc;
+			padding: 20px;
+			border: 1px solid #ccc;
+			border-radius: 10px;
+			margin-top: 20px;
+		}
+
+		/* 미디어 쿼리: 모바일에서의 최적화 */
+		@media (max-width: 600px) {
+			body {
+				margin: 10px;
+			}
+
+			h2 {
+				font-size: 20px;
+			}
+
+			button {
+				width: 100%;
+				font-size: 18px;
+			}
+
+			pre {
+				font-size: 14px;
+			}
+		}
+	</style>
+	</head>
+	<body>
+	<div><button th:onclick="mapgo([[${cinemaAddress}]])">길찾기</button></div>
+		<h2>대중교통안내</h2>
+		<hr>
+		
+		<pre>
+지하철
+1호선 | 용산역에서 연결
+4호선 | 신용산역 4번 출구(도보 5분)
+
+버스
+용산역 또는 신용산역 앞에서 하차 후 이동
+[공항] 6050, 6001
+[순환] 90S투어
+[지선] 0017, 0018, 5012, 2016, 7016, 1711
+[간선] 502, 100, 150, 151, 152, 500, 752, 506, 507, 750A
+[마을] 용산03, 용산04
+		</pre>
+		<h2>주차안내</h2>
+		<hr>
+	<pre class="parking-info">
+■ 주차 안내
+- 용산아이파크몰 달/해주차장 4층~5.5층 주차 (Mall 내 6층)
+※ Mall 영업시간 외(조조/심야)
+- 달/해주차장 : 4층~5.5층 주차 후 4층 주차장으로 이동 후 Mall 내부 진입(4층 패션파크 GATE 진입→6층 CNM 이동)
+※ 휠체어 이용고객
+- 달주차장 : 4층~5.5층 E/V이용 (4,5층 9,10번 맞은편, 4.5층 6,7번 맞은편, 5.5층 17~19번 맞은편 E/V)
+- 해주차장 : 4층~4.5층 매장입구 진입 후 E/V이용 (Mall 영업시간 외에는 4층 주차장으로 이동 후 Mall 내부로 이동)
+- 주말 주차 공간 협소로 대중교통 이용 권장
+
+■ 주차 확인(인증 방법)
+- 6,7층 티켓판매기/CNM APP에서 당일 관람 후 주차 인증
+
+■ 주차요금
+- 티켓판매기/APP에서 당일 관람후 티켓 인증시 3시간 무료 (※2편 이상 관람 시에도 최대 3시간 무료)
+- 무료주차 시간 이후 10분 초과 시 1,300원 부과(1시간 7,800원)
+- 타매장 이용 후 합산 최대 5시간 무료(CNM3시간 + 타매장2시간)
+- 심야영화 관람 시 30시 이전까지 관람일 주차 인증 가능 (30시 이후 직원문의)
+		</pre>
+		<script>
+        // 팝업창 크기 변경 함수
+       function maximizePopup() {
+		    // 화면의 가로 및 세로 크기 가져오기
+		    var screenWidth = window.screen.availWidth;
+		    var screenHeight = window.screen.availHeight;
+		    
+		    // 팝업 창을 화면의 100%로 확장
+		    window.resizeTo(screenWidth, screenHeight);
+		}
+
+
+			function mapgo(a){
+	    		
+	            window.location.href = "https://map.naver.com/v5/search/"+a;  // 페이지 이동
+	            maximizePopup();  // 페이지 이동 후 팝업창 크기 조절
+
+
+	    		
+
+			}
+		</script>
+	</body>
+</html>

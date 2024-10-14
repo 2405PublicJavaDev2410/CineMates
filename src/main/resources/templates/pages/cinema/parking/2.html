@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>홍대</title>
+	<style>
+		body {
+			font-family: 'Arial', sans-serif;
+			margin: 20px;
+			line-height: 1.6;
+			background-color: #f9f9f9;
+			color: #333;
+		}
+
+		h2 {
+			color: #007bff; /* 강조 색상 */
+			font-size: 24px;
+			border-bottom: 2px solid #007bff;
+			padding-bottom: 10px;
+			margin-bottom: 20px;
+		}
+
+		hr {
+			border: 0;
+			height: 1px;
+			background-color: #ddd;
+			margin: 20px 0;
+		}
+
+		pre {
+			background-color: #f0f8ff; /* 가독성을 위한 배경색 */
+			padding: 15px;
+			border-radius: 5px;
+			font-size: 16px;
+			overflow-x: auto;
+			white-space: pre-wrap;
+			word-wrap: break-word;
+		}
+
+		div {
+			text-align: right;
+			margin-bottom: 20px;
+		}
+
+		button {
+			padding: 10px 20px;
+			background-color: #007bff;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			font-size: 16px;
+		}
+
+		button:hover {
+			background-color: #0056b3;
+		}
+
+		/* 주차 안내 박스 */
+		.parking-info {
+			background-color: #fff8dc;
+			padding: 20px;
+			border: 1px solid #ccc;
+			border-radius: 10px;
+			margin-top: 20px;
+		}
+
+		/* 미디어 쿼리: 모바일에서의 최적화 */
+		@media (max-width: 600px) {
+			body {
+				margin: 10px;
+			}
+
+			h2 {
+				font-size: 20px;
+			}
+
+			button {
+				width: 100%;
+				font-size: 18px;
+			}
+
+			pre {
+				font-size: 14px;
+			}
+		}
+	</style>
+	</head>
+	<body>
+	<div><button th:onclick="mapgo([[${cinemaAddress}]])">길찾기</button></div>
+		<h2>대중교통안내</h2>
+		<hr>
+		
+		<pre>
+# 지하철
+2호선 | 홍대입구역 1번 출구 연결
+
+# 버스
+[홍대입구역 정류장(2번 출구), 합정역 가는 방향]
+- 간선버스(파랑): N26, N62, 271, 273, 602, 603, 604, 761
+- 지선버스(초록): 7016, 7711, 7737, 5712, 5714, 6712, 6716, 7612, 7739
+- 광역버스(주황): 1000, 1100, 1101, 1200, 1300, 1301, 1400, 1500, 1601, M6117, M6118, M6724
+- 공항버스(하늘): 6002
+
+[홍대입구역 정류장(8번 출구), 신촌역 가는 방향]
+- 간선버스(파랑): N26, N62, 271, 273, 602, 603, 604, 761
+- 지선버스(초록): 7711, 5712, 5714, 6712, 6716, 7016, 7612, 7737, 7739
+- 광역버스(주황): 1300, 1400, 1500, 1601, 1000, 1100, 1101, 1200, 1301, M6117, M6118, M6724
+- 공항버스(하늘): 6002
+
+[청기와 주유소 정류장(1번 출구)]
+- 지선버스(초록): 7016, 7711, 7737
+- 마을버스(초록): 마포06, 마포09
+		</pre>
+		<h2>주차안내</h2>
+		<hr>
+	<pre class="parking-info">
+■ 주차장 미운영 안내
+- CNM홍대는 건물 내 주차장을 운영하지 않으니, 대중교통 이용을 부탁드립니다.
+		</pre>
+		<script>
+        // 팝업창 크기 변경 함수
+       function maximizePopup() {
+		    // 화면의 가로 및 세로 크기 가져오기
+		    var screenWidth = window.screen.availWidth;
+		    var screenHeight = window.screen.availHeight;
+		    
+		    // 팝업 창을 화면의 100%로 확장
+		    window.resizeTo(screenWidth, screenHeight);
+		}
+
+
+			function mapgo(a){
+	    		
+	            window.location.href = "https://map.naver.com/v5/search/"+a;  // 페이지 이동
+	            maximizePopup();  // 페이지 이동 후 팝업창 크기 조절
+
+
+	    		
+
+			}
+		</script>
+	</body>
+</html>

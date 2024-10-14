@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>신고게시판</title>
+  <style>
+    #dibody{
+      text-align: center;
+    }
+    label{
+      display: inline-block;
+      width: 300px;
+    }
+    #etc2{
+      width: 300px;
+      display: none; /* 기본적으로 숨김 처리 */
+    }
+    button {
+      border-radius: 20px;
+      color: black;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 12px 45px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: transform 80ms ease-in;
+      width: 300px;
+      height: 40px;
+    }
+
+    button:active {
+      transform: scale(0.95);
+    }
+
+    button:focus {
+      outline: none;
+    }
+
+    button.ghost {
+      background-color: transparent;
+      border-color: #FFFFFF;
+    }
+    #subm{
+      border: 1px solid deepskyblue;
+      background-color: deepskyblue;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+<div id="dibody">
+  <h1>신고하기</h1>
+
+  <form action="/report/report" method="post" onsubmit="return validateForm()">
+    <label for="cuss">욕설,비방,차별,혐오</label>
+    <input type="radio" name="reportOption" id="cuss" value="욕설,비방,차별,혐오"><br>
+    <label for="impo">불법정보</label>
+    <input type="radio" name="reportOption" id="impo" value="불법정보"><br>
+    <label for="youth">음란청소년유해</label>
+    <input type="radio" name="reportOption" id="youth" value="음란청소년유해"><br>
+    <label for="personim">개인정보노출,유포,거래</label>
+    <input type="radio" name="reportOption" id="personim" value="개인정보노출,유포,거래"><br>
+    <label for="plaster">도배</label>
+    <input type="radio" name="reportOption" id="plaster" value="도배"><br>
+    <label for="etc">기타</label>
+    <input type="radio" name="reportOption" id="etc" value="기타" onclick="showTextbox()"><br>
+    <input type="text" name="reportContent" id="etc2"><br><br>
+
+    <button type="submit" id="subm">확인</button><br><br>
+  </form>
+
+  <button onclick="cancel();">취소</button>
+
+  <script>
+    // 라디오 버튼이 클릭될 때 텍스트 박스를 보이거나 숨기는 함수
+    function showTextbox() {
+      var etcRadio = document.getElementById("etc");
+      var textbox = document.getElementById("etc2");
+
+      if (etcRadio.checked) {
+        textbox.style.display = "inline-block"; // 기타 선택 시 텍스트 박스를 보임
+      } else {
+        textbox.style.display = "none"; // 그 외 경우에는 숨김
+      }
+    }
+
+    // 다른 라디오 버튼이 클릭될 때 텍스트 박스를 숨기는 함수
+    document.querySelectorAll('input[name="reportOption"]').forEach(function(radio) {
+      radio.addEventListener('click', function() {
+        var textbox = document.getElementById("etc2");
+        if (this.id !== "etc") {
+          textbox.style.display = "none"; // 기타가 아닌 경우 텍스트 박스 숨김
+        }
+      });
+    });
+
+    function cancel(){
+      alert("취소하셨습니다.");
+    }
+
+    // 폼 검증 함수: radio 버튼이 선택되었는지 확인
+    function validateForm() {
+      var radios = document.getElementsByName('reportOption');
+      var formValid = false;
+
+      for (var i = 0; i < radios.length; i++) {
+        if (radios[i].checked) {
+          formValid = true;
+          break;
+        }
+      }
+
+      if (!formValid) {
+        alert("하나의 신고 항목을 선택해주세요.");
+        return false; // 폼 제출을 막음
+      }
+      return true; // 폼 제출을 허용
+    }
+  </script>
+</div>
+</body>
+</html>

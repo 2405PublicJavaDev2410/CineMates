@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.filmfellows.cinemates.domain.cinema.model.mapper.CinemaMapper">
+  <select id="locationsearch">
+  	SELECT * FROM CINEMA_TBL WHERE CINEMA_LOCATION_CODE=#{locationcode}
+  </select>
+  
+  <select id="onecinemasearch">
+  	SELECT * FROM CINEMA_TBL WHERE CINEMA_NO=#{cinemaNo}
+  </select>
+  <select id="showtimelist">
+      SELECT A.*,
+             B.*,
+             B.SCREEN_SEAT - NVL(R.TOTAL_RESERVED_VISITORS, 0) AS AVAILABLE_SEATS,
+             C.*
+      FROM SHOWTIME_TBL A
+               JOIN SCREEN_TBL B ON A.SCREEN_NO = B.SCREEN_NO
+               JOIN MOVIE_TBL C ON A.MOVIE_NO = C.MOVIE_NO
+               LEFT JOIN (
+          SELECT SHOWTIME_NO, TO_CHAR(RESERVATION_DATE,'YYYY/MM/DD'), SUM(RESERVATION_VISITOR) AS TOTAL_RESERVED_VISITORS
+          FROM RESERVATION_TBL
+          GROUP BY SHOWTIME_NO, RESERVATION_DATE
+      ) R ON A.SHOWTIME_NO = R.SHOWTIME_NO
+      WHERE B.CINEMA_NO = #{cinemaNo}
+        AND CURRENT_TIMESTAMP BETWEEN A.SHOWTIME_START AND A.SHOWTIME_END
+      ORDER BY A.MOVIE_NO ASC, A.SCREEN_NO, A.SHOWTIME_TIME
+  </select>
+    <select id="showtimelistcurrent">
+        SELECT A.*,
+        B.*,
+        B.SCREEN_SEAT - NVL(R.TOTAL_RESERVED_VISITORS, 0) AS AVAILABLE_SEATS,
+        C.*
+        FROM SHOWTIME_TBL A
+        JOIN SCREEN_TBL B ON A.SCREEN_NO = B.SCREEN_NO
+        JOIN MOVIE_TBL C ON A.MOVIE_NO = C.MOVIE_NO
+        LEFT JOIN (
+        SELECT SHOWTIME_NO, TO_CHAR(RESERVATION_DATE,'YYYY/MM/DD'), SUM(RESERVATION_VISITOR) AS TOTAL_RESERVED_VISITORS
+        FROM RESERVATION_TBL
+        GROUP BY SHOWTIME_NO, RESERVATION_DATE
+        ) R ON A.SHOWTIME_NO = R.SHOWTIME_NO
+        WHERE B.CINEMA_NO = #{cinemaNo}
+        AND A.SHOWTIME_TIME > TO_CHAR(CURRENT_TIMESTAMP, 'HH24:MI')
+        ORDER BY A.MOVIE_NO ASC, A.SCREEN_NO, A.SHOWTIME_TIME
+    </select>
+    <select id="allshowtimelist">
+        SELECT *
+        FROM SHOWTIME_TBL A
+                 JOIN SCREEN_TBL B ON A.SCREEN_NO = B.SCREEN_NO
+                 JOIN MOVIE_TBL C on A.MOVIE_NO=C.MOVIE_NO
+        WHERE B.CINEMA_NO = #{cinemaNo}
+        ORDER BY A.MOVIE_NO ASC,A.SCREEN_NO, A.SHOWTIME_TIME
+    </select>
+    <select id="showtimelistdate">
+        SELECT A.*,
+               B.*,
+               B.SCREEN_SEAT - NVL(R.TOTAL_RESERVED_VISITORS, 0) AS AVAILABLE_SEATS,
+               C.*
+        FROM SHOWTIME_TBL A
+                 JOIN SCREEN_TBL B ON A.SCREEN_NO = B.SCREEN_NO
+                 JOIN MOVIE_TBL C ON A.MOVIE_NO = C.MOVIE_NO
+                 LEFT JOIN (
+            SELECT SHOWTIME_NO, TO_CHAR(RESERVATION_DATE,'YYYY/MM/DD'), SUM(RESERVATION_VISITOR) AS TOTAL_RESERVED_VISITORS
+            FROM RESERVATION_TBL
+            GROUP BY SHOWTIME_NO, RESERVATION_DATE
+        ) R ON A.SHOWTIME_NO = R.SHOWTIME_NO
+        WHERE B.CINEMA_NO = #{cinemaNo}
+          AND #{selectDate} BETWEEN A.SHOWTIME_START AND A.SHOWTIME_END
+        ORDER BY A.MOVIE_NO ASC, A.SCREEN_NO, A.SHOWTIME_TIME
+
+    </select>
+    <select id="allcinema">
+        SELECT * FROM CINEMA_TBL ORDER BY CINEMA_NO ASC
+    </select>
+    <insert id="insertcinema">
+        INSERT INTO CINEMA_TBL VALUES(SEQ_CINEMA_NO.NEXTVAL,#{cinemaLocationCode},#{cinemaName},#{cinemaAddress},#{cinemaCall},#{cinemaScreens},#{cinemaSeat})
+    </insert>
+    <update id="updatecinema">
+        UPDATE CINEMA_TBL SET CINEMA_LOCATION_CODE=#{cinemaLocationCode},CINEMA_NAME=#{cinemaName},CINEMA_ADDRESS=#{cinemaAddress},CINEMA_CALL=#{cinemaCall},CINEMA_SCREENS=#{cinemaScreens},CINEMA_SEAT=#{cinemaSeat}
+        WHERE CINEMA_NO=#{cinemaNo}
+    </update>
+    <delete id="deletecinema">
+        DELETE FROM CINEMA_TBL WHERE CINEMA_NO=#{cinemaNo}
+    </delete>
+
+    <select id="onecinemascreen">
+        SELECT * FROM SCREEN_TBL WHERE CINEMA_NO=#{cinemaNo}
+    </select>
+    <insert id="showtimeinsert">
+        INSERT INTO SHOWTIME_TBL VALUES(SEQ_SHOWTIME_NO.NEXTVAL,#{screenNo},#{movieNo},#{showtimeTime},#{showtimeSeat},#{showtimeStart},#{showtimeEnd})
+    </insert>
+
+    <insert id="insertScreen">
+        INSERT INTO SCREEN_TBL VALUES(SEQ_SCREEN_NO.NEXTVAL,#{cinemaNo},#{screenName},#{screenSeat})
+    </insert>
+    <select id="onescreen">
+        SELECT * FROM SCREEN_TBL WHERE SCREEN_NO=#{screenNo}
+    </select>
+    <update id="updatescreen">
+        UPDATE SCREEN_TBL SET SCREEN_NAME=#{screenName},SCREEN_SEAT=#{screenSeat} WHERE SCREEN_NO=#{screenNo}
+    </update>
+    <delete id="deletescreen">
+        DELETE FROM SCREEN_TBL WHERE SCREEN_NO=#{screenNo}
+    </delete>
+    <select id="oneshowtime">
+            SELECT * FROM SHOWTIME_TBL A
+            JOIN SCREEN_TBL B ON A.SCREEN_NO = B.SCREEN_NO
+            WHERE SHOWTIME_NO=#{showtimeNo}
+    </select>
+    <update id="updateshowtime">
+        UPDATE SHOWTIME_TBL SET SCREEN_NO=#{screenNo},MOVIE_NO=#{movieNo},SHOWTIME_TIME=#{showtimeTime},SHOWTIME_SEAT=#{showtimeSeat},SHOWTIME_START=#{showtimeStart},SHOWTIME_END=#{showtimeEnd} WHERE SHOWTIME_NO=#{showtimeNo}
+    </update>
+    <delete id="deleteshowtime">
+        DELETE FROM SHOWTIME_TBL WHERE SHOWTIME_NO=#{showtimeNo}
+    </delete>
+  
+  </mapper>

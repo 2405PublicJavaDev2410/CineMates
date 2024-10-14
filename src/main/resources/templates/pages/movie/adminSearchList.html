@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<!-- Default Layout Import-->
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/defaultLayout}"
+      layout:fragment="Content">
+<link rel="stylesheet" href="/css/movie/adminMovieList.css">
+<main>
+<div class="main-container">
+    <h1>영화 리스트</h1>
+    <div class="search-register-container">
+        <div class="search-section">
+            <form action="/admin/search-movie" method="post">
+                <select name="searchCondition" class="common-input">
+                    <option value="all" th:selected="${searchCondition == 'all'}">전체</option>
+                    <option value="movieNo" th:selected="${searchCondition == 'movieNo'}">영화번호</option>
+                    <option value="title" th:selected="${searchCondition == 'title'}">영화명</option>
+                </select>
+                <input
+                        type="text"
+                        name="searchKeyword"
+                        class="common-input"
+                        placeholder="검색어를 입력해주세요."
+                        th:value="${searchKeyword}"
+                />
+                <button type="submit" class="search-btn">검색</button>
+            </form>
+        </div>
+        <div class="register-section">
+            <button type="button" class="register-btn" onclick="goInsert();">등록</button>
+        </div>
+    </div>
+    <div th:if="${#lists.isEmpty(sList)}">
+        <a>데이터가 존재하지 않습니다.</a>
+    </div>
+    <div th:if="${!#lists.isEmpty(sList)}">
+        <div class="movie-list-area">
+            <table class="common-table">
+                <colgroup>
+                    <col style="width: 10%" />
+                    <col style="width: 50%" />
+                    <col style="width: 20%" />
+                    <col style="width: 20%" />
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>영화코드</th>
+                        <th>영화명</th>
+                        <th>개봉일</th>
+                        <th>상영 상태</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="movie : ${sList}">
+                        <td th:text="${movie.movieNo}"></td>
+                        <td>
+                            <a th:href="@{/admin/movie-detail/{movieNo}(movieNo=${movie.movieNo})}">
+                                <span th:text="${movie.title}"></span>
+                            </a>
+                        </td>
+                        <td th:text="${movie.ReleaseDate}"></td>
+                        <td th:text="${movie.screeningStatus}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</main>
+<script>
+    function goInsert() {
+            location.href = "/admin/insert-movie"
+    }
+</script>
+</html>

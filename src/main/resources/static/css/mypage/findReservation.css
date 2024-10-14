@@ -1,0 +1,101 @@
+.my-page-container {
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 100px 0;
+    margin: 0 auto;
+    flex-direction: row;
+    width: 90%;
+    flex: 1 1 auto;
+}
+
+/*메인 CSS*/
+#main-container {
+    width: 800px;
+    min-height: 400px;
+    float: left;
+    margin: 0 auto;
+}
+.search-reserve-form {
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+    margin-left: 40px;
+    padding: 20px;
+}
+#reserve-title {
+    font-family: 'GmarketSansMedium', serif;
+    font-size: 28px;
+    font-weight: bold;
+}
+#reserve-search-section {
+    padding: 30px 20px;
+    width: 740px;
+    height: 140px;
+    background-color: #ececec;
+    border-radius: 10px;
+    margin-bottom: 40px;
+}
+#reserve-search-section label {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 18px;
+}
+.common-input-box {
+    width: 400px;
+    padding: 10px;
+    float: left;
+}
+#reserve-search-btn {
+    display: block;
+    width: 90px;
+    height: 45px;
+    padding: 10px 10px;
+    margin-left: 10px;
+    border-radius: 5px;
+    letter-spacing: 1px;
+    background-color: #464646;
+    border: 2px solid #464646;
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+    transition: border 0.3s ease, background-color 0.3s ease;
+    font-size: 15px;
+    color: white;
+    cursor: pointer;
+    float: left;
+}
+#reserve-search-btn:hover {
+    background-color: #242424;
+    border: 2px solid #242424;
+    color: white;
+}
+.info-group, .error-group {
+    width: 740px;
+}
+#info-table {
+    width: 100%;
+    padding: 0 10px 0 20px;
+}
+#info-table th {
+    text-align: left;
+}
+#info-table td {
+    padding: 5px 10px;
+}
+#movie-info, #error-message {
+    margin-top: 10px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+}
+#movie-info {
+    padding: 10px 0 10px 20px;
+}
+#thumbnail-area {
+    width: 160px;
+    height: 220px;
+    border-radius: 5px;
+    background-color: #466288;
+}
+#error-message {
+    text-align: center;
+    padding: 20px;
+}

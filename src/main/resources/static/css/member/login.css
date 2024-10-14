@@ -22,6 +22,19 @@
 #login-form label {
     font-size: 16px;
 }
+.hide {
+    display: none;
+}
+.message {
+    color: #ED1C24;
+    font-size: 14px;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+.error-border {
+    transition: none;
+    border: 2px solid #ED1C24;
+}
 .common-input-box {
     padding: 10px;
     margin: 10px 0;
@@ -48,4 +61,37 @@
 }
 #login-form ul li a:hover {
     color: #EA4E4A;
+}
+.divider-container {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 40px 0;
+    position: relative;
+}
+.divider {
+    flex-grow: 1;
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 0;
+}
+.divider-text {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff;
+    padding: 0 20px;
+    white-space: nowrap;
+}
+#naver-login-btn {
+    width: 180px;
+    margin-left: 20px;
+    display: block;
+    float: left;
+}
+#kakao-login-btn {
+    width: 180px;
+    margin-left: 20px;
+    display: block;
+    float: left;
 }

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>부산명지</title>
+	<style>
+		body {
+			font-family: 'Arial', sans-serif;
+			margin: 20px;
+			line-height: 1.6;
+			background-color: #f9f9f9;
+			color: #333;
+		}
+
+		h2 {
+			color: #007bff; /* 강조 색상 */
+			font-size: 24px;
+			border-bottom: 2px solid #007bff;
+			padding-bottom: 10px;
+			margin-bottom: 20px;
+		}
+
+		hr {
+			border: 0;
+			height: 1px;
+			background-color: #ddd;
+			margin: 20px 0;
+		}
+
+		pre {
+			background-color: #f0f8ff; /* 가독성을 위한 배경색 */
+			padding: 15px;
+			border-radius: 5px;
+			font-size: 16px;
+			overflow-x: auto;
+			white-space: pre-wrap;
+			word-wrap: break-word;
+		}
+
+		div {
+			text-align: right;
+			margin-bottom: 20px;
+		}
+
+		button {
+			padding: 10px 20px;
+			background-color: #007bff;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			font-size: 16px;
+		}
+
+		button:hover {
+			background-color: #0056b3;
+		}
+
+		/* 주차 안내 박스 */
+		.parking-info {
+			background-color: #fff8dc;
+			padding: 20px;
+			border: 1px solid #ccc;
+			border-radius: 10px;
+			margin-top: 20px;
+		}
+
+		/* 미디어 쿼리: 모바일에서의 최적화 */
+		@media (max-width: 600px) {
+			body {
+				margin: 10px;
+			}
+
+			h2 {
+				font-size: 20px;
+			}
+
+			button {
+				width: 100%;
+				font-size: 18px;
+			}
+
+			pre {
+				font-size: 14px;
+			}
+		}
+	</style>
+	</head>
+	<body>
+	<div><button th:onclick="mapgo([[${cinemaAddress}]])">길찾기</button></div>
+		<h2>대중교통안내</h2>
+		<hr>
+		
+		<pre>
+# 버스 이용 시
+110 / 111 CMM북포항 하차
+양덕3, 207, 209, 302, 308, 120, 207, 219,5000(급행), 206, 130 육거리 하차 (양덕방면)
+900, 121, 207, 209, 216, 308, 302 북구청 하차 (문덕방면)
+9000(급행) 동빈다리 하차
+도심환승센터에서 도보 거리 5분 내 위치 , 대중교통 이용해주시기 바랍니다.
+		</pre>
+		<h2>주차안내</h2>
+		<hr>
+	<pre class="parking-info">
+■ 이용요금
+- 영화관람시 3시간 무료 주차 (입차시간 기준, 3시간 이후 30분당 1,000원)
+
+■ 주차정보
+- 극장 건물 내 1층 지상 / 타워 주차장 주차 가능
+- 건물 주차장 건너 새마을금고 주차장 또는 외부2주차장 주차 가능
+- 대로변에 위치한 외부1주차장(무인주차시스템) 주차 가능
+
+■ 특이사항
+- 외부1주차장(무인주차) 이용 시 매표소에서 차량번호 등록 필수
+- 건물 주차장 입차 시 받은 주차권(초록색)은 영화티켓과 함께 주차직원에게 제시
+- 건물주차장 및 외부주차장 만차시 인근 제휴 주차장으로 안내
+- 주차 공간이 협소하므로 가급적 편리한 대중교통을 이용해주시기 바랍니다.
+		</pre>
+		<script>
+        // 팝업창 크기 변경 함수
+       function maximizePopup() {
+		    // 화면의 가로 및 세로 크기 가져오기
+		    var screenWidth = window.screen.availWidth;
+		    var screenHeight = window.screen.availHeight;
+		    
+		    // 팝업 창을 화면의 100%로 확장
+		    window.resizeTo(screenWidth, screenHeight);
+		}
+
+
+			function mapgo(a){
+	    		
+	            window.location.href = "https://map.naver.com/v5/search/"+a;  // 페이지 이동
+	            maximizePopup();  // 페이지 이동 후 팝업창 크기 조절
+
+
+	    		
+
+			}
+		</script>
+	</body>
+</html>

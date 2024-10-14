@@ -1,0 +1,337 @@
+/* body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        } */
+.container {
+    width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+}
+.movie-header {
+    display: flex;
+    margin-bottom: 20px;
+}
+.movie-poster {
+    width: 300px;
+    height: auto;
+    margin-right: 20px;
+    border-radius: 10px;
+}
+.movie-info {
+    flex: 1;
+}
+.movie-title {
+    font-size: 28px;
+    margin-bottom: 10px;
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+    font-weight: bold;
+}
+.movie-meta {
+    color: #666;
+    margin-bottom: 15px;
+    font-family: 'GmarketSansMedium', serif;
+}
+
+.reserve-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #D54946;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-right: 10px;
+    border: none;
+    cursor: pointer;
+    font-family: 'GmarketSansMedium', serif;
+}
+
+.reserve-btn:hover {
+    background-color: #E12C25;
+}
+
+
+/*영화정보, 관람평 탭*/
+.tabs {
+    margin-top: 30px;
+}
+.tab-buttons {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+.tab-button {
+    width: 600px;
+    padding: 10px 20px;
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    font-family: 'GmarketSansMedium', serif;
+    font-weight: bold;
+}
+.tab-button.active {
+    border-bottom: 2px solid black;
+}
+.tab-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+}
+.hidden {
+    display: none;
+}
+.movie-details {
+    margin-bottom: 20px;
+}
+
+.movie-details h2 {
+    margin-bottom: 15px;
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+    font-weight: bold;
+}
+
+.movie-details p {
+    margin-bottom: 5px;
+    font-family: 'GmarketSansMedium', serif;
+}
+
+
+
+.section-title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+.section-title h2 {
+    margin: 0;
+    margin-right: 10px;
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+}
+.total-count {
+    font-size: 0.9em;
+    color: #666;
+    font-family: 'GmarketSansMedium', serif;
+}
+
+
+/*트레일러*/
+
+.trailer-section {
+    margin-bottom: 30px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.trailer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.trailer-nav {
+    display: flex;
+    gap: 10px;
+}
+.nav-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: #666;
+}
+.trailer-list-container {
+    overflow: hidden;
+}
+.trailer-list {
+    display: flex;
+    transition: transform 0.3s ease;
+}
+.trailer-item {
+    flex: 0 0 calc(33.333% - 10px);
+    margin-right: 15px;
+}
+.trailer-thumbnail {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%; /* 16:9 비율 */
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.trailer-thumbnail img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.play-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.play-icon::after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 15px solid white;
+    margin-left: 3px;
+}
+.trailer-title {
+    margin-top: 10px;
+    font-size: 14px;
+    font-family: 'GmarketSansMedium', serif;
+}
+
+
+/*스틸컷*/
+
+
+.still-list {
+    column-count: 3;
+    column-gap: 10px;
+}
+.still-item {
+    break-inside: avoid;
+    margin-bottom: 10px;
+}
+.still-item img {
+    width: 100%;
+    display: block;
+    border-radius: 8px;
+}
+
+
+
+/*리뷰*/
+.review-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+.review-write-button {
+    width: 300px;
+    padding: 10px;
+    background-color: #D54946;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0 auto 20px;
+    display: block;
+    font-family: 'GmarketSansMedium', serif;
+}
+.review-write-button:hover {
+    background-color: #E12C25;
+}
+
+.review-form {
+    display: none;
+    margin-bottom: 20px;
+}
+.review-item, .review-form-content {
+    display: flex;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+.review-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #ddd;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+.review-content, .review-form-fields {
+    flex-grow: 1;
+    font-family: 'GmarketSansMedium', serif;
+}
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 5px;
+}
+.review-info {
+    display: flex;
+    flex-direction: column;
+    /*font-family: 'GmarketSansMedium', serif;*/
+}
+.review-username {
+    font-weight: bold;
+}
+.review-date {
+    color: #888;
+    font-size: 0.9em;
+}
+.review-stars {
+    color: #ffd700;
+    font-size: 1.2em;
+    margin-top: 5px;
+}
+.review-report {
+    color: #888;
+    font-size: 0.9em;
+    cursor: pointer;
+    /*font-family: 'GmarketSansMedium', serif;*/
+}
+.review-text {
+    margin-top: 10px;
+}
+.star-rating {
+    display: flex;
+    flex-direction: row-reverse;
+    font-size: 1.5em;
+    justify-content: flex-end;
+}
+.star-rating input {
+    display: none;
+}
+.star-rating label {
+    color: #ddd;
+    cursor: pointer;
+}
+.star-rating :checked ~ label {
+    color: #ffd700;
+}
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color: #ffd700;
+}
+textarea {
+    width: 100%;
+    height: 100px;
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-family: 'GmarketSansMedium', serif;
+}
+.submit-review {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #233245;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'GmarketSansMedium', serif;
+}
+
+.submit-review:hover{
+    background-color: #242424;
+}

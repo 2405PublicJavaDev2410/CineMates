@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<!-- Default Layout Import-->
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/defaultLayout}"
+      layout:fragment="Content">
+<link rel="stylesheet" href="/css/movie/adminInsertMovie.css">
+
+<body>
+<div layout:fragment="content">
+  <!-- 여기에 기존의 main 태그 내용을 넣습니다 -->
+  <main>
+    <h1>영화 등록</h1>
+
+    <div class="detail-area" >
+      <div>
+        <div class="detail-left">
+          <div class="poster">
+            <img id="posterPreview" src="" alt="포스터 미리보기" />
+          </div>
+        </div>
+        <div class="detail-right" >
+          <h2>영화 정보</h2>
+          <form action="/admin/insert-movie" method="post" class="detail-form">
+<!--            <label for="">영화코드</label>-->
+            <input type="hidden" name="movieNo" readonly/>
+            <label for="">영화명</label>
+            <input type="text" name="title" placeholder="영화명" />
+            <label for="posterUrl">포스터Url</label>
+            <input type="text" id="posterUrl" name="posterUrl" placeholder="포스터Url" oninput="updatePosterPreview()" />
+            <label for="">개봉일</label>
+            <input type="text" name="releaseDate" placeholder="ex) 2024-10-23" />
+            <label for="">상영시간</label>
+            <input type="text" name="runningTime" placeholder="분단위 숫자만 입력 ex) 100" />
+            <label for="">줄거리</label>
+            <textarea
+                    cols="30"
+                    rows="10"
+                    style="resize: none"
+                    name="synopsis"
+                    placeholder="줄거리"
+            ></textarea>
+            <label for="">감독</label>
+            <input type="text" name="director" placeholder="감독" />
+            <label for="">배우</label>
+            <input type="text" name="actors" placeholder=",로 구분 ex) 김배우, 강배우, 이배우" />
+            <label for="">장르</label>
+            <input type="text" name="genre" placeholder=",로 구분 ex) 액션, 범죄" />
+            <label for="">제작 국가</label>
+            <input type="text" name="productionCountry" placeholder=",로 구분 ex) 한국, 미국" />
+            <label for="">상영등급</label>
+            <div class="category-info">
+              <select name="rating" class="rating" >
+                <option value="" disabled>등급</option>
+                <option value="NOT RATED">등급 미정</option>
+                <option value="ALL">전체관람가</option>
+                <option value="12">12세이상관람가</option>
+                <option value="15">15세이상관람가</option>
+                <option value="19">청소년관람불가</option>
+              </select>
+            </div>
+
+              <label for="">예매상태</label>
+              <div class="category-info">
+                  <select name="isBookable" class="isBookable">
+                      <option value="" disabled>예매 상태</option>
+                      <option value="Y">가능</option>
+                      <option value="N" selected>불가능</option>
+                  </select>
+              </div>
+
+            <label for="">상영상태</label>
+            <div class="category-info">
+              <select name="screeningStatus" class="screeningStatus">
+                <option value="" disabled>상영 상태</option>
+                <option value="COMING SOON">개봉예정</option>
+                <option value="NOW SHOWING">상영중</option>
+                <option value="ON HOLD" selected>상영정지</option>
+              </select>
+            </div>
+            <div>
+              <div>
+                  <h2>트레일러</h2>
+                    <div id="trailerWrapper">
+                      <!-- 트레일러 항목들이 여기에 추가됩니다 -->
+                    </div>
+                  <button type="button" id="addTrailer" class="addTrailer">트레일러 추가</button>
+
+                <h2>스틸컷</h2>
+                  <div id="stillcutWrapper">
+                    <!-- 스틸컷 항목들이 여기에 추가됩니다 -->
+                  </div>
+                  <button type="button" id="addStillcut" class="addStillcut">스틸컷 추가</button>
+              </div>
+            </div>
+
+            <!-- 트레일러 템플릿 -->
+            <template id="trailerTemplate">
+              <div class="trailer-container">
+<!--                <input type="hidden" name="trailerNo" value="" />-->
+                <input type="text" name="trailerType" placeholder="트레일러 제목" />
+                <input type="text" name="trailerThumbnailUrl" placeholder="썸네일Url" />
+                <input type="text" name="trailerUrl" placeholder="트레일러Url" />
+                <button type="button" class="remove-input-Btn">삭제</button>
+              </div>
+            </template>
+
+            <!-- 스틸컷 템플릿 -->
+            <template id="stillcutTemplate">
+            <div class="stillcut-container">
+<!--              <input type="hidden" name="stillcutNo" value="" />-->
+              <input type="text" name="stillcutUrl" placeholder="스틸컷Url" />
+              <button type="button" class="remove-input-Btn">삭제</button>
+            </div>
+          </template>
+            <button class="buttons modify" type="submit">등록</button>
+<!--            <button class="buttons remove" type="submit">삭제</button>-->
+            <button class="buttons cancel" type="button" onclick="goBack();">뒤로</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+  </main>
+</div>
+<th:block layout:fragment="script">
+<!--     여기에 기존의 script 내용을 넣습니다-->
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const form = document.querySelector('form');
+        const trailerWrapper = document.getElementById('trailerWrapper');
+        const stillcutWrapper = document.getElementById('stillcutWrapper');
+        const addTrailerBtn = document.getElementById('addTrailer');
+        const addStillcutBtn = document.getElementById('addStillcut');
+
+        // 기존 요소의 개수를 파악하여 시작 인덱스 설정
+        let trailerIndex = document.querySelectorAll('.trailer-container').length;
+        let stillcutIndex = document.querySelectorAll('.stillcut-container').length;
+
+        function addTrailer() {
+          const template = document.getElementById('trailerTemplate');
+          const clone = document.importNode(template.content, true);
+          updateInputNames(clone, 'trailers', trailerIndex);
+          trailerWrapper.appendChild(clone);
+          trailerIndex++;
+        }
+
+        function addStillcut() {
+          const template = document.getElementById('stillcutTemplate');
+          const clone = document.importNode(template.content, true);
+          updateInputNames(clone, 'stillcuts', stillcutIndex);
+          stillcutWrapper.appendChild(clone);
+          stillcutIndex++;
+        }
+
+        function updateInputNames(element, prefix, index) {
+          element.querySelectorAll('input').forEach(input => {
+            const name = input.getAttribute('name');
+            input.setAttribute('name', `${prefix}[${index}].${name}`);
+          });
+        }
+
+        addTrailerBtn.addEventListener('click', addTrailer);
+        addStillcutBtn.addEventListener('click', addStillcut);
+
+        form.addEventListener('submit', function(e) {
+          // 폼 제출 전 모든 입력 필드의 인덱스를 재정렬
+          updateAllInputIndexes();
+        });
+
+        function updateAllInputIndexes() {
+          updateContainerInputIndexes('trailer');
+          updateContainerInputIndexes('stillcut');
+        }
+
+        function updateContainerInputIndexes(type) {
+          const containers = document.querySelectorAll(`.${type}-container`);
+          containers.forEach((container, index) => {
+            container.querySelectorAll('input').forEach(input => {
+              const nameWithoutIndex = input.getAttribute('name').split('.').pop();
+              input.setAttribute('name', `${type}s[${index}].${nameWithoutIndex}`);
+            });
+          });
+        }
+
+        // 삭제 버튼 이벤트 리스너
+        document.addEventListener('click', function(e) {
+          if (e.target && e.target.classList.contains('remove-input-Btn')) {
+            const container = e.target.closest('.trailer-container, .stillcut-container');
+            if (container) {
+              container.remove();
+              // 삭제 후 인덱스 재정렬
+              updateAllInputIndexes();
+            }
+          }
+        });
+      });
+
+      function updatePosterPreview() {
+        const posterUrl = document.getElementById('posterUrl').value;
+        const posterPreview = document.getElementById('posterPreview');
+
+        if (posterUrl) {
+          posterPreview.src = posterUrl;
+        } else {
+          posterPreview.src = ''; // URL이 비어있으면 이미지 제거
+        }
+      }
+
+      // 페이지 로드 시 이미지 미리보기 초기화
+      document.addEventListener('DOMContentLoaded', function() {
+        updatePosterPreview();
+      });
+
+      function goBack() {
+          if(confirm("영화 등록을 취소하시겠습니까?")) {
+              location.href = "/admin/movie-list"
+          }
+      }
+    </script>
+</th:block>
+</body>
+</html>

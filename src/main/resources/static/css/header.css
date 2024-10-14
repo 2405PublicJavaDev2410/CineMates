@@ -1,3 +1,73 @@
-header{
-    background-color: aquamarine;
+
+.header {
+    background-color: #ffffff;
+    width: 1200px;
+    margin: 0 auto;
+    color: #000000;
+    padding: 5px 0;
 }
+.header-top {
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid #7c7c7c;
+    top: 18px;
+    left: 50%;
+    padding: 0 20px;
+}
+.header-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+}
+.header-logo img {
+    height: 60px;
+    color: #D54946;
+}
+
+.header-login-area {
+    position: absolute;
+    right: 225px;
+    top: 40px;
+}
+
+.header-login-area img{
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+}
+
+.header-bottom {
+    width: 700px;
+    margin: 0 auto;
+}
+.nav-menu {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.nav-menu a {
+    font-size: 16px;
+    color: #000000;
+    text-decoration: none;
+    position: relative;
+    padding: 13px 18px 8px 18px;
+    font-family: 'GmarketSansMedium', serif;
+}
+.nav-menu a::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 3px;
+    background: #D54946;
+    transition: all .3s ease-out;
+}
+.nav-menu a:hover:after {
+    width: 100%;
+}
+
+
+

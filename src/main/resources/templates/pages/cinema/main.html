@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{common/layout/defaultLayout}"
+	  layout:fragment="Content">
+<link rel="stylesheet" href="/css/movie/adminMovieList.css">
+	<head>
+	<meta charset="UTF-8">
+	<title>극장</title>
+	<style>
+	body {
+		font-family: 'NEXON Lv1 Gothic OTF';
+     	text-align: center;
+     	background-color: white; /* 전체 배경을 어두운 색으로 */
+     	color: black; /* 텍스트를 흰색으로 */
+    	margin: 0;
+        padding: 0;
+    }
+    hr {
+        border: none;
+        height: 2px;
+        background-color: #d3d3d3; /* 구분선 색상 */
+        margin: 20px 0;
+    }
+
+        /* 네비게이션 리스트 */
+    ul {
+		background-color: #444;
+        padding: 0;
+        margin: 0;
+        list-style-type: none;
+		height: 50px;
+    }
+
+    li {
+		margin-top: 14px;
+        display: inline-block;
+    }
+	div{
+		display:inline-block;
+	}
+	a{
+		color: white;
+		text-decoration: none;
+		font-size: 18px;
+		padding: 10px 20px;
+		background-color: #444; /* 버튼 같은 느낌을 위한 배경색 */
+		border-radius: 5px;
+		transition: background-color 0.3s;
+		text-align: center;
+		margin-right: 5px
+	}
+	a:hover {
+        background-color: #ff6f61; /* 마우스 호버시 색상 변경 */
+	}
+	
+	#divmain{
+		width: 80%;
+		height: 400px;
+		background-image: url("https://p.turbosquid.com/ts-thumb/8T/xFrSJN/Fjq8ro22/cinema_hall/jpg/1560286032/1920x1080/fit_q99/097b9acaa2c1e88472be7cb6d6537199ada35780/cinema_hall.jpg");
+		background-size: cover;
+		background-position: center;
+		background-repeat: no-repeat;
+		margin: 20px auto;
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* 입체감 있는 그림자 */
+		border-radius: 10px;
+	}
+	#cinemamain{
+		width: 80%;
+   	 	height: 400px;
+   	 	background-image: url("https://p.turbosquid.com/ts-thumb/nW/BH7tbs/SK/01/jpg/1646280743/1920x1080/fit_q99/5e244c834dd8248f8a9cb464663ad98a52328f61/01.jpg");
+   		 background-size: cover;
+   	 	background-position: center;
+    	background-repeat: no-repeat;
+		margin: 20px auto;
+		padding: 20px;
+		color: white;
+		border-radius: 10px;
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+		text-align: left;
+	}
+	        #cinemamain div {
+            background-color: rgba(0, 0, 0, 0.7); /* 투명한 검은색 배경 */
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            font-size: 18px;
+        }
+
+        button {
+            background-color: #ff6f61;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #e65550;
+        }
+
+        h1,h2 {
+            color: #ff6f61;
+        }
+
+		#footer{
+			height:200px;
+		}
+		.green-background {
+			background-color: green;
+			color: black; /* 텍스트가 잘 보이도록 흰색으로 설정 */
+		}
+
+		.orange-background {
+			background-color: orange;
+			color: black;
+		}
+
+		.red-background {
+			background-color: red;
+			color: black;
+		}
+		.yel-background {
+			background-color: yellow;
+			color: black;
+		}
+	</style>
+	</head>
+	<body>
+		<hr>
+		<ul>
+			<li><a th:href="@{/cinema/location?locationcode=1(cinemaNo=${cinema.cinemaNo})}">서울</a></li>
+			<li><a th:href="@{/cinema/location?locationcode=2(cinemaNo=${cinema.cinemaNo})}">인천</a></li>
+			<li><a th:href="@{/cinema/location?locationcode=3(cinemaNo=${cinema.cinemaNo})}">경기</a></li>
+			<li><a th:href="@{/cinema/location?locationcode=4(cinemaNo=${cinema.cinemaNo})}">대전/충천</a></li>
+			<li><a th:href="@{/cinema/location?locationcode=5(cinemaNo=${cinema.cinemaNo})}">부산/울산</a></li>
+			<li><a th:href="@{/cinema/location?locationcode=6(cinemaNo=${cinema.cinemaNo})}">대구/경상</a></li>
+			<li><a th:href="@{/cinema/location?locationcode=7(cinemaNo=${cinema.cinemaNo})}">강원</a></li>
+			<li><a th:href="@{/cinema/location?locationcode=8(cinemaNo=${cinema.cinemaNo})}">광주/전라/제주</a></li>
+		</ul>
+		<hr>
+		<button th:if="${memberId == 'admin'}" onclick="admin()">극장관리</button>
+		<button th:if="${memberId == 'admin'}" th:onclick="adminshowtime([[${cinema.cinemaNo}]])">상영관리</button>
+		<br>
+
+		<div  id="divmain" >
+		<br>
+			<div th:each="cinema:${cList}"><a th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo})}">[[${cinema.cinemaName}]]</a></div>
+		</div>
+		<h1>CINEMA</h1>
+		<h1>[[${cinema.cinemaName}]]</h1><br>
+			
+		<div><button th:onclick="parking([[${cinema.cinemaNo}]],[[${cinema.cinemaAddress}]])">위치/길찾기</button></div><br><br>
+		<div id="cinemamain">
+		<br><br><br><br><br><br><br><br><br><br><br>
+			<div >[[${cinema.cinemaAddress}]]</div><br>
+			<div >[[${cinema.cinemaCall}]]</div><br>
+			<div >[[${cinema.cinemaScreens}]]관/[[${cinema.cinemaSeat}]]석</div>
+		</div>
+		<h1>상영정보</h1><br>
+		<h2>상영일자</h2><br>
+		<a th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${currentdate})}">
+		<div th:text="${#temporals.day(currentdate)}"></div>
+		</a>
+		<a th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day1})}">
+		<div th:text="${#temporals.day(day1)}"></div>
+		</a>
+		<a th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day2})}">
+		<div th:text="${#temporals.day(day2)}"></div>
+		</a>
+		<a th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day3})}">
+		<div th:text="${#temporals.day(day3)}"></div>
+		</a>
+		<a th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day4})}">
+		<div th:text="${#temporals.day(day4)}"></div>
+		</a>
+		<a th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day5})}">
+		<div th:text="${#temporals.day(day5)}"></div>
+		</a>
+		<a th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day6})}">
+		<div th:text="${#temporals.day(day6)}"></div>
+		</a>
+
+		<br><br><br>
+		<h1>[[${selectDate}]]</h1>
+		<div style="width:80%;text-align:left;">
+		<th th:each="showtime, stat : ${sList}" >
+			<hr th:if="(${stat.index == 0} or ${sList[stat.index - 1].screenName != showtime.screenName}) or (${stat.index == 0} or${sList[stat.index - 1].movieNo != showtime.movieNo})" style="width:100%;">
+			<div th:if="(${stat.index == 0} or ${sList[stat.index - 1].screenName != showtime.screenName}) or (${stat.index == 0} or ${sList[stat.index - 1].movieNo != showtime.movieNo})"
+				 th:classappend="${showtime.rating == 'ALL' ? 'green-background':''} + ${showtime.rating == '15' ? 'orange-background':''}+${showtime.rating == '19' ? 'red-background':''}+${showtime.rating == '12' ? 'yel-background':''}"
+				 style="font-size: 20px;">
+				[[${showtime.rating}]]
+			</div>
+
+			<div th:if="(${stat.index == 0} or ${sList[stat.index - 1].screenName != showtime.screenName}) or (${stat.index == 0} or ${sList[stat.index - 1].movieNo != showtime.movieNo})"
+				 style="width:90%;">
+				<span style="font-size: 20px;">[[${showtime.title}]]</span> <!-- 제목 크기를 크게 설정 -->
+				<span style="color: gray;">[[${showtime.runningTime}]]분 [[${showtime.genre}]]</span> <!-- 시간과 장르의 글자 색상을 회색으로 설정 -->
+			</div>
+			<div th:if="(${stat.index == 0} or ${sList[stat.index - 1].screenName != showtime.screenName}) or (${stat.index == 0} or${sList[stat.index - 1].movieNo != showtime.movieNo})" style="width:100%;font-size: 15px;">[[${showtime.screenName}]]/총[[${showtime.screenSeat}]]석</div>
+
+
+		<div th:if="${stat.index == 0} or ${sList[0].screenName==showtime.screenName} or${sList[stat.index - 1].screenName == showtime.screenName}"  style="width:150px;height:100px;float:left;" >
+		    <a style="display:block; height:65px;">
+		        <div>[[${showtime.showtimeTime}]] <br>[[${showtime.availableSeats}]]석</div><br>
+		    </a>
+		</div>
+		<div th:unless="${stat.index == 0} or ${sList[0].screenName==showtime.screenName} or${sList[stat.index - 1].screenName == showtime.screenName}"  style="width:150px;height:100px; float:left;display:block" >
+		    <a style="display:block; height:65px;">
+		        <div>[[${showtime.showtimeTime}]] <br>[[${showtime.availableSeats}]]석</div><br>
+		    </a>
+		</div>
+
+		</th>
+		</div>
+		<br>
+		<div id="footer"></div>
+		<script type="text/javascript">
+
+			function parking(a,b){
+	    		var popupW = 600;
+	    		var popupH = 750;
+	    		var left = Math.ceil((window.screen.width - popupW)/2);
+	    		var top = Math.ceil((window.screen.height - popupH)/2);
+	    		myWindow=window.open("/cinema/parking/"+a+"&"+b,"pop","width=600,height=750,left="+left+",top="+top+"");
+
+			}
+			function admin(){
+				location.href="/cinema/admin"
+			}
+			function adminshowtime(a){
+				location.href="/cinema/admineshowtime"+a;
+			}
+		</script>
+	</body>
+</html>

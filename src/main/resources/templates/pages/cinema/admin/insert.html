@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="/css/movie/adminMovieList.css">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>극장추가</title>
+
+        <style>
+            body {
+                font-family: 'Arial', sans-serif;
+                width: 100%;
+                max-width: 500px;
+                margin: 0 auto;
+                padding: 20px;
+                background-color: #f0f0f0;
+                color: #333;
+                box-sizing: border-box;
+            }
+            h1 {
+                color: #2c3e50;
+                text-align: center;
+                margin-bottom: 30px;
+            }
+            form {
+                background-color: white;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            div {
+                margin: 15px 0;
+                text-align: left;
+            }
+            input, select {
+                width: 100%;
+                padding: 10px;
+                margin-top: 5px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+            small {
+                display: block;
+                color: #e74c3c;
+                font-size: 12px;
+                margin-top: 5px;
+            }
+            button {
+                width: 100%;
+                padding: 10px;
+                background-color: #3498db;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 16px;
+                margin-top: 20px;
+            }
+            button:hover {
+                background-color: #2980b9;
+            }
+        </style>
+    </head>
+    <body>
+    <h1>극장 추가</h1>
+    <form action="/cinema/insert" method="post">
+        <div>
+            <label for="cinemaLocationCode">지역코드</label>
+            <input type="number" name="cinemaLocationCode" id="cinemaLocationCode" >
+            <small>1:서울,2:인천,3:경기,4:대전/충천,5:부산/울산,6:대구/경상,7:강원,8:광주/전라/제주</small>
+        </div>
+        <div>
+            <label for="cinemaName">극장이름</label>
+            <input type="text" name="cinemaName" id="cinemaName" >
+
+        </div>
+        <div>
+            <label for="cinemaAddress">주소</label>
+            <input type="text" name="cinemaAddress" id="cinemaAddress" >
+            <input type="button" onclick="addresearch();" value="주소찾기">
+
+        </div>
+        <div>
+            <label for="cinemaCall">극장전화번호</label>
+            <input type="text" name="cinemaCall" id="cinemaCall" >
+
+        </div>
+        <div>
+            <label for="cinemaScreens">상영관수</label>
+            <input type="number" name="cinemaScreens" id="cinemaScreens" >
+
+        </div>
+        <div>
+            <label for="cinemaSeat">총좌석</label>
+            <input type="number" name="cinemaSeat" id="cinemaSeat">
+        </div>
+        <button>등록</button>
+    </form>
+
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script>
+        function addresearch(){
+        new daum.Postcode({
+            oncomplete: function(data) {
+                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                var addr = ''; // 주소 변수
+                var extraAddr = ''; // 참고항목 변수
+
+                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                    addr = data.roadAddress;
+                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                    addr = data.jibunAddress;
+                }
+
+                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                if(data.userSelectedType === 'R'){
+                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                        extraAddr += data.bname;
+                    }
+                    // 건물명이 있고, 공동주택일 경우 추가한다.
+                    if(data.buildingName !== '' && data.apartment === 'Y'){
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                    if(extraAddr !== ''){
+                        extraAddr = ' (' + extraAddr + ')';
+                    }
+                    // 조합된 참고항목을 해당 필드에 넣는다.
+                    document.getElementById("cinemaAddress").value = extraAddr;
+
+                } else {
+                    document.getElementById("cinemaAddress").value = '';
+                }
+
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                document.getElementById("cinemaAddress").value = addr;
+            }
+        }).open();
+            daum.Postcode().close();
+        }
+    </script>
+
+    </body>
+</html>

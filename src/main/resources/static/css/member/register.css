@@ -15,7 +15,7 @@
     display: inline-block;
 }
 .input-group {
-    margin: 15px 0;
+    margin-top: 18px;
     display: flex;
     flex-direction: column;
 }
@@ -34,12 +34,12 @@
 }
 .common-input-box {
     padding: 10px;
-    margin: 10px 0;
+    margin: 5px 0;
 }
 .common-input-box:focus {
     outline: none;
-    border: 1px solid #D54946;
-    box-shadow: 0 0 3px #D54946;
+    border: 1px solid #466288;
+    box-shadow: 0 0 3px #466288;
 }
 .pwd-group {
     position: relative;
@@ -54,6 +54,7 @@
     cursor: pointer;
     color: #888;
     font-size: 20px;
+    width: 25px;
 }
 .email-group, .auth-group {
     display: flex;
@@ -62,12 +63,12 @@
 .email-btn, .auth-btn {
     width: 25%;
     height: 45px;
-    margin-top: 10px;
+    margin-top: 5px;
     border: none;
     color: white;
     font-size: 16px;
     letter-spacing: 1px;
-    border-radius: 10px;
+    border-radius: 5px;
     font-family: 'NEXON Lv1 Gothic OTF', serif;
     background-color: #EA4E4A;
     margin-left: 10px;
@@ -83,6 +84,39 @@
 .asterisk {
     color: red;
 }
+.hide {
+    display: none;
+}
+.failure-message {
+    color: #ED1C24;
+    font-size: 14px;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+.success-message {
+    color: #66BB6A;
+    font-size: 14px;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+.error-border {
+    transition: none;
+    border: 2px solid #ED1C24;
+}
+.error-border:focus {
+    outline: none;
+    border: 2px solid #ED1C24;
+    box-shadow: 0 0 3px #ED1C24;
+}
+.success-border {
+    transition: none;
+    border: 2px solid #66BB6A;
+}
+.success-border:focus {
+    outline: none;
+    border: 2px solid #66BB6A;
+    box-shadow: 0 0 3px #66BB6A;
+}
 #select-file-btn {
     margin-top: 10px;
     padding: 11px 10px;
@@ -93,7 +127,7 @@
     background-color: #6e6e6e;
     cursor: pointer;
     height: 40px;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 .file-group input[type="file"] {
     position: absolute;
@@ -110,8 +144,8 @@
     width: 140px;
     height: 140px;
     object-fit: cover;
-    border-radius: 10%;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    box-shadow: 0 0 7px rgba(0, 0, 0, 0.2);
 }
 .common-primary-btn {
     letter-spacing: 1px;

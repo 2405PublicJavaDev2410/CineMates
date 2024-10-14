@@ -1,0 +1,147 @@
+/*공통*/
+li {
+    list-style: none;
+}
+
+.container {
+    width: 100%;
+    background-color: #444;
+}
+
+.hidden {
+    width: 1200px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.cinema-Container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 1200px;
+    height: 870px;
+    margin: 0 auto;
+    /*display: flex;*/
+    /*justify-content: center;*/
+}
+
+/*지역 */
+.regionDiv {
+    width: 350px;
+}
+
+.group-top {
+    color: white;
+    background-color: black;
+    text-align: center;
+}
+
+.regionDiv_region {
+    border: 1px solid black;
+}
+
+/*영화관*/
+.cinemaDiv {
+    width: 350px;
+}
+
+.cinemaDiv_cinema {
+    border: 1px solid blue;
+}
+
+/*영화 */
+.movieDiv {
+    width: 350px;
+}
+
+.movieDiv_movie {
+    border: 1px solid red;
+}
+
+/*달력*/
+.calendar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    float: left;
+}
+
+.month-display {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.week-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.days-container {
+    display: flex;
+    gap: 5px;
+}
+
+.day {
+    width: 40px;
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+}
+
+.day.active {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
+
+.weekday {
+    font-size: 12px;
+    color: #666;
+}
+
+.date {
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+.arrow {
+    cursor: pointer;
+    font-size: 20px;
+    user-select: none;
+    padding: 10px;
+}
+
+/*상영 시간*/
+.selected {
+    background-color: #e0e0e0;
+    font-weight: bold;
+    background: url(https://www.lottecinema.co.kr/NLCHS/Content/images/icon/check.png) no-repeat 150px 2px;
+}
+
+.showtime-link {
+    text-decoration: none;
+    color: black;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.showtime-link.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.showtime-link:hover {
+    background-color: #e9ecef;
+}
+
+.showtime-link.active:hover {
+    background-color: #0056b3;
+}

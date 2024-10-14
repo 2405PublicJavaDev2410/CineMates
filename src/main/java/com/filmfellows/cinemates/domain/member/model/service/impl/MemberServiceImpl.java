@@ -5,8 +5,8 @@ import com.filmfellows.cinemates.domain.member.model.mapper.MemberMapper;
 import com.filmfellows.cinemates.domain.member.model.service.MemberService;
 import com.filmfellows.cinemates.domain.member.model.vo.Member;
 import com.filmfellows.cinemates.domain.member.model.vo.ProfileImg;
+import com.filmfellows.cinemates.domain.snsLogin.model.vo.SnsProfile;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +28,7 @@ public class MemberServiceImpl implements MemberService {
         if(uploadFile != null) {
             String fileName = uploadFile.getOriginalFilename();
             String fileRename = Util.fileRename(fileName);
-            String filePath = "/cimenates/member/";
+            String filePath = "/cinemates/member/";
             uploadFile.transferTo(new File("C:/uploadFile/member/" + fileRename));
             ProfileImg profileImg = new ProfileImg();
             profileImg.setFileName(fileName);
@@ -41,13 +41,38 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public int updateMember(Member member) {
-        return 0;
+    public int updateMember(Member member, MultipartFile reloadFile) throws IllegalStateException, IOException {
+        int result = mMapper.updateMember(member);
+        if(reloadFile != null && !reloadFile.isEmpty()) {
+            String fileName = reloadFile.getOriginalFilename();
+            String fileRename = Util.fileRename(fileName);
+            String filePath = "/cinemates/member/";
+            ProfileImg profileImg = new ProfileImg();
+            reloadFile.transferTo(new File("C:/uploadFile/member/" + fileRename));
+            // profileImg 객체에 새로운 정보 저장
+            profileImg.setFileName(fileName);
+            profileImg.setFileRename(fileRename);
+            profileImg.setFilePath(filePath);
+            profileImg.setMemberId(member.getMemberId());
+            // originProfileImg 객체에 기존 정보 저장
+            ProfileImg originProfileImg = mMapper.selectOneProfileImgById(member.getMemberId());
+            if(originProfileImg != null) {
+                // 로컬저장소 내 기존 파일 삭제
+                File mFile = new File("C:/uploadFile/member/" + originProfileImg.getFileRename());
+                mFile.delete();
+                // 기존 데이터가 있으면 업데이트
+                result = mMapper.updateProfileImg(profileImg);
+            }else {
+                // 기존 데이터가 없으면 새로 저장
+                result = mMapper.insertProfileImg(profileImg);
+            }
+        }
+        return result;
     }
 
     @Override
     public int deleteMember(Member member) {
-        return 0;
+        return mMapper.deleteMember(member);
     }
 
     @Override
@@ -72,12 +97,54 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Member findMemberId(String name, String email) {
-        return null;
+    public Member findMemberId(Member member) {
+        return mMapper.selectOneByNameAndEmail(member.getName(), member.getEmail());
     }
 
     @Override
-    public Member findMemberPw(String name, String email) {
-        return null;
+    public Member findMemberPw(Member member) {
+        return mMapper.selectOneByIdAndEmail(member.getMemberId(), member.getEmail());
+    }
+
+    @Override
+    public int updatePassword(Member member) {
+        String memberId = member.getMemberId();
+        String newPassword = member.getMemberPw();
+        return mMapper.updatePassword(memberId, newPassword);
+    }
+
+    @Override
+    public boolean isIdDuplicate(String memberId) {
+        return mMapper.countByMemberId(memberId);
+    }
+
+    @Override
+    public boolean isEmailDuplicate(String email) {
+        return mMapper.countByEmail(email);
+    }
+
+    @Override
+    public String findSnsIdByEmailAndType(String email, String snsType) {
+        return mMapper.selectSnsIdByEmailAndType(email, snsType);
+    }
+
+    @Override
+    public SnsProfile loginSnsMember(String snsId) {
+        return mMapper.selectOneSnsById(snsId);
+    }
+
+    @Override
+    public int insertSnsIdToMember(String snsId) {
+        return mMapper.insertSnsIdToMember(snsId);
+    }
+
+    @Override
+    public int insertSnsMember(SnsProfile snsProfile) {
+        return mMapper.insertSnsMember(snsProfile);
+    }
+
+    @Override
+    public int deleteSnsMember(String snsId) {
+        return mMapper.deleteSnsMember(snsId);
     }
 }

@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.filmfellows.cinemates.domain.movie.model.mapper.MovieMapper">
+    <resultMap id="movieResultMap" type="MovieDTO">
+        <id property="movieNo" column="MOVIE_NO"/>
+        <result property="title" column="TITLE"/>
+        <result property="posterUrl" column="POSTER_URL"/>
+        <result property="releaseDate" column="RELEASE_DATE"/>
+        <result property="runningTime" column="RUNNING_TIME"/>
+        <result property="rating" column="RATING"/>
+        <result property="synopsis" column="SYNOPSIS"/>
+        <result property="director" column="DIRECTOR"/>
+        <result property="actors" column="ACTORS"/>
+        <result property="genre" column="GENRE"/>
+        <result property="productionCountry" column="PRODUCTION_COUNTRY"/>
+        <result property="isBookable" column="IS_BOOKABLE"/>
+        <result property="screeningStatus" column="SCREENING_STATUS"/>
+
+        <collection property="stillcuts" ofType="com.filmfellows.cinemates.app.movie.dto.MovieDTO$StillcutDTO">
+            <id property="stillcutNo" column="STILLCUT_NO"/>
+            <result property="stillcutUrl" column="STILLCUT_URL"/>
+        </collection>
+
+        <collection property="trailers" ofType="com.filmfellows.cinemates.app.movie.dto.MovieDTO$TrailerDTO">
+            <id property="trailerNo" column="TRAILER_NO"/>
+            <result property="trailerType" column="TRAILER_TYPE"/>
+            <result property="trailerThumbnailUrl" column="TRAILER_THUMBNAIL_URL"/>
+            <result property="trailerUrl" column="TRAILER_URL"/>
+        </collection>
+    </resultMap>
+
+    <!-- 영화 정보 조회 -->
+    <select id="selectMovieDetail" resultMap="movieResultMap">
+        SELECT
+            m.MOVIE_NO,
+            m.TITLE,
+            m.POSTER_URL,
+            m.RELEASE_DATE,
+            m.RUNNING_TIME,
+            m.RATING,
+            m.SYNOPSIS,
+            m.DIRECTOR,
+            m.ACTORS,
+            m.GENRE,
+            m.PRODUCTION_COUNTRY,
+            m.IS_BOOKABLE,
+            m.SCREENING_STATUS,
+            s.STILLCUT_NO,
+            s.STILLCUT_URL,
+            t.TRAILER_NO,
+            t.TRAILER_TYPE,
+            t.TRAILER_THUMBNAIL_URL,
+            t.TRAILER_URL
+        FROM
+            MOVIE_TBL m
+                LEFT JOIN MOVIE_STILLCUT_TBL s ON m.MOVIE_NO = s.MOVIE_NO
+                LEFT JOIN MOVIE_TRAILER_TBL t ON m.MOVIE_NO = t.MOVIE_NO
+        WHERE m.MOVIE_NO = #{movieNo}
+        ORDER BY
+            m.MOVIE_NO, s.STILLCUT_NO, t.TRAILER_NO
+
+    <!-- 어드민 영화 리스트 조회 -->
+    </select>
+    <select id="selectMovieList" resultType="Movie">
+        SELECT MOVIE_NO, TITLE, RELEASE_DATE, SCREENING_STATUS FROM MOVIE_TBL
+    </select>
+
+    <select id="selectAllMovieList" resultType="MovieListDTO">
+        SELECT MOVIE_NO, TITLE, POSTER_URL, RELEASE_DATE, RATING, SCREENING_STATUS FROM MOVIE_TBL
+    </select>
+
+    <!-- 영화 정보 수정-->
+    <update id="updateMovie" parameterType="com.filmfellows.cinemates.app.movie.dto.MovieDTO">
+        UPDATE MOVIE_TBL
+        SET TITLE = #{title},
+            POSTER_URL = #{posterUrl},
+            RELEASE_DATE = #{releaseDate},
+            RUNNING_TIME = #{runningTime},
+            RATING = #{rating},
+            SYNOPSIS = #{synopsis},
+            DIRECTOR = #{director},
+            ACTORS = #{actors},
+            GENRE = #{genre},
+            PRODUCTION_COUNTRY = #{productionCountry},
+            IS_BOOKABLE = #{isBookable},
+            SCREENING_STATUS = #{screeningStatus}
+        WHERE MOVIE_NO = #{movieNo}
+    </update>
+
+    <!-- 스틸컷(단일영화) 전체 삭제-->
+    <delete id="deleteStillcutsByMovieNo" parameterType="long">
+        DELETE FROM MOVIE_STILLCUT_TBL WHERE MOVIE_NO = #{movieNo}
+    </delete>
+
+    <!-- 트레일러(단일영화) 전체 삭제-->
+    <delete id="deleteTrailersByMovieNo" parameterType="long">
+        DELETE FROM MOVIE_TRAILER_TBL WHERE MOVIE_NO = #{movieNo}
+    </delete>
+
+    <!-- 스틸컷 등록-->
+    <insert id="insertStillcut">
+        INSERT INTO MOVIE_STILLCUT_TBL (MOVIE_NO, STILLCUT_URL)
+        VALUES (
+        <choose>
+            <when test="movieNo != null">
+                #{movieNo}
+            </when>
+            <otherwise>
+                SEQ_MOVIE_NO.CURRVAL
+            </otherwise>
+        </choose>,
+        #{stillcut.stillcutUrl})
+    </insert>
+
+    <!-- 트레일러 등록-->
+    <insert id="insertTrailer">
+        INSERT INTO MOVIE_TRAILER_TBL (MOVIE_NO, TRAILER_TYPE, TRAILER_THUMBNAIL_URL, TRAILER_URL)
+        VALUES (
+        <choose>
+            <when test="movieNo != null">
+                #{movieNo}
+            </when>
+            <otherwise>
+                SEQ_MOVIE_NO.CURRVAL
+            </otherwise>
+        </choose>,
+        #{trailer.trailerType},
+        #{trailer.trailerThumbnailUrl},
+        #{trailer.trailerUrl}
+        )
+    </insert>
+
+    <select id="selectMovieByNo" resultMap="movieResultMap">
+        SELECT m.*, s.STILLCUT_NO, s.STILLCUT_URL, t.TRAILER_NO, t.TRAILER_TYPE, t.TRAILER_THUMBNAIL_URL, t.TRAILER_URL
+        FROM MOVIE_TBL m
+                 LEFT JOIN MOVIE_STILLCUT_TBL s ON m.MOVIE_NO = s.MOVIE_NO
+                 LEFT JOIN MOVIE_TRAILER_TBL t ON m.MOVIE_NO = t.MOVIE_NO
+        WHERE m.MOVIE_NO = #{movieNo}
+    </select>
+
+    <!-- 영화 등록-->
+    <insert id="insertMovie">
+        INSERT INTO MOVIE_TBL (MOVIE_NO, TITLE, POSTER_URL, RELEASE_DATE, RUNNING_TIME, RATING, SYNOPSIS, DIRECTOR, ACTORS, GENRE, PRODUCTION_COUNTRY, SCREENING_STATUS, IS_BOOKABLE)
+        VALUES (SEQ_MOVIE_NO.NEXTVAL, #{title}, #{posterUrl}, #{releaseDate}, #{runningTime}, #{rating}, #{synopsis}, #{director}, #{actors}, #{genre}, #{productionCountry}, #{screeningStatus}, #{isBookable})
+    </insert>
+
+    <!-- 영화 검색-->
+    <select id="selectSearchMovie" resultType="Movie" parameterType="hashmap">
+        SELECT * FROM MOVIE_TBL
+        <!-- 		mybatis 동적쿼리 <where>태그 사용, 조건이 다 안맞을 때 where가 동작하지 않도록 함. -->
+        <where>
+            <!-- 		전체에서 검색하는 쿼리 -->
+            <if test="searchCondition == 'all'">
+                MOVIE_NO LIKE '%'||#{searchKeyword}||'%'
+                OR TITLE LIKE '%'||#{searchKeyword}||'%'
+            </if>
+            <!-- 		작성자로 검색하는 쿼리문 -->
+            <if test="searchCondition == 'movieNo'">
+                MOVIE_NO LIKE '%'||#{searchKeyword}||'%'
+            </if>
+            <!-- 		제목으로 검색하는 쿼리문 -->
+            <if test="searchCondition == 'title'">
+                TITLE LIKE '%'||#{searchKeyword}||'%'
+            </if>
+        </where>
+        ORDER BY MOVIE_NO DESC
+    </select>
+
+    <select id="totalMovieCount" resultType="_int">
+        SELECT COUNT(*) FROM MOVIE_TBL
+    </select>
+
+    <select id="getMovieReservationRates" resultType="MovieReservationRateDTO">
+        WITH BOOKABLE_MOVIES AS (
+            SELECT m.MOVIE_NO, m.TITLE,
+                   SUM(r.RESERVATION_VISITOR) AS VISITOR_COUNT
+            FROM MOVIE_TBL m
+                     LEFT JOIN RESERVATION_TBL r ON m.MOVIE_NO = r.MOVIE_NO
+            WHERE m.IS_BOOKABLE = 'Y'
+            GROUP BY m.MOVIE_NO, m.TITLE
+        ),
+             TOTAL_VISITORS AS (
+                 SELECT SUM(VISITOR_COUNT) AS TOTAL_COUNT
+                 FROM BOOKABLE_MOVIES
+             )
+        SELECT bm.MOVIE_NO AS movieNo, bm.TITLE AS title,
+               bm.VISITOR_COUNT AS visitorCount,
+               tv.TOTAL_COUNT AS totalCount,
+               ROUND((bm.VISITOR_COUNT / tv.TOTAL_COUNT) * 100, 2) AS reservationRate
+        FROM BOOKABLE_MOVIES bm, TOTAL_VISITORS tv
+        ORDER BY reservationRate DESC
+    </select>
+
+<!--    <select id="selectMoviesByStatus" resultType="MovieListDTO">-->
+<!--            SELECT MOVIE_NO, TITLE, POSTER_URL, RELEASE_DATE, RATING, SCREENING_STATUS-->
+<!--            FROM MOVIE_TBL-->
+<!--            WHERE SCREENING_STATUS LIKE '%' || #{status} || '%'-->
+<!--    </select>-->
+
+<!--    <select id="selectMoviesByStatus" resultType="MovieListDTO">-->
+<!--        SELECT * FROM (-->
+<!--                          SELECT-->
+<!--                              m.*,-->
+<!--                              ROWNUM AS rn-->
+<!--                          FROM (-->
+<!--                                   SELECT-->
+<!--                                       MOVIE_NO,-->
+<!--                                       TITLE,-->
+<!--                                       POSTER_URL,-->
+<!--                                       RELEASE_DATE,-->
+<!--                                       RATING,-->
+<!--                                       SCREENING_STATUS-->
+<!--                                   FROM MOVIE_TBL-->
+<!--                                   WHERE SCREENING_STATUS LIKE '%' || #{status} || '%'-->
+<!--                                   ORDER BY RELEASE_DATE DESC-->
+<!--                               ) m-->
+<!--                          WHERE ROWNUM &lt;= #{offset} + #{size}-->
+<!--                      )-->
+<!--        WHERE rn > #{offset}-->
+<!--    </select>-->
+
+    <select id="selectMoviesByStatusAndSort" resultType="MovieListDTO">
+        SELECT * FROM (
+        SELECT m.*, ROWNUM AS RN
+        FROM (
+        SELECT m.MOVIE_NO, m.TITLE, m.POSTER_URL, m.RELEASE_DATE, m.RATING, m.SCREENING_STATUS,
+        NVL(r.RESERVATION_RATE, 0) AS RESERVATION_RATE,
+        NVL(rev.REVIEW_COUNT, 0) AS REVIEW_COUNT
+        FROM MOVIE_TBL m
+        LEFT JOIN (
+        SELECT MOVIE_NO,
+        ROUND((VISITOR_COUNT / NULLIF(TOTAL_COUNT, 0)) * 100, 2) AS RESERVATION_RATE
+        FROM (
+        SELECT m.MOVIE_NO,
+        SUM(NVL(r.RESERVATION_VISITOR, 0)) AS VISITOR_COUNT,
+        SUM(SUM(NVL(r.RESERVATION_VISITOR, 0))) OVER () AS TOTAL_COUNT
+        FROM MOVIE_TBL m
+        LEFT JOIN RESERVATION_TBL r ON m.MOVIE_NO = r.MOVIE_NO
+        WHERE m.IS_BOOKABLE = 'Y'
+        GROUP BY m.MOVIE_NO
+        )
+        ) r ON m.MOVIE_NO = r.MOVIE_NO
+        LEFT JOIN (
+        SELECT MOVIE_NO, COUNT(*) AS REVIEW_COUNT
+        FROM REVIEW_TBL
+        GROUP BY MOVIE_NO
+        ) rev ON m.MOVIE_NO = rev.MOVIE_NO
+        WHERE m.SCREENING_STATUS = #{status}
+        ORDER BY
+        <choose>
+            <when test="sortBy == 'reviewCount'">
+                rev.REVIEW_COUNT DESC NULLS LAST
+            </when>
+            <when test="sortBy == 'releaseDate'">
+                m.RELEASE_DATE ASC NULLS LAST
+            </when>
+            <otherwise>
+                r.RESERVATION_RATE DESC NULLS LAST
+            </otherwise>
+        </choose>
+        ) m
+        WHERE ROWNUM &lt;= #{offset} + #{size}
+        )
+        WHERE RN > #{offset}
+    </select>
+
+</mapper>

@@ -10,11 +10,11 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @ToString
 public class Qna {
-    private int qnaNo;
+    private Integer qnaNo;
     private String title;
     private String content;
     private Timestamp regDate;
     private Timestamp modDate;
     private String memberId;
-    private int parentQnaNo;
+    private Integer parentQnaNo;
 }
