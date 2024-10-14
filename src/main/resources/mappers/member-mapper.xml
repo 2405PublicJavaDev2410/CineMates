@@ -7,13 +7,13 @@
         FROM MEMBER_TBL
         WHERE MEMBER_ID = #{memberId}
     </select>
-    <!-- 아이디로 네이버 회원정보 조회(로그인) -->
-    <select id="selectOneNaverById" resultType="NaverProfile">
+    <!-- 아이디로 소셜 회원정보 조회(로그인) -->
+    <select id="selectOneSnsById" resultType="SnsProfile">
         SELECT *
         FROM SNS_INFO_TBL
         WHERE SNS_ID = #{snsId}
     </select>
-    <select id="selectOneKakaoById" resultType="KakaoProfile">
+    <select id="selectOneKakaoById" resultType="SnsProfile">
         SELECT *
         FROM SNS_INFO_TBL
         WHERE SNS_ID = #{snsId}
@@ -67,13 +67,8 @@
         INSERT INTO MEMBER_TBL (MEMBER_ID)
         VALUES (#{memberId})
     </insert>
-    <!-- 네이버 회원가입(SNS_INFO 테이블) -->
-    <insert id="insertNaverMember">
-        INSERT INTO SNS_INFO_TBL (SNS_ID, MEMBER_ID, SNS_TYPE, NAME, PROFILE_IMG, EMAIL, BIRTH_DATE, MOBILE)
-        VALUES (#{snsId}, #{memberId}, #{snsType}, #{name}, #{profileImg}, #{email}, #{birthDate}, #{mobile})
-    </insert>
-    <!-- 카카오 회원가입(SNS_INFO 테이블) -->
-    <insert id="insertKakaoMember">
+    <!-- 소셜 회원가입(SNS_INFO 테이블) -->
+    <insert id="insertSnsMember">
         INSERT INTO SNS_INFO_TBL (SNS_ID, MEMBER_ID, SNS_TYPE, NAME, PROFILE_IMG, EMAIL, BIRTH_DATE, MOBILE)
         VALUES (#{snsId}, #{memberId}, #{snsType}, #{name}, #{profileImg}, #{email}, #{birthDate}, #{mobile})
     </insert>
@@ -109,6 +104,7 @@
         SET FILE_NAME = #{fileName}, FILE_RENAME = #{fileRename}, FILE_PATH = #{filePath}
         WHERE MEMBER_ID = #{memberId}
     </update>
+    <!-- 소셜 회원탈퇴 -->
     <delete id="deleteSnsMember">
         DELETE FROM MEMBER_TBL
         WHERE MEMBER_ID = #{snsId}

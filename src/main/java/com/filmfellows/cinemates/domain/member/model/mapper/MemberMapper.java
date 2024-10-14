@@ -1,9 +1,8 @@
 package com.filmfellows.cinemates.domain.member.model.mapper;
 
-import com.filmfellows.cinemates.domain.kakaologin.model.vo.KakaoProfile;
 import com.filmfellows.cinemates.domain.member.model.vo.Member;
 import com.filmfellows.cinemates.domain.member.model.vo.ProfileImg;
-import com.filmfellows.cinemates.domain.naverlogin.model.vo.NaverProfile;
+import com.filmfellows.cinemates.domain.snsLogin.model.vo.SnsProfile;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -23,12 +22,8 @@ public interface MemberMapper {
     boolean countByEmail(String email);
     // 네이버 로그인
     String selectSnsIdByEmailAndType(@Param("email") String email, @Param("snsType") String snsType);
-    NaverProfile selectOneNaverById(String snsId);
-    KakaoProfile selectOneKakaoById(String snsId);
+    SnsProfile selectOneSnsById(String snsId);
     int insertSnsIdToMember(String snsId);
-    int insertNaverMember(NaverProfile naverProfile);
-    int insertKakaoMember(KakaoProfile kakaoProfile);
+    int insertSnsMember(SnsProfile snsProfile);
     int deleteSnsMember(String snsId);
-
-
 }

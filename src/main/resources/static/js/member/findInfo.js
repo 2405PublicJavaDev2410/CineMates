@@ -88,7 +88,7 @@ const nameRule = (str) => {
 }
 // 아이디 정규식
 const idRule = (str) => {
-    return /^[A-Za-z0-9]{5,10}$/.test(str);
+    return /^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z0-9]{5,10}$/.test(str);
 }
 // 이메일 정규식
 const emailRule = (str) => {

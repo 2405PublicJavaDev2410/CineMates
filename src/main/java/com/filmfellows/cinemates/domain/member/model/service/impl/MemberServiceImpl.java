@@ -1,12 +1,11 @@
 package com.filmfellows.cinemates.domain.member.model.service.impl;
 
 import com.filmfellows.cinemates.common.utility.Util;
-import com.filmfellows.cinemates.domain.kakaologin.model.vo.KakaoProfile;
 import com.filmfellows.cinemates.domain.member.model.mapper.MemberMapper;
 import com.filmfellows.cinemates.domain.member.model.service.MemberService;
 import com.filmfellows.cinemates.domain.member.model.vo.Member;
 import com.filmfellows.cinemates.domain.member.model.vo.ProfileImg;
-import com.filmfellows.cinemates.domain.naverlogin.model.vo.NaverProfile;
+import com.filmfellows.cinemates.domain.snsLogin.model.vo.SnsProfile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -130,13 +129,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public NaverProfile loginNaverMember(String snsId) {
-        return mMapper.selectOneNaverById(snsId);
-    }
-
-    @Override
-    public KakaoProfile loginKakaoMember(String snsId) {
-        return mMapper.selectOneKakaoById(snsId);
+    public SnsProfile loginSnsMember(String snsId) {
+        return mMapper.selectOneSnsById(snsId);
     }
 
     @Override
@@ -145,18 +139,12 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public int insertNaverMember(NaverProfile naverProfile) {
-        return mMapper.insertNaverMember(naverProfile);
-    }
-
-    @Override
-    public int insertKakaoMember(KakaoProfile kakaoProfile) {
-        return mMapper.insertKakaoMember(kakaoProfile);
+    public int insertSnsMember(SnsProfile snsProfile) {
+        return mMapper.insertSnsMember(snsProfile);
     }
 
     @Override
     public int deleteSnsMember(String snsId) {
         return mMapper.deleteSnsMember(snsId);
     }
-
 }

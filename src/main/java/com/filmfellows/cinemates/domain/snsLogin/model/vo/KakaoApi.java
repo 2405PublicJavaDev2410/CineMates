@@ -1,4 +1,4 @@
-package com.filmfellows.cinemates.domain.kakaologin.model.vo;
+package com.filmfellows.cinemates.domain.snsLogin.model.vo;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;

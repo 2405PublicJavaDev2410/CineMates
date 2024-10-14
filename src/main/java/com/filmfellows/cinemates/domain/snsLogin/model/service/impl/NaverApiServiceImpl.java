@@ -1,8 +1,8 @@
-package com.filmfellows.cinemates.domain.naverlogin.model.service.impl;
+package com.filmfellows.cinemates.domain.snsLogin.model.service.impl;
 
-import com.filmfellows.cinemates.domain.naverlogin.model.service.NaverApiService;
-import com.filmfellows.cinemates.domain.naverlogin.model.vo.NaverApi;
-import com.filmfellows.cinemates.domain.naverlogin.model.vo.NaverProfile;
+import com.filmfellows.cinemates.domain.snsLogin.model.service.NaverApiService;
+import com.filmfellows.cinemates.domain.snsLogin.model.vo.NaverApi;
+import com.filmfellows.cinemates.domain.snsLogin.model.vo.SnsProfile;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -53,7 +53,7 @@ public class NaverApiServiceImpl implements NaverApiService {
     }
 
     // 프로필 정보 조회 및 저장
-    public NaverProfile getUserInfo(String accessToken) {
+    public SnsProfile getUserInfo(String accessToken) {
         String apiUrl = "https://openapi.naver.com/v1/nid/me";
         // Http 헤더 객체 생성
         HttpHeaders headers = new HttpHeaders();
@@ -71,9 +71,22 @@ public class NaverApiServiceImpl implements NaverApiService {
         // 응답을 JSON으로 파싱하여 NaverProfile 객체 생성
         JsonElement element = JsonParser.parseString(responseBody);
         // JSON 응답에서 "response" 객체를 가져옴
-        JsonObject responseObject = element.getAsJsonObject().getAsJsonObject("response");
-        // NaverProfile 객체 생성 및 반환
-        return new NaverProfile(responseObject);
+        JsonObject response = element.getAsJsonObject().getAsJsonObject("response");
+        // SnsProfile 객체 생성
+        SnsProfile snsProfile = new SnsProfile();
+
+        // 서비스에서 각 필드 값을 설정
+        snsProfile.setSnsId(response.get("id").getAsString());
+        snsProfile.setSnsType("NAVER");
+        snsProfile.setName(response.has("name") ? response.get("name").getAsString() : null);
+        snsProfile.setEmail(response.has("email") ? response.get("email").getAsString() : null);
+        snsProfile.setProfileImg(response.has("profile_image") ? response.get("profile_image").getAsString() : null);
+        snsProfile.setBirthDate(response.has("birthday") ? response.get("birthday").getAsString() : null);
+        snsProfile.setMobile(response.has("mobile") ? response.get("mobile").getAsString() : null);
+
+        // SnsProfile 객체 반환
+        return snsProfile;
+
     }
 
     // 로그인 연동 해제(탈퇴)

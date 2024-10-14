@@ -45,7 +45,7 @@
                 </form>
             </div>
             <!-- 소셜 회원 정보가 있는 경우 -->
-            <div id="sns-section" th:if="${nMember != null}">
+            <div id="sns-section" th:if="${snsType != null}">
                 <button type="button" class="submit-btn" id="remove-sns-btn" onclick="removeSnsMember(event)">회원탈퇴</button>
             </div>
         </div>

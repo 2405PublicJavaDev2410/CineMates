@@ -1,8 +1,8 @@
-package com.filmfellows.cinemates.domain.kakaologin.model.service.impl;
+package com.filmfellows.cinemates.domain.snsLogin.model.service.impl;
 
-import com.filmfellows.cinemates.domain.kakaologin.model.service.KakaoApiService;
-import com.filmfellows.cinemates.domain.kakaologin.model.vo.KakaoApi;
-import com.filmfellows.cinemates.domain.kakaologin.model.vo.KakaoProfile;
+import com.filmfellows.cinemates.domain.snsLogin.model.service.KakaoApiService;
+import com.filmfellows.cinemates.domain.snsLogin.model.vo.KakaoApi;
+import com.filmfellows.cinemates.domain.snsLogin.model.vo.SnsProfile;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -44,8 +44,8 @@ public class KakaoApiServiceImpl implements KakaoApiService {
         return asJsonObject.get("access_token").getAsString();
     }
 
-    /// 프로필 정보 조회 및 저장
-    public KakaoProfile getUserInfo(String accessToken) {
+    // 프로필 정보 조회 및 저장
+    public SnsProfile getUserInfo(String accessToken) {
         String apiUrl = "https://kapi.kakao.com/v2/user/me";
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + accessToken);
@@ -62,8 +62,29 @@ public class KakaoApiServiceImpl implements KakaoApiService {
         JsonElement element = JsonParser.parseString(responseBody);
         JsonObject jsonObject = element.getAsJsonObject();
 
-        // KakaoProfile 객체 생성 및 반환
-        return new KakaoProfile(jsonObject);
+        String snsId = jsonObject.get("id").getAsString();
+        // properties 객체에서 nickname과 profile_image 가져오기
+        JsonObject properties = jsonObject.getAsJsonObject("properties");
+        String nickname = properties.get("nickname").getAsString();
+        String profileImg = properties.get("profile_image").getAsString();
+        // kakao_account 객체에서 email, birthday, phone_number 가져오기
+        JsonObject kakaoAccount = jsonObject.getAsJsonObject("kakao_account");
+        String email = kakaoAccount.has("email") ? kakaoAccount.get("email").getAsString() : null;
+        String birthday = kakaoAccount.has("birthday") ? kakaoAccount.get("birthday").getAsString() : null;
+        String phoneNumber = kakaoAccount.has("phone_number") ? kakaoAccount.get("phone_number").getAsString() : null;
+
+        // SnsProfile 객체 생성 및 반환
+        SnsProfile snsProfile = new SnsProfile();
+        snsProfile.setSnsId(snsId);
+        snsProfile.setName(nickname);
+        snsProfile.setProfileImg(profileImg);
+        snsProfile.setEmail(email);
+        snsProfile.setBirthDate(birthday);
+        snsProfile.setMobile(phoneNumber);
+        snsProfile.setSnsType("KAKAO");
+
+        // SnsProfile 객체 반환
+        return snsProfile;
     }
 
 }

@@ -78,7 +78,7 @@
                 </form>
             </div>
             <!-- 소셜 회원 정보가 있는 경우 -->
-            <div id="sns-section" th:if="${nMember != null}">
+            <div id="sns-section" th:if="${snsType != null}">
                 <span>회원정보 수정은 일반 회원에게만 제공됩니다. 일반 회원가입을 원하시면 아래 버튼을 클릭하세요.</span>
                 <button type="button" class="common-primary-btn" id="go-register-btn" onclick="goToRegister()">Cinemates 일반 회원가입</button>
             </div>
