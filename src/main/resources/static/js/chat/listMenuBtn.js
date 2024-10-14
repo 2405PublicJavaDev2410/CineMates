@@ -18,3 +18,8 @@ if(status === "my"){
 function showListByMyOrAll(status){
     location.href = `/chat/list?status=${status}`;
 }
+
+// 채팅방 입장
+function joinChatRoom(){
+    location.href=`/chat/room`;
+}

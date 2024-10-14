@@ -336,8 +336,7 @@ h1.page-title {
     font-size: 20px;
 }
 
-.card-mouseover-text.joinBtn2 {
-
+.card-mouseover-text.joinBtn {
     margin: 20px auto;
     width: 100px;
     height: 60px;
@@ -349,7 +348,7 @@ h1.page-title {
     transition: all 200ms;
 }
 
-.card-mouseover-text.joinBtn2:hover {
+.card-mouseover-text.joinBtn:hover {
     background-color: white;
     color: black;
 }
