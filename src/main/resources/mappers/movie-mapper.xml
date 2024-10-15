@@ -279,17 +279,21 @@
         WHERE mt.MOVIE_NO = #{movieNo}
     </select>
 
-    <select id="selectStillcutsPaginated" resultMap="stillcutResultMap">
-        SELECT * FROM (
-        SELECT
-        s.STILLCUT_NO,
-        s.STILLCUT_URL,
-        ROW_NUMBER() OVER (ORDER BY s.STILLCUT_NO) AS ROW_NUM
-        FROM MOVIE_STILLCUT_TBL s
-        WHERE s.MOVIE_NO = #{movieNo}
-        ) WHERE ROW_NUM > #{offset} AND ROW_NUM &lt;= (#{offset} + #{size})
-    </select>
-    <select id="selectReviewByMovieNo" resultType="ReviewDTO">
-        SELECT * FROM REVIEW_TBL WHERE MOVIE_NO = #{movieNo}
+<!--    <select id="selectStillcutsPaginated" resultMap="stillcutResultMap">-->
+<!--        SELECT * FROM (-->
+<!--        SELECT-->
+<!--        s.STILLCUT_NO,-->
+<!--        s.STILLCUT_URL,-->
+<!--        ROW_NUMBER() OVER (ORDER BY s.STILLCUT_NO) AS ROW_NUM-->
+<!--        FROM MOVIE_STILLCUT_TBL s-->
+<!--        WHERE s.MOVIE_NO = #{movieNo}-->
+<!--        ) WHERE ROW_NUM > #{offset} AND ROW_NUM &lt;= (#{offset} + #{size})-->
+<!--    </select>-->
+    <select id="selectReviewByMovieNo" resultType="com.filmfellows.cinemates.app.movie.dto.ReviewDTO">
+        SELECT *
+        FROM REVIEW_TBL r
+             LEFT JOIN PROFILE_IMG_TBL p
+                ON p.MEMBER_ID = r.MEMBER_ID
+        WHERE MOVIE_NO = #{movieNo}
     </select>
 </mapper>

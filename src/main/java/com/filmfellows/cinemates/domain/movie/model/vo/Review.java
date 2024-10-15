@@ -12,7 +12,7 @@ import java.time.LocalDate;
 public class Review {
     private Long ReviewNo;
     private Long movieNo;
-    private String MemberId;
+    private String memberId;
     private Integer score;
     private String reviewContent;
     private LocalDate regDate;

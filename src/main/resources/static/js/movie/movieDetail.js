@@ -1,60 +1,49 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const stillList = document.querySelector("#stillList");
-    const loadMoreContainer = document.querySelector('#load-more-container');
-    const loadMoreBtn = document.querySelector('#loadMoreBtn');
-    const movieNoElement = document.querySelector('#movieNo');
-    const movieNo = movieNoElement ? movieNoElement.value : null;
-
-    let currentPage = 1;
-    const pageSize = 5;
-    let hasMoreStillcuts = loadMoreContainer != null;
-
-    function fetchStillcuts(page, append = false) {
-        $.ajax({
-            url: `/movie-detail/${movieNo}`,
-            method: 'GET',
-            data: {
-                page: page,
-                size: pageSize,
-                isAjax: true
-            },
-            success: function (data) {
-                // 서버에서 반환한 HTML을 파싱
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(data, 'text/html');
-                const newStillcuts = doc.querySelectorAll('.still-item');
-
-                if (newStillcuts.length > 0) {
-                    if (!append) {
-                        stillList.innerHTML = '';
-                    }
-                    newStillcuts.forEach(stillcut => {
-                        stillList.appendChild(stillcut);
-                    });
-                    hasMoreStillcuts = newStillcuts.length === pageSize;
-                    loadMoreContainer.style.display = hasMoreStillcuts ? 'flex' : 'none';
-                } else {
-                    hasMoreStillcuts = false;
-                    loadMoreContainer.style.display = 'none';
-                }
-            },
-            error: function (xhr, error) {
-                console.error('ERROR:', error);
-            }
-        });
-    }
-
-    if (loadMoreBtn) {
-        loadMoreBtn.addEventListener('click', function() {
-            if (hasMoreStillcuts) {
-                currentPage++;
-                fetchStillcuts(currentPage, true);
-            }
-        });
-    }
-});
-
-
+// document.addEventListener('DOMContentLoaded', function() {
+//     const stillcutContainer = document.querySelector("#stillcutContainer");
+//     const loadMoreContainer = document.querySelector('#load-more-container');
+//     const loadMoreBtn = document.querySelector('#loadMoreBtn');
+//     const movieNoElement = document.querySelector('#movieNo');
+//     const currentPageElement = document.querySelector('#currentPage');
+//     const movieNo = movieNoElement ? movieNoElement.value : null;
+//
+//     let currentPage = parseInt(currentPageElement.value);
+//     const pageSize = 5;
+//
+//     function fetchStillcuts() {
+//         currentPage++;
+//         currentPageElement.value = currentPage;
+//
+//         $.ajax({
+//             url: `/movie-detail/${movieNo}`,
+//             method: 'GET',
+//             data: {
+//                 page: currentPage,
+//                 size: pageSize,
+//                 isAjax: true
+//             },
+//             success: function (data) {
+//                 const tempContainer = document.createElement('div');
+//                 tempContainer.innerHTML = data;
+//                 const newStillcuts = tempContainer.querySelector('#stillList').innerHTML;
+//
+//                 const stillList = document.querySelector('#stillList');
+//                 stillList.insertAdjacentHTML('beforeend', newStillcuts);
+//
+//                 const hasMoreStillcuts = tempContainer.querySelector('#load-more-container') !== null;
+//                 loadMoreContainer.style.display = hasMoreStillcuts ? 'flex' : 'none';
+//             },
+//             error: function (xhr, error) {
+//                 console.error('ERROR:', error);
+//             }
+//         });
+//     }
+//
+//     if (loadMoreBtn) {
+//         loadMoreBtn.addEventListener('click', fetchStillcuts);
+//     }
+// });
+//
+//
 // 영화정보 관람평 이동 탭
 document.addEventListener('DOMContentLoaded', () => {
     const tabButtons = document.querySelectorAll('.tab-button');

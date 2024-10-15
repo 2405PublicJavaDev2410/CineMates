@@ -58,30 +58,31 @@ public class MovieContoller {
             return "pages/movie/movieList";
         }
     }
-    @GetMapping("/movie-detail/{movieNo}")
-    public String showMovieDetail(@PathVariable Long movieNo, Model model,
-                                  @RequestParam(defaultValue = "0") int page,
-                                  @RequestParam(defaultValue = "5") int size,
-                                  @RequestParam(required = false) Boolean isAjax) {
-        List<MovieDTO> movieInfo = movieService.selectMovieDetail(movieNo);
-        List<MovieDTO.StillcutDTO> stillcuts = movieService.selectStillcutsPaginated(movieNo, page, size);
-        boolean hasMoreStillcuts = stillcuts.size() == size;
 
-        if (Boolean.TRUE.equals(isAjax)) {
-            model.addAttribute("stillcuts", stillcuts);
-            return "fragments/stillcutList :: stillcutList";
-        }
+    @GetMapping("/movie-detail/{movieNo}")
+    public String showMovieDetail(@PathVariable Long movieNo, Model model
+//                                  @RequestParam(defaultValue = "0") int page,
+//                                  @RequestParam(defaultValue = "5") int size,
+//                                  @RequestParam(required = false) Boolean isAjax
+    ) {
+        List<MovieDTO> movieInfo = movieService.selectMovieDetail(movieNo);
+//        List<MovieDTO.StillcutDTO> stillcuts = movieService.selectStillcutsPaginated(movieNo, page, size);
+//        boolean hasMoreStillcuts = stillcuts.size() == size;
 
         List<ReviewDTO> reviewList = movieService.getReviewByMovieNo(movieNo);
 
-
         int trailerCount = movieService.getTrailrtConunt(movieNo);
         int stillcutCount = movieService.getStillcutCount(movieNo);
+        model.addAttribute("reviewList", reviewList);
         model.addAttribute("movieInfo", movieInfo);
-        model.addAttribute("stillcuts", stillcuts);
-        model.addAttribute("hasMoreStillcuts", hasMoreStillcuts);
+//        model.addAttribute("stillcuts", stillcuts);
+//        model.addAttribute("hasMoreStillcuts", hasMoreStillcuts);
         model.addAttribute("trailerCount", trailerCount);
         model.addAttribute("stillcutCount", stillcutCount);
+
+//        if (Boolean.TRUE.equals(isAjax)) {
+//            return "fragments/stillcutList :: stillcutList";
+//        }
         return "pages/movie/movieDetail";
     }
 }
