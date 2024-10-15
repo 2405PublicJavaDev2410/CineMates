@@ -3,7 +3,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 100px 0;
+    padding: 90px 0;
     font-family: 'NEXON Lv1 Gothic OTF', serif;
 }
 #signup-form {
@@ -33,6 +33,7 @@
     font-size: 16px;
 }
 .common-input-box {
+    width: 520px;
     padding: 10px;
     margin: 5px 0;
 }
@@ -138,11 +139,11 @@
     border: 0;
 }
 #thumbnail-container {
-    margin-top: 10px;
+    margin-top: 20px;
 }
 #profile-thumbnail {
-    width: 140px;
-    height: 140px;
+    width: 160px;
+    height: 160px;
     object-fit: cover;
     border-radius: 50%;
     box-shadow: 0 0 7px rgba(0, 0, 0, 0.2);

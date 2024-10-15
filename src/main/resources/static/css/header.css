@@ -1,15 +1,17 @@
-
 .header {
     background-color: #ffffff;
-    width: 1200px;
-    margin: 0 auto;
+    width: 100%;
     color: #000000;
-    padding: 5px 0;
+    padding-top: 5px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    position: relative;
 }
 .header-top {
+    width: 1200px;
+    margin: 0 auto;
     display: flex;
     justify-content: center;
-    border-bottom: 1px solid #7c7c7c;
+    border-bottom: 1px solid #d5d5d5;
     top: 18px;
     left: 50%;
     padding: 0 20px;
@@ -21,24 +23,64 @@
     padding: 10px 20px;
 }
 .header-logo img {
-    height: 60px;
-    color: #D54946;
+    cursor: pointer;
+    height: 62px;
 }
-
-.header-login-area {
+#header-my, #header-login {
     position: absolute;
-    right: 225px;
-    top: 40px;
-}
-
-.header-login-area img{
-    height: 30px;
-    width: 30px;
     cursor: pointer;
 }
-
+#header-my {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    object-fit: cover;
+    top: 22px;
+    right: 380px;
+    border: 2px solid #a6a6a6;
+}
+.header-my-expand {
+    display: none;
+    position: absolute;
+    background-color: #ffffff;
+    top: 80%;
+    z-index: 1000;
+    right: 0;
+    font-family: "NEXON Lv1 Gothic OTF", serif;
+    transform: translateX(calc(-100% - 170px)) translateY(-10px);
+    width: 160px;
+    border-radius: 8px;
+    box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.2), -4px -4px 10px rgba(255, 255, 255, 0.5);
+}
+.header-my-expand p {
+    padding: 13px;
+    text-align: center;
+}
+.header-my-expand p:first-of-type {
+    font-weight: bold;
+    background-color: #f8f3f3;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+.header-my-expand p:nth-child(n+2) {
+    transition: background-color 0.2s;
+    cursor: pointer;
+}
+.header-my-expand p:hover:nth-child(n+2) {
+    background-color: #EA4E4A;
+    color: white;
+}
+.header-my-expand p:hover:last-of-type {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+#header-login {
+    width: 35px;
+    top: 40px;
+    right: 380px;
+}
 .header-bottom {
-    width: 700px;
+    width: 740px;
     margin: 0 auto;
 }
 .nav-menu {
@@ -51,7 +93,7 @@
     color: #000000;
     text-decoration: none;
     position: relative;
-    padding: 13px 18px 8px 18px;
+    padding: 13px 24px 8px 24px;
     font-family: 'GmarketSansMedium', serif;
 }
 .nav-menu a::after {
@@ -61,8 +103,8 @@
     left: 50%;
     transform: translateX(-50%);
     width: 0;
-    height: 3px;
-    background: #D54946;
+    height: 4px;
+    background: #e74e4c;
     transition: all .3s ease-out;
 }
 .nav-menu a:hover:after {

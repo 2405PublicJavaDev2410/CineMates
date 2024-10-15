@@ -2,6 +2,7 @@ package com.filmfellows.cinemates.app.member;
 
 import com.filmfellows.cinemates.app.member.dto.*;
 import com.filmfellows.cinemates.domain.emailverification.model.service.EmailVerificationService;
+import com.filmfellows.cinemates.domain.member.model.vo.MemberProfile;
 import com.filmfellows.cinemates.domain.snsLogin.model.service.KakaoApiService;
 import com.filmfellows.cinemates.domain.snsLogin.model.vo.KakaoApi;
 import com.filmfellows.cinemates.domain.member.model.service.MemberService;
@@ -73,25 +74,28 @@ public class MemberController {
         String snsId = mService.findSnsIdByEmailAndType(snsProfile.getEmail(), snsProfile.getSnsType());
         // 사용자 정보로 로그인 또는 회원가입 처리
         System.out.println("snsId : " + snsId);
+        MemberProfile memberProfile = new MemberProfile();
         if (snsId != null) {
-            SnsProfile nMember = mService.loginSnsMember(snsId);
-            log.info(nMember.toString());
-            session.setAttribute("memberId", nMember.getSnsId());
-            session.setAttribute("name", nMember.getName());
-            session.setAttribute("snsType", nMember.getSnsType());
+            SnsProfile sMember = mService.loginSnsMember(snsId);
+            memberProfile.setProfileImg(sMember.getProfileImg());
+            session.setAttribute("memberProfile", memberProfile);
+            log.info(sMember.toString());
+            // 세션에 sns 로그인 정보 저장
+            session.setAttribute("memberId", sMember.getSnsId());
+            session.setAttribute("name", sMember.getName());
+            session.setAttribute("snsType", sMember.getSnsType());
             session.setAttribute("token", accessToken);
-            // 로그인 시 메인에 회원 정보 전달
-            model.addAttribute("member", nMember);
-            System.out.println("토큰 : " + session.getAttribute("token"));
+            model.addAttribute("member", sMember);
         } else {
             // 기존 MEMBER_TBL의 MEMBER_ID에 SNS_ID 저장
             int result = mService.insertSnsIdToMember(snsProfile.getSnsId());
             if(result == 1) {
-                // SNS_IFO_TBL에 정보 저장
+                // SNS_INFO_TBL에 정보 저장
                 snsProfile.setMemberId(snsProfile.getSnsId());
-                System.out.println(snsProfile);
                 mService.insertSnsMember(snsProfile);
             }
+            memberProfile.setProfileImg(snsProfile.getProfileImg());
+            session.setAttribute("memberProfile", memberProfile);
             session.setAttribute("memberId", snsProfile.getSnsId());
             session.setAttribute("name", snsProfile.getName());
             session.setAttribute("snsType", snsProfile.getSnsType());
@@ -117,25 +121,27 @@ public class MemberController {
         String snsId = mService.findSnsIdByEmailAndType(snsProfile.getEmail(), snsProfile.getSnsType());
         // 사용자 정보로 로그인 또는 회원가입 처리
         System.out.println("snsId : " + snsId);
+        MemberProfile memberProfile = new MemberProfile();
         if (snsId != null) {
             SnsProfile sMember = mService.loginSnsMember(snsId);
+            memberProfile.setProfileImg(sMember.getProfileImg());
+            session.setAttribute("memberProfile", memberProfile);
             log.info(sMember.toString());
             session.setAttribute("memberId", sMember.getSnsId());
             session.setAttribute("name", sMember.getName());
             session.setAttribute("snsType", sMember.getSnsType());
             session.setAttribute("token", accessToken);
-            // 로그인 시 메인에 회원 정보 전달
             model.addAttribute("member", sMember);
-            System.out.println("토큰 : " + session.getAttribute("token"));
         } else {
             // 기존 MEMBER_TBL의 MEMBER_ID에 SNS_ID 저장
             int result = mService.insertSnsIdToMember(snsProfile.getSnsId());
             if(result == 1) {
                 // SNS_IFO_TBL에 정보 저장
                 snsProfile.setMemberId(snsProfile.getSnsId());
-                System.out.println(snsProfile);
                 mService.insertSnsMember(snsProfile);
             }
+            memberProfile.setProfileImg(snsProfile.getProfileImg());
+            session.setAttribute("memberProfile", memberProfile);
             session.setAttribute("memberId", snsProfile.getSnsId());
             session.setAttribute("name", snsProfile.getName());
             session.setAttribute("snsType", snsProfile.getSnsType());
@@ -297,9 +303,20 @@ public class MemberController {
         member.setMemberPw(modifyRequest.getMemberPw());
         member.setPhone(modifyRequest.getPhone());
         int result = mService.updateMember(member, (profileImg != null && !profileImg.isEmpty() ? profileImg : null));
+
         if(result == 1) {
+            // 프로필 이미지 업데이트
+            if (profileImg != null && !profileImg.isEmpty()) {
+                ProfileImg newProfileImg = mService.getOneProfileImg(memberId);
+                if (newProfileImg != null) {
+                    String fullPath = newProfileImg.getFilePath() + newProfileImg.getFileRename();
+                    MemberProfile memberProfile = new MemberProfile();
+                    memberProfile.setProfileImg(fullPath);
+                    session.setAttribute("memberProfile", memberProfile);
+                }
+            }
             return "success";
-        }else {
+        } else {
             return "fail";
         }
     }
@@ -364,14 +381,24 @@ public class MemberController {
         member.setMemberId(loginRequest.getMemberId());
         member.setMemberPw(loginRequest.getMemberPw());
         member = mService.loginMember(member);
-        if(member != null) {
-            ProfileImg profileImg = mService.getOneProfileImg(member.getMemberId());
-            // 세션에 로그인 정보 저장
+        if (member != null) {
             session.setAttribute("memberId", member.getMemberId());
             session.setAttribute("name", member.getName());
-            // 로그인 시 메인에 회원&프로필사진 정보 전달
+
+            // 프로필 이미지 처리
+            ProfileImg profileImg = mService.getOneProfileImg(member.getMemberId());
+            MemberProfile memberProfile = new MemberProfile();
+            if (profileImg != null) {
+                String fullPath = profileImg.getFilePath() + profileImg.getFileRename();
+                memberProfile.setProfileImg(fullPath);
+            } else {
+                memberProfile.setProfileImg("/img/chat/defaultProfile.png");
+            }
+            session.setAttribute("memberProfile", memberProfile);
+
+            // 로그 추가
+            System.out.println("Session memberProfile: " + memberProfile);
             model.addAttribute("member", member);
-            model.addAttribute("profileImg", profileImg);
             return "success";
         }
         return "fail";

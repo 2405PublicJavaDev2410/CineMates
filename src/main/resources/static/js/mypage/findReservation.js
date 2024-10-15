@@ -40,9 +40,7 @@ const OneResultInfo = (rsv) => {
 
 // 결과 없음 DOM 구성
 const NoResultInfo = () => {
-    const rsvContents = `
-        <b><p id="error-text">해당 예매번호에 대한 영화 정보를 찾을 수 없습니다.</p></b>
-    `;
+    const rsvContents = `<b><p id="error-text">해당 예매번호에 대한 영화 정보를 찾을 수 없습니다.</p></b>`;
     document.querySelector('#error-message').innerHTML = rsvContents;
 }
 

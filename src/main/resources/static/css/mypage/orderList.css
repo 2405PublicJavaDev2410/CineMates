@@ -3,10 +3,10 @@
     height: 100%;
     display: flex;
     justify-content: center;
-    padding: 100px 0;
+    padding: 100px 0 200px 0;
     margin: 0 auto;
     flex-direction: row;
-    width: 90%;
+    width: 1050px;
     flex: 1 1 auto;
 }
 
