@@ -217,12 +217,12 @@
                         <div class="itemBtnFlexContainer">
                             <div class="item-flex-container">
 
-                                <div class="flex-item-memberProfile" th:each="memberProfile : ${profileList}">
-                                    <th:block  th:if="${memberProfile.memberId != chatRoom.roomWriter}">
+                                <div class="flex-item-memberProfile">
+                                    <th:block th:if="${chatRoom.filePath == null}">
                                         <img alt="프로필" src="/img/chat/defaultProfile2.png" style="width: 100%; height: 100%; border-radius: 30%;">
                                     </th:block>
-                                    <th:block  th:if="${memberProfile.memberId == chatRoom.roomWriter}">
-                                        <img th:src="@{|${memberProfile.filePath}${memberProfile.fileRename}|}" alt="프로필" style="width: 100%; height: 100%; border-radius: 30%;">
+                                    <th:block th:if="${chatRoom.filePath != null}">
+                                        <img th:src="@{|${chatRoom.filePath}${chatRoom.fileRename}|}" alt="프로필" style="width: 100%; height: 100%; border-radius: 30%;">
                                     </th:block>
                                 </div>
 

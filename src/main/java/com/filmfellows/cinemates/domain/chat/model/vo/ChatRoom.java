@@ -26,4 +26,7 @@ public class ChatRoom {
     private Integer cinemaNo;
     private String cinemaName;
 
+    // 회원정보
+    private String filePath;
+    private String fileRename;
 }
