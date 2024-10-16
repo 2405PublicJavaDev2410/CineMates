@@ -262,21 +262,19 @@ $(document).ready(function () {
         Object.entries(groupedShowtimes).forEach(([screenName, infos]) => {
             if (infos.length > 0) {
                 let screenShowtimes = $(`
-                <div class="screen-showtimes">
-                    <h4>상영관: ${screenName || '정보 없음'}</h4>
-                    <ul></ul>
-                </div>
-            `);
+            <div class="screen-showtimes">
+                <h4>${screenName || '정보 없음'}</h4>
+                <div class="showtimes-row"></div>
+            </div>
+        `);
 
                 infos.forEach((info) => {
-                    screenShowtimes.find('ul').append(`
-                    <li>
-                        <button class="showtime-link" onclick="goNextPage();">
-                            <strong>${info.showtimeTime}</strong>
-                            <dl>좌석: ${info.availableSeats}/${info.screenSeat || '정보 없음'}</dl>
-                        </button>
-                    </li>
-                `);
+                    screenShowtimes.find('.showtimes-row').append(`
+                <button class="showtime-link" onclick="goNextPage();">
+                    <strong>${info.showtimeTime}</strong>
+                    <dl>${info.availableSeats}/${info.screenSeat || '정보 없음'}</dl>
+                </button>
+            `);
                 });
 
                 showtimesList.append(screenShowtimes);
@@ -289,13 +287,13 @@ $(document).ready(function () {
 
         $('#showtimes-container').empty().append(showtimesList);
 
-        // 상영 시간 선택 이벤트 리스너 추가
+// 상영 시간 선택 이벤트 리스너
         $('.showtime-link').on('click', function (e) {
             e.preventDefault();
-            $('.showtime-link').removeClass('selected active');
-            $(this).addClass('selected active');
+            $('.showtime-link').removeClass('selected');
+            $(this).addClass('selected');
             $('#showtimeTime').val($(this).find('strong').text());
-            $('#screenName').val($(this).closest('.screen-showtimes').find('h4').text().replace('상영관: ', ''));
+            $('#screenName').val($(this).closest('.screen-showtimes').find('h4').text());
         });
     }
 
