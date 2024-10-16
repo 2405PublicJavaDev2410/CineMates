@@ -1,49 +1,3 @@
-// document.addEventListener('DOMContentLoaded', function() {
-//     const stillcutContainer = document.querySelector("#stillcutContainer");
-//     const loadMoreContainer = document.querySelector('#load-more-container');
-//     const loadMoreBtn = document.querySelector('#loadMoreBtn');
-//     const movieNoElement = document.querySelector('#movieNo');
-//     const currentPageElement = document.querySelector('#currentPage');
-//     const movieNo = movieNoElement ? movieNoElement.value : null;
-//
-//     let currentPage = parseInt(currentPageElement.value);
-//     const pageSize = 5;
-//
-//     function fetchStillcuts() {
-//         currentPage++;
-//         currentPageElement.value = currentPage;
-//
-//         $.ajax({
-//             url: `/movie-detail/${movieNo}`,
-//             method: 'GET',
-//             data: {
-//                 page: currentPage,
-//                 size: pageSize,
-//                 isAjax: true
-//             },
-//             success: function (data) {
-//                 const tempContainer = document.createElement('div');
-//                 tempContainer.innerHTML = data;
-//                 const newStillcuts = tempContainer.querySelector('#stillList').innerHTML;
-//
-//                 const stillList = document.querySelector('#stillList');
-//                 stillList.insertAdjacentHTML('beforeend', newStillcuts);
-//
-//                 const hasMoreStillcuts = tempContainer.querySelector('#load-more-container') !== null;
-//                 loadMoreContainer.style.display = hasMoreStillcuts ? 'flex' : 'none';
-//             },
-//             error: function (xhr, error) {
-//                 console.error('ERROR:', error);
-//             }
-//         });
-//     }
-//
-//     if (loadMoreBtn) {
-//         loadMoreBtn.addEventListener('click', fetchStillcuts);
-//     }
-// });
-//
-//
 // 영화정보 관람평 이동 탭
 document.addEventListener('DOMContentLoaded', () => {
     const tabButtons = document.querySelectorAll('.tab-button');
@@ -101,17 +55,89 @@ document.addEventListener('DOMContentLoaded', () => {
     updateTrailerSlide();
 });
 
+// 리뷰 작성
+//
 
-// 리뷰 작성창
+
+
 document.addEventListener('DOMContentLoaded', function() {
-    const writeButton = document.querySelector('.review-write-button');
-    const reviewForm = document.querySelector('.review-form');
+    const reviewsTab = document.querySelector('#reviewsTab');
 
-    writeButton.addEventListener('click', function() {
-        reviewForm.style.display = reviewForm.style.display === 'none' ? 'block' : 'none';
-        writeButton.textContent = reviewForm.style.display === 'none' ? '리뷰 작성' : '작성 취소';
+    // 이벤트 위임을 사용하여 동적으로 추가된 요소에도 이벤트 처리
+    reviewsTab.addEventListener('click', function(e) {
+        if (e.target.classList.contains('review-write-button')) {
+            const reviewForm = document.querySelector('#reviewForm');
+            reviewForm.style.display = reviewForm.style.display === 'none' ? 'block' : 'none';
+            e.target.textContent = reviewForm.style.display === 'none' ? '리뷰 작성' : '작성 취소';
+        }
+    });
+
+    // 폼 제출 이벤트 리스너
+    document.addEventListener('submit', function(e) {
+        if (e.target.id === 'reviewForm') {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+            const reviewData = Object.fromEntries(formData.entries());
+
+            fetch('/addReview', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(reviewData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // 리뷰 등록 성공 시 리뷰 탭 내용을 새로고침
+                        fetch(window.location.pathname + ' #reviewsTab')
+                            .then(response => response.text())
+                            .then(html => {
+                                const parser = new DOMParser();
+                                const doc = parser.parseFromString(html, 'text/html');
+                                const newReviewsTab = doc.querySelector('#reviewsTab');
+                                reviewsTab.innerHTML = newReviewsTab.innerHTML;
+                            })
+                            .catch(error => console.error('Error:', error));
+
+                        // 폼 리셋 및 숨기기
+                        e.target.reset();
+                        e.target.style.display = 'none';
+                        document.querySelector('.review-write-button').textContent = '리뷰 작성';
+
+                        alert(data.message);
+                    } else {
+                        alert(data.message || '리뷰 등록에 실패했습니다. 다시 시도해주세요.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('리뷰 등록 중 오류가 발생했습니다.');
+                });
+        }
     });
 });
+
+
+
+
+
+// 리뷰 작성창
+// document.addEventListener('DOMContentLoaded', function() {
+//     const writeButton = document.querySelector('.review-write-button');
+//     const reviewForm = document.querySelector('.review-form');
+//
+//     writeButton.addEventListener('click', function() {
+//         // if (isLoggedIn) {
+//             reviewForm.style.display = reviewForm.style.display === 'none' ? 'block' : 'none';
+//             writeButton.textContent = reviewForm.style.display === 'none' ? '리뷰 작성' : '작성 취소';
+//         // } else {
+//         //     alert('리뷰를 작성하려면 로그인이 필요합니다.');
+//             // window.location.href = '/login';
+//         // }
+//     });
+// });
 
 
 // 비디오 모달 팝업

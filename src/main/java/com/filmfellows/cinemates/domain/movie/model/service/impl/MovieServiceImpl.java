@@ -7,6 +7,7 @@ import com.filmfellows.cinemates.app.movie.dto.ReviewDTO;
 import com.filmfellows.cinemates.domain.movie.model.mapper.MovieMapper;
 import com.filmfellows.cinemates.domain.movie.model.service.MovieService;
 import com.filmfellows.cinemates.domain.movie.model.vo.Movie;
+import com.filmfellows.cinemates.domain.movie.model.vo.Review;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.RowBounds;
@@ -117,15 +118,6 @@ public class MovieServiceImpl implements MovieService {
         return movieMapper.selectMoviesByStatusAndSort(status, offset, size, sortBy);
     }
 
-    @Override
-    public int getTrailrtConunt(Long movieNo) {
-        return movieMapper.selectTrailerCount(movieNo);
-    }
-
-    @Override
-    public int getStillcutCount(Long movieNo) {
-        return movieMapper.selectStillcutCount(movieNo);
-    }
 
     @Override
     public List<MovieDTO.StillcutDTO> selectStillcutsPaginated(Long movieNo, int page, int size) {
@@ -136,6 +128,11 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public List<ReviewDTO> getReviewByMovieNo(Long movieNo) {
         return movieMapper.selectReviewByMovieNo(movieNo);
+    }
+
+    @Override
+    public int addReview(Review addReview) {
+        return movieMapper.insertReview(addReview);
     }
 
 

@@ -268,17 +268,6 @@
         WHERE RN > #{offset}
     </select>
 
-    <select id="selectTrailerCount" resultType="_int">
-        SELECT COUNT(mt.TRAILER_NO) AS trailer_count
-        FROM MOVIE_TRAILER_TBL mt
-        WHERE mt.MOVIE_NO = #{movieNo}
-    </select>
-    <select id="selectStillcutCount" resultType="_int">
-        SELECT COUNT(mt.STILLCUT_NO) AS stillcut_count
-        FROM MOVIE_STILLCUT_TBL mt
-        WHERE mt.MOVIE_NO = #{movieNo}
-    </select>
-
 <!--    <select id="selectStillcutsPaginated" resultMap="stillcutResultMap">-->
 <!--        SELECT * FROM (-->
 <!--        SELECT-->
@@ -295,5 +284,10 @@
              LEFT JOIN PROFILE_IMG_TBL p
                 ON p.MEMBER_ID = r.MEMBER_ID
         WHERE MOVIE_NO = #{movieNo}
+        ORDER BY r.REG_DATE DESC
     </select>
+    <insert id="insertReview">
+        INSERT INTO REVIEW_TBL (REVIEW_NO, MOVIE_NO, MEMBER_ID, SCORE, REVIEW_CONTENT, REG_DATE, UPDATE_DATE)
+        VALUES (SEQ_MOVIE_NO.NEXTVAL, #{movieNo}, #{memberId}, #{score}, #{reviewContent}, DEFAULT, DEFAULT)
+    </insert>
 </mapper>

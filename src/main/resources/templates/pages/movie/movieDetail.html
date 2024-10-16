@@ -32,7 +32,7 @@
         <div class="tabs">
             <div class="tab-buttons">
                 <button class="tab-button active" data-tab="details">상세정보</button>
-                <button class="tab-button" data-tab="reviews">관람평 (5,095)</button>
+                <button class="tab-button" data-tab="reviews" th:text="관람평 + ' (' + ${totalReviews} + ')'"></button>
             </div>
             <div class="tab-content" id="detailsTab">
                 <div class="movie-details">
@@ -51,7 +51,7 @@
                     <div class="trailer-header">
                         <div class="section-title">
                             <h2>트레일러</h2>
-                            <span class="total-count" th:text="'(' + ${trailerCount} + ')'"></span>
+                            <span class="total-count" th:text="'(' + ${totalTrailers} + ')'"></span>
                         </div>
                         <div class="trailer-nav">
                             <button class="nav-button" id="prevTrailer">&lt;</button>
@@ -75,7 +75,7 @@
 
                 <div class="section-title">
                     <h2>스틸컷</h2>
-                    <span class="total-count" th:text="'(' + ${stillcutCount} + ')'"></span>
+                    <span class="total-count" th:text="'(' + ${totalStillcuts} + ')'"></span>
                 </div>
                 <div class="still-list" id="stillList" th:if="${not #lists.isEmpty(movie?.stillcuts)}">
                     <div class="still-item" th:each="stillcut : ${movie?.stillcuts}">
@@ -84,41 +84,65 @@
                 </div>
             </div>
 
-            <!-- 리뷰 탭 (데이터 바인딩 없이 정적 구조만 유지) -->
-            <div class="tab-content hidden" id="reviewsTab">
+            <div class="tab-content hidden" id="reviewsTab" >
                 <div class="review-section">
                     <button class="review-write-button">리뷰 작성</button>
-                    <div class="review-form">
+<!--                    <form class="review-form" action="/addReview" method="post">-->
+                    <form id="reviewForm" class="review-form" action="/addReview" method="post" onsubmit="return false;">
+                        <input type="hidden" name="movieNo" th:value="${movie?.movieNo}">
                         <div class="review-form-content">
-                            <div class="review-avatar"></div>
+<!--                            <div class="review-avatar"></div>-->
                             <div class="review-form-fields">
                                 <div class="star-rating">
-                                    <input type="radio" id="5-stars" name="rating" value="5" />
+                                    <input type="radio" id="5-stars" name="score" value="5" />
                                     <label for="5-stars">★</label>
-                                    <input type="radio" id="4-stars" name="rating" value="4" />
+                                    <input type="radio" id="4-stars" name="score" value="4" />
                                     <label for="4-stars">★</label>
-                                    <input type="radio" id="3-stars" name="rating" value="3" />
+                                    <input type="radio" id="3-stars" name="score" value="3" />
                                     <label for="3-stars">★</label>
-                                    <input type="radio" id="2-stars" name="rating" value="2" />
+                                    <input type="radio" id="2-stars" name="score" value="2" />
                                     <label for="2-stars">★</label>
-                                    <input type="radio" id="1-star" name="rating" value="1" />
+                                    <input type="radio" id="1-star" name="score" value="1" required/>
                                     <label for="1-star">★</label>
                                 </div>
-                                <textarea class="review-textarea" placeholder="리뷰를 작성해주세요"></textarea>
-                                <button class="submit-review">리뷰 등록</button>
+                                <textarea class="review-textarea" placeholder="리뷰를 작성해주세요" name="reviewContent"></textarea>
+                                <button type="submit" class="submit-review">리뷰 등록</button>
                             </div>
                         </div>
-                    </div>
+                    </form>
                     <div class="review-list" th:if="${not #lists.isEmpty(reviewList)}">
                         <div class="review-item" th:each="review : ${reviewList}">
-                            <div class="review-avatar">
+<!--                            <div class="review-avatar">-->
+<!--                            </div>-->
+                            <div id="thumbnail-container">
+                                <img id="profile-thumbnail" alt="사진 미리보기"
+                                     th:src="${(review.filePath != null and review.fileRename != null) ?
+                          (review.filePath + review.fileRename) : '/img/movie/imageNull.png'}"
+                                     onerror="this.src='/img/movie/imageNull.png'">
                             </div>
                             <div class="review-content">
                                 <div class="review-header" >
                                     <div class="review-info">
                                         <span class="review-username" th:text="${review.memberId}"></span>
                                         <span class="review-date" th:text="${review.regDate}"></span>
-                                        <div class="review-stars">★★★☆☆</div>
+                                        <div th:if="${review.score} == '5'">
+                                            <div class="review-stars" >★★★★★</div>
+                                        </div>
+                                        <div th:if="${review.score} == '4'">
+                                            <div class="review-stars" >★★★★☆</div>
+                                        </div>
+                                        <div th:if="${review.score} == '3'">
+                                            <div class="review-stars" >★★★☆☆</div>
+                                        </div>
+                                        <div th:if="${review.score} == '2'">
+                                            <div class="review-stars" >★★☆☆☆</div>
+                                        </div>
+                                        <div th:if="${review.score} == '1'">
+                                            <div class="review-stars" >★☆☆☆☆</div>
+                                        </div>
+<!--                                        <div th:if="${review.score} == '0'">-->
+<!--                                            <div class="review-stars" >☆☆☆☆☆</div>-->
+<!--                                        </div>-->
                                     </div>
                                     <span class="review-report">신고</span>
                                 </div>
@@ -152,6 +176,9 @@
 <th:block layout:fragment="script">
     <script type="text/javascript" src="/js/movie/movieDetail.js"></script>
 </th:block>
+<script th:inline="javascript">
+    // var isLoggedIn = [[${isLoggedIn}]];
+</script>
 
 </body>
 </html>
