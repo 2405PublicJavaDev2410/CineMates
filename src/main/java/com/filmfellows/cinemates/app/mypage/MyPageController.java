@@ -1,11 +1,14 @@
 package com.filmfellows.cinemates.app.mypage;
 
+import com.filmfellows.cinemates.app.mypage.dto.myReservationRequest;
+import com.filmfellows.cinemates.app.mypage.dto.myReservationResponse;
 import com.filmfellows.cinemates.common.Pagination;
 import com.filmfellows.cinemates.app.mypage.dto.QnaDTO;
 import com.filmfellows.cinemates.app.mypage.dto.RegisterQnaRequest;
 import com.filmfellows.cinemates.domain.mypage.model.service.MyPageService;
 import com.filmfellows.cinemates.domain.mypage.model.vo.Qna;
 import com.filmfellows.cinemates.domain.mypage.model.vo.QnaFile;
+import com.filmfellows.cinemates.domain.reservation.model.Service.ReservationService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,24 +19,25 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @Slf4j
 @RequiredArgsConstructor
 public class MyPageController {
     private final MyPageService myService;
+    private final ReservationService rService;
 
     /**
      * 담당자 : 엄태운
      * 관련기능 : 예매내역 페이지 이동
      */
     @GetMapping("/my-page/find-reservation")
-    public String showMyReservation() {
+    public String showMyReservation(HttpSession session) {
+        String memberId = (String) session.getAttribute("memberId");
+        if (memberId == null) {
+            return "redirect:/login";
+        }
         return "pages/mypage/findReservation";
     }
 
@@ -42,7 +46,11 @@ public class MyPageController {
      * 관련기능 : 구매내역 페이지 이동
      */
     @GetMapping("/my-page/order-list")
-    public String showMyOrder() {
+    public String showMyOrder(HttpSession session) {
+        String memberId = (String) session.getAttribute("memberId");
+        if (memberId == null) {
+            return "redirect:/login";
+        }
         return "pages/mypage/orderList";
     }
 
@@ -54,6 +62,9 @@ public class MyPageController {
     public String showMyQna(HttpSession session, Model model,
             @RequestParam(value = "cp", required = false, defaultValue = "1") Integer currentPage) {
         String memberId = (String) session.getAttribute("memberId");
+        if(memberId == null) {
+            return "redirect:/login";
+        }
         int totalCount = myService.getTotalQnaCountById(memberId);
         int boardLimit = 10;
         Pagination pn = new Pagination(totalCount, currentPage, boardLimit);
@@ -97,7 +108,11 @@ public class MyPageController {
      * 관련기능 : 문의 상세조회 페이지 이동
      */
     @GetMapping("/my-page/qna-detail/{qnaNo}")
-    public String showQnaDetail(@PathVariable("qnaNo") Integer qnaNo, Model model) {
+    public String showQnaDetail(@PathVariable("qnaNo") Integer qnaNo, Model model, HttpSession session) {
+        String memberId = (String) session.getAttribute("memberId");
+        if (memberId == null) {
+            return "redirect:/login";
+        }
         Qna qna = myService.selectOneQnaByNo(qnaNo);
         QnaFile qnaFile = myService.selectQnaFileByNo(qnaNo);
         model.addAttribute("qna", qna);
@@ -118,7 +133,11 @@ public class MyPageController {
      * 관련기능 : 문의 등록 페이지 이동
      */
     @GetMapping("/my-page/qna-register")
-    public String showRegisterQna() {
+    public String showRegisterQna(HttpSession session) {
+        String memberId = (String) session.getAttribute("memberId");
+        if (memberId == null) {
+            return "redirect:/login";
+        }
         return "pages/mypage/qnaRegister";
     }
 
@@ -126,8 +145,20 @@ public class MyPageController {
      * 담당자 : 엄태운
      * 관련기능 : 예매번호로 조회
      */
-    public String showReserveInfoByNo() {
-        return "";
+    @GetMapping("/find-reservation")
+    @ResponseBody
+    public myReservationResponse showReserveInfoByNo(HttpSession session,
+            @RequestParam("reservationNo") String reservationNo) {
+        String memberId = (String) session.getAttribute("memberId");
+        myReservationRequest request = new myReservationRequest();
+        request.setMemberId(memberId);
+        request.setReservationNo(reservationNo);
+        myReservationResponse response = rService.selectReservationInfo(request);
+        System.out.println(response);
+        if(response != null) {
+            return response;
+        }
+        return null;
     }
 
     /**
@@ -161,16 +192,6 @@ public class MyPageController {
     public String deleteQna(@PathVariable("qnaNo") Integer qnaNo) {
         myService.deleteQna(qnaNo);
         return "redirect:/my-page/qna-list";
-    }
-
-    /**
-     * 담당자 : 엄태운
-     * 관련기능 : 작성일자 Timestamp를 String으로 변환
-     */
-    public String convertTimestampToString(Timestamp regDate) {
-        // Timestamp 타입의 데이터를 Date로 변환
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return regDate.toLocalDateTime().format(formatter);
     }
 
 }

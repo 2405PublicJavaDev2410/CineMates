@@ -97,47 +97,93 @@ function verifyCode() {
 
 // 회원가입
 function registerMember() {
-    const errorFields = [];
+    // const errorFields = [];
 
     if (!idCheck()) {
-        errorFields.push(idInput);
+        window.scrollTo({
+            top: idInput.getBoundingClientRect().top + window.pageYOffset - 120,
+            behavior: 'smooth'
+        });
+        // idInput.scrollIntoView({behavior: 'smooth', block: 'start'});
+        return;
     }
     if (!pwCheck()) {
-        errorFields.push(pwInput);
+        window.scrollTo({
+            top: pwInput.getBoundingClientRect().top + window.pageYOffset - 120,
+            behavior: 'smooth'
+        });
+        // pwInput.scrollIntoView({behavior: 'smooth', block: 'start'});
+        return;
     }
     if (!pwCheckCheck()) {
-        errorFields.push(pwCheckInput);
+        window.scrollTo({
+            top: pwCheckInput.getBoundingClientRect().top + window.pageYOffset - 120,
+            behavior: 'smooth'
+        });
+        // pwCheckInput.scrollIntoView({behavior: 'smooth', block: 'start'});
+        return;
     }
     if (!nameCheck()) {
-        errorFields.push(nameInput);
+        window.scrollTo({
+            top: nameInput.getBoundingClientRect().top + window.pageYOffset - 120,
+            behavior: 'smooth'
+        });
+        // nameInput.scrollIntoView({behavior: 'smooth', block: 'start'});
+        return;
     }
     if (!birthDateCheck()) {
-        errorFields.push(birthDateInput);
+        window.scrollTo({
+            top: birthDateInput.getBoundingClientRect().top + window.pageYOffset - 120,
+            behavior: 'smooth'
+        });
+        // birthDateInput.scrollIntoView({behavior: 'smooth', block: 'start'});
+        return;
     }
     if (!emailCheck()) {
-        errorFields.push(emailInput);
+        window.scrollTo({
+            top: emailInput.getBoundingClientRect().top + window.pageYOffset - 120,
+            behavior: 'smooth'
+        });
+        return;
     }
     if (!verifyCodeCheck()) {
-        errorFields.push(verCodeInput);
+        window.scrollTo({
+            top: verCodeInput.getBoundingClientRect().top + window.pageYOffset - 120,
+            behavior: 'smooth'
+        });
+        return;
     }
     if (!phoneCheck()) {
-        errorFields.push(phoneInput);
+        window.scrollTo({
+            top: phoneInput.getBoundingClientRect().top + window.pageYOffset - 120,
+            behavior: 'smooth'
+        });
+        return;
     }
+    checkDuplicateId();
     checkDuplicateEmail((isAvailable) => {
         if (!isAvailable) {
-            if (errorFields.length === 0) {
-                errorFields.push(emailInput);
-            }
-            if (errorFields.length > 0) {
-                // 첫 번째 에러가 있는 필드로 스크롤
-                errorFields[0].scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-            return; // 회원가입 처리 중단
-        }
-        if (errorFields.length > 0) {
-            errorFields[0].scrollIntoView({ behavior: 'smooth', block: 'start' });
+            window.scrollTo({
+                top: emailInput.getBoundingClientRect().top + window.pageYOffset - 120,
+                behavior: 'smooth'
+            });
+        //     // if (errorFields.length === 0) {
+        //     //     errorFields.push(emailInput);
+        //     // }
+        //     // if (errorFields.length > 0) {
+        //     //     // 첫 번째 에러가 있는 필드로 스크롤
+        //     //     errorFields[0].scrollIntoView({ behavior: 'smooth', block: 'start' });
+        //     // }
             return;
         }
+        // if (errorFields.length > 0) {
+        //     window.scrollTo({
+        //         top: errorFields[0].getBoundingClientRect().top + window.pageYOffset - 180,
+        //         behavior: 'smooth'
+        //     });
+        //     errorFields[0].scrollIntoView({ behavior: 'smooth', block: 'start' });
+        //     return;
+        // }
         const formData = new FormData(document.querySelector('#register-member-form'));
         console.log(formData);
         $.ajax({

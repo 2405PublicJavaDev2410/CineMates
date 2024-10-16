@@ -23,7 +23,8 @@ public class AdminLoginController {
      * [관리자] 로그인 페이지 이동
      */
     @GetMapping("/admin/login")
-    public String showAdminLogin() {
+    public String showAdminLogin(HttpSession session) {
+        session.invalidate();
         return "pages/member/adminLogin";
     }
 
@@ -42,6 +43,7 @@ public class AdminLoginController {
             return "fail";
         }
         session.setAttribute("memberId", member.getMemberId());
+        session.setAttribute("name", member.getName());
         session.setAttribute("role", member.getRole());
         return "success";
     }

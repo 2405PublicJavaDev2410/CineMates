@@ -2,7 +2,7 @@
     width: 580px;
     height: auto;
     margin: 0 auto;
-    padding: 179px 0;
+    padding: 90px 0;
     font-family: 'NEXON Lv1 Gothic OTF', serif;
 }
 #find-type {
@@ -18,7 +18,7 @@
     border: 0;
     outline: 0;
     cursor: pointer;
-    border-radius: 25px 25px 0 0;
+    border-radius: 15px 15px 0 0;
     font-weight: 600;
     font-size: 18px;
     letter-spacing: 0.1em;
@@ -93,6 +93,7 @@
 .common-primary-btn {
     margin: 10px 0 15px 0;
     letter-spacing: 1px;
+    border-radius: 8px;
 }
 .common-secondary-btn {
     cursor: pointer;
@@ -103,5 +104,5 @@
     letter-spacing: 1px;
     color: white;
     border: none;
-    border-radius: 15px;
+    border-radius: 8px;
 }

@@ -86,6 +86,20 @@
       // 예: 상영관 번호를 다른 input에 설정
       document.getElementById("screenNo").value = screenNo;
     }
+    function movietitle(){
+      const movieSelect = document.getElementById("title");
+      const selectedOption = movieSelect.options[movieSelect.selectedIndex];
+      const selectedmovie = selectedOption.dataset;
+
+      const movieNo = selectedmovie.movieNo;  // screenNo 값 가져오기
+
+      if (!isNaN(movieNo)) {
+        document.getElementById("movieNo").value = movieNo;
+      } else {
+        document.getElementById("movieNo").value = ''; // 유효하지 않으면 빈 값으로 설정
+      }
+
+    }
   </script>
 </head>
 <body>
@@ -103,7 +117,13 @@
   </div>
 
   <div>
-    <label for="movieNo">영화번호</label>
+    <label for="movieNo">영화제목/코드</label>
+    <select name="title" id="title" onchange="movietitle()">
+      <option value="" disabled selected>영화 선택</option>
+      <option th:each="movie : ${mList}"
+              th:value="${movie.title}"
+              th:data-movie-no="${movie.movieNo}">[[${movie.title}]]</option>
+    </select>
     <input type="text" name="movieNo" id="movieNo" >
   </div>
 

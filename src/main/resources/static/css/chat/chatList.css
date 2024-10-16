@@ -285,7 +285,25 @@ h1.page-title {
     transform: scale(1.02);
 }
 
+.card-report-btn{
+    position: absolute;
+    right: 10px;
+    bottom:60px;
+    color: white;
+}
 
+.list-report-btn{
+    margin-left: 30px;
+    color: #6e6e6e;
+    font-size: 16px;
+}
+
+.report-btn:hover{
+    color: #EA4E4A;
+    font-weight: bold;
+    user-select: none;
+    cursor: pointer;
+}
 /* card item */
 .toCard-item-info {
     display: flex;

@@ -82,6 +82,18 @@
             border-radius: 5px;
             font-size: 18px;
         }
+	#searchmap{
+		width: 20px;
+		height: 20px;
+		background-image: url("https://cdn-icons-png.flaticon.com/512/3313/3313795.png");
+		background-size: cover;
+		background-position: center;
+		background-repeat: no-repeat;
+		margin-right: 10px;
+
+		color: white;
+		text-align: left;
+	}
 
         button {
             background-color: #ff6f61;
@@ -149,7 +161,7 @@
 		<h1>극   장</h1><br><br>
 		<h1>[[${cinema.cinemaName}]]</h1><br>
 			
-		<div><button th:onclick="parking([[${cinema.cinemaNo}]],[[${cinema.cinemaAddress}]])">위치/길찾기</button></div><br>
+		<div id="searchmap"></div><div><button th:onclick="parking([[${cinema.cinemaNo}]],[[${cinema.cinemaAddress}]])">위치/길찾기</button></div><br>
 		<div id="cinemamain">
 		<br><br><br><br><br><br><br><br><br><br><br>
 			<div >[[${cinema.cinemaAddress}]]</div><br>
@@ -158,26 +170,26 @@
 		</div>
 		<h1>상영정보</h1><br>
 		<h2>상영일자</h2><br>
-		<a th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${currentdate})}">
-		<div th:text="${#temporals.day(currentdate)}"></div>
+		<a  style="background-color: gray; display:inline-block;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${currentdate})}">
+			<div style="height: 50px;"><span style="font-size: 10px;">[[${#temporals.dayOfWeekName(currentdate)}]]</span><br><strong>[[${#temporals.day(currentdate)}]]</strong></div>
 		</a>
-		<a th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day1})}">
-		<div th:text="${#temporals.day(day1)}"></div>
+		<a  style="background-color: gray; display:inline-block;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day1})}">
+			<div style="height: 50px;"><span style="font-size: 10px;">[[${#temporals.dayOfWeekName(day1)}]]</span><br><strong>[[${#temporals.day(day1)}]]</strong></div>
 		</a>
-		<a th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day2})}">
-		<div th:text="${#temporals.day(day2)}"></div>
+		<a  style="background-color: gray; display:inline-block;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day2})}">
+			<div style="height: 50px;"><span style="font-size: 10px;">[[${#temporals.dayOfWeekName(day2)}]]</span><br><strong>[[${#temporals.day(day2)}]]</strong></div>
 		</a>
-		<a th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day3})}">
-		<div th:text="${#temporals.day(day3)}"></div>
+		<a  style="background-color: gray; display:inline-block;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day3})}">
+			<div style="height: 50px;"><span style="font-size: 10px;">[[${#temporals.dayOfWeekName(day3)}]]</span><br><strong>[[${#temporals.day(day3)}]]</strong></div>
 		</a>
-		<a th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day4})}">
-		<div th:text="${#temporals.day(day4)}"></div>
+		<a  style="background-color: gray; display:inline-block;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day4})}">
+			<div style="height: 50px;"><span style="font-size: 10px;">[[${#temporals.dayOfWeekName(day4)}]]</span><br><strong>[[${#temporals.day(day4)}]]</strong></div>
 		</a>
-		<a th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day5})}">
-		<div th:text="${#temporals.day(day5)}"></div>
+		<a  style="background-color: gray; display:inline-block;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day5})}">
+			<div style="height: 50px;"><span style="font-size: 10px;">[[${#temporals.dayOfWeekName(day5)}]]</span><br><strong>[[${#temporals.day(day5)}]]</strong></div>
 		</a>
-		<a  style="background-color: gray; display:inline-block;height: 100px;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day6})}">
-		<div ><span style="font-size: 10px;">[[${#temporals.dayOfWeekName(day6)}]]</span><br><strong>[[${#temporals.day(day6)}]]</strong></div>
+		<a  style="background-color: gray; display:inline-block;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day6})}">
+		<div style="height: 50px;"><span style="font-size: 10px;">[[${#temporals.dayOfWeekName(day6)}]]</span><br><strong>[[${#temporals.day(day6)}]]</strong></div>
 		</a>
 
 		<br><br><br>
@@ -199,15 +211,47 @@
 			<div th:if="(${stat.index == 0} or ${sList[stat.index - 1].screenName != showtime.screenName}) or (${stat.index == 0} or${sList[stat.index - 1].movieNo != showtime.movieNo})" style="width:100%;font-size: 15px;">[[${showtime.screenName}]]/총[[${showtime.screenSeat}]]석</div>
 
 
-		<div th:if="${stat.index == 0} or ${sList[0].screenName==showtime.screenName} or${sList[stat.index - 1].screenName == showtime.screenName}"  style="width:150px;height:100px;float:left;" >
-		    <a style="display:block; height:65px;">
-		        <div>[[${showtime.showtimeTime}]] <br>[[${showtime.availableSeats}]]석</div><br>
-		    </a>
+		<div th:if="${stat.index == 0} or ${sList[0].screenName==showtime.screenName} or${sList[stat.index - 1].screenName == showtime.screenName}"  style="width:100px;height:100px;float:left;" >
+			<form th:action="@{/Ticketing/PersonSeat}" method="post">
+				<input type="hidden" name="movieNo" th:value="${showtime.movieNo}" />
+				<input type="hidden" name="showtimeNo" th:value="${showtime.showtimeNo}" />
+				<input type="hidden" name="showtimeTime" th:value="${showtime.showtimeTime}" />
+				<input type="hidden" name="cinemaName" th:value="${showtime.cinemaName}" />
+				<input type="hidden" name="cinemaNo" th:value="${showtime.cinemaNo}" />
+				<input type="hidden" name="screenNo" th:value="${showtime.screenNo}" />
+				<input type="hidden" name="reservationDate" th:value="${selectDate}" />
+				<input type="hidden" name="screenName" th:value="${showtime.screenName}" />
+				<input type="hidden" name="title" th:value="${showtime.title}" />
+				<input type="hidden" name="reservationSeat" th:value="${showtime.showtimeSeat.toString()}" />
+				<button type="submit" style="display:block; height:65px;color: white;
+				text-decoration: none;font-size: 18px;padding: 10px 20px;background-color: #444;border-radius: 5px;
+				transition: background-color 0.3s;text-align: center;margin-right: 5px">
+					<div>
+						[[${showtime.showtimeTime}]] <br> [[${showtime.availableSeats}]]석
+					</div><br>
+				</button>
+			</form>
+
 		</div>
-		<div th:unless="${stat.index == 0} or ${sList[0].screenName==showtime.screenName} or${sList[stat.index - 1].screenName == showtime.screenName}"  style="width:150px;height:100px; float:left;display:block" >
-		    <a style="display:block; height:65px;">
-		        <div>[[${showtime.showtimeTime}]] <br>[[${showtime.availableSeats}]]석</div><br>
-		    </a>
+		<div th:unless="${stat.index == 0} or ${sList[0].screenName==showtime.screenName} or${sList[stat.index - 1].screenName == showtime.screenName}"  style="width:100px;height:100px; float:left;display:block" >
+			<form th:action="@{/Ticketing/PersonSeat}" method="post">
+				<input type="hidden" name="movieNo" th:value="${showtime.movieNo}" />
+				<input type="hidden" name="showtimeNo" th:value="${showtime.showtimeNo}" />
+				<input type="hidden" name="showtimeTime" th:value="${showtime.showtimeTime}" />
+				<input type="hidden" name="cinemaName" th:value="${showtime.cinemaName}" />
+				<input type="hidden" name="cinemaNo" th:value="${showtime.cinemaNo}" />
+				<input type="hidden" name="screenNo" th:value="${showtime.screenNo}" />
+				<input type="hidden" name="reservationDate" th:value="${selectDate}" />
+				<input type="hidden" name="screenName" th:value="${showtime.screenName}" />
+				<input type="hidden" name="title" th:value="${showtime.title}" />
+				<input type="hidden" name="reservationSeat" th:value="${showtime.showtimeSeat.toString()}" />
+				<button type="submit" style="display:block; height:65px;color: white;
+				text-decoration: none;font-size: 18px;padding: 10px 20px;background-color: #444;border-radius: 5px;
+				transition: background-color 0.3s;text-align: center;margin-right: 5px">					<div>
+						[[${showtime.showtimeTime}]] <br> [[${showtime.availableSeats}]]석
+					</div><br>
+				</button>
+			</form>
 		</div>
 
 		</th>

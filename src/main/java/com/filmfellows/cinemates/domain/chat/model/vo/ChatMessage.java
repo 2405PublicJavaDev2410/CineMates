@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 public class ChatMessage {
     // 메세지 타입 : 입장, 채팅
     public enum MessageType{
-        JOIN, TALK, LEAVE
+        FIRST, JOIN, TALK, LEAVE
     }
 
     private MessageType messageType;
