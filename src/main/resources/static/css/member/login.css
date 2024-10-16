@@ -2,7 +2,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
     font-family: 'NEXON Lv1 Gothic OTF', serif;
 }
 #login-form {
@@ -10,6 +9,7 @@
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 0 20px gainsboro;
+    margin: 90px 0;
     padding: 80px 80px 70px 80px;
     display: inline-block;
 }
@@ -36,11 +36,13 @@
     border: 2px solid #ED1C24;
 }
 .common-input-box {
+    width: 420px;
     padding: 10px;
     margin: 10px 0;
 }
 .common-primary-btn {
     margin: 10px 0;
+    border-radius: 8px;
 }
 #login-form ul {
     list-style-type: none;
@@ -84,14 +86,14 @@
     white-space: nowrap;
 }
 #naver-login-btn {
-    width: 180px;
-    margin-left: 20px;
+    width: 200px;
+    margin: 0 5px;
     display: block;
     float: left;
 }
 #kakao-login-btn {
-    width: 180px;
-    margin-left: 20px;
+    width: 200px;
+    margin: 0 5px;
     display: block;
     float: left;
 }

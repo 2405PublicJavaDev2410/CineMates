@@ -28,6 +28,18 @@
 <div class="cinema-Container">
     <form action="/Ticketing/PersonSeat" method="POST">
         <div class="hidden">
+            <div class="movieDiv">
+                <div class="group-top">
+                    <h4>영화 선택</h4>
+                </div>
+                <div class="movieDiv_movie">
+                    <ul id="movie-List">
+                        <li th:each="movie: ${movieList}">
+                            <a href="#none" th:data-title="${movie}" th:text="${movie}"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
             <div class="regionDiv">
                 <div class="group-top">
                     <h4>영화관</h4>
@@ -64,14 +76,6 @@
                     <div class="cinemaDiv_cinema">
                         <ul id="cinema-List"></ul>
                     </div>
-                </div>
-            </div>
-            <div class="movieDiv">
-                <div class="group-top">
-                    <h4>영화 선택</h4>
-                </div>
-                <div class="movieDiv_movie">
-                    <ul id="movie-List"></ul>
                 </div>
             </div>
             <div class="showtimeDiv">

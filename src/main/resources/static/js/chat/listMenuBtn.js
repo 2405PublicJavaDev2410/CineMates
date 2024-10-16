@@ -20,6 +20,13 @@ function showListByMyOrAll(status){
 }
 
 // 채팅방 입장
-function joinChatRoom(){
-    location.href=`/chat/room`;
+function joinChatRoom(roomNo, title, posterUrl, cinemaName, cinemaAddress, roomCategory){
+    location.href=`
+    /chat/room?roomNo=${roomNo}
+    &title=${title}
+    &posterUrl=${posterUrl}
+    &cinemaName=${cinemaName}
+    &cinemaAddress=${cinemaAddress}
+    &roomCategory=${roomCategory}
+    `;
 }

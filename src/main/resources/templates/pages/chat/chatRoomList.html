@@ -311,15 +311,15 @@
                         <div th:if="${chatRoomList != null}" th:each="chatRoom : ${chatRoomList}" class="chatRoom-item list-item fade-out">
                             <div class="itemBtnFlexContainer">
                                 <div class="item-flex-container">
-
-                                    <div class="flex-item-memberProfile" th:each="memberProfile : ${profileList}">
-                                        <th:block  th:if="${memberProfile.memberId != chatRoom.roomWriter}">
+                                    <div class="flex-item-memberProfile">
+                                        <th:block th:if="${chatRoom.filePath == null}">
                                             <img alt="프로필" src="/img/chat/defaultProfile2.png" style="width: 100%; height: 100%; border-radius: 30%;">
                                         </th:block>
-                                        <th:block  th:if="${memberProfile.memberId == chatRoom.roomWriter}">
-                                            <img th:src="@{|${memberProfile.filePath}${memberProfile.fileRename}|}" alt="프로필" style="width: 100%; height: 100%; border-radius: 30%;">
+                                        <th:block th:if="${chatRoom.filePath != null}">
+                                            <img th:src="@{|${chatRoom.filePath}${chatRoom.fileRename}|}" alt="프로필" style="width: 100%; height: 100%; border-radius: 30%;">
                                         </th:block>
                                     </div>
+
                                     <div class="flex-item-chatInfoBox">
                                         <div class="chatRoomName" th:text="${chatRoom.roomName}"></div>
 
@@ -329,12 +329,13 @@
                                         <div style="display: flex">
                                             <div style="margin-right: 50px">참여인원: 00명 참여중</div>
                                             <div th:text="${chatRoom.title}+' ('+${chatRoom.cinemaAddress}+' / '+${chatRoom.cinemaName}+')'"></div>
+                                            <div class="report-btn list-report-btn">신고</div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div>
-                                    <div class="joinBtn" onclick="joinChatRoom();">참여</div>
+                                    <div class="joinBtn" th:onclick="joinChatRoom([[${chatRoom.roomNo}]], [[${chatRoom.title}]], [[${chatRoom.posterUrl}]], [[${chatRoom.cinemaName}]], [[${chatRoom.cinemaAddress}]], [[${chatRoom.roomCategory}]]);">참여</div>
                                 </div>
                             </div>
 
@@ -359,6 +360,7 @@
                                 <div class="card-mouseover-text" th:if="${chatRoom.roomCategory == 'reservation'}" th:text="'모집방'"></div>
                                 <div class="card-mouseover-text" th:if="${chatRoom.roomCategory == 'talk'}" th:text="'소통방'"></div>
                                 <div class="card-mouseover-text joinBtn" onclick="joinChatRoom();">참여하기</div>
+                                <div class="report-btn card-report-btn">신고</div>
                             </div>
                             <div th:style="'width:100%; height: 400px; background-image: url('+${chatRoom.posterUrl}+'); background-position: center; background-size: cover; border-radius:20px;'">
                             </div>
@@ -378,7 +380,6 @@
                                 <th:block th:each="rTime : ${relativeTimeList}">
                                     <div class="itemCard-roomDate" th:if="${chatRoom.roomDate == rTime.roomDate}" th:text="'개설일 : '+${rTime.relativeTime}"></div>
                                 </th:block>
-
 
                             </div>
 

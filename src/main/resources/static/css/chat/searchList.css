@@ -311,3 +311,19 @@ h1{
     text-align: center;
     font-size: 25px;
 }
+
+
+.report-btn{
+    position: absolute;
+    /*top: 10px;*/
+    right: 10px;
+    user-select: none;
+    cursor: pointer;
+    color: #6e6e6e;
+    font-size: 16px;
+}
+
+.report-btn:hover{
+    color: #EA4E4A;
+    font-weight: bold;
+}

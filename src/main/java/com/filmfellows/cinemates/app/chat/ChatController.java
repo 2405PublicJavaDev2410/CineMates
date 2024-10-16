@@ -53,7 +53,11 @@ public class ChatController {
 
         // 전체 프로필 정보 조회 -> 채팅방 정보에 출력
         List<ProfileImg> profileList = cService.selectProfileList();
-        System.out.println(profileList);
+        List<String> profileMemberIdList = new ArrayList<>();
+        for(ProfileImg profileItem : profileList){
+            profileMemberIdList.add(profileItem.getMemberId());
+        }
+
 
         // 채팅방 리스트 전체 조회 비즈니스 로직
         // 서비스에서 Pagination 객체, 조회된 cList 객체 매핑해서 반환
@@ -67,6 +71,7 @@ public class ChatController {
 
 
         model.addAttribute("profileList", profileList);
+        model.addAttribute("profileMemberIdList",profileMemberIdList);
         model.addAttribute("tagList", tagList);
         model.addAttribute("chatRoomList", map.get("cList"));
         model.addAttribute("pn", map.get("pn"));
@@ -166,7 +171,8 @@ public class ChatController {
     }
 
     @GetMapping("/chat/room")
-    public String showChatRoom(){
+    public String showChatRoom(Model model, @ModelAttribute("ChatRoom") ChatRoom chatRoom){
+        model.addAttribute("chatRoom", chatRoom);
         return "pages/chat/chatRoom";
     }
 
@@ -198,7 +204,7 @@ public class ChatController {
         ChatRoom chatRoom = new ChatRoom(null, roomWriter,
                 revAndChatInfo.getRoomName(),
                 null,revAndChatInfo.getRoomCategory(), revAndChatInfo.getMovieNo(), null, null,
-                revAndChatInfo.getCinemaLocationCode(), null, revAndChatInfo.getCinemaNo(), null
+                revAndChatInfo.getCinemaLocationCode(), null, revAndChatInfo.getCinemaNo(), null, null, null
         );
 
         int insertChatRoomResult = cService.insertChatRoom(chatRoom);

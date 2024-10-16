@@ -26,5 +26,6 @@ public class Showtime {
     private int availableSeats;
     private int runningTime;
     private String genre;
+    private String cinemaName;
 
 }

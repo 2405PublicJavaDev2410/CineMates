@@ -1,5 +1,8 @@
 package com.filmfellows.cinemates.domain.reservation.model.Service;
 
+import com.filmfellows.cinemates.app.mypage.dto.myReservationRequest;
+import com.filmfellows.cinemates.app.mypage.dto.myReservationResponse;
+import com.filmfellows.cinemates.domain.cinema.model.vo.Showtime;
 import com.filmfellows.cinemates.domain.reservation.model.vo.MemberDTO;
 import com.filmfellows.cinemates.domain.reservation.model.vo.ReservationDTO;
 import com.filmfellows.cinemates.domain.reservation.model.vo.ShowInfoDTO;
@@ -91,8 +94,14 @@ public interface ReservationService {
     /**
      * 예매번호로 예매 정보 조회
      *
-     * @param reservationNo
+     * @param request
      * @return
      */
-    ReservationDTO selectReservationInfo(String reservationNo);
+    myReservationResponse selectReservationInfo(myReservationRequest request);
+
+    /**
+     * 영화 전체 목록 조회
+     * @return
+     */
+    List<String> selectAllMovies();
 }

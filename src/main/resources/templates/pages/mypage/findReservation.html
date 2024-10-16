@@ -14,47 +14,17 @@
         <div class="search-reserve-form">
             <p id="reserve-title">예매 내역 조회</p><br><br><br>
             <div class="form-group" id="reserve-search-section">
-                <label for="reserve-number"><b>예매번호 입력</b></label>
-                <input type="text" class="common-input-box" id="reserve-number" placeholder="예매번호 12자리를 입력해주세요">
-                <button id="reserve-search-btn">조회하기</button>
+                <form id="find-reservation-form">
+                    <label for="reservation-no"><b>예매번호 입력</b></label>
+                    <input type="text" class="common-input-box" id="reservation-no" placeholder="예매번호 10자리를 입력해주세요">
+                    <button type="button" id="reserve-search-btn">조회하기</button>
+                </form>
             </div>
+            <!-- 영화정보 있을 때 -->
             <div class="info-group" id="movie-info">
-                <table id="info-table">
-                    <img id="thumbnail-area" src="" alt="">
-                    <colgroup>
-                        <col style="width: 90px">
-                        <col style="width: 230px">
-                        <col style="width: 130px">
-                        <col style="width: 200px">
-                    </colgroup>
-                    <tbody>
-                        <tr>
-                            <th scope="row">영화명</th>
-                            <td colspan="3"><span id="rsv-title"></span></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">예매번호</th>
-                            <td><span id="rsv-no"></span></td>
-                            <th>관람인원</th>
-                            <td><span id="rsv-visitor"></span></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">예매일시</th>
-                            <td><span id="rsv-date"></span></td>
-                            <th scope="row">극장/상영관</th>
-                            <td><span id="rsv-screen"></span></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">관람일시</th>
-                            <td><span id="show-date"></span></td>
-                            <th>관람좌석</th>
-                            <td><span id="rsv-seat"></span></td>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
+            <!-- 영화정보 없을 때 -->
             <div class="error-group" id="error-message">
-                <b><p id="error-text">해당 예매번호에 대한 영화 정보를 찾을 수 없습니다.</p></b>
             </div>
         </div>
     </main>

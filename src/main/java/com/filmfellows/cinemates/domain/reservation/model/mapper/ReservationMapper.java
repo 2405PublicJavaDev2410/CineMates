@@ -1,5 +1,7 @@
 package com.filmfellows.cinemates.domain.reservation.model.mapper;
 
+import com.filmfellows.cinemates.app.mypage.dto.myReservationRequest;
+import com.filmfellows.cinemates.app.mypage.dto.myReservationResponse;
 import com.filmfellows.cinemates.domain.reservation.model.vo.MemberDTO;
 import com.filmfellows.cinemates.domain.reservation.model.vo.ReservationDTO;
 import com.filmfellows.cinemates.domain.reservation.model.vo.ShowInfoDTO;
@@ -35,7 +37,11 @@ public interface ReservationMapper {
 
     ShowInfoDTO selectMoviePoster(String title);
 
+    myReservationResponse selectReservationInfo(myReservationRequest request);
+    
     ReservationDTO selectReservationInfo(String reservationNo);
 
     void deleteReservationInfo(String impUid);
+
+    List<String> selectAllMovies();
 }
