@@ -3,7 +3,9 @@ package com.filmfellows.cinemates.domain.movie.model.mapper;
 import com.filmfellows.cinemates.app.movie.dto.MovieDTO;
 import com.filmfellows.cinemates.app.movie.dto.MovieListDTO;
 import com.filmfellows.cinemates.app.movie.dto.MovieReservationRateDTO;
+import com.filmfellows.cinemates.app.movie.dto.ReviewDTO;
 import com.filmfellows.cinemates.domain.movie.model.vo.Movie;
+import com.filmfellows.cinemates.domain.movie.model.vo.Review;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
@@ -43,9 +45,11 @@ public interface MovieMapper {
                                             @Param("size") int size,
                                             @Param("sortBy") String sortBy);
 
-    int selectTrailerCount(Long movieNo);
+    List<MovieDTO.StillcutDTO> selectStillcutsPaginated(@Param("movieNo") Long movieNo,
+                                                        @Param("offset") int offset,
+                                                        @Param("size") int size);
 
-    int selectStillcutCount(Long movieNo);
+    List<ReviewDTO> selectReviewByMovieNo(@Param("movieNo") Long movieNo);
 
-    List<MovieDTO> selectMovieDetailAndPages(Long movieNo, int offset, int size);
+    int insertReview(Review addReview);
 }
