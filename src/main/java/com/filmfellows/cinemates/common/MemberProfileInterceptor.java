@@ -34,7 +34,7 @@ public class MemberProfileInterceptor implements HandlerInterceptor {
                 if (memberProfile == null) {
                     memberProfile = new MemberProfile();
                 }
-                memberProfile.setProfileImg("/img/chat/defaultProfile.png");
+                memberProfile.setProfileImg("/img/default_profile.png");
                 session.setAttribute("memberProfile", memberProfile);
             }
         }

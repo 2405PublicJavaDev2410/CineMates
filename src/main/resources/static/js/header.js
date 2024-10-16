@@ -23,6 +23,16 @@ document.addEventListener("click", (e) => {
     }
 });
 
+window.addEventListener('scroll', function() {
+    const headerBottom = document.querySelector('.header-bottom');
+
+    if (window.scrollY > 83) { // 스크롤이 100px 이상 내려가면
+        headerBottom.style.backgroundColor = '#DCEFEC'; // nav를 최상단으로 이동
+    }else {
+        headerBottom.style.backgroundColor = ''; // 원래 색으로 돌아감
+    }
+});
+
 function moveToMain() { location.href="/" }
 function moveToLogin() { location.href="/login" }
 function goMyPage() { location.href="/my-page/find-reservation"; }

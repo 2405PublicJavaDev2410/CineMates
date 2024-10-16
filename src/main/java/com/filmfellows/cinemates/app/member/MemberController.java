@@ -76,16 +76,16 @@ public class MemberController {
         System.out.println("snsId : " + snsId);
         MemberProfile memberProfile = new MemberProfile();
         if (snsId != null) {
-            SnsProfile sMember = mService.loginSnsMember(snsId);
-            memberProfile.setProfileImg(sMember.getProfileImg());
+            SnsProfile newMember = mService.loginSnsMember(snsId);
+            memberProfile.setProfileImg(newMember.getProfileImg());
             session.setAttribute("memberProfile", memberProfile);
-            log.info(sMember.toString());
+            log.info(newMember.toString());
             // 세션에 sns 로그인 정보 저장
-            session.setAttribute("memberId", sMember.getSnsId());
-            session.setAttribute("name", sMember.getName());
-            session.setAttribute("snsType", sMember.getSnsType());
+            session.setAttribute("memberId", newMember.getSnsId());
+            session.setAttribute("name", newMember.getName());
+            session.setAttribute("snsType", newMember.getSnsType());
             session.setAttribute("token", accessToken);
-            model.addAttribute("member", sMember);
+            model.addAttribute("member", newMember);
         } else {
             // 기존 MEMBER_TBL의 MEMBER_ID에 SNS_ID 저장
             int result = mService.insertSnsIdToMember(snsProfile.getSnsId());
@@ -123,15 +123,15 @@ public class MemberController {
         System.out.println("snsId : " + snsId);
         MemberProfile memberProfile = new MemberProfile();
         if (snsId != null) {
-            SnsProfile sMember = mService.loginSnsMember(snsId);
-            memberProfile.setProfileImg(sMember.getProfileImg());
+            SnsProfile newMember = mService.loginSnsMember(snsId);
+            log.info(newMember.toString());
+            memberProfile.setProfileImg(newMember.getProfileImg());
             session.setAttribute("memberProfile", memberProfile);
-            log.info(sMember.toString());
-            session.setAttribute("memberId", sMember.getSnsId());
-            session.setAttribute("name", sMember.getName());
-            session.setAttribute("snsType", sMember.getSnsType());
+            session.setAttribute("memberId", newMember.getSnsId());
+            session.setAttribute("name", newMember.getName());
+            session.setAttribute("snsType", newMember.getSnsType());
             session.setAttribute("token", accessToken);
-            model.addAttribute("member", sMember);
+            model.addAttribute("member", newMember);
         } else {
             // 기존 MEMBER_TBL의 MEMBER_ID에 SNS_ID 저장
             int result = mService.insertSnsIdToMember(snsProfile.getSnsId());
@@ -392,7 +392,7 @@ public class MemberController {
                 String fullPath = profileImg.getFilePath() + profileImg.getFileRename();
                 memberProfile.setProfileImg(fullPath);
             } else {
-                memberProfile.setProfileImg("/img/chat/defaultProfile.png");
+                memberProfile.setProfileImg("/img/default_profile.png");
             }
             session.setAttribute("memberProfile", memberProfile);
 
