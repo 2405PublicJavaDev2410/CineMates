@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.filmfellows.cinemates.domain.store.model.mapper.CartMapper">
+
+    <insert id="insertCartItem" parameterType="Cart">
+        INSERT INTO CART_TBL (CART_NO, MEMBER_ID, PRODUCT_NO, QUANTITY)
+        SELECT SEQ_CART_NO.NEXTVAL, #{memberId}, #{productNo}, #{quantity}
+        FROM DUAL
+        WHERE NOT EXISTS (
+            SELECT 1 FROM CART_TBL
+            WHERE MEMBER_ID = #{memberId} AND PRODUCT_NO = #{productNo}
+            )
+    </insert>
+
+    <update id="updateCartItem" parameterType="Cart">
+        UPDATE CART_TBL
+        SET QUANTITY = QUANTITY + #{quantity}
+        WHERE MEMBER_ID = #{memberId} AND PRODUCT_NO = #{productNo}
+    </update>
+
+    <delete id="deleteCartItems" parameterType="list">
+        DELETE FROM CART_TBL
+        WHERE CART_NO IN
+        <foreach collection="list" item="cartNo" open="(" separator="," close=")">
+            #{cartNo}
+        </foreach>
+    </delete>
+
+    <delete id="clearCart" parameterType="string">
+        DELETE FROM CART_TBL
+        WHERE MEMBER_ID = #{memberId}
+    </delete>
+
+    <select id="checkCartItemExists" resultType="int">
+        SELECT COUNT (*) FROM CART_TBL
+        WHERE MEMBER_ID = #{memberId} AND PRODUCT_NO = #{productNo}
+    </select>
+
+    <select id="selectCartItems" resultType="Cart">
+        SELECT
+            C.CART_NO as cartNo,
+            C.MEMBER_ID as memberId,
+            C.PRODUCT_NO as productNo,
+            C.QUANTITY as quantity,
+            P.PRODUCT_NAME as "product.productName",
+            P.PRICE as "product.price",
+            P.IMAGE_URL as "product.imageUrl",
+            P.DESCRIPTION as "product.description"
+        FROM
+            CART_TBL C
+        JOIN
+            PRODUCT_TBL P ON C.PRODUCT_NO = P.PRODUCT_NO
+        WHERE
+            C.MEMBER_ID = #{memberId}
+    </select>
+
+    <select id="selectSelectedCartItems" resultType="Cart">
+        SELECT
+        C.CART_NO as cartNo,
+        C.MEMBER_ID as memberId,
+        C.PRODUCT_NO as productNo,
+        C.QUANTITY as quantity,
+        P.PRODUCT_NAME as "product.productName",
+        P.PRICE as "product.price",
+        P.DISCOUNT_AMOUNT as "product.discountAmount",
+        P.DISCOUNTED_PRICE as "product.discountedPrice",
+        P.IMAGE_URL as "product.imageUrl",
+        P.DESCRIPTION as "product.description"
+        FROM
+        CART_TBL C
+        JOIN
+        PRODUCT_TBL P ON C.PRODUCT_NO = P.PRODUCT_NO
+        WHERE
+        C.MEMBER_ID = #{memberId}
+        AND
+        C.CART_NO IN
+        <foreach item="item" index="index" collection="selectedItems" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+</mapper>

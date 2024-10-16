@@ -17,15 +17,17 @@
                 <button type="button" id="new-qna-btn" onclick="goToRegister()">1:1 문의 등록</button>
             </div>
             <div class="search-container">
-                <select name="searchCondition">
-                    <option value="" selected disabled>전체</option>
-                    <option value="no-reply">미답변</option>
-                    <option value="replied">답변완료</option>
-                </select>
-                <input type="text" class="common-input-box" id="keyword-input-box" name="searchKeyword" placeholder="제목으로 검색">
-                <button type="button" id="search-btn"></button>
+                <form action="/my-page/search-qna" method="post">
+                    <select name="searchCondition">
+                        <option value="all" selected>전체</option>
+                        <option value="no-reply">미답변</option>
+                        <option value="replied">답변완료</option>
+                    </select>
+                    <input type="text" class="common-input-box" id="keyword-input-box" name="searchKeyword" placeholder="제목으로 검색">
+                    <button type="submit" id="search-btn"></button>
+                </form>
             </div>
-            <table id="qna-table">
+            <table class="qna-table">
                 <colgroup>
                     <col style="width: 15%"/>
                     <col style="width: 45%"/>

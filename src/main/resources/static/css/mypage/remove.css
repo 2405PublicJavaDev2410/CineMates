@@ -90,7 +90,7 @@
     transition: none;
     border: 2px solid #ED1C24;
 }
-#remove-btn {
+#remove-btn, #remove-sns-btn {
     width: 90px;
     height: 45px;
     padding: 10px 10px;

@@ -86,7 +86,7 @@ public class AdminMovieController {
      * [관리자] 영화 등록
      */
     @PostMapping("admin/insert-movie")
-    public String showInsertMovie(MovieDTO movieDTO) {
+    public String InsertMovie(MovieDTO movieDTO) {
         MovieDTO movie = new MovieDTO();
         movie.setTitle(movieDTO.getTitle());
         movie.setPosterUrl(movieDTO.getPosterUrl());
@@ -99,6 +99,7 @@ public class AdminMovieController {
         movie.setGenre(movieDTO.getGenre());
         movie.setProductionCountry(movieDTO.getProductionCountry());
         movie.setScreeningStatus(movieDTO.getScreeningStatus());
+        movie.setIsBookable(movieDTO.getIsBookable());
         movie.setTrailers(movieDTO.getTrailers());
         movie.setStillcuts(movieDTO.getStillcuts());
         movieService.insertMovie(movie);

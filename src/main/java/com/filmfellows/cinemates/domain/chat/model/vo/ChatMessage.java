@@ -1,18 +1,22 @@
 package com.filmfellows.cinemates.domain.chat.model.vo;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import org.apache.ibatis.annotations.Mapper;
+import lombok.*;
 
 import java.sql.Timestamp;
 
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
-public class Chat {
+public class ChatMessage {
+    // 메세지 타입 : 입장, 채팅
+    public enum MessageType{
+        FIRST, JOIN, TALK, LEAVE
+    }
+
+    private MessageType messageType;
     private Integer chatNo;
     private String chatContent;
     private Integer roomNo;

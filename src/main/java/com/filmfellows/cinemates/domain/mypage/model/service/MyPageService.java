@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 public interface MyPageService {
     String selectOrderList();
@@ -15,11 +16,15 @@ public interface MyPageService {
     List<QnaDTO> selectAllQna(RowBounds rBounds, Integer currentPage);
     Qna selectOneQnaByNo(int qnaNo);
     QnaFile selectQnaFileByNo(int qnaNo);
+    List<QnaDTO> searchQnaByIdAndKeyword(String memberId, String searchCondition, String searchKeyword, RowBounds rBounds);
+    List<QnaDTO> searchQnaByKeyword(String searchKeyword, RowBounds rBounds);
     Qna selectOneReplyByNo(Integer parentQnaNo);
     int insertQna(Qna qna, MultipartFile qnaFile) throws IOException;
     int deleteQna(int qnaNo);
     int insertReply(Qna qna);
     int getTotalQnaCountById(String memberId);
     int getTotalQnaCount();
+    int getTotalQnaCountByIdAndKeyword(String memberId, String searchCondition, String searchKeyword);
+    int getTotalQnaCountByKeyword(String searchKeyword);
 
 }

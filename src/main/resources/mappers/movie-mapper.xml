@@ -13,6 +13,7 @@
         <result property="actors" column="ACTORS"/>
         <result property="genre" column="GENRE"/>
         <result property="productionCountry" column="PRODUCTION_COUNTRY"/>
+        <result property="isBookable" column="IS_BOOKABLE"/>
         <result property="screeningStatus" column="SCREENING_STATUS"/>
 
         <collection property="stillcuts" ofType="com.filmfellows.cinemates.app.movie.dto.MovieDTO$StillcutDTO">
@@ -26,6 +27,11 @@
             <result property="trailerThumbnailUrl" column="TRAILER_THUMBNAIL_URL"/>
             <result property="trailerUrl" column="TRAILER_URL"/>
         </collection>
+    </resultMap>
+
+    <resultMap id="stillcutResultMap" type="com.filmfellows.cinemates.app.movie.dto.MovieDTO$StillcutDTO">
+        <id property="stillcutNo" column="STILLCUT_NO"/>
+        <result property="stillcutUrl" column="STILLCUT_URL"/>
     </resultMap>
 
     <!-- 영화 정보 조회 -->
@@ -42,6 +48,7 @@
             m.ACTORS,
             m.GENRE,
             m.PRODUCTION_COUNTRY,
+            m.IS_BOOKABLE,
             m.SCREENING_STATUS,
             s.STILLCUT_NO,
             s.STILLCUT_URL,
@@ -56,11 +63,14 @@
         WHERE m.MOVIE_NO = #{movieNo}
         ORDER BY
             m.MOVIE_NO, s.STILLCUT_NO, t.TRAILER_NO
-
-    <!-- 영화 리스트 조회 -->
     </select>
+    <!-- 어드민 영화 리스트 조회 -->
     <select id="selectMovieList" resultType="Movie">
         SELECT MOVIE_NO, TITLE, RELEASE_DATE, SCREENING_STATUS FROM MOVIE_TBL
+    </select>
+
+    <select id="selectAllMovieList" resultType="MovieListDTO">
+        SELECT MOVIE_NO, TITLE, POSTER_URL, RELEASE_DATE, RATING, SCREENING_STATUS FROM MOVIE_TBL
     </select>
 
     <!-- 영화 정보 수정-->
@@ -76,6 +86,7 @@
             ACTORS = #{actors},
             GENRE = #{genre},
             PRODUCTION_COUNTRY = #{productionCountry},
+            IS_BOOKABLE = #{isBookable},
             SCREENING_STATUS = #{screeningStatus}
         WHERE MOVIE_NO = #{movieNo}
     </update>
@@ -133,8 +144,8 @@
 
     <!-- 영화 등록-->
     <insert id="insertMovie">
-        INSERT INTO MOVIE_TBL (MOVIE_NO, TITLE, POSTER_URL, RELEASE_DATE, RUNNING_TIME, RATING, SYNOPSIS, DIRECTOR, ACTORS, GENRE, PRODUCTION_COUNTRY, SCREENING_STATUS)
-        VALUES (SEQ_MOVIE_NO.NEXTVAL, #{title}, #{posterUrl}, #{releaseDate}, #{runningTime}, #{rating}, #{synopsis}, #{director}, #{actors}, #{genre}, #{productionCountry}, #{screeningStatus})
+        INSERT INTO MOVIE_TBL (MOVIE_NO, TITLE, POSTER_URL, RELEASE_DATE, RUNNING_TIME, RATING, SYNOPSIS, DIRECTOR, ACTORS, GENRE, PRODUCTION_COUNTRY, SCREENING_STATUS, IS_BOOKABLE)
+        VALUES (SEQ_MOVIE_NO.NEXTVAL, #{title}, #{posterUrl}, #{releaseDate}, #{runningTime}, #{rating}, #{synopsis}, #{director}, #{actors}, #{genre}, #{productionCountry}, #{screeningStatus}, #{isBookable})
     </insert>
 
     <!-- 영화 검색-->
@@ -162,4 +173,121 @@
     <select id="totalMovieCount" resultType="_int">
         SELECT COUNT(*) FROM MOVIE_TBL
     </select>
+
+    <select id="getMovieReservationRates" resultType="MovieReservationRateDTO">
+        WITH BOOKABLE_MOVIES AS (
+            SELECT m.MOVIE_NO, m.TITLE,
+                   SUM(r.RESERVATION_VISITOR) AS VISITOR_COUNT
+            FROM MOVIE_TBL m
+                     LEFT JOIN RESERVATION_TBL r ON m.MOVIE_NO = r.MOVIE_NO
+            WHERE m.IS_BOOKABLE = 'Y'
+            GROUP BY m.MOVIE_NO, m.TITLE
+        ),
+             TOTAL_VISITORS AS (
+                 SELECT SUM(VISITOR_COUNT) AS TOTAL_COUNT
+                 FROM BOOKABLE_MOVIES
+             )
+        SELECT bm.MOVIE_NO AS movieNo, bm.TITLE AS title,
+               bm.VISITOR_COUNT AS visitorCount,
+               tv.TOTAL_COUNT AS totalCount,
+               ROUND((bm.VISITOR_COUNT / tv.TOTAL_COUNT) * 100, 2) AS reservationRate
+        FROM BOOKABLE_MOVIES bm, TOTAL_VISITORS tv
+        ORDER BY reservationRate DESC
+    </select>
+
+<!--    <select id="selectMoviesByStatus" resultType="MovieListDTO">-->
+<!--            SELECT MOVIE_NO, TITLE, POSTER_URL, RELEASE_DATE, RATING, SCREENING_STATUS-->
+<!--            FROM MOVIE_TBL-->
+<!--            WHERE SCREENING_STATUS LIKE '%' || #{status} || '%'-->
+<!--    </select>-->
+
+<!--    <select id="selectMoviesByStatus" resultType="MovieListDTO">-->
+<!--        SELECT * FROM (-->
+<!--                          SELECT-->
+<!--                              m.*,-->
+<!--                              ROWNUM AS rn-->
+<!--                          FROM (-->
+<!--                                   SELECT-->
+<!--                                       MOVIE_NO,-->
+<!--                                       TITLE,-->
+<!--                                       POSTER_URL,-->
+<!--                                       RELEASE_DATE,-->
+<!--                                       RATING,-->
+<!--                                       SCREENING_STATUS-->
+<!--                                   FROM MOVIE_TBL-->
+<!--                                   WHERE SCREENING_STATUS LIKE '%' || #{status} || '%'-->
+<!--                                   ORDER BY RELEASE_DATE DESC-->
+<!--                               ) m-->
+<!--                          WHERE ROWNUM &lt;= #{offset} + #{size}-->
+<!--                      )-->
+<!--        WHERE rn > #{offset}-->
+<!--    </select>-->
+
+    <select id="selectMoviesByStatusAndSort" resultType="MovieListDTO">
+        SELECT * FROM (
+        SELECT m.*, ROWNUM AS RN
+        FROM (
+        SELECT m.MOVIE_NO, m.TITLE, m.POSTER_URL, m.RELEASE_DATE, m.RATING, m.SCREENING_STATUS,
+        NVL(r.RESERVATION_RATE, 0) AS RESERVATION_RATE,
+        NVL(rev.REVIEW_COUNT, 0) AS REVIEW_COUNT
+        FROM MOVIE_TBL m
+        LEFT JOIN (
+        SELECT MOVIE_NO,
+        ROUND((VISITOR_COUNT / NULLIF(TOTAL_COUNT, 0)) * 100, 2) AS RESERVATION_RATE
+        FROM (
+        SELECT m.MOVIE_NO,
+        SUM(NVL(r.RESERVATION_VISITOR, 0)) AS VISITOR_COUNT,
+        SUM(SUM(NVL(r.RESERVATION_VISITOR, 0))) OVER () AS TOTAL_COUNT
+        FROM MOVIE_TBL m
+        LEFT JOIN RESERVATION_TBL r ON m.MOVIE_NO = r.MOVIE_NO
+        WHERE m.IS_BOOKABLE = 'Y'
+        GROUP BY m.MOVIE_NO
+        )
+        ) r ON m.MOVIE_NO = r.MOVIE_NO
+        LEFT JOIN (
+        SELECT MOVIE_NO, COUNT(*) AS REVIEW_COUNT
+        FROM REVIEW_TBL
+        GROUP BY MOVIE_NO
+        ) rev ON m.MOVIE_NO = rev.MOVIE_NO
+        WHERE m.SCREENING_STATUS = #{status}
+        ORDER BY
+        <choose>
+            <when test="sortBy == 'reviewCount'">
+                rev.REVIEW_COUNT DESC NULLS LAST
+            </when>
+            <when test="sortBy == 'releaseDate'">
+                m.RELEASE_DATE ASC NULLS LAST
+            </when>
+            <otherwise>
+                r.RESERVATION_RATE DESC NULLS LAST
+            </otherwise>
+        </choose>
+        ) m
+        WHERE ROWNUM &lt;= #{offset} + #{size}
+        )
+        WHERE RN > #{offset}
+    </select>
+
+<!--    <select id="selectStillcutsPaginated" resultMap="stillcutResultMap">-->
+<!--        SELECT * FROM (-->
+<!--        SELECT-->
+<!--        s.STILLCUT_NO,-->
+<!--        s.STILLCUT_URL,-->
+<!--        ROW_NUMBER() OVER (ORDER BY s.STILLCUT_NO) AS ROW_NUM-->
+<!--        FROM MOVIE_STILLCUT_TBL s-->
+<!--        WHERE s.MOVIE_NO = #{movieNo}-->
+<!--        ) WHERE ROW_NUM > #{offset} AND ROW_NUM &lt;= (#{offset} + #{size})-->
+<!--    </select>-->
+    <select id="selectReviewByMovieNo" resultType="com.filmfellows.cinemates.app.movie.dto.ReviewDTO">
+        SELECT *
+        FROM REVIEW_TBL r
+             LEFT JOIN PROFILE_IMG_TBL p
+                ON p.MEMBER_ID = r.MEMBER_ID
+        WHERE MOVIE_NO = #{movieNo}
+        ORDER BY r.REG_DATE DESC
+    </select>
+    <insert id="insertReview">
+        INSERT INTO REVIEW_TBL (REVIEW_NO, MOVIE_NO, MEMBER_ID, SCORE, REVIEW_CONTENT, REG_DATE, UPDATE_DATE)
+        VALUES (SEQ_MOVIE_NO.NEXTVAL, #{movieNo}, #{memberId}, #{score}, #{reviewContent}, DEFAULT, DEFAULT)
+    </insert>
 </mapper>

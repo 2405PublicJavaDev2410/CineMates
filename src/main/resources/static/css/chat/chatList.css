@@ -3,6 +3,12 @@
     font-family: 'NEXON Lv1 Gothic OTF', serif;
 }
 
+h1.page-title {
+    font-family: 'GmarketSansMedium', sans-serif;
+    text-align: center;
+    margin: 30px;
+}
+
 /* 페이징 처리 */
 .paginationBox a {
     display: inline-block;
@@ -62,7 +68,8 @@
 
 .listMenu-item {
     user-select: none;
-    width: 120px;
+    /*width: 120px;*/
+    padding: 0 30px;
     height: 100%;
     text-align: center;
     line-height: 50px;
@@ -71,6 +78,13 @@
     transition: all 200ms;
     margin: 5px;
     cursor: pointer;
+}
+
+.listMenu-item.activeBtn {
+    /*width: 100px;*/
+    color: white;
+    background-color: #466288;
+    cursor: auto
 }
 
 .listMenu-item:hover {
@@ -131,7 +145,7 @@
     top: 10px;
     left: 0;
     width: 100%;
-    height: 100%;
+    /*height: 100%;*/
     z-index: 3;
 }
 
@@ -144,6 +158,7 @@
     top: 10px;
     left: 0;
     width: 100%;
+    /*height: 100%;*/
     z-index: 2;
 }
 
@@ -270,7 +285,25 @@
     transform: scale(1.02);
 }
 
+.card-report-btn{
+    position: absolute;
+    right: 10px;
+    bottom:60px;
+    color: white;
+}
 
+.list-report-btn{
+    margin-left: 30px;
+    color: #6e6e6e;
+    font-size: 16px;
+}
+
+.report-btn:hover{
+    color: #EA4E4A;
+    font-weight: bold;
+    user-select: none;
+    cursor: pointer;
+}
 /* card item */
 .toCard-item-info {
     display: flex;
@@ -321,8 +354,7 @@
     font-size: 20px;
 }
 
-.card-mouseover-text.joinBtn2 {
-
+.card-mouseover-text.joinBtn {
     margin: 20px auto;
     width: 100px;
     height: 60px;
@@ -334,7 +366,7 @@
     transition: all 200ms;
 }
 
-.card-mouseover-text.joinBtn2:hover {
+.card-mouseover-text.joinBtn:hover {
     background-color: white;
     color: black;
 }

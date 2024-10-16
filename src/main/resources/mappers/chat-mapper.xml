@@ -31,43 +31,61 @@
         GROUP BY CINEMA_LOCATION_CODE
     </select>
 
-<!--   채팅방 전체 조회 -->
-    <select id="selectChatRoomList" resultType="ChatRoom" parameterType="map">
+<!--   채팅방 검색 조회 -->
+    <select id="selectChatRoomList" resultType="ChatRoom">
         SELECT chat.ROOM_NO, chat.ROOM_NAME, chat.ROOM_WRITER, chat.ROOM_DATE, chat.ROOM_CATEGORY,
                chat.MOVIE_NO, movie.TITLE, movie.POSTER_URL,
                chat.CINEMA_LOCATION_CODE,
                SUBSTR(cinema.CINEMA_ADDRESS, 1, INSTR(cinema.CINEMA_ADDRESS, ' ') - 1) CINEMA_ADDRESS, cinema.CINEMA_NO, cinema.CINEMA_NAME
+        , profile.FILE_RENAME, profile.FILE_PATH
         FROM CHAT_ROOM_TBL chat
-                 JOIN MOVIE_TBL movie ON chat.MOVIE_NO = movie.MOVIE_NO
-                 JOIN CINEMA_TBL cinema ON chat.CINEMA_NO = cinema.CINEMA_NO
-            <if test="tagName != null">
+                JOIN MOVIE_TBL movie ON chat.MOVIE_NO = movie.MOVIE_NO
+                JOIN CINEMA_TBL cinema ON chat.CINEMA_NO = cinema.CINEMA_NO
+                LEFT JOIN PROFILE_IMG_TBL profile ON chat.ROOM_WRITER = profile.MEMBER_ID
+            <if test="tagName != null and tagName != ''">
                 JOIN CHAT_ROOM_TAG_TBL tag ON chat.ROOM_NO = tag.ROOM_NO
             </if>
         WHERE 1=1
 --           태그 검색 시 실행되는 쿼리문
-            <if test="tagName != null">
+            <if test="tagName != null and tagName != ''">
                 AND tag.TAG_NAME = #{tagName}
             </if>
 
 --          키워드 검색 시 실행되는 쿼리문
-            <if test="searchMovieList != null and searchMovieList.size() > 0">
-                AND movie.TITLE IN
-                <foreach item="movie" collection="searchMovieList" open="(" separator="," close=")">
-                    #{movie}
+            <if test="searchMovieList != null and !searchMovieList.isEmpty()">
+                AND
+                <foreach item="movie" collection="searchMovieList" separator=" OR ">
+                    movie.TITLE LIKE '%'||#{movie}||'%'
                 </foreach>
             </if>
-            <if test="searchRoomList != null and searchRoomList.size() > 0">
-                AND chat.ROOM_NAME IN
-                <foreach item="room" collection="searchRoomList" open="(" separator="," close=")">
-                    #{room}
+            <if test="searchRoomList != null and !searchRoomList.isEmpty()">
+                AND
+                <foreach item="room" collection="searchRoomList" separator=" OR ">
+                    chat.ROOM_NAME LIKE '%'||#{room}||'%'
                 </foreach>
             </if>
-            <if test="searchRegionList != null and searchRegionList.size() > 0">
-                AND cinema.CINEMA_ADDRESS IN
-                <foreach item="region" collection="searchRegionList" open="(" separator="," close=")">
-                    #{region}
+            <if test="searchRegionList != null and !searchRegionList.isEmpty()">
+                AND
+                <foreach item="region" collection="searchRegionList" separator=" OR ">
+                    cinema.CINEMA_ADDRESS LIKE '%'||#{region}||'%'
                 </foreach>
             </if>
+        ORDER BY chat.ROOM_DATE DESC
+    </select>
+
+<!--    내 채팅방 조회-->
+    <select id="selectMyChatRoomList" resultType="ChatRoom">
+        SELECT chat.ROOM_NO, chat.ROOM_NAME, chat.ROOM_WRITER, chat.ROOM_DATE, chat.ROOM_CATEGORY,
+        chat.MOVIE_NO, movie.TITLE, movie.POSTER_URL,
+        chat.CINEMA_LOCATION_CODE,
+        SUBSTR(cinema.CINEMA_ADDRESS, 1, INSTR(cinema.CINEMA_ADDRESS, ' ') - 1) CINEMA_ADDRESS, cinema.CINEMA_NO, cinema.CINEMA_NAME
+        , profile.FILE_RENAME, profile.FILE_PATH
+        FROM CHAT_ROOM_TBL chat
+        JOIN MOVIE_TBL movie ON chat.MOVIE_NO = movie.MOVIE_NO
+        JOIN CINEMA_TBL cinema ON chat.CINEMA_NO = cinema.CINEMA_NO
+        LEFT JOIN PROFILE_IMG_TBL profile ON chat.ROOM_WRITER = profile.MEMBER_ID
+        WHERE chat.ROOM_WRITER = #{writer}
+
         ORDER BY chat.ROOM_DATE DESC
     </select>
 
@@ -101,15 +119,46 @@
         SELECT * FROM PROFILE_IMG_TBL
     </select>
 
+
+<!--    채팅방 개수 조회-->
     <select id="getTotalCount" resultType="_int">
         <if test="tagName != null">
             SELECT COUNT(distinct chat.ROOM_NAME)  FROM CHAT_ROOM_TBL chat
             JOIN CHAT_ROOM_TAG_TBL tag ON chat.ROOM_NO = tag.ROOM_NO
             WHERE TAG_NAME = #{tagName}
         </if>
-        <if test="tagName == null">
+        <if test="tagName == null and (searchMovieList.isEmpty() and searchRoomList.isEmpty() and searchRegionList.isEmpty())">
             SELECT COUNT(*) FROM CHAT_ROOM_TBL
         </if>
+        <if test="tagName == null and (!searchMovieList.isEmpty() or !searchRoomList.isEmpty() or !searchRegionList.isEmpty())">
+            SELECT COUNT(*)
+            FROM CHAT_ROOM_TBL chat
+            JOIN MOVIE_TBL movie ON chat.MOVIE_NO = movie.MOVIE_NO
+            JOIN CINEMA_TBL cinema ON chat.CINEMA_NO = cinema.CINEMA_NO
+            WHERE 1=1
 
+            <if test="searchMovieList != null and !searchMovieList.isEmpty()">
+                AND
+                <foreach item="movie" collection="searchMovieList" separator=" OR ">
+                    movie.TITLE LIKE '%'||#{movie}||'%'
+                </foreach>
+            </if>
+            <if test="searchRoomList != null and !searchRoomList.isEmpty()">
+                AND
+                <foreach item="room" collection="searchRoomList" separator=" OR ">
+                    chat.ROOM_NAME LIKE '%'||#{room}||'%'
+                </foreach>
+            </if>
+            <if test="searchRegionList != null and !searchRegionList.isEmpty()">
+                AND
+                <foreach item="region" collection="searchRegionList" separator=" OR ">
+                    cinema.CINEMA_ADDRESS LIKE '%'||#{region}||'%'
+                </foreach>
+            </if>
+        </if>
+    </select>
+
+    <select id="getMyTotalCount" resultType="_int">
+        SELECT COUNT(*) FROM CHAT_ROOM_TBL WHERE ROOM_WRITER = #{writer}
     </select>
 </mapper>

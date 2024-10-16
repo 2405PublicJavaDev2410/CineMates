@@ -96,4 +96,10 @@ public interface ReservationService {
      * @return
      */
     ReservationDTO selectReservationInfo(String reservationNo);
+
+    /**
+     * 영화 전체 목록 조회
+     * @return
+     */
+    List<String> selectAllMovies();
 }

@@ -1,6 +1,5 @@
 package com.filmfellows.cinemates.domain.reservation.model.mapper;
 
-import com.filmfellows.cinemates.domain.cinema.model.vo.Showtime;
 import com.filmfellows.cinemates.domain.reservation.model.vo.MemberDTO;
 import com.filmfellows.cinemates.domain.reservation.model.vo.ReservationDTO;
 import com.filmfellows.cinemates.domain.reservation.model.vo.ShowInfoDTO;
@@ -38,4 +37,7 @@ public interface ReservationMapper {
 
     ReservationDTO selectReservationInfo(String reservationNo);
 
+    void deleteReservationInfo(String impUid);
+
+    List<String> selectAllMovies();
 }

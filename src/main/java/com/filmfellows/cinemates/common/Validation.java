@@ -2,7 +2,7 @@ package com.filmfellows.cinemates.common;
 
 public class Validation {
     // ID 정규표현식
-    public static final String ID_VALIDATION = "^[A-Za-z0-9]{5,10}$";
+    public static final String ID_VALIDATION = "^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z0-9]{5,10}$";
     // PW 정규표현식
     public static final String PW_VALIDATION = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^*+=-])[A-Za-z0-9!@#$%^*+=-]{8,16}$";
     // 이름 정규식

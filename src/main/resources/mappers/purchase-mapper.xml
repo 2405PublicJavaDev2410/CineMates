@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.filmfellows.cinemates.domain.store.model.mapper.PurchaseMapper">
+
+    <insert id="insertPurchaseItem" parameterType="PurchaseItem">
+        INSERT INTO PURCHASE_ITEM_TBL (
+            PURCHASE_ITEM_NO, PURCHASE_NO, PRODUCT_NO,
+            QUANTITY, ORIGINAL_PRICE, DISCOUNT_AMOUNT, DISCOUNTED_PRICE
+        ) VALUES (
+            SEQ_PURCHASE_ITEM_NO.NEXTVAL, #{purchaseNo}, #{productNo}, #{quantity}, #{originalPrice}, #{discountAmount}, #{discountedPrice}
+        )
+    </insert>
+
+    <update id="updatePurchase">
+        UPDATE PURCHASE_TBL
+        SET STATUS = #{status}
+        WHERE PURCHASE_NO = #{purchaseNo}
+    </update>
+
+    <select id="selectPurchaseDetails" resultType="Purchase">
+        SELECT * FROM PURCHASE_TBL WHERE PURCHASE_NO = #{purchaseNo}
+    </select>
+
+    <!-- 주문자 정보 조회 쿼리문 -->
+    <select id="selectMemberById" resultType="Member">
+        SELECT * FROM MEMBER_TBL WHERE MEMBER_ID = #{memberId}
+    </select>
+
+</mapper>

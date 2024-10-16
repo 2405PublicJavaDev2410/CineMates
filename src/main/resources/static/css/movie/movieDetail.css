@@ -1,0 +1,491 @@
+/* body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        } */
+.container {
+    width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+}
+.movie-header {
+    display: flex;
+    margin-bottom: 20px;
+}
+.movie-poster {
+    width: 300px;
+    height: auto;
+    margin-right: 20px;
+    border-radius: 10px;
+}
+.movie-info {
+    flex: 1;
+}
+.movie-title {
+    font-size: 28px;
+    margin-bottom: 10px;
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+    font-weight: bold;
+
+}
+.movie-meta {
+    color: #666;
+    margin-bottom: 15px;
+    font-family: 'GmarketSansMedium', serif;
+}
+.synopsis-textarea {
+    height: 292px;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    font-family: 'GmarketSansMedium', serif;
+    font-size: 16px;
+    resize: none;
+    margin-bottom: 15px;
+    display: inline-block;
+    overflow-y: auto; /* 세로 스크롤만 표시 */
+}
+
+.synopsis-textarea::-webkit-scrollbar {
+    width: 10px; /* 스크롤바 너비 */
+}
+
+.synopsis-textarea::-webkit-scrollbar-thumb {
+    background-color: #233245; /* 스크롤바 색상을 검정으로 변경 */
+    border-radius: 10px;
+}
+
+.synopsis-textarea::-webkit-scrollbar-track {
+    background-color: white; /* 스크롤바 배경색을 파란색으로 변경 */
+}
+
+.synopsis-textarea::-webkit-scrollbar-button {
+    display: none; /* 스크롤바 방향 표시(버튼) 제거 */
+}
+
+.reserve-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #D54946;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-right: 10px;
+    border: none;
+    cursor: pointer;
+    font-family: 'GmarketSansMedium', serif;
+}
+
+.reserve-btn:hover {
+    background-color: #E12C25;
+}
+
+
+/*영화정보, 관람평 탭*/
+.tabs {
+    margin-top: 30px;
+}
+.tab-buttons {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+.tab-button {
+    width: 600px;
+    padding: 10px 20px;
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    font-family: 'GmarketSansMedium', serif;
+    font-weight: bold;
+}
+.tab-button.active {
+    border-bottom: 2px solid black;
+}
+.tab-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+}
+.hidden {
+    display: none;
+}
+.movie-details {
+    margin-bottom: 20px;
+}
+
+.movie-details h2 {
+    margin-bottom: 15px;
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+    font-weight: bold;
+}
+
+.movie-details p {
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-family: 'GmarketSansMedium', serif;
+}
+
+
+
+.section-title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+.section-title h2 {
+    margin: 0;
+    margin-right: 10px;
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+
+}
+.total-count {
+    /*font-size: 0.9em;*/
+    color: #666;
+    font-family: 'GmarketSansMedium', serif;
+}
+
+
+/*트레일러*/
+
+.trailer-section {
+    margin-bottom: 30px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.trailer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.trailer-nav {
+    display: flex;
+    gap: 10px;
+}
+.nav-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: #666;
+}
+.trailer-list-container {
+    overflow: hidden;
+}
+.trailer-list {
+    display: flex;
+    transition: transform 0.3s ease;
+}
+.trailer-item {
+    flex: 0 0 calc(33.333% - 10px);
+    margin-right: 15px;
+}
+.trailer-thumbnail {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%; /* 16:9 비율 */
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.trailer-thumbnail img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+}
+.trailer-thumbnail:hover{
+     filter: brightness(50%);
+}
+
+.play-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50px;
+    height: 50px;
+    transform: translate(-50%, -50%);
+}
+.trailer-title {
+    margin-top: 10px;
+    font-size: 14px;
+    font-family: 'GmarketSansMedium', serif;
+}
+
+
+/*스틸컷*/
+
+
+.still-list {
+    column-count: 3;
+    column-gap: 10px;
+}
+.still-item {
+    break-inside: avoid;
+    margin-bottom: 10px;
+}
+.still-item img {
+    width: 100%;
+    display: block;
+    border-radius: 8px;
+}
+
+.load-more-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    margin-bottom: 20px;
+
+}
+
+.loadMoreBtn {
+    background-color: #233245;
+    color: white;
+    border: none;
+    padding: 8px 0;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 30%;
+    height: 40px;
+    font-size: 16px;
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+}
+
+.loadMoreBtn:hover {
+    background-color: #242424;
+}
+
+
+
+/*리뷰*/
+.review-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+.review-write-button {
+    width: 300px;
+    padding: 10px;
+    background-color: #D54946;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0 auto 20px;
+    display: block;
+    font-family: 'GmarketSansMedium', serif;
+}
+.review-write-button:hover {
+    background-color: #E12C25;
+}
+
+.review-form {
+    display: none;
+    margin-bottom: 20px;
+}
+.review-item, .review-form-content {
+    display: flex;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+/*.review-avatar {*/
+/*    width: 40px;*/
+/*    height: 40px;*/
+/*    border-radius: 50%;*/
+/*    background-color: #ddd;*/
+/*    margin-right: 15px;*/
+/*    flex-shrink: 0;*/
+/*}*/
+
+#thumbnail-container img{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+.review-content, .review-form-fields {
+    flex-grow: 1;
+    font-family: 'GmarketSansMedium', serif;
+}
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 5px;
+}
+.review-info {
+    display: flex;
+    flex-direction: column;
+    /*font-family: 'GmarketSansMedium', serif;*/
+}
+.review-username {
+    font-weight: bold;
+}
+.review-date {
+    color: #888;
+    font-size: 0.9em;
+}
+.review-stars {
+    color: #ffd700;
+    font-size: 1.2em;
+    margin-top: 5px;
+}
+.review-report {
+    color: #888;
+    font-size: 0.9em;
+    cursor: pointer;
+    /*font-family: 'GmarketSansMedium', serif;*/
+}
+.review-text {
+    margin-top: 10px;
+}
+.star-rating {
+    display: flex;
+    flex-direction: row-reverse;
+    font-size: 1.5em;
+    justify-content: flex-end;
+}
+.star-rating input {
+    display: none;
+}
+.star-rating label {
+    color: #ddd;
+    cursor: pointer;
+}
+.star-rating :checked ~ label {
+    color: #ffd700;
+}
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color: #ffd700;
+}
+.review-textarea {
+    width: 100%;
+    height: 100px;
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-family: 'GmarketSansMedium', serif;
+    resize: none;
+}
+.submit-review {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #233245;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'GmarketSansMedium', serif;
+}
+
+.submit-review:hover{
+    background-color: #242424;
+}
+
+
+/*비디오 모달 팝업*/
+.video-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.8);
+}
+
+.video-modal .modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    width: 80%;
+    /*max-width: 700px;*/
+}
+
+.video-close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.video-modal .close:hover,
+.video-modal .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#modalVideo {
+    width: 100%;
+}
+
+/*포스터 모달*/
+.img-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.9);
+}
+
+.img-modal .modal-content {
+    position: relative;
+    background-color: transparent;
+    margin: auto;
+    padding: 0;
+    width: 90%;
+    max-width: 1200px;
+    height: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.img-modal .close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.img-modal .close:hover,
+.img-modal .close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#modalImage {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* 확대/축소 기능을 위한 스타일 */
+.zoomed {
+    transform: scale(1.5);
+    transition: transform 0.3s ease;
+}

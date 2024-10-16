@@ -5,6 +5,7 @@ import com.filmfellows.cinemates.domain.member.model.mapper.MemberMapper;
 import com.filmfellows.cinemates.domain.member.model.service.MemberService;
 import com.filmfellows.cinemates.domain.member.model.vo.Member;
 import com.filmfellows.cinemates.domain.member.model.vo.ProfileImg;
+import com.filmfellows.cinemates.domain.snsLogin.model.vo.SnsProfile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -122,4 +123,28 @@ public class MemberServiceImpl implements MemberService {
         return mMapper.countByEmail(email);
     }
 
+    @Override
+    public String findSnsIdByEmailAndType(String email, String snsType) {
+        return mMapper.selectSnsIdByEmailAndType(email, snsType);
+    }
+
+    @Override
+    public SnsProfile loginSnsMember(String snsId) {
+        return mMapper.selectOneSnsById(snsId);
+    }
+
+    @Override
+    public int insertSnsIdToMember(String snsId) {
+        return mMapper.insertSnsIdToMember(snsId);
+    }
+
+    @Override
+    public int insertSnsMember(SnsProfile snsProfile) {
+        return mMapper.insertSnsMember(snsProfile);
+    }
+
+    @Override
+    public int deleteSnsMember(String snsId) {
+        return mMapper.deleteSnsMember(snsId);
+    }
 }

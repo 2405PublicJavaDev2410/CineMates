@@ -23,6 +23,7 @@ public class MovieDTO {
     private String genre;
     private String productionCountry;
     private String screeningStatus;
+    private String isBookable;
     private List<MovieDTO.TrailerDTO> trailers;
     private List<MovieDTO.StillcutDTO> stillcuts;
 

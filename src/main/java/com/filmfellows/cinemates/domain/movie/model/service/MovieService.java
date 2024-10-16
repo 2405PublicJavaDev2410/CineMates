@@ -1,14 +1,18 @@
 package com.filmfellows.cinemates.domain.movie.model.service;
 
 import com.filmfellows.cinemates.app.movie.dto.MovieDTO;
+import com.filmfellows.cinemates.app.movie.dto.MovieListDTO;
+import com.filmfellows.cinemates.app.movie.dto.MovieReservationRateDTO;
+import com.filmfellows.cinemates.app.movie.dto.ReviewDTO;
 import com.filmfellows.cinemates.domain.movie.model.vo.Movie;
+import com.filmfellows.cinemates.domain.movie.model.vo.Review;
 import org.apache.ibatis.session.RowBounds;
 
 import java.util.List;
 import java.util.Map;
 
 public interface MovieService {
-//    List<Movie> selectMovieList();
+    List<MovieListDTO> selectAllMovieList();
     List<MovieDTO> selectMovieDetail(Long movieNo);
     void updateMovie(MovieDTO movieDTO);
 
@@ -18,4 +22,19 @@ public interface MovieService {
 
     List<Movie> selectMovieList(RowBounds rowBounds, Integer currentPage);
     int totalMovieCount();
+
+    List<MovieReservationRateDTO> getMovieReservationRates();
+
+    List<MovieListDTO> getComingSoonMovies();
+
+    List<MovieListDTO> getNowShowingMovies();
+
+    List<MovieListDTO> getMoviesByStatusAndSort(String status, int page, int size, String sortBy);
+
+
+    List<MovieDTO.StillcutDTO> selectStillcutsPaginated(Long movieNo, int page, int size);
+
+    List<ReviewDTO> getReviewByMovieNo(Long movieNo);
+
+    int addReview(Review addReview);
 }

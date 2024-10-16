@@ -40,7 +40,8 @@ public class ReservationController {
         if(memberId==null) {
             return "redirect:/login";
         }
-
+        List<String>movieList = rService.selectAllMovies();
+        System.out.println(movieList);
         List<String> rList = rService.selectCinemaName();
         List<String> processedList = new ArrayList<>();
 
@@ -50,7 +51,7 @@ public class ReservationController {
                 processedList.add(cinema.trim());
             }
         }
-
+        model.addAttribute("movieList", movieList);
         model.addAttribute("rList", processedList);
         System.out.println("보여줘" + processedList);
         return "pages/reservation/showtime";
@@ -94,7 +95,8 @@ public class ReservationController {
     }
 
     @GetMapping("/getCinemas")
-    public ResponseEntity<List<String>> selectCinemas(@RequestParam String cinemaAddress) {
+    public ResponseEntity<List<String>> selectCinemas(
+            @RequestParam String cinemaAddress) {
         List<String> addresses = Arrays.asList(cinemaAddress.split("/"));
         List<String> allCinemas = new ArrayList<>();
         for (String address : addresses) {
@@ -154,4 +156,5 @@ public class ReservationController {
         ReservationDTO rDTO = rService.selectReservationInfo(reservationNo);
         return ResponseEntity.ok(rDTO);
     }
+
 }
