@@ -1,11 +1,25 @@
+//
+// $(document).ready(function(){
+//     //영화에 따른 지역 출력
+//     $('#movie-List').on('click', 'a', function(e){
+//         e.preventDefault();
+//
+//         //선택된 영화 selected 클래스 추가
+//         $(this).parent().addClass('selected').siblings().removeClass('selected');
+//
+//
+//     });
+// });
+
+
 
 $(document).ready(function () {
     // 지역에 따른 극장 출력
     $('#region-list').on('click', 'a', function (e) {
         e.preventDefault();
         var Info = $(this).data('cinema-address');
-
-        // 선택된 지역에 selected 클래스 추가
+//
+        //선택된 지역에 selected 클래스 추가
         $(this).parent().addClass('selected').siblings().removeClass('selected');
 
         $.ajax({
@@ -26,45 +40,47 @@ $(document).ready(function () {
             }
         });
     });
-
+});
+//
     // 극장에 따른 영화 목록 출력
     $('#cinema-List').on('click', 'a', function (e) {
         e.preventDefault();
         var cinemaName = $(this).data('cinema-name');
         $(this).parent().addClass('selected').siblings().removeClass('selected');
         $('#cinemaName').val(cinemaName);
-
-        $.ajax({
-            url: '/getMovies',
-            method: 'GET',
-            data: {cinemaName: cinemaName},
-            success: function (response) {
-                var movie = $('#movie-List');
-                movie.empty();
-
-                $.each(response, function (index, item) {
-                    movie.append('<li><a href="#none">' + item + '</a></li>');
-                });
-                console.log("잘 전달 됨");
-            },
-            error: function (xhr, status, error) {
-                console.error("AJAX 요청 실패: ", error);
-            }
         });
-    });
-
-    // 영화 선택 시 selected 클래스 추가
-    $('#movie-List').on('click', 'a', function (e) {
-        e.preventDefault();
-        var title = $(this).text();
-        $(this).parent().addClass('selected').siblings().removeClass('selected');
-        $('#title').val(title);
-        selectedMovie = title;
-
-    });
-});
-
-
+    //
+//         $.ajax({
+//             url: '/getMovies',
+//             method: 'GET',
+//             data: {cinemaName: cinemaName},
+//             success: function (response) {
+//                 var movie = $('#movie-List');
+//                 movie.empty();
+//
+//                 $.each(response, function (index, item) {
+//                     movie.append('<li><a href="#none">' + item + '</a></li>');
+//                 });
+//                 console.log("잘 전달 됨");
+//             },
+//             error: function (xhr, status, error) {
+//                 console.error("AJAX 요청 실패: ", error);
+//             }
+//         });
+//     });
+//
+//     // 영화 선택 시 selected 클래스 추가
+//     $('#movie-List').on('click', 'a', function (e) {
+//         e.preventDefault();
+//         var title = $(this).text();
+//         $(this).parent().addClass('selected').siblings().removeClass('selected');
+//         $('#title').val(title);
+//         selectedMovie = title;
+//
+//     });
+// });
+//
+//
 // 달력
 const calendarDays = document.getElementById('calendar-days');
 const prevWeek = document.getElementById('prevWeek');
@@ -218,38 +234,59 @@ $(document).ready(function () {
             return;
         }
 
-        // 현재 시간을 가져오는 함수
         function getCurrentTime() {
             const now = new Date();
-            return now.getHours() * 60 + now.getMinutes(); // 현재 시간을 분 단위로 변환
+            return now.getHours() * 60 + now.getMinutes();
         }
 
-// 상영 시간을 분 단위로 변환하는 함수
         function convertToMinutes(timeString) {
             const [hours, minutes] = timeString.split(':').map(Number);
             return hours * 60 + minutes;
         }
 
-        let showtimesList = $('<ul id="showtimes-List"></ul>');
         const currentTimeInMinutes = getCurrentTime();
 
-        showInfoList.forEach((info) => {
-            const showtimeInMinutes = convertToMinutes(info.showtimeTime);
+        // 상영관별로 상영시간 그룹화
+        const groupedShowtimes = showInfoList.reduce((acc, info) => {
+            if (!acc[info.screenName]) {
+                acc[info.screenName] = [];
+            }
+            if (convertToMinutes(info.showtimeTime) >= currentTimeInMinutes) {
+                acc[info.screenName].push(info);
+            }
+            return acc;
+        }, {});
 
-            if (showtimeInMinutes >= currentTimeInMinutes) {
-                showtimesList.append(`
-            <li>
-                <a role="button" href="#none" class="showtime-link"><strong>${info.showtimeTime}</strong>
-                <dl>좌석: ${info.availableSeats}/${info.screenSeat || '정보 없음'}</dl>
-                <dt>상영관: ${info.screenName || '정보 없음'}</dt>
-                </a>
-            </li>
-        `);
+        let showtimesList = $('<div id="showtimes-List"></div>');
+
+        Object.entries(groupedShowtimes).forEach(([screenName, infos]) => {
+            if (infos.length > 0) {
+                let screenShowtimes = $(`
+                <div class="screen-showtimes">
+                    <h4>상영관: ${screenName || '정보 없음'}</h4>
+                    <ul></ul>
+                </div>
+            `);
+
+                infos.forEach((info) => {
+                    screenShowtimes.find('ul').append(`
+                    <li>
+                        <button class="showtime-link" onclick="goNextPage();">
+                            <strong>${info.showtimeTime}</strong>
+                            <dl>좌석: ${info.availableSeats}/${info.screenSeat || '정보 없음'}</dl>
+                        </button>
+                    </li>
+                `);
+                });
+
+                showtimesList.append(screenShowtimes);
             }
         });
+
         if (showtimesList.children().length === 0) {
-            showtimesList.append('<li>오늘 남은 상영 일정이 없습니다.</li>');
+            showtimesList.append('<p>오늘 남은 상영 일정이 없습니다.</p>');
         }
+
         $('#showtimes-container').empty().append(showtimesList);
 
         // 상영 시간 선택 이벤트 리스너 추가
@@ -257,9 +294,13 @@ $(document).ready(function () {
             e.preventDefault();
             $('.showtime-link').removeClass('selected active');
             $(this).addClass('selected active');
-            $('#showtimeTime').val($(this).text());
-            $('#screenName').val($(this).closest('li').find('dt').text().replace('상영관: ', ''));
+            $('#showtimeTime').val($(this).find('strong').text());
+            $('#screenName').val($(this).closest('.screen-showtimes').find('h4').text().replace('상영관: ', ''));
         });
+    }
+
+    function goNextPage() {
+        location.href="/Ticketing/PersonSeat";
     }
 
     $('form').on('submit', function (e) {

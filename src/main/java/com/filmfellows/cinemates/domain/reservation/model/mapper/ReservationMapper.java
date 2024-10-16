@@ -38,4 +38,6 @@ public interface ReservationMapper {
     ReservationDTO selectReservationInfo(String reservationNo);
 
     void deleteReservationInfo(String impUid);
+
+    List<String> selectAllMovies();
 }

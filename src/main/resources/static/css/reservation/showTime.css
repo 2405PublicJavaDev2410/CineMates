@@ -47,6 +47,9 @@ li {
     color: white;
     background-color: black;
     text-align: center;
+    height: 50px;
+    font-size: 30px;
+    padding-top:8px;
 }
 
 .regionDiv_region {
@@ -81,6 +84,8 @@ li {
 
 .movieDiv_movie {
     border: 1px solid red;
+    height:calc(100% - 50px);
+    overflow-y:auto;
 }
 .movieDiv_movie ul li {
     font-size: 22px;
@@ -169,6 +174,7 @@ li {
     color: black;
     padding: 5px 10px;
     border-radius: 5px;
+    cursor:pointer;
     transition: background-color 0.3s;
 }
 .showtime-link strong{
