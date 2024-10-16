@@ -103,6 +103,8 @@ document.addEventListener('DOMContentLoaded', function() {
         return movieDiv;
     }
 
+
+
     loadMoreBtn.addEventListener('click', function() {
         if (hasMoreMovies) {
             currentPage++;
