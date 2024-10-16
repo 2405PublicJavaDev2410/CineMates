@@ -87,4 +87,21 @@ public class KakaoApiServiceImpl implements KakaoApiService {
         return snsProfile;
     }
 
+    // 로그인 연동 해제(탈퇴)
+    @Override
+    public String revokeKakaoAccessToken(String accessToken) {
+        String reqUrl = "https://kapi.kakao.com/v1/user/unlink";
+        // RestTemplate 인스턴스 생성
+        RestTemplate restTemplate = new RestTemplate();
+        // Http 헤더 객체 생성
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + accessToken);
+        // HttpEntity 객체 생성 (헤더만 필요)
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(headers);
+        // HTTP 요청 및 응답 처리
+        ResponseEntity<String> response = restTemplate.exchange(reqUrl, HttpMethod.POST, request, String.class);
+
+        // 요청 본문 반환
+        return response.getBody();
+    }
 }

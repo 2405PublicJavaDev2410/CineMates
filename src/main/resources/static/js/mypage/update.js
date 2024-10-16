@@ -11,15 +11,27 @@ const phoneFailureMsg = document.querySelector('#phone-failure-message');
 
 function modifyMember() {
     if(!pwCheck()) {
-        pwInput.scrollIntoView({behavior: 'smooth', block: 'start'});
+        window.scrollTo({
+            top: pwInput.getBoundingClientRect().top + window.pageYOffset - 120,
+            behavior: 'smooth'
+        });
+        // pwInput.scrollIntoView({behavior: 'smooth', block: 'start'});
         return;
     }
     if(!pwCheckCheck()) {
-        pwCheckInput.scrollIntoView({behavior: 'smooth', block: 'start'});
+        window.scrollTo({
+            top: pwCheckInput.getBoundingClientRect().top + window.pageYOffset - 120,
+            behavior: 'smooth'
+        });
+        // pwCheckInput.scrollIntoView({behavior: 'smooth', block: 'start'});
         return;
     }
     if(!phoneCheck()) {
-        phoneInput.scrollIntoView({behavior: 'smooth', block: 'start'});
+        window.scrollTo({
+            top: phoneInput.getBoundingClientRect().top + window.pageYOffset - 120,
+            behavior: 'smooth'
+        });
+        // phoneInput.scrollIntoView({behavior: 'smooth', block: 'start'});
         return;
     }
     if(confirm('회원 정보를 수정하시겠습니까?')) {

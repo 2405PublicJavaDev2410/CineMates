@@ -17,34 +17,42 @@
         var rDTO = /*[[${rDTO}]]*/ {};
         var reservedSeatsMap = /*[[${reservationSeat}]]*/ {};
     </script>
-    <script crossorigin="anonymous"  src="/js/reservation/personSeat.js" defer></script>
+    <script crossorigin="anonymous" defer src="/js/reservation/personSeat.js"></script>
 </head>
 
 <body>
-<h1>영화 좌석 예매 시스템</h1>
+<div class="select_num_people_wrap">
+    <div class="movieInfo">
+        <h3>[[${rDTO.title}]]</h3>
+        <span><img alt="" th:src="@{${sDTO.posterUrl}}"></span>
+    </div>
+    <div class="count_person">
+        <ul class="counter-list">
+            <li class="counter-item">
+                <strong class="tit">성인</strong>
+                <div class="counter-controls">
+                    <button class="counter-btn minus" onclick='count("minus", "result")'>-</button>
+                    <div class="result">0</div>
+                    <button class="counter-btn plus" onclick='count("plus", "result")'>+</button>
+                </div>
+            </li>
+            <li class="counter-item">
+                <strong class="tit">어린이</strong>
+                <button class="counter-btn minus" onclick='count("plus", "result1")' value='+'>+</button>
+                <div class="result1">0</div>
+                <button class="counter-btn plus" onclick='count("minus", "result1")' style="margin-left:10px" value='-'>-</button>
+            </li>
+            <li class="counter-item">
+                <strong class="tit">경로</strong>
+                <button class="counter-btn minus" onclick='count("plus", "result2")' style="margin-right: 10px" value='+'>+</button>
+                <div class="result2">0</div>
+                <button class="counter-btn plus" onclick='count("minus", "result2")' style="margin-left:10px" value='-'>-</button>
+            </li>
 
+        </ul>
 
-<span style="display: flex">
-<strong class="tit">성인</strong>
-    <button onclick='count("plus", "result")' style="margin-right: 10px" value='+'>+</button>
-    <div class="result">0</div>
-    <button onclick='count("minus", "result")' style="margin-left:10px" value='-'>-</button>
-</span>
-
-<span style="display: flex">
-<strong class="tit">어린이</strong>
-    <button onclick='count("plus", "result1")' style="margin-right: 10px" value='+'>+</button>
-    <div class="result1">0</div>
-    <button onclick='count("minus", "result1")' style="margin-left:10px" value='-'>-</button>
-</span>
-
-<span style="display: flex">
-<strong class="tit">경로</strong>
-    <button onclick='count("plus", "result2")' style="margin-right: 10px" value='+'>+</button>
-    <div class="result2">0</div>
-    <button onclick='count("minus", "result2")' style="margin-left:10px" value='-'>-</button>
-</span>
-
+        </div>
+</div>
 <div id="seatMap"></div>
 <p id="message"></p>
 <form action="/paymentReady" method="POST">

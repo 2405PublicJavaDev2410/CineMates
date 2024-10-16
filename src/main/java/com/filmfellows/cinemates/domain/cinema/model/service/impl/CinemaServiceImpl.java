@@ -5,6 +5,7 @@ import com.filmfellows.cinemates.domain.cinema.model.mapper.CinemaMapper;
 import com.filmfellows.cinemates.domain.cinema.model.vo.Cinema;
 import com.filmfellows.cinemates.domain.cinema.model.vo.Screen;
 import com.filmfellows.cinemates.domain.cinema.model.vo.Showtime;
+import com.filmfellows.cinemates.domain.movie.model.vo.Movie;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -136,5 +137,11 @@ public class CinemaServiceImpl implements CinemaService {
     public List<Showtime> showtimelistcurrent(int cinemaNo) {
         List<Showtime> sList=mapper.showtimelistcurrent(cinemaNo);
         return sList;
+    }
+
+    @Override
+    public List<Movie> searchmovie() {
+        List<Movie> mList=mapper.searchmovie();
+        return mList;
     }
 }

@@ -3,10 +3,10 @@
     height: 100%;
     display: flex;
     justify-content: center;
-    padding: 100px 0;
+    padding: 100px 0 200px 0;
     margin: 0 auto;
     flex-direction: row;
-    width: 90%;
+    width: 1050px;
     flex: 1 1 auto;
 }
 
@@ -73,8 +73,6 @@
 #info-table {
     width: 100%;
     padding: 0 10px 0 20px;
-}
-#info-table th {
     text-align: left;
 }
 #info-table td {
@@ -87,15 +85,18 @@
     font-size: 16px;
 }
 #movie-info {
-    padding: 10px 0 10px 20px;
+    padding: 15px 0 15px 10px;
+    display: flex;
 }
 #thumbnail-area {
-    width: 160px;
-    height: 220px;
-    border-radius: 5px;
+    width: 196px;
+    height: 280px;
     background-color: #466288;
 }
 #error-message {
     text-align: center;
     padding: 20px;
+}
+.hide {
+    display: none;
 }

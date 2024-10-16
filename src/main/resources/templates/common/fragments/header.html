@@ -3,29 +3,33 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       th:fragment="HeaderFragment">
-    <header class="header">
         <div class="header-top">
             <div class="header-logo">
-                <img src="/img/logo.png" alt="cinemates">
+                <img src="/img/logo.png" alt="cinemates" onclick="moveToMain()">
             </div>
-            <div class="header-login-area" th:if="${session.memberId != null && session.memberId != ''}">
-                <img id="header-my" src="" alt="profile">
-            </div>
-            <div class="header-login-area" th:if="${session.memberId == null || session.memberId == ''}">
-                <img id="header-login" src="/img/login.png" alt="login" onclick="moveToLogin();">
+            <img id="header-my"
+                 th:if="${session.memberId != null && session.memberId != ''}"
+                 th:src="${session.memberProfile != null
+                         ? session.memberProfile.profileImg
+                         : '/img/chat/defaultProfile.png'}"
+                 alt="profile">
+            <img id="header-login"
+                 th:if="${session.memberId == null || session.memberId == ''}"
+                 src="/img/login.png" alt="login" onclick="moveToLogin();">
+            <div class="header-my-expand" th:if="${session.memberId != null && session.memberId != ''}">
+                <p th:text="${session.name + ' 님'}"></p>
+                <p onclick="goMyPage();">마이페이지</p>
+                <p onclick="logout();">로그아웃</p>
             </div>
         </div>
         <div class="header-bottom">
             <nav class="nav-menu">
                 <a href="/movie-list">영화</a>
-                <a href="#">영화관</a>
-                <a href="#">예매</a>
-                <a href="#">커뮤니티</a>
-                <a href="#">스토어</a>
+                <a href="/cinema/main">영화관</a>
+                <a href="/Ticketing">예매</a>
+                <a href="/chat/list">커뮤니티</a>
+                <a href="/store/main">스토어</a>
             </nav>
         </div>
-    </header>
-    <script>
-        function moveToLogin() {location.href="/login"}
-    </script>
+    <script type="text/javascript" src="/js/header.js"></script>
 </html>

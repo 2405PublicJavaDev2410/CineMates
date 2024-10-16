@@ -66,8 +66,17 @@
     <form action="/cinema/insert" method="post">
         <div>
             <label for="cinemaLocationCode">지역코드</label>
-            <input type="number" name="cinemaLocationCode" id="cinemaLocationCode" >
-            <small>1:서울,2:인천,3:경기,4:대전/충천,5:부산/울산,6:대구/경상,7:강원,8:광주/전라/제주</small>
+            <select name="cinemaLocationCode" id="cinemaLocationCode">
+                <option value="1">서울</option>
+                <option value="2">인천</option>
+                <option value="3">경기</option>
+                <option value="4">대전/충천</option>
+                <option value="5">부산/울산</option>
+                <option value="6">대구/경상</option>
+                <option value="7">강원</option>
+                <option value="8">광주/전라/제주</option>
+            </select>
+            <small>1:서울, 2:인천, 3:경기, 4:대전/충천, 5:부산/울산, 6:대구/경상, 7:강원, 8:광주/전라/제주</small>
         </div>
         <div>
             <label for="cinemaName">극장이름</label>

@@ -10,6 +10,7 @@ import com.filmfellows.cinemates.domain.cinema.model.service.CinemaService;
 import com.filmfellows.cinemates.domain.cinema.model.vo.Cinema;
 import com.filmfellows.cinemates.domain.cinema.model.vo.Screen;
 import com.filmfellows.cinemates.domain.cinema.model.vo.Showtime;
+import com.filmfellows.cinemates.domain.movie.model.vo.Movie;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -173,8 +174,10 @@ public class CinemaController {
     public String showtimeinsert(@PathVariable("cinemaNo") int cinemaNo,Model model){
 
         List<Screen> scrList=cService.onecinemascreen(cinemaNo);
-
+        List<Movie> mList=cService.searchmovie();
+        model.addAttribute("mList",mList);
         model.addAttribute("scrList",scrList);
+
         return "pages/cinema/admin/showtimeinsert";
     }
     @PostMapping("/showtimeinsert")
@@ -184,7 +187,7 @@ public class CinemaController {
         int result=cService.showtimeinsert(showtime);
 
         if(result>0) {
-            return "reload";
+            return "pages/cinema/admin/sucess";
         }else{
             return "pages/cinema/admin/failed";
         }
@@ -239,7 +242,8 @@ public class CinemaController {
     public String showupdateshowtime(@PathVariable("showtimeNo") int showtimeNo,Model model) {
         Showtime showtime=cService.oneshowtime(showtimeNo);
         List<Screen> scrList=cService.onecinemascreen(showtime.getCinemaNo());
-
+        List<Movie> mList=cService.searchmovie();
+        model.addAttribute("mList",mList);
         model.addAttribute("scrList",scrList);
         model.addAttribute("showtime",showtime);
         return "pages/cinema/admin/updateshowtime";
