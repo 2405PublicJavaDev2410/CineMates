@@ -8,5 +8,5 @@ import lombok.ToString;
 @Setter
 @ToString
 public class SearchLocationCodeDTO {
-    private Integer locationCode;
+    private Integer cinemaLocationCode;
 }

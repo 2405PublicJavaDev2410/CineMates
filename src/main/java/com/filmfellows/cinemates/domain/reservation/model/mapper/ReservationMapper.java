@@ -44,4 +44,6 @@ public interface ReservationMapper {
     List<SearchMovieDTO> selectAllMovies();
 
     List<SearchLocationCodeDTO> selectAllLocationCode();
+
+    List<String> selectCinemasByCode();
 }

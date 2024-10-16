@@ -109,4 +109,11 @@ public interface ReservationService {
      * @return
      */
     List<SearchLocationCodeDTO> selectAllLocationCode();
+
+    /**
+     * 극장 정보 코드로 조회
+     * @param cinemaLocationCode
+     * @return
+     */
+    List<String> selectCinemasByCode(Integer cinemaLocationCode);
 }

@@ -105,7 +105,9 @@ public class ReservationController {
 
     @GetMapping("/getCinemas")
     public ResponseEntity<List<String>> selectCinemas(
-            @RequestParam String cinemaAddress) {
+            @RequestParam String cinemaAddress
+//            @RequestParam Integer cinemaLocationCode
+    ) {
         List<String> addresses = Arrays.asList(cinemaAddress.split("/"));
         List<String> allCinemas = new ArrayList<>();
         for (String address : addresses) {
@@ -113,6 +115,7 @@ public class ReservationController {
             allCinemas.addAll(cinemas);
             System.out.println(cinemas);
         }
+//        List<String>address = rService.selectCinemasByCode(cinemaLocationCode);
         return ResponseEntity.ok(allCinemas);
     }
 
