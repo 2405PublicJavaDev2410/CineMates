@@ -53,12 +53,12 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
         if(chatMessage.getMessageType().equals(ChatMessage.MessageType.FIRST)){
             // 입장 메세지
             chatRoomSessionMap.computeIfAbsent(chatMessage.getRoomNo(), s -> new HashSet<>()).add(session);
-            chatMessage.setChatContent("님이 입장하셨습니다.");
+            chatMessage.setChatContent("님이 FIRST 하셨습니다.");
 
         }else if(chatMessage.getMessageType().equals(ChatMessage.MessageType.JOIN)){
             // 입장 메세지
             chatRoomSessionMap.computeIfAbsent(chatMessage.getRoomNo(), s -> new HashSet<>()).add(session);
-            chatMessage.setChatContent("님이 입장하셨습니다.");
+            chatMessage.setChatContent("님이 JOIN 하셨습니다.");
 
         }
         else if(chatMessage.getMessageType().equals(ChatMessage.MessageType.LEAVE)){

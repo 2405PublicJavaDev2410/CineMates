@@ -204,10 +204,12 @@
         </div>
 
         <script th:inline="javascript">
-            const socketUrl = `ws://localhost:9000/ws/chat`;
-            const socket = new WebSocket(socketUrl);
             let roomNo = /*[[${chatRoom.roomNo}]]*/; // 방번호
             let memberId = /*[[${session.memberId}]]*/; // 사용자 이름 입력받기
+
+            const socketUrl = `ws://localhost:9000/ws/chat`;
+            const socket = new WebSocket(socketUrl);
+
 
             socket.onopen = function() {
                 const joinMessage = {

@@ -32,6 +32,6 @@ public class ChatRoom {
 
 
 
-    // screenNo, movieNo, showtimeTime, showTimeNo, title, screenName, cinemaName, cinemaNo, reservationDate(상영날짜) 보내야됨!!!
+    // screenNo, movieNo, showtimeTime, showTimeNo, title, screenName, cinemaName, cinemaNo, reservationDate(상영날짜), cinemaLocationCode 보내야됨!!!
 
 }

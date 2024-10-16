@@ -150,8 +150,8 @@
 			<li><a th:href="@{/cinema/location?locationcode=8(cinemaNo=${cinema.cinemaNo})}">광주/전라/제주</a></li>
 		</ul>
 		<hr>
-		<button th:if="${memberId == 'admin'}" onclick="admin()">극장관리</button>
-		<button th:if="${memberId == 'admin'}" th:onclick="adminshowtime([[${cinema.cinemaNo}]])">상영관리</button>
+		<button th:if="${memberId == 'admin1'}" onclick="admin()">극장관리</button>
+		<button th:if="${memberId == 'admin1'}" th:onclick="adminshowtime([[${cinema.cinemaNo}]])">상영관리</button>
 		<br>
 
 		<div  id="divmain" >
