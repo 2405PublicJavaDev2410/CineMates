@@ -100,9 +100,10 @@
         <input type="text" name="description" id="description" th:value="${product.description}">
     </div>
     <input type="hidden" name="productNo" id="productNo" th:value="${product.productNo}">
-
+    <div style="text-align: center;">
     <button type="submit">수정</button>
     <button type="button" th:onclick="deletecinema([[${product.productNo}]])">삭제</button>
+    </div>
 </form>
 
 <script>

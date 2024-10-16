@@ -3,6 +3,7 @@ package com.filmfellows.cinemates.app.reservation;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.filmfellows.cinemates.domain.cinema.model.vo.Showtime;
 import com.filmfellows.cinemates.domain.reservation.model.Service.ReservationService;
 import com.filmfellows.cinemates.domain.reservation.model.vo.Reservation;
 import com.filmfellows.cinemates.domain.reservation.model.vo.ReservationDTO;

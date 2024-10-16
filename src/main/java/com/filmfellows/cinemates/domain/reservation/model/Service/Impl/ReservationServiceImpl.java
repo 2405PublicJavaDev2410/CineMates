@@ -1,5 +1,6 @@
 package com.filmfellows.cinemates.domain.reservation.model.Service.Impl;
 
+import com.filmfellows.cinemates.domain.cinema.model.vo.Showtime;
 import com.filmfellows.cinemates.domain.reservation.model.Service.ReservationService;
 import com.filmfellows.cinemates.domain.reservation.model.mapper.ReservationMapper;
 import com.filmfellows.cinemates.domain.reservation.model.vo.MemberDTO;
@@ -76,6 +77,7 @@ public class ReservationServiceImpl implements ReservationService {
     public ReservationDTO selectReservationInfo(String reservationNo) {
         return rmapper.selectReservationInfo(reservationNo);
     }
+
 
 
 }

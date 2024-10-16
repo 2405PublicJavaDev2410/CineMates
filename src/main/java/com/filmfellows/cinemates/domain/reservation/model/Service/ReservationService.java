@@ -1,5 +1,6 @@
 package com.filmfellows.cinemates.domain.reservation.model.Service;
 
+import com.filmfellows.cinemates.domain.cinema.model.vo.Showtime;
 import com.filmfellows.cinemates.domain.reservation.model.vo.MemberDTO;
 import com.filmfellows.cinemates.domain.reservation.model.vo.ReservationDTO;
 import com.filmfellows.cinemates.domain.reservation.model.vo.ShowInfoDTO;
