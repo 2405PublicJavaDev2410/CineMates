@@ -5,9 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.filmfellows.cinemates.domain.cinema.model.vo.Showtime;
 import com.filmfellows.cinemates.domain.reservation.model.Service.ReservationService;
-import com.filmfellows.cinemates.domain.reservation.model.vo.Reservation;
-import com.filmfellows.cinemates.domain.reservation.model.vo.ReservationDTO;
-import com.filmfellows.cinemates.domain.reservation.model.vo.ShowInfoDTO;
+import com.filmfellows.cinemates.domain.reservation.model.vo.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,14 +32,18 @@ public class ReservationController {
 
 
     @GetMapping("/Ticketing")
-    public String showShowTimePage(Model model, HttpSession session) {
-        String memberId = (String)session.getAttribute("memberId");
+    public String showShowTimePage(Model model, HttpSession session,
+                                   @RequestParam(required = false) String selectedMovieTitle
+    ) {
+        String memberId = (String) session.getAttribute("memberId");
 
-        if(memberId==null) {
+        if (memberId == null) {
             return "redirect:/login";
         }
-        List<String>movieList = rService.selectAllMovies();
-        System.out.println(movieList);
+        List<SearchMovieDTO> movieList = rService.selectAllMovies();
+        List<SearchLocationCodeDTO> lList = rService.selectAllLocationCode();
+        System.out.println("movieList" + movieList);
+        System.out.println("lList" + lList);
         List<String> rList = rService.selectCinemaName();
         List<String> processedList = new ArrayList<>();
 
@@ -52,7 +54,12 @@ public class ReservationController {
             }
         }
         model.addAttribute("movieList", movieList);
+        if (selectedMovieTitle != null && !selectedMovieTitle.isEmpty()) {
+            model.addAttribute("selectedMovieTitle", selectedMovieTitle);
+        }
+
         model.addAttribute("rList", processedList);
+        model.addAttribute("lList", lList);
         System.out.println("보여줘" + processedList);
         return "pages/reservation/showtime";
     }
@@ -60,7 +67,7 @@ public class ReservationController {
     @PostMapping("/Ticketing/PersonSeat")
     public String showPersonSeatPage(@ModelAttribute ReservationDTO rDTO, @RequestParam String reservationSeat, Model model, HttpSession session,
                                      @RequestParam String title) {
-        String memberId = (String)session.getAttribute("memberId");
+        String memberId = (String) session.getAttribute("memberId");
         String randomString = generateRandomString(10);
         rDTO.setReservationNo(randomString);
         ShowInfoDTO sDTO = rService.selectMoviePoster(title);
@@ -70,7 +77,8 @@ public class ReservationController {
         ObjectMapper mapper = new ObjectMapper();
         Map<Integer, List<Integer>> reservedSeats;
         try {
-            reservedSeats = mapper.readValue(reservationSeat, new TypeReference<Map<Integer, List<Integer>>>(){});
+            reservedSeats = mapper.readValue(reservationSeat, new TypeReference<Map<Integer, List<Integer>>>() {
+            });
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             reservedSeats = new HashMap<>();
@@ -78,13 +86,14 @@ public class ReservationController {
 
         // 예약된 좌석 정보를 모델에 추가
         model.addAttribute("reservationSeat", reservedSeats);
-        model.addAttribute("sDTO",sDTO);
+        model.addAttribute("sDTO", sDTO);
 
         System.out.println("rDTO 보여줘라 " + rDTO);
         model.addAttribute("memberId", memberId);
         model.addAttribute("rDTO", rDTO);
         return "pages/reservation/personSeat";
     }
+
     private static String generateRandomString(int length) {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < length; i++) {
@@ -119,7 +128,7 @@ public class ReservationController {
     public ResponseEntity<Map<String, Object>> selectShowInfo(
             @RequestParam String cinemaName,
             @RequestParam String title,
-            @RequestParam String reservationDate){
+            @RequestParam String reservationDate) {
         List<ShowInfoDTO> sList = rService.selectShowInfo(cinemaName, title);
         List<ReservationDTO> rList = rService.selectReservationSeat(reservationDate);
 

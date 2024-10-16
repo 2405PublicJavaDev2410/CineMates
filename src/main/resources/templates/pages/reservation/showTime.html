@@ -21,7 +21,8 @@
             src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script crossorigin="anonymous" defer src="/js/reservation/showTime.js"></script>
     <script th:inline="javascript" type="text/javascript">
-
+        let movieNo = /*[[${movieList.movieNo}*/{};
+        let title = /*[[${movieList.title}*/{};
     </script>
 </head>
 <body>
@@ -34,8 +35,10 @@
                 </div>
                 <div class="movieDiv_movie">
                     <ul id="movie-List">
-                        <li th:each="movie: ${movieList}">
-                            <a href="#none" th:data-title="${movie}" th:text="${movie}"></a>
+                        <li th:class="${movie.title == selectedMovieTitle} ? 'selected' : ''"
+                            th:each="movie: ${movieList}">
+                            <a href="#none" th:data-title="${movie.title}" th:text="${movie.title}"></a>
+                            <input th:value="${movie.movieNo}" type="hidden">
                         </li>
                     </ul>
                 </div>
@@ -48,29 +51,39 @@
                     <div class="regionDiv_region">
                         <ul id="region-list">
                             <li>
-                                <a data-cinema-address="서울" href="#none">서울</a>
+                                <a href="#none"
+                                   th:data-location-code="${lList.locationCode}"
+                                   th:text="${location.locationCode == 1} ? '서울' :
+                       (${location.locationCode == 2} ? '인천' :
+                       (${location.locationCode == 3} ? '경기' :
+                       (${location.locationCode == 4} ? '충청/대전/세종충청/대전/세종' :
+                       (${location.locationCode == 5} ? '부산/울산' :
+                       (${location.locationCode == 6} ? '경북/대구' :
+                       (${location.locationCode == 7} ? '강원' :
+                       (${location.locationCode == 8} ? '전라/광주/제주': '기타')))))))">
+                                </a>
                             </li>
-                            <li>
-                                <a data-cinema-address="인천" href="#none">인천</a>
-                            </li>
-                            <li>
-                                <a data-cinema-address="경기" href="#none">경기</a>
-                            </li>
-                            <li>
-                                <a data-cinema-address="충청/대전/세종" href="#none">충청/대전/세종</a>
-                            </li>
-                            <li>
-                                <a data-cinema-address="전라/광주/전북/제주" href="#none">전라/광주/제주</a>
-                            </li>
-                            <li>
-                                <a data-cinema-address="경상북도/대구" href="#none">경북/대구</a>
-                            </li>
-                            <li>
-                                <a data-cinema-address="부산/울산" href="#none">부산/울산</a>
-                            </li>
-                            <li>
-                                <a data-cinema-address="강원" href="#none">강원</a>
-                            </li>
+<!--                            <li>-->
+<!--                                <a data-cinema-address="인천" href="#none">인천</a>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <a data-cinema-address="경기" href="#none">경기</a>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <a data-cinema-address="충청/대전/세종" href="#none">충청/대전/세종</a>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <a data-cinema-address="전라/광주/전북/제주" href="#none">전라/광주/제주</a>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <a data-cinema-address="경상북도/대구" href="#none">경북/대구</a>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <a data-cinema-address="부산/울산" href="#none">부산/울산</a>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <a data-cinema-address="강원" href="#none">강원</a>-->
+<!--                            </li>-->
                         </ul>
                     </div>
                     <div class="cinemaDiv_cinema">
@@ -96,7 +109,7 @@
             </div>
 
         </div>
-        <div style="display: flex; width: 100%; margin:0 auto; justify-content: end;" >
+        <div style="display: flex; width: 100%; margin:0 auto; justify-content: end;">
             <button id="goPersonSeat">이동</button>
         </div>
         <input id="cinemaName" name="cinemaName" type="hidden" value="">

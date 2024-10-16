@@ -24,7 +24,7 @@
                  JOIN SHOWTIME_TBL USING (SCREEN_NO)
                  JOIN MOVIE_TBL M USING (MOVIE_NO)
         WHERE CINEMA_NAME = #{cinemaName}
---           AND SCREENING_STATUS = 'NOW SHOWING'
+          AND IS_BOOKABLE = 'Y'
     </select>
     <!--영화 이름과 번호 출력-->
     <select id="selectCinemaName" resultType="String">
@@ -112,7 +112,11 @@
         DELETE FROM RESERVATION_TBL WHERE IMP_UID = #{imp_uid}
     </delete>
     <!--영화 전체 조회-->
-    <select id="selectAllMovies" resultType="String">
-        SELECT TITLE FROM MOVIE_TBL
+    <select id="selectAllMovies" resultType="SearchMovieDTO">
+        SELECT TITLE,MOVIE_NO,IS_BOOKABLE FROM MOVIE_TBL
+    </select>
+    <!--지역 코드 조회-->
+    <select id="selectAllLocationCode" resultType="Integer">
+        select distinct CINEMA_LOCATION_CODE from CINEMA_TBL
     </select>
 </mapper>

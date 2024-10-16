@@ -2,12 +2,9 @@ package com.filmfellows.cinemates.domain.reservation.model.Service.Impl;
 
 import com.filmfellows.cinemates.app.mypage.dto.myReservationRequest;
 import com.filmfellows.cinemates.app.mypage.dto.myReservationResponse;
-import com.filmfellows.cinemates.domain.cinema.model.vo.Showtime;
 import com.filmfellows.cinemates.domain.reservation.model.Service.ReservationService;
 import com.filmfellows.cinemates.domain.reservation.model.mapper.ReservationMapper;
-import com.filmfellows.cinemates.domain.reservation.model.vo.MemberDTO;
-import com.filmfellows.cinemates.domain.reservation.model.vo.ReservationDTO;
-import com.filmfellows.cinemates.domain.reservation.model.vo.ShowInfoDTO;
+import com.filmfellows.cinemates.domain.reservation.model.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -81,10 +78,14 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<String> selectAllMovies() {
+    public List<SearchMovieDTO> selectAllMovies() {
         return rmapper.selectAllMovies();
     }
 
+    @Override
+    public List<SearchLocationCodeDTO> selectAllLocationCode() {
+        return rmapper.selectAllLocationCode();
+    }
 
 
 }

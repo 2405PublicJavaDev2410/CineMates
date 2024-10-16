@@ -2,9 +2,7 @@ package com.filmfellows.cinemates.domain.reservation.model.mapper;
 
 import com.filmfellows.cinemates.app.mypage.dto.myReservationRequest;
 import com.filmfellows.cinemates.app.mypage.dto.myReservationResponse;
-import com.filmfellows.cinemates.domain.reservation.model.vo.MemberDTO;
-import com.filmfellows.cinemates.domain.reservation.model.vo.ReservationDTO;
-import com.filmfellows.cinemates.domain.reservation.model.vo.ShowInfoDTO;
+import com.filmfellows.cinemates.domain.reservation.model.vo.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -43,5 +41,7 @@ public interface ReservationMapper {
 
     void deleteReservationInfo(String impUid);
 
-    List<String> selectAllMovies();
+    List<SearchMovieDTO> selectAllMovies();
+
+    List<SearchLocationCodeDTO> selectAllLocationCode();
 }

@@ -158,11 +158,13 @@ $(document).ready(function () {
     let selectedMovie = null;
     let selectedDate = null;
 
-    // 영화 선택 이벤트
+    // 영화 선택 이벤트 및 selected 클래스 추가
     $('#movie-List').on('click', 'a', function (e) {
         e.preventDefault();
         var title = $(this).text();
-        $(this).parent().addClass('selected').siblings().removeClass('selected');
+        if(movieNo!=null && title!= null && title !== '' ) {
+            $(this).parent().addClass('selected').siblings().removeClass('selected');
+        }
         $('#title').val(title);
         selectedMovie = title;
         checkAndGetShowtimes();
@@ -270,7 +272,7 @@ $(document).ready(function () {
 
                 infos.forEach((info) => {
                     screenShowtimes.find('.showtimes-row').append(`
-                <button class="showtime-link" onclick="goNextPage();">
+                <button class="showtime-link">
                     <strong>${info.showtimeTime}</strong>
                     <dl>${info.availableSeats}/${info.screenSeat || '정보 없음'}</dl>
                 </button>
@@ -297,9 +299,6 @@ $(document).ready(function () {
         });
     }
 
-    function goNextPage() {
-        location.href="/Ticketing/PersonSeat";
-    }
 
     $('form').on('submit', function (e) {
         if (!$('#cinemaName').val() || !$('#title').val() ||

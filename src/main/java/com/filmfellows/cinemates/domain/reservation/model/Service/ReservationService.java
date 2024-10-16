@@ -2,10 +2,7 @@ package com.filmfellows.cinemates.domain.reservation.model.Service;
 
 import com.filmfellows.cinemates.app.mypage.dto.myReservationRequest;
 import com.filmfellows.cinemates.app.mypage.dto.myReservationResponse;
-import com.filmfellows.cinemates.domain.cinema.model.vo.Showtime;
-import com.filmfellows.cinemates.domain.reservation.model.vo.MemberDTO;
-import com.filmfellows.cinemates.domain.reservation.model.vo.ReservationDTO;
-import com.filmfellows.cinemates.domain.reservation.model.vo.ShowInfoDTO;
+import com.filmfellows.cinemates.domain.reservation.model.vo.*;
 
 import java.util.List;
 import java.util.Map;
@@ -101,7 +98,15 @@ public interface ReservationService {
 
     /**
      * 영화 전체 목록 조회
+     *
      * @return
      */
-    List<String> selectAllMovies();
+    List<SearchMovieDTO> selectAllMovies();
+
+    /**
+     * 지역 코드 조회
+     *
+     * @return
+     */
+    List<SearchLocationCodeDTO> selectAllLocationCode();
 }
