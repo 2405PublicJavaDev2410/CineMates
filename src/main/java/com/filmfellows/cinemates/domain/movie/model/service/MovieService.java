@@ -3,7 +3,9 @@ package com.filmfellows.cinemates.domain.movie.model.service;
 import com.filmfellows.cinemates.app.movie.dto.MovieDTO;
 import com.filmfellows.cinemates.app.movie.dto.MovieListDTO;
 import com.filmfellows.cinemates.app.movie.dto.MovieReservationRateDTO;
+import com.filmfellows.cinemates.app.movie.dto.ReviewDTO;
 import com.filmfellows.cinemates.domain.movie.model.vo.Movie;
+import com.filmfellows.cinemates.domain.movie.model.vo.Review;
 import org.apache.ibatis.session.RowBounds;
 
 import java.util.List;
@@ -28,4 +30,11 @@ public interface MovieService {
     List<MovieListDTO> getNowShowingMovies();
 
     List<MovieListDTO> getMoviesByStatusAndSort(String status, int page, int size, String sortBy);
+
+
+    List<MovieDTO.StillcutDTO> selectStillcutsPaginated(Long movieNo, int page, int size);
+
+    List<ReviewDTO> getReviewByMovieNo(Long movieNo);
+
+    int addReview(Review addReview);
 }

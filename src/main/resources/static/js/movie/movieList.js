@@ -81,12 +81,16 @@ document.addEventListener('DOMContentLoaded', function() {
         movieDiv.className = 'movie-poster';
         movieDiv.innerHTML = `
             <div class="poster-image">
-                <img src="${movie.posterUrl || '/img/movie/imageNull.png'}" alt="${movie.title}" th:href="@{/movie-detail/{movieNo}(movieNo=${movie.movieNo})}"/>
+                <a href="/movie-detail/${movie.movieNo}">
+                    <img src="${movie.posterUrl || '/img/movie/imageNull.png'}" alt="${movie.title}"/>
+                </a>
             </div>
             <div class="movie-info">
                 <div class="title-container">
                     <img class="age-rating" src="/img/chat/${movie.rating}.jpg" alt="${movie.rating === 'ALL' ? '전체관람가' : movie.rating + '세 이상관람가'}" />
-                    <div class="movie-title" th:href="@{/movie-detail/{movieNo}(movieNo=${movie.movieNo})}">${movie.title}</div>
+                    <a href="/movie-detail/${movie.movieNo}">
+                        <div class="movie-title" >${movie.title}</div>
+                    </a>
                 </div>
                 <div class="movie-details">
                     <span class="booking-rate">예매율 ${movie.reservationRate}</span>
@@ -188,5 +192,3 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 5초마다 배너 변경
     setInterval(showNextBanner, 5000);
-
-
