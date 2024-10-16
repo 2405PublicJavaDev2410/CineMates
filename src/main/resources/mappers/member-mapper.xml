@@ -57,6 +57,16 @@
         WHERE EMAIL = #{email}
         AND SNS_TYPE = #{snsType}
     </select>
+    <!-- 신고 상태 조회(로그인) -->
+    <select id="searchOneReportById" resultType="Report">
+        SELECT *
+        FROM (SELECT *
+              FROM REPORT_TBL
+              WHERE REPORT_ID = #{reportId}
+              ORDER BY REPORT_NO DESC
+              )
+        WHERE ROWNUM = 1
+    </select>
     <!-- 일반 회원가입 -->
     <insert id="insertMember">
         INSERT INTO MEMBER_TBL (MEMBER_ID, MEMBER_PW, NAME, BIRTH_DATE, EMAIL, PHONE)

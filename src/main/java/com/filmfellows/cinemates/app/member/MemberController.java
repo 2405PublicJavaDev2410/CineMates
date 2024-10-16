@@ -3,6 +3,7 @@ package com.filmfellows.cinemates.app.member;
 import com.filmfellows.cinemates.app.member.dto.*;
 import com.filmfellows.cinemates.domain.emailverification.model.service.EmailVerificationService;
 import com.filmfellows.cinemates.domain.member.model.vo.MemberProfile;
+import com.filmfellows.cinemates.domain.report.model.vo.Report;
 import com.filmfellows.cinemates.domain.snsLogin.model.service.KakaoApiService;
 import com.filmfellows.cinemates.domain.snsLogin.model.vo.KakaoApi;
 import com.filmfellows.cinemates.domain.member.model.service.MemberService;
@@ -15,6 +16,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -375,13 +377,25 @@ public class MemberController {
      */
     @PostMapping("/login")
     @ResponseBody
-    public String loginMember(@RequestBody @Valid LoginRequest loginRequest,
-          HttpSession session, Model model) {
+    public ResponseEntity<Map<String, Object>> loginMember(@RequestBody @Valid LoginRequest loginRequest,
+                                                           HttpSession session) {
         Member member = new Member();
         member.setMemberId(loginRequest.getMemberId());
         member.setMemberPw(loginRequest.getMemberPw());
         member = mService.loginMember(member);
+        System.out.println(member.toString());
+        Map<String, Object> response = new HashMap<>();
+
         if (member != null) {
+            // 신고 상태 조회
+            Report report = mService.searchOneReportById(member.getMemberId());
+            if(member.getReportCount() == 3) {
+                response.put("status", "ban");
+                response.put("member", member);
+                response.put("report", report);
+                // 신고 정보 포함하여 리턴
+                return ResponseEntity.ok(response);
+            }
             session.setAttribute("memberId", member.getMemberId());
             session.setAttribute("name", member.getName());
 
@@ -396,12 +410,14 @@ public class MemberController {
             }
             session.setAttribute("memberProfile", memberProfile);
 
-            // 로그 추가
-            System.out.println("Session memberProfile: " + memberProfile);
-            model.addAttribute("member", member);
-            return "success";
+            response.put("status", "success");
+            response.put("member", member);
+            return ResponseEntity.ok(response);
+//            model.addAttribute("member", member);
+//            return "success";
         }
-        return "fail";
+        response.put("status", "fail");
+        return ResponseEntity.ok(response);
     }
 
     /**
