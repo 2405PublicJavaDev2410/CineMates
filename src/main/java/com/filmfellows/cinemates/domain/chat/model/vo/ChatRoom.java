@@ -29,4 +29,9 @@ public class ChatRoom {
     // 회원정보
     private String filePath;
     private String fileRename;
+
+
+
+    // screenNo, movieNo, showtimeTime, showTimeNo, title, screenName, cinemaName, cinemaNo, reservationDate(상영날짜) 보내야됨!!!
+
 }

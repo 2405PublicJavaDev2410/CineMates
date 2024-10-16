@@ -172,7 +172,6 @@ public class ChatController {
 
     @GetMapping("/chat/room")
     public String showChatRoom(Model model, @ModelAttribute("ChatRoom") ChatRoom chatRoom){
-        System.out.println(chatRoom);
         model.addAttribute("chatRoom", chatRoom);
         return "pages/chat/chatRoom";
     }

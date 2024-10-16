@@ -1,6 +1,7 @@
 package com.filmfellows.cinemates.domain.chat.model.vo;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -41,6 +42,7 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String payload = message.getPayload();
         log.info("payload {}", payload);
+        System.out.println("session :  "+session);
 
         // 클라이언트로부터 받은 메세지를 ChatMessage로 변환
         ChatMessage chatMessage = mapper.readValue(payload, ChatMessage.class);
@@ -48,10 +50,16 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
         System.out.println(chatMessage);
 
         // 메세지 타입에 따라 분기
-        if(chatMessage.getMessageType().equals(ChatMessage.MessageType.JOIN)){
+        if(chatMessage.getMessageType().equals(ChatMessage.MessageType.FIRST)){
             // 입장 메세지
             chatRoomSessionMap.computeIfAbsent(chatMessage.getRoomNo(), s -> new HashSet<>()).add(session);
             chatMessage.setChatContent("님이 입장하셨습니다.");
+
+        }else if(chatMessage.getMessageType().equals(ChatMessage.MessageType.JOIN)){
+            // 입장 메세지
+            chatRoomSessionMap.computeIfAbsent(chatMessage.getRoomNo(), s -> new HashSet<>()).add(session);
+            chatMessage.setChatContent("님이 입장하셨습니다.");
+
         }
         else if(chatMessage.getMessageType().equals(ChatMessage.MessageType.LEAVE)){
             // 퇴장 메세지
