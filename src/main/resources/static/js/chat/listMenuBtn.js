@@ -18,3 +18,15 @@ if(status === "my"){
 function showListByMyOrAll(status){
     location.href = `/chat/list?status=${status}`;
 }
+
+// 채팅방 입장
+function joinChatRoom(roomNo, title, posterUrl, cinemaName, cinemaAddress, roomCategory){
+    location.href=`
+    /chat/room?roomNo=${roomNo}
+    &title=${title}
+    &posterUrl=${posterUrl}
+    &cinemaName=${cinemaName}
+    &cinemaAddress=${cinemaAddress}
+    &roomCategory=${roomCategory}
+    `;
+}

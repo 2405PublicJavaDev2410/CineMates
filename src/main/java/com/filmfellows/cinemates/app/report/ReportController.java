@@ -26,9 +26,8 @@ public class ReportController {
     @PostMapping("/report")
     public String insertreport(Report report) {
         System.out.println(report.toString());
-        report.setReportId("MEM006");
+        report.setReportId("MEM002");
         int result=rService.reportinsert(report);
-
         return "/pages/report/report";
     }
     @GetMapping("/reportlist")

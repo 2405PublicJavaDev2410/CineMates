@@ -68,10 +68,32 @@
                 const selectedScreen = selectedOption.dataset;
 
                 // 좌석 수와 상영관 번호 모두 가져오기
+                const seatCount = parseInt(selectedScreen.seat, 10);
                 const screenNo = selectedScreen.screenNo;  // screenNo 값 가져오기
 
+                // 좌석 수를 입력 필드에 설정
+                if (!isNaN(seatCount)) {
+                    document.getElementById("showtimeSeat").value = seatCount;
+                } else {
+                    document.getElementById("showtimeSeat").value = ''; // 유효하지 않으면 빈 값으로 설정
+                }
+
+                // 상영관 번호를 입력 필드에 설정하거나 다른 작업 수행
                 // 예: 상영관 번호를 다른 input에 설정
                 document.getElementById("screenNo").value = screenNo;
+            }
+            function movietitle() {
+                const movieSelect = document.getElementById("title");
+                const selectedOption = movieSelect.options[movieSelect.selectedIndex];
+                const selectedmovie = selectedOption.dataset;
+
+                const movieNo = selectedmovie.movieNo;
+
+                if (!isNaN(movieNo)) {
+                    document.getElementById("movieNo").value = movieNo;
+                } else {
+                    document.getElementById("movieNo").value = ''; // 유효하지 않으면 빈 값으로 설정
+                }
             }
         </script>
     </head>
@@ -90,7 +112,16 @@
         </div>
         <div>
             <label for="movieNo">영화코드</label>
-            <input type="number" name="movieNo" id="movieNo" th:value="${showtime.movieNo}">
+            <div>
+                <label for="movieNo">영화제목/코드</label>
+                <select name="title" id="title" onchange="movietitle()">
+                    <option value="" disabled selected>[[${showtime.title}]]</option>
+                    <option th:each="movie : ${mList}"
+                            th:value="${showtime.title}"
+                            th:data-movie-no="${movie.movieNo}">[[${movie.title}]]</option>
+                </select>
+                <input type="number" name="movieNo" id="movieNo" th:value="${showtime.movieNo}">
+            </div>
 
         </div>
         <div>

@@ -111,4 +111,8 @@
     <delete id="deleteReservationInfo">
         DELETE FROM RESERVATION_TBL WHERE IMP_UID = #{imp_uid}
     </delete>
+    <!--영화 전체 조회-->
+    <select id="selectAllMovies" resultType="String">
+        SELECT TITLE FROM MOVIE_TBL
+    </select>
 </mapper>

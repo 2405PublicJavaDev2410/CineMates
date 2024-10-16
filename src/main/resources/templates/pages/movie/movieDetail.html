@@ -1,31 +1,30 @@
 <!DOCTYPE html>
-<!-- Default Layout Import-->
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{common/layout/defaultLayout}"
       layout:fragment="Content">
-<link rel="stylesheet" href="/css/movie/movieDetail.css">
+<head>
+    <link rel="stylesheet" href="/css/movie/movieDetail.css">
+</head>
 <body>
 <div layout:fragment="content" th:if="${not #lists.isEmpty(movieInfo)}">
-    <div class="container" th:each="movieInfo : ${movieInfo}">
+    <div class="container" th:each="movie : ${movieInfo}">
         <div class="movie-header">
-            <img th:src="${movieInfo?.posterUrl}" th:alt="${movieInfo?.title + ' 포스터'}" class="movie-poster">
+            <img th:src="${movie?.posterUrl}" th:alt="${movie?.title + ' 포스터'}" class="movie-poster" id="moviePoster">
             <div class="movie-info">
-                <h1 class="movie-title" th:text="${movieInfo?.title}"></h1>
+                <h1 class="movie-title" th:text="${movie?.title}"></h1>
                 <p class="movie-meta" th:with="ratingText=${
-                    movieInfo?.rating == 'NOT RATED' ? '등급미정' :
-                    movieInfo?.rating == 'ALL' ? '전체관람가' :
-                    movieInfo?.rating == '19' ? '청소년관람불가' :
-                    movieInfo?.rating + '세이상관람가'
+                    movie?.rating == 'NOT RATED' ? '등급미정' :
+                    movie?.rating == 'ALL' ? '전체관람가' :
+                    movie?.rating == '19' ? '청소년관람불가' :
+                    movie?.rating + '세이상관람가'
                 }">
-<!--                    <span th:text="${movieInfo?.releaseDate == 'null' ? '' : ${movieInfo?.releaseDate}  + ' 개봉'}"></span>-->
-                    <span th:text="${movieInfo?.releaseDate != null ? movieInfo.releaseDate + ' 개봉' : '개봉일 미정'}"></span>
+                    <span th:text="${movie?.releaseDate != null ? movie?.releaseDate + ' 개봉' : '개봉일 미정'}"></span>
                     <span th:text="'| ' + ${ratingText} + ' |'"></span>
-                    <span th:text="${movieInfo?.runningTime + '분'}"></span>
+                    <span th:text="${movie?.runningTime + '분'}"></span>
                 </p>
-                <textarea class="synopsis-textarea box1" th:text="${movieInfo?.synopsis}" readonly></textarea>
-<!--                <button class="button" id="trailerButton">예고편 재생</button>-->
+                <textarea class="synopsis-textarea box1" th:text="${movie?.synopsis}" readonly></textarea>
                 <button class="reserve-btn" id="reserveButton">예매하기</button>
             </div>
         </div>
@@ -33,26 +32,26 @@
         <div class="tabs">
             <div class="tab-buttons">
                 <button class="tab-button active" data-tab="details">상세정보</button>
-                <button class="tab-button" data-tab="reviews">관람평 (5,095)</button>
+                <button class="tab-button" data-tab="reviews" th:text="관람평 + ' (' + ${totalReviews} + ')'"></button>
             </div>
             <div class="tab-content" id="detailsTab">
                 <div class="movie-details">
                     <h2>영화정보</h2>
-                    <div th:if="${movieInfo?.director != null}">
-                        <p><strong>감독 :</strong> <span th:text="${movieInfo?.director}"></span></p>
+                    <div th:if="${movie?.director != null}">
+                        <p><strong>감독 :</strong> <span th:text="${movie?.director}"></span></p>
                     </div>
-                    <div th:if="${movieInfo?.genre != null}">
-                        <p><strong>장르 :</strong> <span th:text="${movieInfo?.genre} + ' / ' + ${movieInfo?.productionCountry}"></span></p>
+                    <div th:if="${movie?.genre != null}">
+                        <p><strong>장르 :</strong> <span th:text="${movie?.genre} + ' / ' + ${movie?.productionCountry}"></span></p>
                     </div>
-                    <div th:if="${movieInfo?.actors != null}">
-                        <p><strong>출연 :</strong> <span th:text="${movieInfo?.actors}"></span></p>
+                    <div th:if="${movie?.actors != null}">
+                        <p><strong>출연 :</strong> <span th:text="${movie?.actors}"></span></p>
                     </div>
                 </div>
                 <div class="trailer-section">
                     <div class="trailer-header">
                         <div class="section-title">
                             <h2>트레일러</h2>
-                            <span class="total-count" th:text="'(' + ${trailerCount} + ')'"></span>
+                            <span class="total-count" th:text="'(' + ${totalTrailers} + ')'"></span>
                         </div>
                         <div class="trailer-nav">
                             <button class="nav-button" id="prevTrailer">&lt;</button>
@@ -60,21 +59,15 @@
                         </div>
                     </div>
                     <div class="trailer-list-container">
-                        <div class="trailer-list"  th:if="${not #lists.isEmpty(movieInfo.trailers)}">
-                            <div class="trailer-item" th:each="trailer : ${movieInfo.trailers}">
-                                <div class="trailer-thumbnail">
-                                    <img th:src="${trailer.trailerThumbnailUrl}" th:alt="${trailer.trailerType}">
-                                    <div class="play-icon"></div>
+                        <div class="trailer-list" th:if="${not #lists.isEmpty(movie?.trailers)}">
+                            <div class="trailer-item" th:each="trailer : ${movie?.trailers}">
+                                <div class="trailer-thumbnail" th:data-trailer-url="${trailer?.trailerUrl}">
+                                    <img th:src="${trailer?.trailerThumbnailUrl}" th:alt="${trailer?.trailerType}">
+                                    <div class="play-icon">
+                                        <img src="/img/movie/play-icon.png" alt="Play">
+                                    </div>
                                 </div>
-<!--                                <video class="trailer-video"-->
-<!--                                       th:src="${trailer.trailerUrl}"-->
-<!--                                       th:poster="${trailer.trailerThumbnailUrl}"-->
-<!--                                       th:aria-label="${'트레일러: ' + trailer.trailerType}"-->
-<!--                                       controls-->
-<!--                                       preload="none">-->
-<!--                                    당신의 브라우저는 HTML5 비디오를 지원하지 않습니다.-->
-<!--                                </video>-->
-                                <p class="trailer-title" th:text="${trailer.trailerType}"></p>
+                                <p class="trailer-title" th:text="${trailer?.trailerType}"></p>
                             </div>
                         </div>
                     </div>
@@ -82,54 +75,78 @@
 
                 <div class="section-title">
                     <h2>스틸컷</h2>
-                    <span class="total-count" th:text="'(' + ${stillcutCount} + ')'"></span>
+                    <span class="total-count" th:text="'(' + ${totalStillcuts} + ')'"></span>
                 </div>
-                <div class="still-list" id="stillList" th:if="${not #lists.isEmpty(movieInfo.stillcuts)}">
-                    <div class="still-item" th:each="stillcut, status : ${movieInfo.stillcuts}">
-                        <img th:src="${stillcut.stillcutUrl}" th:alt="${stillcut.stillcutNo}">
+                <div class="still-list" id="stillList" th:if="${not #lists.isEmpty(movie?.stillcuts)}">
+                    <div class="still-item" th:each="stillcut : ${movie?.stillcuts}">
+                        <img th:src="${stillcut?.stillcutUrl}" th:alt="${movie?.title} + '스틸컷'" />
                     </div>
-                </div>
-                <div class="load-more-container" id="load-more-container">
-                    <button class="loadMoreBtn" id="loadMoreBtn">더보기</button>
                 </div>
             </div>
-            <div class="tab-content hidden" id="reviewsTab">
+
+            <div class="tab-content hidden" id="reviewsTab" >
                 <div class="review-section">
                     <button class="review-write-button">리뷰 작성</button>
-                    <div class="review-form">
+<!--                    <form class="review-form" action="/addReview" method="post">-->
+                    <form id="reviewForm" class="review-form" action="/addReview" method="post" onsubmit="return false;">
+                        <input type="hidden" name="movieNo" th:value="${movie?.movieNo}">
                         <div class="review-form-content">
-                            <div class="review-avatar"></div>
+<!--                            <div class="review-avatar"></div>-->
                             <div class="review-form-fields">
                                 <div class="star-rating">
-                                    <input type="radio" id="5-stars" name="rating" value="5" />
+                                    <input type="radio" id="5-stars" name="score" value="5" />
                                     <label for="5-stars">★</label>
-                                    <input type="radio" id="4-stars" name="rating" value="4" />
+                                    <input type="radio" id="4-stars" name="score" value="4" />
                                     <label for="4-stars">★</label>
-                                    <input type="radio" id="3-stars" name="rating" value="3" />
+                                    <input type="radio" id="3-stars" name="score" value="3" />
                                     <label for="3-stars">★</label>
-                                    <input type="radio" id="2-stars" name="rating" value="2" />
+                                    <input type="radio" id="2-stars" name="score" value="2" />
                                     <label for="2-stars">★</label>
-                                    <input type="radio" id="1-star" name="rating" value="1" />
+                                    <input type="radio" id="1-star" name="score" value="1" required/>
                                     <label for="1-star">★</label>
                                 </div>
-                                <textarea class="review-textarea" placeholder="리뷰를 작성해주세요"></textarea>
-                                <button class="submit-review">리뷰 등록</button>
+                                <textarea class="review-textarea" placeholder="리뷰를 작성해주세요" name="reviewContent"></textarea>
+                                <button type="submit" class="submit-review">리뷰 등록</button>
                             </div>
                         </div>
-                    </div>
-                    <div class="review-list">
-                        <div class="review-item">
-                            <div class="review-avatar"></div>
+                    </form>
+                    <div class="review-list" th:if="${not #lists.isEmpty(reviewList)}">
+                        <div class="review-item" th:each="review : ${reviewList}">
+<!--                            <div class="review-avatar">-->
+<!--                            </div>-->
+                            <div id="thumbnail-container">
+                                <img id="profile-thumbnail" alt="사진 미리보기"
+                                     th:src="${(review.filePath != null and review.fileRename != null) ?
+                          (review.filePath + review.fileRename) : '/img/movie/imageNull.png'}"
+                                     onerror="this.src='/img/movie/imageNull.png'">
+                            </div>
                             <div class="review-content">
-                                <div class="review-header">
+                                <div class="review-header" >
                                     <div class="review-info">
-                                        <span class="review-username">이**마</span>
-                                        <span class="review-date">2024.10.13 05:00</span>
-                                        <div class="review-stars">★★★☆☆</div>
+                                        <span class="review-username" th:text="${review.memberId}"></span>
+                                        <span class="review-date" th:text="${review.regDate}"></span>
+                                        <div th:if="${review.score} == '5'">
+                                            <div class="review-stars" >★★★★★</div>
+                                        </div>
+                                        <div th:if="${review.score} == '4'">
+                                            <div class="review-stars" >★★★★☆</div>
+                                        </div>
+                                        <div th:if="${review.score} == '3'">
+                                            <div class="review-stars" >★★★☆☆</div>
+                                        </div>
+                                        <div th:if="${review.score} == '2'">
+                                            <div class="review-stars" >★★☆☆☆</div>
+                                        </div>
+                                        <div th:if="${review.score} == '1'">
+                                            <div class="review-stars" >★☆☆☆☆</div>
+                                        </div>
+<!--                                        <div th:if="${review.score} == '0'">-->
+<!--                                            <div class="review-stars" >☆☆☆☆☆</div>-->
+<!--                                        </div>-->
                                     </div>
                                     <span class="review-report">신고</span>
                                 </div>
-                                <p class="review-text">김득의 세로운 시도가 보이지만.. </p>
+                                <p class="review-text" th:text="${review.reviewContent}"></p>
                             </div>
                         </div>
                     </div>
@@ -138,9 +155,30 @@
         </div>
     </div>
 </div>
+
+<!-- 모달 섹션 -->
+<div id="imageModal" class="img-modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <img id="modalImage" src="" alt="영화 포스터">
+    </div>
+</div>
+
+<div id="videoModal" class="video-modal">
+    <div class="modal-content">
+        <span class="video-close">&times;</span>
+        <video id="modalVideo" controls>
+            <source src="" type="video/mp4">
+        </video>
+    </div>
+</div>
+
 <th:block layout:fragment="script">
     <script type="text/javascript" src="/js/movie/movieDetail.js"></script>
 </th:block>
+<script th:inline="javascript">
+    // var isLoggedIn = [[${isLoggedIn}]];
+</script>
 
 </body>
 </html>

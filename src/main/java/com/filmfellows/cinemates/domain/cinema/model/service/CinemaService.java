@@ -3,6 +3,7 @@ package com.filmfellows.cinemates.domain.cinema.model.service;
 import com.filmfellows.cinemates.domain.cinema.model.vo.Cinema;
 import com.filmfellows.cinemates.domain.cinema.model.vo.Screen;
 import com.filmfellows.cinemates.domain.cinema.model.vo.Showtime;
+import com.filmfellows.cinemates.domain.movie.model.vo.Movie;
 
 import java.sql.Date;
 import java.util.List;
@@ -125,5 +126,11 @@ public interface CinemaService {
      * return Cinema
      */
     List<Showtime> showtimelistcurrent(int cinemaNo);
+    /**
+     * 영화조회
+     * pram
+     * return List<Movie>
+     */
+    List<Movie> searchmovie();
 }
 

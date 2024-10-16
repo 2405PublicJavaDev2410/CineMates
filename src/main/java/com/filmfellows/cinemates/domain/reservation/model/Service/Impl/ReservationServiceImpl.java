@@ -2,6 +2,7 @@ package com.filmfellows.cinemates.domain.reservation.model.Service.Impl;
 
 import com.filmfellows.cinemates.app.mypage.dto.myReservationRequest;
 import com.filmfellows.cinemates.app.mypage.dto.myReservationResponse;
+import com.filmfellows.cinemates.domain.cinema.model.vo.Showtime;
 import com.filmfellows.cinemates.domain.reservation.model.Service.ReservationService;
 import com.filmfellows.cinemates.domain.reservation.model.mapper.ReservationMapper;
 import com.filmfellows.cinemates.domain.reservation.model.vo.MemberDTO;
@@ -78,6 +79,12 @@ public class ReservationServiceImpl implements ReservationService {
     public myReservationResponse selectReservationInfo(myReservationRequest request) {
         return rmapper.selectReservationInfo(request);
     }
+
+    @Override
+    public List<String> selectAllMovies() {
+        return rmapper.selectAllMovies();
+    }
+
 
 
 }

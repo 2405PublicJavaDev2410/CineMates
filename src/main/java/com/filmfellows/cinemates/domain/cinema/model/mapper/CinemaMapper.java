@@ -3,6 +3,7 @@ package com.filmfellows.cinemates.domain.cinema.model.mapper;
 import com.filmfellows.cinemates.domain.cinema.model.vo.Cinema;
 import com.filmfellows.cinemates.domain.cinema.model.vo.Screen;
 import com.filmfellows.cinemates.domain.cinema.model.vo.Showtime;
+import com.filmfellows.cinemates.domain.movie.model.vo.Movie;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.sql.Date;
@@ -48,4 +49,6 @@ public interface CinemaMapper {
     List<Showtime> showtimelistdate(int cinemaNo, Date selectDate);
 
     List<Showtime> showtimelistcurrent(int cinemaNo);
+
+    List<Movie> searchmovie();
 }
