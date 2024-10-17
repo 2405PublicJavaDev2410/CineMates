@@ -3,7 +3,6 @@ package com.filmfellows.cinemates.app.reservation;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.filmfellows.cinemates.domain.cinema.model.vo.Showtime;
 import com.filmfellows.cinemates.domain.reservation.model.Service.ReservationService;
 import com.filmfellows.cinemates.domain.reservation.model.vo.*;
 import jakarta.servlet.http.HttpSession;
@@ -33,8 +32,9 @@ public class ReservationController {
 
     @GetMapping("/Ticketing")
     public String showShowTimePage(Model model, HttpSession session,
-                                   @RequestParam(required = false) String selectedMovieTitle
+                                   String title , Integer movieNo
     ) {
+        System.out.println("title : " + title);
         String memberId = (String) session.getAttribute("memberId");
 
         if (memberId == null) {
@@ -42,8 +42,6 @@ public class ReservationController {
         }
         List<SearchMovieDTO> movieList = rService.selectAllMovies();
         List<SearchLocationCodeDTO> lList = rService.selectAllLocationCode();
-        System.out.println("movieList" + movieList);
-        System.out.println("lList" + lList);
         List<String> rList = rService.selectCinemaName();
         List<String> processedList = new ArrayList<>();
 
@@ -53,14 +51,13 @@ public class ReservationController {
                 processedList.add(cinema.trim());
             }
         }
-        model.addAttribute("movieList", movieList);
-        if (selectedMovieTitle != null && !selectedMovieTitle.isEmpty()) {
-            model.addAttribute("selectedMovieTitle", selectedMovieTitle);
+        if (title != null && movieNo != null) {
+            model.addAttribute("selectedMovieTitle", title);
+            model.addAttribute("selectedMovieNo", movieNo);
         }
-
+        model.addAttribute("movieList", movieList);
         model.addAttribute("rList", processedList);
         model.addAttribute("lList", lList);
-        System.out.println("보여줘" + processedList);
         return "pages/reservation/showtime";
     }
 

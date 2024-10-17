@@ -35,8 +35,11 @@
                 </div>
                 <div class="movieDiv_movie">
                     <ul id="movie-List">
-                        <li th:each="movie: ${movieList}">
-                            <a href="#none" th:data-movie-no="${movie.movieNo}" th:data-title="${movie.title}" th:text="${movie.title}"></a>
+                        <li th:each="movie: ${movieList}" th:class="${movie.movieNo == selectedMovieNo} ? 'selected' : ''">
+                            <a href="#none"
+                               th:data-movie-no="${movie.movieNo}"
+                               th:data-title="${movie.title}"
+                               th:text="${movie.title}"></a>
                         </li>
                     </ul>
                 </div>
@@ -96,8 +99,8 @@
         <input name="cinemaNo" type="hidden" value="">
         <input name="showtimeNo" type="hidden" value="">
         <input name="reservationSeat" type="hidden" value="">
-        <input type="hidden" id="selectedMovieNo" th:value="${movieNo}">
-        <input type="hidden" id="selectedMovieTitle" th:value="${title}">
+        <input type="hidden" id="selectedMovieNo" th:value="${selectedMovieNo}">
+        <input type="hidden" id="selectedMovieTitle" th:value="${selectedMovieTitle}">
     </form>
 </div>
 </body>

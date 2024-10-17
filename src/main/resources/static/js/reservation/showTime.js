@@ -1,24 +1,8 @@
-//
-// $(document).ready(function(){
-//     //영화에 따른 지역 출력
-//     $('#movie-List').on('click', 'a', function(e){
-//         e.preventDefault();
-//
-//         //선택된 영화 selected 클래스 추가
-//         $(this).parent().addClass('selected').siblings().removeClass('selected');
-//
-//
-//     });
-// });
-
-
-
 $(document).ready(function () {
     // 지역에 따른 극장 출력
     $('#region-list').on('click', 'a', function (e) {
         e.preventDefault();
         var Info = $(this).data('cinema-address');
-//
         //선택된 지역에 selected 클래스 추가
         $(this).parent().addClass('selected').siblings().removeClass('selected');
 
@@ -41,46 +25,7 @@ $(document).ready(function () {
         });
     });
 });
-//
-    // 극장에 따른 영화 목록 출력
-    $('#cinema-List').on('click', 'a', function (e) {
-        e.preventDefault();
-        var cinemaName = $(this).data('cinema-name');
-        $(this).parent().addClass('selected').siblings().removeClass('selected');
-        $('#cinemaName').val(cinemaName);
-        });
-    //
-//         $.ajax({
-//             url: '/getMovies',
-//             method: 'GET',
-//             data: {cinemaName: cinemaName},
-//             success: function (response) {
-//                 var movie = $('#movie-List');
-//                 movie.empty();
-//
-//                 $.each(response, function (index, item) {
-//                     movie.append('<li><a href="#none">' + item + '</a></li>');
-//                 });
-//                 console.log("잘 전달 됨");
-//             },
-//             error: function (xhr, status, error) {
-//                 console.error("AJAX 요청 실패: ", error);
-//             }
-//         });
-//     });
-//
-//     // 영화 선택 시 selected 클래스 추가
-//     $('#movie-List').on('click', 'a', function (e) {
-//         e.preventDefault();
-//         var title = $(this).text();
-//         $(this).parent().addClass('selected').siblings().removeClass('selected');
-//         $('#title').val(title);
-//         selectedMovie = title;
-//
-//     });
-// });
-//
-//
+
 // 달력
 const calendarDays = document.getElementById('calendar-days');
 const prevWeek = document.getElementById('prevWeek');
@@ -181,6 +126,42 @@ $(document).ready(function() {
         $('#selectedMovieNo').val(movieNo);
         selectedMovie = title;
         checkAndGetShowtimes();
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+        const movieList = document.getElementById('movie-List');
+        const selectedMovieNo = '[[${selectedMovieNo}]]'; // Thymeleaf를 사용하여 서버에서 전달된 값
+
+        // 이미 선택된 영화가 있다면 하이라이트
+        if (selectedMovieNo) {
+            const selectedMovie = movieList.querySelector(`[data-movie-no="${selectedMovieNo}"]`);
+            if (selectedMovie) {
+                selectedMovie.classList.add('selected');
+            }
+        }
+
+        // 영화 선택 이벤트 리스너
+        movieList.addEventListener('click', function(e) {
+            if (e.target.tagName === 'A') {
+                e.preventDefault();
+
+                // 이전에 선택된 영화의 하이라이트 제거
+                const previousSelected = movieList.querySelector('.selected');
+                if (previousSelected) {
+                    previousSelected.classList.remove('selected');
+                }
+
+                // 새로 선택된 영화 하이라이트
+                e.target.classList.add('selected');
+
+                // 선택된 영화 정보 저장 또는 다른 동작 수행
+                const movieNo = e.target.getAttribute('data-movie-no');
+                const title = e.target.getAttribute('data-title');
+                console.log(`선택된 영화: ${title} (번호: ${movieNo})`);
+
+                // 여기에 선택된 영화 정보를 사용하는 추가 로직 구현
+                // 예: 다른 페이지로 이동하거나 추가 정보를 불러오는 등
+            }
+        });
     });
 });
 
@@ -328,3 +309,43 @@ $('#calendar-days').on('click', '.day', function() {
             alert('모든 항목을 선택해주세요.');
         }
     });
+//
+    // 극장에 따른 영화 목록 출력
+    $('#cinema-List').on('click', 'a', function (e) {
+        e.preventDefault();
+        var cinemaName = $(this).data('cinema-name');
+        $(this).parent().addClass('selected').siblings().removeClass('selected');
+        $('#cinemaName').val(cinemaName);
+        });
+//
+//         $.ajax({
+//             url: '/getMovies',
+//             method: 'GET',
+//             data: {cinemaName: cinemaName},
+//             success: function (response) {
+//                 var movie = $('#movie-List');
+//                 movie.empty();
+//
+//                 $.each(response, function (index, item) {
+//                     movie.append('<li><a href="#none">' + item + '</a></li>');
+//                 });
+//                 console.log("잘 전달 됨");
+//             },
+//             error: function (xhr, status, error) {
+//                 console.error("AJAX 요청 실패: ", error);
+//             }
+//         });
+//     });
+//
+//     // 영화 선택 시 selected 클래스 추가
+//     $('#movie-List').on('click', 'a', function (e) {
+//         e.preventDefault();
+//         var title = $(this).text();
+//         $(this).parent().addClass('selected').siblings().removeClass('selected');
+//         $('#title').val(title);
+//         selectedMovie = title;
+//
+//     });
+// });
+//
+//
