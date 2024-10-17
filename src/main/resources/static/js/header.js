@@ -3,10 +3,10 @@ let isMyExpandVisible = false;
 window.addEventListener('scroll', function() {
     const headerBottom = document.querySelector('.header-bottom');
     console.log("헤더");
-    if (window.scrollY > 83) { // 스크롤이 100px 이상 내려가면
-        headerBottom.style.backgroundColor = 'rgb(232 249 244)'; // nav를 최상단으로 이동
+    if (window.scrollY > 83) {
+        headerBottom.style.backgroundColor = 'rgb(255,236,236)';
     }else {
-        headerBottom.style.backgroundColor = ''; // 원래 색으로 돌아감
+        headerBottom.style.backgroundColor = '';
     }
 });
 

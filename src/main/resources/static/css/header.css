@@ -7,10 +7,10 @@
     padding: 0 20px;
     transition: opacity 0.3s ease, transform 0.3s ease;
 }
+.header-top-inner {
+    position: relative;
+}
 .header-logo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     padding: 10px 20px;
 }
 .header-logo img {
@@ -27,7 +27,12 @@
     border-radius: 50%;
     object-fit: cover;
     top: 22px;
-    right: 380px;
+    right: -110%;
+}
+#header-login {
+    width: 35px;
+    top: 40px;
+    right: -110%;
 }
 .header-my-expand {
     display: none;
@@ -35,7 +40,7 @@
     background-color: #ffffff;
     top: 11%;
     z-index: 1000;
-    right: 0;
+    right: 25px;
     font-family: "NEXON Lv1 Gothic OTF", serif;
     transform: translateX(calc(-100% - 170px)) translateY(-10px);
     width: 160px;
@@ -64,19 +69,13 @@
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
 }
-#header-login {
-    width: 35px;
-    top: 40px;
-    right: 380px;
-}
 .header-bottom {
     position: sticky;
     top: 0;
     width: 100%;
     background-color: white;
     z-index: 998;
-    border-bottom: 2px solid rgba(0, 0, 0, 0.2); /* 경계선 색상 조정 */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
     transition: top 0.3s ease;
 }
 .nav-menu {

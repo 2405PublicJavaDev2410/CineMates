@@ -90,6 +90,9 @@ public class MemberController {
             model.addAttribute("member", newMember);
         } else {
             // 기존 MEMBER_TBL의 MEMBER_ID에 SNS_ID 저장
+            String formattedSnsId
+                = "N_" + snsProfile.getSnsId().substring(snsProfile.getSnsId().length() - 8);
+            snsProfile.setSnsId(formattedSnsId);
             int result = mService.insertSnsIdToMember(snsProfile.getSnsId());
             if(result == 1) {
                 // SNS_INFO_TBL에 정보 저장
@@ -136,6 +139,9 @@ public class MemberController {
             model.addAttribute("member", newMember);
         } else {
             // 기존 MEMBER_TBL의 MEMBER_ID에 SNS_ID 저장
+            String formattedSnsId
+                = "K_" + snsProfile.getSnsId().substring(snsProfile.getSnsId().length() - 8);
+            snsProfile.setSnsId(formattedSnsId);
             int result = mService.insertSnsIdToMember(snsProfile.getSnsId());
             if(result == 1) {
                 // SNS_IFO_TBL에 정보 저장
@@ -383,13 +389,15 @@ public class MemberController {
         member.setMemberId(loginRequest.getMemberId());
         member.setMemberPw(loginRequest.getMemberPw());
         member = mService.loginMember(member);
-        System.out.println(member.toString());
+//        System.out.println(member.toString());
         Map<String, Object> response = new HashMap<>();
 
         if (member != null) {
             // 신고 상태 조회
             Report report = mService.searchOneReportById(member.getMemberId());
-            if(member.getReportCount() == 3) {
+            if(member.getReportCount() >= 3
+                    && member.getBanPeriod() != null
+                    && report.getReportStatus().equals("완료")) {
                 response.put("status", "ban");
                 response.put("member", member);
                 response.put("report", report);
@@ -413,8 +421,6 @@ public class MemberController {
             response.put("status", "success");
             response.put("member", member);
             return ResponseEntity.ok(response);
-//            model.addAttribute("member", member);
-//            return "success";
         }
         response.put("status", "fail");
         return ResponseEntity.ok(response);

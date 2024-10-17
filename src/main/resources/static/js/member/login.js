@@ -13,9 +13,6 @@ function loginMember() {
         data: JSON.stringify(Object.fromEntries(formData)),
         contentType: 'application/json',
         dataType: 'json',
-        beforeSend: function() {
-            console.log("AJAX 요청 전송 중...");
-        },
         success: function(response) {
             if(response.status === 'success') {
                 window.location.href= '/';

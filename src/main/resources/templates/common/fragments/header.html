@@ -4,18 +4,20 @@
       xmlns:th="http://www.thymeleaf.org"
       th:fragment="HeaderFragment">
         <div class="header-top">
-            <div class="header-logo">
-                <img src="/img/logo.png" alt="cinemates" onclick="moveToMain()">
+            <div class="header-top-inner">
+                <div class="header-logo">
+                    <img src="/img/logo.png" alt="cinemates" onclick="moveToMain()">
+                </div>
+                <img id="header-my"
+                     th:if="${session.memberId != null && session.memberId != ''}"
+                     th:src="${session.memberProfile != null
+                             ? session.memberProfile.profileImg
+                             : '/img/default_profile.png'}"
+                     alt="profile">
+                <img id="header-login"
+                     th:if="${session.memberId == null || session.memberId == ''}"
+                     src="/img/login.png" alt="login" onclick="moveToLogin();">
             </div>
-            <img id="header-my"
-                 th:if="${session.memberId != null && session.memberId != ''}"
-                 th:src="${session.memberProfile != null
-                         ? session.memberProfile.profileImg
-                         : '/img/chat/defaultProfile.png'}"
-                 alt="profile">
-            <img id="header-login"
-                 th:if="${session.memberId == null || session.memberId == ''}"
-                 src="/img/login.png" alt="login" onclick="moveToLogin();">
             <div class="header-my-expand" th:if="${session.memberId != null && session.memberId != ''}">
                 <p th:text="${session.name + ' 님'}"></p>
                 <p onclick="goMyPage();">마이페이지</p>

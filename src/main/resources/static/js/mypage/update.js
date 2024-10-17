@@ -15,7 +15,6 @@ function modifyMember() {
             top: pwInput.getBoundingClientRect().top + window.pageYOffset - 120,
             behavior: 'smooth'
         });
-        // pwInput.scrollIntoView({behavior: 'smooth', block: 'start'});
         return;
     }
     if(!pwCheckCheck()) {
@@ -23,7 +22,6 @@ function modifyMember() {
             top: pwCheckInput.getBoundingClientRect().top + window.pageYOffset - 120,
             behavior: 'smooth'
         });
-        // pwCheckInput.scrollIntoView({behavior: 'smooth', block: 'start'});
         return;
     }
     if(!phoneCheck()) {
@@ -31,7 +29,6 @@ function modifyMember() {
             top: phoneInput.getBoundingClientRect().top + window.pageYOffset - 120,
             behavior: 'smooth'
         });
-        // phoneInput.scrollIntoView({behavior: 'smooth', block: 'start'});
         return;
     }
     if(confirm('회원 정보를 수정하시겠습니까?')) {
@@ -54,6 +51,10 @@ function modifyMember() {
         })
     }
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelector('#side-menu-4').classList.add('selected');
+})
 
 // 비밀번호 정규식
 const pwRule = (str) => {
@@ -227,7 +228,3 @@ cpwIcon.addEventListener('click', function () {
         this.classList.add('fi-rr-eye-crossed');
     }
 });
-
-document.addEventListener("DOMContentLoaded", function() {
-    document.querySelector('#side-menu-4').classList.add('selected');
-})

@@ -1,39 +1,45 @@
 // 영화 정보 DOM 구성
 const OneResultInfo = (rsv) => {
     const rsvContents = `
-        <img id="thumbnail-area" src="${rsv.posterUrl}" alt="thumbnail">
-        <table id="info-table">
-            <colgroup>
-                <col style="width: 80px">
-                <col style="width: 180px">
-                <col style="width: 100px">
-                <col style="width: 200px">
-            </colgroup>
-            <tbody>
-                <tr>
-                    <th scope="row">영화명</th>
-                    <td colspan="3"><span>${rsv.title}</span></td>
-                </tr>
-                <tr>
-                    <th scope="row">예매번호</th>
-                    <td><span>${rsv.reservationNo}</span></td>
-                    <th>관람인원</th>
-                    <td><span>${rsv.reservationPeople}</span></td>
-                </tr>
-                <tr>
-                    <th scope="row">예매일시</th>
-                    <td><span>${rsv.paymentDate}</span></td>
-                    <th scope="row">극장/상영관</th>
-                    <td><span>${rsv.cinemaName}</span></td>
-                </tr>
-                <tr>
-                    <th scope="row">관람일시</th>
-                    <td><span>${rsv.reservationDateTime}</span></td>
-                    <th>관람좌석</th>
-                    <td><span>${rsv.reservationSeat}</span></td>
-                </tr>
-            </tbody>
-        </table>
+        <div id="movie-detail">
+            <img id="thumbnail-area" src="${rsv.posterUrl}" alt="thumbnail">
+            <table id="info-table">
+                <colgroup>
+                    <col style="width: 80px">
+                    <col style="width: 180px">
+                    <col style="width: 100px">
+                    <col style="width: 200px">
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <th scope="row">영화명</th>
+                        <td colspan="3"><span>${rsv.title}</span></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">예매번호</th>
+                        <td><span>${rsv.reservationNo}</span></td>
+                        <th>관람인원</th>
+                        <td><span>${rsv.reservationPeople}</span></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">예매일시</th>
+                        <td><span>${rsv.paymentDate}</span></td>
+                        <th scope="row">극장/상영관</th>
+                        <td><span>${rsv.cinemaName}</span></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">관람일시</th>
+                        <td><span>${rsv.reservationDateTime}</span></td>
+                        <th>관람좌석</th>
+                        <td><span>${rsv.reservationSeat}</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <button type="button" 
+                class="common-primary-btn" 
+                id="cancel-rsv-btn" 
+                th:onclick="cancelReservation(${rsv.reservationNo})">예매취소</button>
     `;
     document.querySelector('#movie-info').innerHTML = rsvContents;
 }
@@ -54,7 +60,7 @@ function findReservation() {
             if(data) {
                 OneResultInfo(data);
                 document.querySelector('#error-message').style.display = 'none';
-                document.querySelector('#movie-info').style.display = 'flex';
+                document.querySelector('#movie-info').style.display = 'block';
             }else {
                 NoResultInfo();
                 console.log('예매 정보 없음');
