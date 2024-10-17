@@ -25,7 +25,11 @@
                     <span th:text="${movie?.runningTime + '분'}"></span>
                 </p>
                 <textarea class="synopsis-textarea box1" th:text="${movie?.synopsis}" readonly></textarea>
-                <button class="reserve-btn" id="reserveButton">예매하기</button>
+                <form th:action="@{/Ticketing}" method="get">
+                    <input type="hidden" name="movieNo" th:value="${movie?.movieNo}">
+                    <input type="hidden" name="title" th:value="${movie?.title}">
+                    <button type="submit" class="reserve-btn" id="reserveButton">예매하기</button>
+                </form>
             </div>
         </div>
 
@@ -87,11 +91,9 @@
             <div class="tab-content hidden" id="reviewsTab" >
                 <div class="review-section">
                     <button class="review-write-button">리뷰 작성</button>
-<!--                    <form class="review-form" action="/addReview" method="post">-->
                     <form id="reviewForm" class="review-form" action="/addReview" method="post" onsubmit="return false;">
                         <input type="hidden" name="movieNo" th:value="${movie?.movieNo}">
                         <div class="review-form-content">
-<!--                            <div class="review-avatar"></div>-->
                             <div class="review-form-fields">
                                 <div class="star-rating">
                                     <input type="radio" id="5-stars" name="score" value="5" />
@@ -112,13 +114,10 @@
                     </form>
                     <div class="review-list" th:if="${not #lists.isEmpty(reviewList)}">
                         <div class="review-item" th:each="review : ${reviewList}">
-<!--                            <div class="review-avatar">-->
-<!--                            </div>-->
                             <div id="thumbnail-container">
                                 <img id="profile-thumbnail" alt="사진 미리보기"
-                                     th:src="${(review.filePath != null and review.fileRename != null) ?
-                          (review.filePath + review.fileRename) : '/img/movie/imageNull.png'}"
-                                     onerror="this.src='/img/movie/imageNull.png'">
+                                     th:src="${(review.filePath != null and review.fileRename != null) ? (review.filePath + review.fileRename) : '/img/default_profile.png'}"
+                                     onerror="this.src='/img/default_profile.png'">
                             </div>
                             <div class="review-content">
                                 <div class="review-header" >
@@ -149,6 +148,9 @@
                                 <p class="review-text" th:text="${review.reviewContent}"></p>
                             </div>
                         </div>
+                    </div>
+                    <div class="load-more-container" id="load-more-container">
+                        <button class="loadMoreBtn" id="loadMoreBtn">더보기</button>
                     </div>
                 </div>
             </div>
