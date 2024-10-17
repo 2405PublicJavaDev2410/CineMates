@@ -62,17 +62,13 @@ public class MovieContoller {
     }
 
     @GetMapping("/movie-detail/{movieNo}")
-    public String showMovieDetail(@PathVariable Long movieNo, Model model
-//                                  @RequestParam(defaultValue = "0") int page,
-//                                  @RequestParam(defaultValue = "5") int size,
-//                                  @RequestParam(required = false) Boolean isAjax
-    ) {
+    public String showMovieDetail(@PathVariable Long movieNo, Model model,
+                                  @RequestParam(defaultValue = "0") int page,
+                                  @RequestParam(defaultValue = "10") int size) {
         List<MovieDTO> movieInfo = movieService.selectMovieDetail(movieNo);
-//        List<MovieDTO.StillcutDTO> stillcuts = movieService.selectStillcutsPaginated(movieNo, page, size);
-//        boolean hasMoreStillcuts = stillcuts.size() == size;
-
-        List<ReviewDTO> reviewList = movieService.getReviewByMovieNo(movieNo);
+        List<ReviewDTO> reviewList = movieService.getReviewByMovieNo(movieNo, page, size);
         log.info("=================="+reviewList.toString());
+
         int totalReviews = reviewList.size();
         if (!movieInfo.isEmpty()) {
             MovieDTO movie = movieInfo.get(0);
@@ -85,13 +81,8 @@ public class MovieContoller {
 
         model.addAttribute("reviewList", reviewList);
         model.addAttribute("movieInfo", movieInfo);
-//        model.addAttribute("stillcuts", stillcuts);
-//        model.addAttribute("hasMoreStillcuts", hasMoreStillcuts);
         model.addAttribute("totalReviews", totalReviews);
 
-//        if (Boolean.TRUE.equals(isAjax)) {
-//            return "fragments/stillcutList :: stillcutList";
-//        }
         return "pages/movie/movieDetail";
     }
 
@@ -127,7 +118,6 @@ public class MovieContoller {
         addReview.setMemberId(memberId);
         addReview.setScore(review.getScore());
         addReview.setReviewContent(review.getReviewContent());
-//        addReview.setRegDate(new Date()); // 현재 날짜 설정
 
 
         try {

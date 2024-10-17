@@ -31,10 +31,9 @@ public interface MovieService {
 
     List<MovieListDTO> getMoviesByStatusAndSort(String status, int page, int size, String sortBy);
 
-
     List<MovieDTO.StillcutDTO> selectStillcutsPaginated(Long movieNo, int page, int size);
 
-    List<ReviewDTO> getReviewByMovieNo(Long movieNo);
+    List<ReviewDTO> getReviewByMovieNo(Long movieNo, int page, int size);
 
     int addReview(Review addReview);
 }
