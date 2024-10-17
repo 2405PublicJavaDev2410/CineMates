@@ -26,7 +26,7 @@ $(document).ready(function () {
     });
 });
 
-// 달력
+/* 달력 */
 const calendarDays = document.getElementById('calendar-days');
 const prevWeek = document.getElementById('prevWeek');
 const nextWeek = document.getElementById('nextWeek');
@@ -97,21 +97,20 @@ nextWeek.addEventListener('click', () => {
 });
 
 updateCalendar();
+/* - 달력 END -*/
 
 //영화 상영 가능 시간 출력
-$(document).ready(function() {
+$(document).ready(function () {
     var selectedMovieNo = $('#selectedMovieNo').val();
     var selectedMovieTitle = $('#selectedMovieTitle').val();
 
+    // 영화 리스트 페이지에서 선택된 영화 처리
     if (selectedMovieNo && selectedMovieTitle) {
-        var $movieLink = $('#movie-List a').filter(function() {
-            return $(this).data('movie-no') == selectedMovieNo && $(this).text() === selectedMovieTitle;
-        });
-
+        var $movieLink = $('#movie-List a[data-movie-no="' + selectedMovieNo + '"]');
         if ($movieLink.length) {
-            $movieLink.parent().addClass('selected').siblings().removeClass('selected');
+            $movieLink.closest('li').addClass('selected').siblings().removeClass('selected');
             $('#title').val(selectedMovieTitle);
-            selectedMovie = selectedMovieTitle;
+            $('#movieNo').val(selectedMovieNo);
             checkAndGetShowtimes();
         }
     }
@@ -119,15 +118,21 @@ $(document).ready(function() {
     // 기존의 영화 선택 이벤트 리스너
     $('#movie-List').on('click', 'a', function (e) {
         e.preventDefault();
-        var title = $(this).text();
-        var movieNo = $(this).data('movie-no');
-        $(this).parent().addClass('selected').siblings().removeClass('selected');
+        var $this = $(this);
+        var title = $this.data('title');
+        var movieNo = $this.data('movie-no');
+
+        $this.closest('li').addClass('selected').siblings().removeClass('selected');
+
         $('#title').val(title);
+        $('#movieNo').val(movieNo);
         $('#selectedMovieNo').val(movieNo);
-        selectedMovie = title;
+        $('#selectedMovieTitle').val(title);
+
         checkAndGetShowtimes();
     });
-    document.addEventListener('DOMContentLoaded', function() {
+
+    document.addEventListener('DOMContentLoaded', function () {
         const movieList = document.getElementById('movie-List');
         const selectedMovieNo = '[[${selectedMovieNo}]]'; // Thymeleaf를 사용하여 서버에서 전달된 값
 
@@ -140,7 +145,7 @@ $(document).ready(function() {
         }
 
         // 영화 선택 이벤트 리스너
-        movieList.addEventListener('click', function(e) {
+        movieList.addEventListener('click', function (e) {
             if (e.target.tagName === 'A') {
                 e.preventDefault();
 
@@ -165,30 +170,31 @@ $(document).ready(function() {
     });
 });
 
-    // 날짜 선택 이벤트 수정
-    $(document).on('click', '.day', function () {
-        document.querySelectorAll('.day').forEach(day => day.classList.remove('active'));
-        this.classList.add('active');
+// 날짜 선택 이벤트 수정
+$(document).on('click', '.day', function () {
+    document.querySelectorAll('.day').forEach(day => day.classList.remove('active'));
+    this.classList.add('active');
 
-        var year = currentDate.getFullYear();
-        var month = parseInt(this.getAttribute('data-month')) + 1; // 0-based to 1-based
-        var day = parseInt(this.querySelector('.date').textContent);
+    var year = currentDate.getFullYear();
+    var month = parseInt(this.getAttribute('data-month')) + 1; // 0-based to 1-based
+    var day = parseInt(this.querySelector('.date').textContent);
 
-        // 날짜 문자열을 직접 생성
-        var dateString = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    // 날짜 문자열을 직접 생성
+    var dateString = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 
-        console.log('Selected date string:', dateString);
+    console.log('Selected date string:', dateString);
 
-        $('#selectedDate').val(dateString);
-        selectedDate = new Date(year, month - 1, day); // JavaScript 내부 사용을 위한 Date 객체
+    $('#selectedDate').val(dateString);
+    selectedDate = new Date(year, month - 1, day); // JavaScript 내부 사용을 위한 Date 객체
 
-        monthDisplay.textContent = months[month - 1]; // 월 표시 업데이트
+    monthDisplay.textContent = months[month - 1]; // 월 표시 업데이트
 
-        checkAndGetShowtimes();
-    });
+    checkAndGetShowtimes();
+});
+//상영시간 반영 
 function checkAndGetShowtimes() {
-    if (selectedMovie && $('#selectedDate').val()) {
-        getShowtimes(selectedMovie, $('#selectedDate').val());
+    if ($('#title').val() && $('#selectedDate').val() && $('#cinemaName').val()) {
+        getShowtimes($('#title').val(), $('#selectedDate').val(), $('#cinemaName').val());
     }
 }
 
@@ -294,29 +300,62 @@ function displayShowtimes(showInfoList, selectedDate) {
     });
 }
 
-// 날짜 선택 이벤트 리스너 (캘린더 구현에 따라 다를 수 있음)
-$('#calendar-days').on('click', '.day', function() {
+// 날짜 선택 이벤트 리스너
+$('#calendar-days').on('click', '.day', function () {
     const selectedDate = $(this).data('date');
     $('#selectedDate').val(selectedDate);
     checkAndGetShowtimes();
 });
 
 
-    $('form').on('submit', function (e) {
-        if (!$('#cinemaName').val() || !$('#title').val() ||
-            !$('#selectedDate').val() || !$('#showtimeTime').val() || !$('#screenName').val()) {
-            e.preventDefault();
-            alert('모든 항목을 선택해주세요.');
+$('form').on('submit', function (e) {
+    if (!$('#cinemaName').val() || !$('#title').val() ||
+        !$('#selectedDate').val() || !$('#showtimeTime').val() || !$('#screenName').val()) {
+        e.preventDefault();
+        alert('모든 항목을 선택해주세요.');
+    }
+});
+//
+// 극장에 따른 영화 목록 출력
+$('#cinema-List').on('click', 'a', function (e) {
+    e.preventDefault();
+    var cinemaName = $(this).data('cinema-name');
+    $(this).parent().addClass('selected').siblings().removeClass('selected');
+    $('#cinemaName').val(cinemaName);
+    checkAndGetShowtimes();
+});
+//영화 제목에 따른 svg 삽입
+document.addEventListener('DOMContentLoaded', function () {
+    var movieItems = document.querySelectorAll('.movie-item');
+
+    movieItems.forEach(function (item) {
+        var titleElement = item.querySelector('#movie-title');
+        var ageElement = item.querySelector('.movie-age');
+        var title = titleElement.textContent;
+        var ageRating = ageRatings[title];
+
+        if (ageRating) {
+            var svgPath = getSvgPathForAgeRating(ageRating);
+            var img = document.createElement('img');
+            img.src = svgPath;
+            img.alt = ageRating + " 등급";
+            ageElement.appendChild(img);
         }
     });
-//
-    // 극장에 따른 영화 목록 출력
-    $('#cinema-List').on('click', 'a', function (e) {
-        e.preventDefault();
-        var cinemaName = $(this).data('cinema-name');
-        $(this).parent().addClass('selected').siblings().removeClass('selected');
-        $('#cinemaName').val(cinemaName);
-        });
+
+    function getSvgPathForAgeRating(ageRating) {
+        switch (ageRating) {
+            case "12":
+                return "/img/reservation/only12.svg";
+            case "15":
+                return "/img/reservation/only15.svg";
+            case "19":
+                return "/img/reservation/only19.svg";
+            default:
+                return "/img/reservation/all.svg";
+        }
+    }
+});
 //
 //         $.ajax({
 //             url: '/getMovies',

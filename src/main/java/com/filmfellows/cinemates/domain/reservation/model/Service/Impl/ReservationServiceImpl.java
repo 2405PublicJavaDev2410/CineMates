@@ -5,8 +5,6 @@ import com.filmfellows.cinemates.app.mypage.dto.myReservationResponse;
 import com.filmfellows.cinemates.domain.reservation.model.Service.ReservationService;
 import com.filmfellows.cinemates.domain.reservation.model.mapper.ReservationMapper;
 import com.filmfellows.cinemates.domain.reservation.model.vo.*;
-import groovy.util.logging.Slf4j;
-import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,21 +16,6 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Autowired
     private ReservationMapper rmapper;
-
-    @Override
-    public List<ReservationDTO> showReservationPage() {
-        return rmapper.showReservationPage();
-    }
-
-//    @Override
-//    public int insertReservationInfo(Map<String, Object> reserveInfo) {
-//        return rmapper.insertReservationInfo(reserveInfo);
-//    }
-
-    @Override
-    public List<ReservationDTO> showReservedSeats() {
-        return rmapper.showReservedSeats();
-    }
 
     @Override
     public List<String> selectCinemas(String Address) {
@@ -65,11 +48,6 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public Map<String, Integer> getReservationCounts() {
-        return rmapper.getReservationCounts();
-    }
-
-    @Override
     public ShowInfoDTO selectMoviePoster(String title) {
         return rmapper.selectMoviePoster(title);
     }
@@ -92,6 +70,11 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public List<String> selectCinemasByCode(Integer cinemaLocationCode) {
         return rmapper.selectCinemasByCode();
+    }
+
+    @Override
+    public String getAgeRatingByTitle(String title) {
+        return rmapper.getAgeRatingByTitle(title);
     }
 
 

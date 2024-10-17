@@ -31,30 +31,36 @@ public class ReservationController {
 
 
     @GetMapping("/Ticketing")
-    public String showShowTimePage(Model model, HttpSession session,
-                                   String title , Integer movieNo
-    ) {
+    public String showShowTimePage(Model model, HttpSession session, String title , Integer movieNo) {
         System.out.println("title : " + title);
         String memberId = (String) session.getAttribute("memberId");
 
         if (memberId == null) {
             return "redirect:/login";
         }
+
         List<SearchMovieDTO> movieList = rService.selectAllMovies();
         List<SearchLocationCodeDTO> lList = rService.selectAllLocationCode();
         List<String> rList = rService.selectCinemaName();
         List<String> processedList = new ArrayList<>();
+            Map<String, String> ageRatings = new HashMap<>();
 
+        for (SearchMovieDTO movie : movieList) {
+            String ageRating = rService.getAgeRatingByTitle(movie.getTitle());
+            ageRatings.put(movie.getTitle(), ageRating);
+        }
         for (String cinemaGroup : rList) {
             String[] cinemas = cinemaGroup.split(",");
             for (String cinema : cinemas) {
                 processedList.add(cinema.trim());
             }
         }
+
         if (title != null && movieNo != null) {
             model.addAttribute("selectedMovieTitle", title);
             model.addAttribute("selectedMovieNo", movieNo);
         }
+        model.addAttribute("ageRatings", ageRatings);
         model.addAttribute("movieList", movieList);
         model.addAttribute("rList", processedList);
         model.addAttribute("lList", lList);

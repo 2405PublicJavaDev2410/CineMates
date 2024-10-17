@@ -118,12 +118,16 @@
     </delete>
     <!--영화 전체 조회-->
     <select id="selectAllMovies" resultType="SearchMovieDTO">
-        SELECT TITLE, MOVIE_NO, IS_BOOKABLE
+        SELECT TITLE, MOVIE_NO, IS_BOOKABLE,POSTER_URL,RUNNING_TIME
         FROM MOVIE_TBL
     </select>
     <!--지역 코드 조회-->
     <select id="selectAllLocationCode" resultType="SearchLocationCodeDTO">
         select distinct CINEMA_LOCATION_CODE as cinemaLocationCode
         from CINEMA_TBL
+    </select>
+    <!--영화 연령대 검색-->
+    <select id="getAgeRatingByTitle">
+        select RATING from MOVIE_TBL where title=#{title}
     </select>
 </mapper>

@@ -8,26 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 public interface ReservationService {
-    /**
-     * 예매 페이지 보기
-     * @return List<Reservation>
-     */
-    List<ReservationDTO> showReservationPage();
-
-//    /**
-//     * 예매 등록 하기
-//     *
-//     * @param rDTO
-//     * @return ReservationDTO
-//     */
-//    int insertReservationInfo(ReservationDTO rDTO);
-
-    /**
-     * 예약 좌석 조회하기
-     *
-     * @return List<Integer>
-     */
-    List<ReservationDTO> showReservedSeats();
 
     /**
      * 상영관 조회
@@ -39,6 +19,7 @@ public interface ReservationService {
 
     /**
      * 영화 조회
+     *
      * @param cinemaName
      * @return List<String>
      */
@@ -75,14 +56,10 @@ public interface ReservationService {
      */
     MemberDTO selectMemberInfo(String memberId);
 
-    /**
-     * 예약 수 구하기
-     * @return Map<String,Integer>
-     */
-    Map<String, Integer> getReservationCounts();
 
     /**
      * 영화 포스터 조회
+     *
      * @param title
      * @return
      */
@@ -112,8 +89,16 @@ public interface ReservationService {
 
     /**
      * 극장 정보 코드로 조회
+     *
      * @param cinemaLocationCode
      * @return
      */
     List<String> selectCinemasByCode(Integer cinemaLocationCode);
+
+    /**
+     * 영화 제목으로 연령대 조회
+     * @param title
+     * @return
+     */
+    String getAgeRatingByTitle(String title);
 }

@@ -12,8 +12,6 @@ import java.util.Map;
 public interface ReservationMapper {
     List<ReservationDTO> showReservationPage();
 
-//    int insertReservationInfo();
-
     void insertReservationInfo(Map<String, Object> reserveInfo);
 
     List<ReservationDTO> showReservedSeats();
@@ -21,7 +19,6 @@ public interface ReservationMapper {
     List<String> selectCinemas(String address);
 
     List<String> selectMovies(String cinemaName);
-
 
     List<ShowInfoDTO> selectShowInfo(String cinemaName, String title);
 
@@ -36,8 +33,7 @@ public interface ReservationMapper {
     ShowInfoDTO selectMoviePoster(String title);
 
     myReservationResponse selectReservationInfo(myReservationRequest request);
-    
-    ReservationDTO selectReservationInfo(String reservationNo);
+
 
     void deleteReservationInfo(String impUid);
 
@@ -46,4 +42,6 @@ public interface ReservationMapper {
     List<SearchLocationCodeDTO> selectAllLocationCode();
 
     List<String> selectCinemasByCode();
+
+    String getAgeRatingByTitle(String title);
 }
