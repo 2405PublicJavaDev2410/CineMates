@@ -39,6 +39,7 @@ public class PaymentController {
         this.paymentService = paymentService;
         this.iamportClient = new IamportClient(apiKey, apiSecret);
     }
+
     //결제 준비 매핑 별 다른 html 파일 없음 결제로 오기 전 가져와야하는 데이터 가져오기 위해 POST 매핑용 메소드
     @PostMapping("/paymentReady")
     public String readyTogoPay(@ModelAttribute("ReservationDTO") ReservationDTO rDTO,
@@ -53,25 +54,23 @@ public class PaymentController {
         rDTO.setBuyer_tel(info.getPhone());
 
         session.setAttribute("rDTO", rDTO);
-        session.setAttribute("sDTO", sDTO);
         System.out.println("rDTO 함 보여바라" + rDTO);
-        System.out.println("sDTO Payment" + sDTO);
-        model.addAttribute("rDTO", rDTO);
+//        model.addAttribute("rDTO", rDTO);
         return "redirect:/payment?reservationNo=" + rDTO.getReservationNo();
     }
+
     // readyTogoPay 메소드 값 가지고 html 파일 가는 메소드
     @GetMapping("/payment")
-    public String showPayForm(@ModelAttribute ReservationDTO rDTO,
-                              @ModelAttribute("ShowInfoDTO") ShowInfoDTO sDTO, Model model, HttpSession session) {
+    public String showPayForm(Model model, HttpSession session) {
         String memberId = (String) session.getAttribute("memberId");
         ReservationDTO DTO = (ReservationDTO) session.getAttribute("rDTO");
-        ShowInfoDTO DTOs = (ShowInfoDTO) session.getAttribute("sDTO");
         model.addAttribute("memberId", memberId);
         System.out.println("showPayForm" + DTO);
-        System.out.println("showPayForm sDTO" + sDTO);
         model.addAttribute("rDTO", DTO);
-        model.addAttribute("sDTO", DTOs);
-        return "pages/payment/inipay";
+        if (memberId != null) {
+            return "pages/payment/inipay";
+        }
+        return "";
     }
 
     // 결제 성공 후 결제 한 제품에 대한 정보 조회하는 메소드
@@ -100,6 +99,7 @@ public class PaymentController {
         paymentService.saveBuyerAndOrderInfo(buyerInfo, reserveInfo);
         return ResponseEntity.ok("결제정보 저장 완");
     }
+
     // 결제 취소 하는 메소드
     @GetMapping("/payments/cancel/{imp_uid}")
     public ResponseEntity<String> cancelPayment(@PathVariable String imp_uid) {
@@ -108,6 +108,7 @@ public class PaymentController {
         paymentService.deleteReserveAndPaymentInfo(imp_uid);
         return ResponseEntity.ok("취소 완!");
     }
+
     // 결제 취소 하기 위해 필요한 imp_Uid 라는 키 얻는 메소드
     @GetMapping("/getImpUid")
     public ResponseEntity<String> getImpUid(@RequestParam String reservationNo) {

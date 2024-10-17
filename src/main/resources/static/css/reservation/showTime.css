@@ -39,7 +39,7 @@ li {
 .regionDiv {
     width: 400px;
     height:700px;
-    border-right:1px solid black;
+    /*border-right:1px solid black;*/
     flex:1.3;
 }
 
@@ -53,9 +53,9 @@ li {
 }
 
 .regionDiv_region {
-    height:500px;
+    height:780px;
     background-color: #F5F5F5;
-    border: 1px solid black;
+    border-right: 1px solid black;
     flex:1.3;
 }
 .regionDiv_region ul li {
@@ -76,6 +76,8 @@ li {
 
 .cinemaDiv_cinema {
     /*border: 1px solid blue;*/
+    border-right: 1px solid black;
+    height: 780px;
     flex:1.3;
     background-color: #FFF;
 }
@@ -317,11 +319,14 @@ li {
 }
 
 #goPersonSeat{
+    border-radius: 2px;
     position: relative;
     bottom: 100px;
     margin-top:15px;
     width:200px;
     height: 80px;
+    border:none;
+    cursor:pointer;
 }
 /*상영시간 표시*/
 .screen-showtimes {
@@ -330,7 +335,9 @@ li {
 .screen-showtimes h4{
     margin-bottom:10px;
 }
-button:hover {
+#goPersonSeat:hover {
+    border: 1px solid black;
+    border-radius: 2px;
     text-decoration: none;
     color: #EA4E4A;
 }
