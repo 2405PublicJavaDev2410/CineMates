@@ -1,5 +1,6 @@
 package com.filmfellows.cinemates.domain.reservation.model.vo;
 
+import jakarta.annotation.Nullable;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import java.sql.Date;
 @Getter
 @Setter
 @Repository
+@Nullable
 public class ReservationDTO {
     //Reservation - 예약
     private String reservationNo;
