@@ -1,8 +1,7 @@
 package com.filmfellows.cinemates.domain.chat.model.mapper;
 
-import com.filmfellows.cinemates.app.chat.dto.ChatRoomMovie;
-import com.filmfellows.cinemates.app.chat.dto.CinemaInfoByRegion;
-import com.filmfellows.cinemates.app.chat.dto.RegionAndCinemaCount;
+import com.filmfellows.cinemates.app.chat.dto.*;
+import com.filmfellows.cinemates.domain.chat.model.vo.ChatMessage;
 import com.filmfellows.cinemates.domain.chat.model.vo.ChatRoom;
 import com.filmfellows.cinemates.domain.chat.model.vo.ChatTag;
 import com.filmfellows.cinemates.domain.member.model.vo.ProfileImg;
@@ -10,6 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Mapper
@@ -92,4 +92,39 @@ public interface ChatMapper {
      * @return int
      */
     int getMyTotalCount(String writer);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : 채팅방 참여 인원 조회 mapper
+     * @return List<ChatJoinProfile> 참여 인원 리스트
+     */
+    List<ChatJoinProfile> selectChatJoinList(Integer roomNo);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : 채팅방 참여
+     * @return int
+     */
+    int insertChatJoin(Integer roomNo, String memberId);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : 채팅 저장 mapper
+     * @return int
+     */
+    int insertChatMessage(ChatMessage chatMessage);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : 채팅방 최초 입장 날짜 조회 mapper
+     * @return Timestamp
+     */
+    Timestamp selectMyJoinDate(String memberId);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : 채팅 기록 조회
+     * @return List<chatMessageAndProfile>
+     */
+    List<chatMessageAndProfile> selectChatMessageList(Timestamp myJoinDate);
 }

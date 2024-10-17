@@ -57,6 +57,7 @@
                 width: 100%;
                 height:580px;
                 background-color: #ececec;
+                overflow-y: scroll;
             }
             .chat-screen .message-input-box{
                 width: 100%;
@@ -133,6 +134,24 @@
                 color: white;
             }
 
+            .notice-box{
+                width: 100%;
+                position: relative;
+                margin: 10px 0;
+                text-align: center;
+            }
+            .notice-message{
+                display: inline-block;
+                border-radius: 15px;
+                margin: 0 auto;
+                background-color: #373737;
+                opacity: 0.6;
+                font-weight: bold;
+                padding: 10px;
+                max-width: 80%;
+                word-wrap: break-word;
+                color: white;
+            }
             .my-chat-box{
                 width: 100%;
                 margin: 10px 0;
@@ -167,7 +186,6 @@
             .other-chat-name{
             }
             .other-chat-profile{
-                background-color: #2c2c2c;
                 width: 50px;
                 height: 50px;
                 border-radius: 40px;
@@ -236,36 +254,55 @@
             </div>
             <div class="chat-screen">
                 <div class="user-list-container">
-                    <div style="display: flex; flex-direction: column;align-items: center">
-                        <div style="width: 60px; height: 60px; border-radius: 50%; background-color: gray"></div>
-                        <div>user1</div>
+                    <div th:each="joinList:${chatJoinList}" style="display: flex; flex-direction: column;align-items: center">
+                            <th:block th:if="${joinList.filePath == null}">
+                                <img alt="프로필" src="/img/default_profile.png" style="width: 60px; height: 60px; border-radius: 50%;">
+                            </th:block>
+                            <th:block th:if="${joinList.filePath != null}">
+                                <img th:src="@{|${joinList.filePath}${joinList.fileRename}|}" alt="프로필" style="width: 60px; height: 60px; border-radius: 50%;">
+                            </th:block>
+                        <div th:text="${joinList.memberId}"></div>
                     </div>
-                    <div style="display: flex; flex-direction: column;align-items: center">
-                        <div style="width: 60px; height: 60px; border-radius: 50%; background-color: gray"></div>
-                        <div>user2</div>
-                    </div>
+
                 </div>
                 <div class="main-screen">
-                    <div class="other-chat-box">
-                        <div class="other-chat-profile"></div>
-                        <div style="max-width: 60%; margin-left: 5px">
-                            <div class="other-chat-name">name</div>
-                            <div class="other-chat-message">아아아아아아아아아아다른sssssssssssssssssss사람입니다......다른사람~~~</div>
+                    <th:block th:each="chatMessageList : ${chatMessageList}">
+                        <div th:if="${!chatMessageList.messageType.name().equals('TALK')}" class="notice-box">
+                            <div class="notice-message" th:text="${chatMessageList.chatContent}"></div>
                         </div>
-                        <div class="other-chat-date">오후 09:00</div>
-                    </div>
-                    <div class="my-chat-box">
-                        <div class="my-chat-date">오후 10:00</div>
-                        <div class="my-chat-message">내용adsadasdssssssssssssssssssssssssssssssssssssss</div>
-                    </div>
+                        <div th:if="${chatMessageList.messageType.name().equals('TALK') and chatMessageList.memberId != session.memberId}" class="other-chat-box">
+                            <div class="other-chat-profile">
+                                <th:block th:if="${chatMessageList.filePath == null}">
+                                    <img alt="프로필" src="/img/default_profile.png" style="width: 100%; height: 100%; border-radius: 50%;">
+                                </th:block>
+                                <th:block th:if="${chatMessageList.filePath != null}">
+                                    <img th:src="@{|${chatMessageList.filePath}${chatMessageList.fileRename}|}" alt="프로필" style="width: 100%; height: 100%; border-radius: 50%;">
+                                </th:block>
+                            </div>
+                            <div style="max-width: 60%; margin-left: 5px">
+                                <div class="other-chat-name" th:text="${chatMessageList.memberId}"></div>
+                                <div class="other-chat-message" th:text="${chatMessageList.chatContent}"></div>
+                            </div>
+                            <div class="other-chat-date" th:text="${#dates.setFormat(chatMessageList.chatDate,'a:hh:mm')}"></div>
+                        </div>
+                        <div  th:if="${chatMessageList.messageType.name().equals('TALK') and chatMessageList.memberId == session.memberId}" class="my-chat-box">
+                            <div class="my-chat-date" th:text="${#dates.setFormat(chatMessageList.chatDate,'a:hh:mm')}"></div>
+                            <div class="my-chat-message" th:text="${chatMessageList.chatContent}"></div>
+                        </div>
+                    </th:block>
+
                 </div>
+
                 <div class="message-input-box">
                     <textarea class="message-input" placeholder="메세지 입력"></textarea>
                     <div style="display: flex; justify-content: right;">
-                        <button type="button" onclick="sendMessage();">전송</button>
+                        <button type="button" onclick="sendMessage();" onkeydown="if(event.key === 'Enter'){sendMessage();}">전송</button>
                     </div>
                 </div>
             </div>
+        </div>
+        <div style="width: 100%; display: flex; justify-content: end">
+            <button type="button" onclick="if(confirm('채팅방을 나가시겠습니까?')) leaveChatRoom();">나가기</button>
         </div>
 
         <script th:inline="javascript">
@@ -290,6 +327,8 @@
 
                     if (socket.readyState === WebSocket.OPEN) {
                         socket.send(JSON.stringify(joinMessage));
+                        // db에 저장
+                        saveMessage(joinMessage);
                     }
 
                 };
@@ -301,12 +340,12 @@
                     console.log(message);
                     if(memberId !== message.memberId){
                         displayMessage(message, "other");
+                    }else{
+                        displayMessage(message, "my")
                     }
-
                 }
 
                 socket.onclose = function(event){
-                    console.log("close : "+event);
                     // setTimeout(function() {
                     //     webSocketConnect();  // 1초 후 다시 연결 시도
                     // }, 1000);
@@ -323,12 +362,14 @@
                     roomNo: roomNo,
                     chatContent: message
                 };
+
                 if(message.trim() !== '' && socket.readyState === WebSocket.OPEN){
+                    // 소켓서버 전달
                     socket.send(JSON.stringify(talkMessage));
+                    // db에 저장
+                    saveMessage(talkMessage);
                 }
 
-
-                displayMessage(message, "my");
             }
 
             function displayMessage(message, status){
@@ -339,35 +380,122 @@
                let minutes = currentDate.getMinutes();
                let ampm = hours >= 12 && hours < 24 ? '오후' : '오전';
 
-               if(status === "my"){
-                   let myChatBoxDiv = document.createElement('div');
-                   myChatBoxDiv.setAttribute("class", "my-chat-box");
-                   myChatBoxDiv.innerHTML = `
+               let profileInfo = checkProfile(message);
+
+               if(message.messageType === "TALK"){
+                   if(status === "my"){
+                       let myChatBoxDiv = document.createElement('div');
+                       myChatBoxDiv.setAttribute("class", "my-chat-box");
+                       myChatBoxDiv.innerHTML = `
                 <div class="my-chat-box">
                     <div class="my-chat-date">${ampm} ${hours}:${minutes}</div>
-                    <div class="my-chat-message">${message}</div>
+                    <div class="my-chat-message">${message.chatContent}</div>
                 </div>
                 `;
-                   mainScreen.appendChild(myChatBoxDiv);
-               }else if(status === "other"){
-                   console.log("other!!")
-                   let otherChatBoxDiv = document.createElement('div');
-                   otherChatBoxDiv.setAttribute("class", "other-chat-box");
-                   otherChatBoxDiv.innerHTML = `
+                       mainScreen.appendChild(myChatBoxDiv);
+                   }else if(status === "other"){
+                       console.log("other!!")
+                       let otherChatBoxDiv = document.createElement('div');
+                       otherChatBoxDiv.setAttribute("class", "other-chat-box");
+                       otherChatBoxDiv.innerHTML = `
                 <div class="other-chat-box">
-                    <div class="other-chat-profile"></div>
-                        <div style="max-width: 60%; margin-left: 5px">
-                            <div class="other-chat-name">${message.memberId}</div>
-                            <div class="other-chat-message">${message.chatContent}</div>
-                        </div>
-                        <div class="other-chat-date">${ampm} ${hours}:${minutes}</div>
+<!--                profileIno : 함수에서 return 시킨 백틱 태그임.-->
+                    <div class="other-chat-profile">
+                        ${profileInfo}
+                    </div>
+                    <div style="max-width: 60%; margin-left: 5px">
+                        <div class="other-chat-name">${message.memberId}</div>
+                        <div class="other-chat-message">${message.chatContent}</div>
+                    </div>
+                    <div class="other-chat-date">${ampm} ${hours}:${minutes}</div>
                 </div>
                 `;
-                   mainScreen.appendChild(otherChatBoxDiv);
+                       mainScreen.appendChild(otherChatBoxDiv);
+                   }
+               }else {
+
+                   let noticeBoxDiv = document.createElement('div');
+                   noticeBoxDiv.setAttribute("class", "notice-box");
+                   noticeBoxDiv.innerHTML = `
+                    <div class="notice-box">
+                        <div class="notice-message">${message.memberId}${message.chatContent}</div>
+                    </div>
+                `;
+                   mainScreen.appendChild(noticeBoxDiv);
+
                }
+
 
             }
 
+
+            function leaveChatRoom(){
+                const leaveMessage = {
+                    messageType: 'LEAVE',
+                    memberId: memberId,
+                    roomNo: roomNo,
+                };
+
+                if (socket.readyState === WebSocket.OPEN) {
+                    // 소켓서버 전달
+                    socket.send(JSON.stringify(leaveMessage));
+                    // db 저장
+                    saveMessage(leaveMessage);
+                }
+
+                // list로 이동
+                location.href= '/chat/list';
+            }
+
+            function checkProfile(message){
+                let joinProfile = /*[[${chatJoinList}]]*/;
+                let profileCount = 0;
+                let profileInfo = null;
+                let profileDiv = "";
+                joinProfile.forEach(profile => {
+                    if(profile.memberId === message.memberId){
+                        profileCount++;
+                        profileInfo = profile;
+                    }
+                });
+                if(profileCount > 0){
+                    profileDiv = `
+                <img src="${profileInfo.filePath}${profileInfo.fileRename}" alt="프로필" style="width: 100%; height: 100%; border-radius: 50%;">
+                `;
+                }else{
+                    profileDiv =
+                        `
+                        <img alt="프로필" src="/img/default_profile.png" style="width: 100%; height: 100%; border-radius: 50%;">
+                        `;
+                }
+
+                return profileDiv;
+            }
+
+
+            // 메세지 저장 로직
+            function saveMessage(message){
+                // AJAX 요청으로 메시지 저장
+                fetch('/chat/insertChat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(message) // 전송할 데이터를 JSON 형태로 변환
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('메시지 저장 중 에러 발생');
+                        }
+                        return response.json(); // 응답을 json 형태로 변환
+                    })
+                    .then(data => {
+                        console.log('메시지가 DB에 저장되었습니다:', data);
+                    })
+                    .catch(error => {
+                        console.error('저장 에러:', error);
+                    });
+            }
 
         </script>
     </body>

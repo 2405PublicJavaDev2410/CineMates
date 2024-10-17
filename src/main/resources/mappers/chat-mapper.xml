@@ -161,4 +161,39 @@
     <select id="getMyTotalCount" resultType="_int">
         SELECT COUNT(*) FROM CHAT_ROOM_TBL WHERE ROOM_WRITER = #{writer}
     </select>
+
+
+    <select id="selectChatJoinList" resultType="ChatJoinProfile">
+        SELECT MEMBER_ID, ROOM_NO, FILE_RENAME, FILE_PATH
+        FROM CHAT_JOIN_TBL
+        JOIN PROFILE_IMG_TBL USING(MEMBER_ID) WHERE ROOM_NO=#{roomNo}
+    </select>
+
+    <insert id="insertChatJoin">
+        INSERT INTO CHAT_JOIN_TBL VALUES(#{roomNo}, #{memberId})
+    </insert>
+
+    <insert id="insertChatMessage">
+        INSERT INTO CHAT_TBL VALUES(SEQ_CHAT_NO.NEXTVAL, #{chatContent}, #{roomNo}, #{memberId}, DEFAULT, #{messageType})
+    </insert>
+
+    <select id="selectMyJoinDate" resultType="java.sql.Timestamp">
+        SELECT CHAT_DATE
+        FROM (
+                 SELECT *
+                 FROM CHAT_TBL
+                 WHERE MEMBER_ID = #{memberId}
+                   AND CHAT_CONTENT LIKE '%' || '대화방에 참여했습니다' || '%'
+                 ORDER BY CHAT_NO ASC
+             )
+        WHERE ROWNUM = 1
+    </select>
+
+    <select id="selectChatMessageList" resultType="chatMessageAndProfile">
+        SELECT * FROM CHAT_TBL
+            JOIN PROFILE_IMG_TBL USING(MEMBER_ID)
+            WHERE CHAT_DATE >= #{myJoinDate}
+        ORDER BY CHAT_DATE ASC
+    </select>
+
 </mapper>

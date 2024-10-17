@@ -1,12 +1,10 @@
 package com.filmfellows.cinemates.domain.chat.model.serviceImpl;
 
-import com.filmfellows.cinemates.app.chat.dto.ChatRoomMovie;
-import com.filmfellows.cinemates.app.chat.dto.CinemaInfoByRegion;
-import com.filmfellows.cinemates.app.chat.dto.RegionAndCinemaCount;
-import com.filmfellows.cinemates.app.chat.dto.RelativeTime;
+import com.filmfellows.cinemates.app.chat.dto.*;
 import com.filmfellows.cinemates.common.Pagination;
 import com.filmfellows.cinemates.domain.chat.model.mapper.ChatMapper;
 import com.filmfellows.cinemates.domain.chat.model.service.ChatService;
+import com.filmfellows.cinemates.domain.chat.model.vo.ChatMessage;
 import com.filmfellows.cinemates.domain.chat.model.vo.ChatRoom;
 import com.filmfellows.cinemates.domain.chat.model.vo.ChatTag;
 import com.filmfellows.cinemates.domain.chat.model.vo.ChatTimeUtils;
@@ -15,6 +13,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -132,6 +131,34 @@ public class ChatServiceImpl implements ChatService {
         return profileList;
     }
 
+    @Override
+    public List<ChatJoinProfile> selectChatJoinList(Integer roomNo) {
+        List<ChatJoinProfile> chatJoinList = cMapper.selectChatJoinList(roomNo);
+        return chatJoinList;
+    }
+
+    @Override
+    public int insertChatJoin(Integer roomNo, String memberId) {
+        int result = cMapper.insertChatJoin(roomNo, memberId);
+        return result;
+    }
+
+    @Override
+    public int insertChatMessage(ChatMessage chatMessage) {
+        int result = cMapper.insertChatMessage(chatMessage);
+        return result;
+    }
+
+    @Override
+    public List<chatMessageAndProfile> selectChatMessageList(Timestamp myJoinDate) {
+        List<chatMessageAndProfile> chatMessageList = cMapper.selectChatMessageList(myJoinDate);
+        return chatMessageList;
+    }
+
+    @Override
+    public Timestamp selectMyJoinDate(String memberId) {
+        return cMapper.selectMyJoinDate(memberId);
+    }
 
 
 }
