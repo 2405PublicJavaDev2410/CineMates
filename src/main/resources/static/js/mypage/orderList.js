@@ -1,6 +1,6 @@
 const resultTable = document.getElementById('result-table');
 const resultBody = document.getElementById('result-body');
-const noResult = document.getElementById('period-no-result');
+const noResult = document.getElementById('error-message');
 
 // 구매 정보 DOM 구성
 const ResultInfo = (data) => {
@@ -8,15 +8,21 @@ const ResultInfo = (data) => {
         // 데이터 있으면 테이블에 행 추가
         data.forEach(item => {
             const row = document.createElement('tr');
+            // timestamp를 날짜로 변환
+            const date = new Date(item.purchaseDate);
+            const formattedDate = date.toISOString().split('T')[0];
+            // 숫자를 금액으로 변환
+            const formattedAmount = item.finalAmount.toLocaleString() + '원';
+
             row.innerHTML = `
-                    <td>${item.purchaseDate}</td>
+                    <td>${formattedDate}</td>
                     <td>
-                        <a href="#" class="product-link">
+                        <a href="/store/product/${item.productNo}" class="product-link">
                             <img src="${item.imageUrl}" alt="product image" class="product-image">
                             <span class="product-name">${item.productName}</span>
                         </a>
                     </td>
-                    <td>${item.price}</td>
+                    <td>${formattedAmount}</td>
                 `;
             resultBody.appendChild(row);
         });
@@ -27,7 +33,8 @@ const ResultInfo = (data) => {
 
 // 결과 없음 DOM 구성
 const NoResultInfo = () => {
-    const errorContents = `<b><p id="error-text">구매 내역이 없습니다.</p></b>`;
+    const errorContents = `<b><p id="error-text">해당 기간에 구매 내역이 없습니다.</p></b>`;
+    noResult.style.display = 'block';
     document.querySelector('#error-message').innerHTML = errorContents;
 }
 
@@ -45,6 +52,7 @@ function findOrder() {
     $.ajax({
         url: `/find-order?startDate=${startDate}&endDate=${endDate}`,
         method: 'GET',
+        dataType: 'json',
         success: function (data) {
             if (data && data.length > 0) {
                 ResultInfo(data);

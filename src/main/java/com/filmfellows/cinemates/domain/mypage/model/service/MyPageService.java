@@ -1,6 +1,8 @@
 package com.filmfellows.cinemates.domain.mypage.model.service;
 
 import com.filmfellows.cinemates.app.mypage.dto.QnaDTO;
+import com.filmfellows.cinemates.app.mypage.dto.myOrderRequest;
+import com.filmfellows.cinemates.app.mypage.dto.myOrderResponse;
 import com.filmfellows.cinemates.domain.mypage.model.vo.Qna;
 import com.filmfellows.cinemates.domain.mypage.model.vo.QnaFile;
 import org.apache.ibatis.session.RowBounds;
@@ -11,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface MyPageService {
-    String selectOrderList();
+    List<myOrderResponse> selectOrderList(myOrderRequest request);
     List<QnaDTO> selectAllQnaById(Integer currentPage, String memberId, RowBounds rBounds);
     List<QnaDTO> selectAllQna(RowBounds rBounds, Integer currentPage);
     Qna selectOneQnaByNo(int qnaNo);
