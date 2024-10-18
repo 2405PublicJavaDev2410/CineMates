@@ -1,0 +1,71 @@
+body {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    background-color: white; /* 전체 배경을 어두운 색으로 */
+    color: black; /* 텍스트를 흰색으로 */
+    margin: 0;
+    padding: 0;
+}
+
+div{
+    display:inline-block;
+}
+.screen{
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 10px 20px;
+    background-color: #444; /* 버튼 같은 느낌을 위한 배경색 */
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    text-align: center;
+    margin-right: 5px
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th,
+table td {
+    padding: 12px;
+    text-align: center;
+    font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
+    border: none;
+}
+
+table th {
+    background-color: #ffffff;
+    font-size: 16px;
+    border-bottom: 2px solid #D54946;
+}
+
+table td {
+    font-size: 14px;
+}
+
+table tr {
+    border-bottom: 1px solid #ddd;
+}
+
+
+button {
+
+    cursor: pointer;
+    width: 20%;
+    height: 54px;
+    background-color: #EA4E4A;
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+    font-size: 18px;
+    letter-spacing: 2px;
+    color: white;
+    border: none;
+    border-radius: 15px;
+}
+button:hover {
+    background-color: #E12C25;
+}
+tr:nth-child(even) {
+    background-color: #f9f9f9; /* 짝수 행의 배경을 약간 다르게 */
+}

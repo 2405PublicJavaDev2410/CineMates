@@ -8,10 +8,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
 @Controller
+@RequestMapping("/admin")
 public class ProductadminController {
 
     private ProductAdminService apService;
@@ -21,7 +23,7 @@ public class ProductadminController {
     }
 
 
-    @GetMapping("/product/admin")
+    @GetMapping("/product")
     public String showproductadmin(Model model) {
         List<Product2> pList=apService.allproduct();
         model.addAttribute("pList", pList);

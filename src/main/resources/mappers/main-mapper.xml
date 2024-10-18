@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.filmfellows.cinemates.domain.main.model.mapper.MainMapper">
+    <select id="selectBoxOfficeList" resultType="com.filmfellows.cinemates.app.main.dto.boxOfficeDTO">
+        WITH BOOKABLE_MOVIES AS (
+            SELECT m.MOVIE_NO, m.TITLE, m.POSTER_URL,
+                   TO_CHAR(m.RELEASE_DATE, 'YYYY-MM-DD') AS RELEASE_DATE,
+                   m.RUNNING_TIME, m.RATING, m.DIRECTOR, m.ACTORS, m.GENRE,
+                   COALESCE(SUM(r.RESERVATION_VISITOR), 0) AS VISITOR_COUNT
+            FROM MOVIE_TBL m
+                     LEFT JOIN RESERVATION_TBL r ON m.MOVIE_NO = r.MOVIE_NO
+            WHERE m.IS_BOOKABLE = 'Y'
+            GROUP BY m.MOVIE_NO, m.TITLE, m.POSTER_URL, m.RELEASE_DATE, m.RUNNING_TIME,
+                     m.RATING, m.DIRECTOR, m.ACTORS, m.GENRE
+        ),
+             TOTAL_VISITORS AS (
+                 SELECT SUM(VISITOR_COUNT) AS TOTAL_COUNT
+                 FROM BOOKABLE_MOVIES
+             ),
+             RANKED_MOVIES AS (
+                 SELECT
+                     bm.MOVIE_NO AS movieNo,
+                     bm.TITLE AS title,
+                     bm.POSTER_URL AS posterUrl,
+                     bm.RELEASE_DATE AS releaseDate,
+                     bm.RUNNING_TIME AS runningTime,
+                     bm.RATING AS rating,
+                     bm.DIRECTOR AS director,
+                     bm.ACTORS AS actors,
+                     bm.GENRE AS genre,
+                     bm.VISITOR_COUNT AS visitorCount,
+                     tv.TOTAL_COUNT AS totalCount,
+                     CASE
+                         WHEN tv.TOTAL_COUNT > 0 THEN
+                             TO_CHAR(ROUND((bm.VISITOR_COUNT / tv.TOTAL_COUNT) * 100, 2), 'FM999990.00') || '%'
+                         ELSE '0.00%'
+                         END AS reservationRate,
+                     ROW_NUMBER() OVER (ORDER BY (bm.VISITOR_COUNT / NULLIF(tv.TOTAL_COUNT, 0)) DESC) AS rn
+                 FROM BOOKABLE_MOVIES bm
+                          CROSS JOIN TOTAL_VISITORS tv
+                 WHERE bm.VISITOR_COUNT > 0
+             )
+        SELECT
+            movieNo, title, posterUrl, releaseDate, runningTime, rating,
+            director, actors, genre, visitorCount, totalCount, reservationRate
+        FROM RANKED_MOVIES
+        WHERE rn &lt;= 5
+    </select>
+</mapper>

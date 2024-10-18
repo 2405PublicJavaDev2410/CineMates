@@ -1,15 +1,21 @@
 package com.filmfellows.cinemates.domain.reservation.model.vo;
 
+import jakarta.annotation.Nullable;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
+import java.util.List;
+
 @Data
 @Getter
 @Setter
 @Repository
+@Nullable
+@NoArgsConstructor
 public class ReservationDTO {
     //Reservation - 예약
     private String reservationNo;
@@ -22,6 +28,11 @@ public class ReservationDTO {
 
     //Member - 회원
     private String memberId;
+    private Integer ticketCount;
+    @Setter
+    private List<String> allTicketCount;
+    @Setter
+    private List<String> MemberIds;
 
     //Movie - 영화
     private Integer movieNo;
@@ -45,4 +56,5 @@ public class ReservationDTO {
     //ShowTime - 상영
     private String showtimeTime;
     private Integer showtimeNo;
+
 }

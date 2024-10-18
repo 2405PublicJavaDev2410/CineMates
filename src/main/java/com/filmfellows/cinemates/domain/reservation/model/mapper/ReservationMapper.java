@@ -2,9 +2,7 @@ package com.filmfellows.cinemates.domain.reservation.model.mapper;
 
 import com.filmfellows.cinemates.app.mypage.dto.myReservationRequest;
 import com.filmfellows.cinemates.app.mypage.dto.myReservationResponse;
-import com.filmfellows.cinemates.domain.reservation.model.vo.MemberDTO;
-import com.filmfellows.cinemates.domain.reservation.model.vo.ReservationDTO;
-import com.filmfellows.cinemates.domain.reservation.model.vo.ShowInfoDTO;
+import com.filmfellows.cinemates.domain.reservation.model.vo.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -14,8 +12,6 @@ import java.util.Map;
 public interface ReservationMapper {
     List<ReservationDTO> showReservationPage();
 
-//    int insertReservationInfo();
-
     void insertReservationInfo(Map<String, Object> reserveInfo);
 
     List<ReservationDTO> showReservedSeats();
@@ -23,7 +19,6 @@ public interface ReservationMapper {
     List<String> selectCinemas(String address);
 
     List<String> selectMovies(String cinemaName);
-
 
     List<ShowInfoDTO> selectShowInfo(String cinemaName, String title);
 
@@ -38,10 +33,25 @@ public interface ReservationMapper {
     ShowInfoDTO selectMoviePoster(String title);
 
     myReservationResponse selectReservationInfo(myReservationRequest request);
-    
-    ReservationDTO selectReservationInfo(String reservationNo);
+
 
     void deleteReservationInfo(String impUid);
 
-    List<String> selectAllMovies();
+    List<SearchMovieDTO> selectAllMovies();
+
+    List<SearchLocationCodeDTO> selectAllLocationCode();
+
+    List<String> selectCinemasByCode();
+
+    String getAgeRatingByTitle(String title);
+
+    MemberDTO selectTicketCount(String memberId);
+
+    List<String> selectTicketCountByIds(List<String> memberIds);
+
+    List<String> selectTicketCountByIds(String memberIds);
+
+    int updateTicketCount(String memberId);
+
+    ReservationDTO selectUpdatedReservation(String memberId);
 }

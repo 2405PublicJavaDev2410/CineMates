@@ -6,12 +6,12 @@ import com.filmfellows.cinemates.domain.store.model.mapper.*;
 import com.filmfellows.cinemates.domain.store.model.service.StoreService;
 import com.filmfellows.cinemates.domain.store.model.vo.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,13 +19,13 @@ import java.util.stream.Collectors;
 public class StoreServiceImpl implements StoreService {
 
     private final ProductMapper pMapper;
-//    public StoreServiceImpl(ProductMapper pMapper) {
+    //    public StoreServiceImpl(ProductMapper pMapper) {
 //        this.pMapper = pMapper;
 //    }
     private final CartMapper cMapper;
     private final GiftMapper gMapper;
-    /*private final StorePaymentMapper sMapper;*/
     private final PurchaseMapper purchaseMapper;
+    private final MemberMapper mMapper;
 
     @Override
     public List<Product> getProductsByCategory(String category, Integer limit) {
@@ -50,8 +50,9 @@ public class StoreServiceImpl implements StoreService {
     @Override
     @Transactional
     public boolean insertOrUpdateCartItem(Cart cartItem) {
-        int exists = cMapper.checkCartItemExists(cartItem);
-        if (exists > 0) {
+        String cartNo = cMapper.checkCartItemExists(cartItem);
+        if (cartNo != null) {
+            cartItem.setCartNo(Integer.parseInt(cartNo));
             return cMapper.updateCartItem(cartItem) > 0;
         } else {
             return cMapper.insertCartItem(cartItem) > 0;
@@ -64,8 +65,8 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public boolean deleteCartItems(List<Integer> cartNos) {
-        return cMapper.deleteCartItems(cartNos);
+    public boolean deleteCartItems(Cart cartItem) {
+        return cMapper.deleteCartItems(cartItem);
     }
 
     @Override
@@ -74,123 +75,23 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public List<Cart> getSelectedCartItems(String memberId, List<Integer> selectedItems) {
-        return cMapper.selectSelectedCartItems(memberId, selectedItems);
+    public void updatePurchase(Purchase purchase) {
+        purchaseMapper.updatePurchase(purchase);
     }
 
     @Override
-    @Transactional
-    public Gift initializeGift(String memberId, int productNo, int quantity) {
-        Product product = pMapper.selectProductDetail(productNo);
-        if (product == null) {
-            throw new RuntimeException("Product not found");
-        }
-
-        Gift gift = new Gift();
-        gift.setSenderId(memberId);
-        gift.setTotalAmount(product.getPrice() * quantity);
-        gift.setTotalDiscountAmount(product.getDiscountAmount() * quantity);
-        gift.setFinalAmount(gift.getTotalAmount() - gift.getTotalDiscountAmount());
-
-        gMapper.insertGift(gift);
-
-        Gift.GiftProductInfo productInfo = new Gift.GiftProductInfo();
-        productInfo.setGiftNo(gift.getGiftNo());
-        productInfo.setProductNo(productNo);
-        productInfo.setQuantity(quantity);
-        productInfo.setPrice(product.getPrice());
-        productInfo.setDiscountAmount(product.getDiscountAmount());
-        productInfo.setProduct(product);
-
-        gift.addProduct(productInfo);
-
-        gMapper.insertGiftProducts(gift.getProducts());
-
-        return gift;
+    public Member getMemberById(String memberId) {
+        return mMapper.selectOneById(memberId);
     }
 
     @Override
-    public Gift initializeGiftFromCart(String memberId, List<Cart> selectedCarts) {
-        Gift gift = new Gift();
-        gift.setSenderId(memberId);
-
-        for(Cart cart : selectedCarts) {
-            Product product = pMapper.selectProductDetail(cart.getProductNo());
-            Gift.GiftProductInfo productInfo = new Gift.GiftProductInfo();
-            productInfo.setProductNo(cart.getProductNo());
-            productInfo.setQuantity(cart.getQuantity());
-            productInfo.setPrice(product.getPrice());
-            productInfo.setDiscountAmount(product.getDiscountAmount());
-            productInfo.setProduct(product);
-            gift.getProducts().add(productInfo);
-        }
-
-        calculateGiftAmount(gift);
-
-        int giftInsertResult = gMapper.insertGift(gift);
-        if (giftInsertResult == 0) {
-            throw new RuntimeException("Insert gift failed");
-        }
-        int productsInsertResult = gMapper.insertGiftProducts(gift.getProducts());
-        if (productsInsertResult == 0) {
-            throw new RuntimeException("Insert gift products failed");
-        }
-
-        return gift;
-    }
-
-    @Override
-    public Purchase initializePurchaseFromCart(String memberId, List<Cart> selectedCarts) {
-        Purchase purchase = new Purchase();
-        purchase.setMemberId(memberId);
-        purchase.setStatus("INITIATED");
-
-        List<PurchaseItem> items = selectedCarts.stream()
-                .map(cart -> {
-                    PurchaseItem item = new PurchaseItem();
-                    item.setProductNo(cart.getProductNo());
-                    item.setQuantity(cart.getQuantity());
-                    item.setProduct(cart.getProduct());
-                    return item;
-                })
-                .collect(Collectors.toList());
-
-            purchase.setItems(items);
-
-            // 총액, 할인액 계산
-            int totalAmount = items.stream()
-                    .mapToInt(item -> item.getProduct().getPrice() * item.getQuantity())
-                    .sum();
-            int totalDiscountAmount = items.stream()
-                    .mapToInt(item -> item.getProduct().getDiscountAmount() * item.getQuantity())
-                    .sum();
-            int finalAmount = totalAmount - totalDiscountAmount;
-
-            purchase.setTotalAmount(totalAmount);
-            purchase.setTotalDiscountAmount(totalDiscountAmount);
-            purchase.setFinalAmount(finalAmount);
-
-            purchaseMapper.insertPurchase(purchase);
-            for (PurchaseItem item : items) {
-                item.setPurchaseNo(purchase.getPurchaseNo());
-                purchaseMapper.insertPurchaseItem(item);
-            }
-
-            return purchase;
-    }
-
-    @Override
-    public boolean verifyAndSerRecipient(Gift gift, String name, String phone) {
+    public boolean verifyAndSetRecipient(Gift gift, String name, String phone) {
         Member recipient = gMapper.findMemberByNameAndPhone(name, phone);
         if (recipient != null) {
             gift.setRecipientId(recipient.getMemberId());
             gift.setRecipientName(recipient.getName());
             gift.setRecipientPhone(recipient.getPhone());
-
-            int updateResult = gMapper.updateGift(gift);
-            if (updateResult == 0) {
-                throw new RuntimeException("Update gift failed");
-            }
+            gMapper.updateGift(gift);
             return true;
         }
         return false;
@@ -199,119 +100,12 @@ public class StoreServiceImpl implements StoreService {
     @Override
     @Transactional
     public void completeGiftPayment(int giftNo) {
-        Gift gift = gMapper.selectOneByGiftNo(giftNo);
+        Gift gift = getGiftByNo(giftNo);
         if (gift == null) {
             throw new RuntimeException("Gift not found");
         }
         gift.setIsTransferred("Y");
-        int updateResult = gMapper.updateGift(gift);
-        if(updateResult == 0) {
-            throw new RuntimeException("Update gift failed");
-        }
-    }
-
-    private void calculateGiftAmount(Gift gift) {
-        int totalAmount = 0;
-        int totalDiscountAmount = 0;
-
-        for(Gift.GiftProductInfo productInfo : gift.getProducts()) {
-            totalAmount += productInfo.getPrice() * productInfo.getQuantity();
-            totalDiscountAmount += productInfo.getDiscountAmount() * productInfo.getQuantity();
-        }
-
-        gift.setTotalAmount(totalAmount);
-        gift.setTotalDiscountAmount(totalDiscountAmount);
-        gift.setFinalAmount(totalAmount - totalDiscountAmount);
-    }
-
-    /*@Override
-    public KakaoPayReady prepareGiftPayment(Gift gift) {
-        KakaoPayReadyRequest request = new KakaoPayReadyRequest();
-        return kClient.readyForPayment(request);
-    }
-
-    @Override
-    public KakaoPayReady preparePurchasePayment(Purchase purchase) {
-        KakaoPayReadyRequest request = new KakaoPayReadyRequest();
-        return kClient.readyForPayment(request);
-    }
-
-    @Override
-    @Transactional
-    public KakaoPayApproval completeGiftPayment(Gift gift, String pgToken, String paymentKey) {
-        KakaoPayApprovalRequest request = new KakaoPayApprovalRequest();
-        KakaoPayApproval approval = kClient.approvePayment(request);
-
-        gift.setPaymentMethod("KAKAO_PAY");
         gMapper.updateGift(gift);
-
-        return approval;
-    }
-
-    @Override
-    @Transactional
-    public KakaoPayApproval completePurchasePayment(Purchase purchase, String pgToken, String paymentKey) {
-        KakaoPayApprovalRequest request = new KakaoPayApprovalRequest();
-        KakaoPayApproval approval = kClient.approvePayment(request);
-
-        purchase.setPaymentMethod("KAKAO_PAY");
-        purchaseMapper.updatePurchase(purchase);
-
-        return approval;
-    }*/
-
-    @Override
-    @Transactional
-    public void processGiftSend(Gift gift) {
-
-    }
-
-    @Override
-    public void updateStorePayment(StorePayment storePayment) {
-        /*sMapper.updateStorePayment(storePayment);*/
-    }
-
-
-
-    @Override
-    @Transactional
-    public Purchase initializePurchase(String memberId, int productNo) {
-        Product product = pMapper.selectProductDetail(productNo);
-        if (product == null) {
-            throw new RuntimeException("Product not found");
-        }
-
-        Purchase purchase = new Purchase();
-        purchase.setMemberId(memberId);
-        purchase.setStatus("INITIATED");
-        purchase.setGiftYn("N");
-
-        int totalAmount = product.getPrice();
-        int totalDiscountAmount = product.getDiscountAmount();
-        int finalAmount = totalAmount - totalDiscountAmount;
-
-        purchase.setTotalAmount(totalAmount);
-        purchase.setTotalDiscountAmount(totalDiscountAmount);
-        purchase.setFinalAmount(finalAmount);
-
-       purchaseMapper.insertPurchase(purchase);
-
-        PurchaseItem item = new PurchaseItem();
-        item.setPurchaseNo(purchase.getPurchaseNo());
-        item.setProductNo(productNo);
-        item.setQuantity(1);
-        item.setOriginalPrice(product.getPrice());
-        item.setDiscountAmount(product.getDiscountAmount());
-        item.setDiscountedPrice(product.getPrice() - product.getDiscountAmount());
-
-        purchaseMapper.insertPurchaseItem(item);
-
-        List<PurchaseItem> items = new ArrayList<>();
-        item.setProduct(product);
-        items.add(item);
-        purchase.setItems(items);
-
-        return purchase;
     }
 
     @Override
@@ -320,7 +114,168 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public Member getMemberById(String memberId) {
-        return purchaseMapper.selectMemberById(memberId);
+    @Transactional
+    public Purchase initializePurchase(String memberId, List<Map<String, Object>> items, boolean purchaseAll) {
+        Purchase purchase = new Purchase();
+        purchase.setMemberId(memberId);
+        purchase.setStatus("INITIATED");
+
+        List<PurchaseItem> purchaseItems = new ArrayList<>();
+        int totalAmount = 0;
+        int totalDiscountAmount = 0;
+
+        if (purchaseAll) {
+            List<Cart> cartItems = cMapper.getCartItemsByMemberId(memberId);
+            for (Cart cart : cartItems) {
+                Product product = pMapper.selectProductDetail(cart.getProductNo());
+                PurchaseItem item = new PurchaseItem();
+                item.setProductNo(product.getProductNo());
+                item.setPurchasePrice(product.getPrice());
+                item.setPurchaseDiscountAmount(product.getDiscountAmount());
+                item.setProduct(product);
+                purchaseItems.add(item);
+
+                totalAmount += product.getPrice() * cart.getQuantity();
+                totalDiscountAmount += product.getDiscountAmount() * cart.getQuantity();
+            }
+            cMapper.clearCart(memberId);
+        } else {
+            for (int i = 0; i < items.size(); i++) {
+                int productNo = Integer.parseInt((String)items.get(i).get("productNo"));
+                int quantity = (int) items.get(i).get("quantity");
+                Product product = pMapper.selectProductDetail(productNo);
+
+                PurchaseItem item = new PurchaseItem();
+                item.setProductNo(product.getProductNo());
+                item.setQuantity(quantity);
+                item.setPurchasePrice(product.getPrice());
+                item.setPurchaseDiscountAmount(product.getDiscountAmount());
+                item.setProduct(product);
+                purchaseItems.add(item);
+
+                totalAmount += product.getPrice() * quantity;
+                totalDiscountAmount += product.getDiscountAmount() * quantity;
+            }
+        }
+
+        purchase.setPurchaseItems(purchaseItems);
+        purchase.setTotalAmount(totalAmount);
+        purchase.setTotalDiscountAmount(totalDiscountAmount);
+        purchase.setFinalAmount(totalAmount - totalDiscountAmount);
+
+        purchaseMapper.insertPurchase(purchase);
+        for (PurchaseItem item : purchaseItems) {
+            item.setPurchaseNo(purchase.getPurchaseNo());
+            purchaseMapper.insertPurchaseItem(item);
+        }
+
+        return purchase;
     }
+
+    @Override
+    @Transactional
+    public Gift initializeGift(String memberId, List<Map<String, Object>> items, boolean purchaseAll) {
+        Gift gift = new Gift();
+        gift.setSenderId(memberId);
+
+        List<GiftItem> giftItems = new ArrayList<>();
+        int totalAmount = 0;
+        int totalDiscountAmount = 0;
+
+        if (purchaseAll) {
+            List<Cart> cartItems = cMapper.getCartItemsByMemberId(memberId);
+            for (Cart cart : cartItems) {
+                Product product = pMapper.selectProductDetail(cart.getProductNo());
+                GiftItem giftItem = new GiftItem();
+                giftItem.setProductNo(product.getProductNo());
+                giftItem.setQuantity(cart.getQuantity());
+                giftItem.setPrice(product.getPrice());
+                giftItem.setDiscountAmount(product.getDiscountAmount());
+                giftItems.add(giftItem);
+
+                totalAmount += product.getPrice() * cart.getQuantity();
+                totalDiscountAmount += product.getDiscountAmount() * cart.getQuantity();
+            }
+            cMapper.clearCart(memberId);
+        } else {
+            for (Map<String, Object> item : items) {
+                int productNo = (int) item.get("productNo");
+                int quantity = (int) item.get("quantity");
+                Product product = pMapper.selectProductDetail(productNo);
+
+                GiftItem giftItem = new GiftItem();
+                giftItem.setProductNo(product.getProductNo());
+                giftItem.setQuantity(quantity);
+                giftItem.setPrice(product.getPrice());
+                giftItem.setDiscountAmount(product.getDiscountAmount());
+                giftItems.add(giftItem);
+
+                totalAmount += product.getPrice() * quantity;
+                totalDiscountAmount += product.getDiscountAmount() * quantity;
+            }
+        }
+
+        gift.setGiftItems(giftItems);
+        gift.setTotalAmount(totalAmount);
+        gift.setTotalDiscountAmount(totalDiscountAmount);
+        gift.setFinalAmount(totalAmount - totalDiscountAmount);
+
+        gMapper.insertGift(gift);
+        for (GiftItem giftItem : giftItems) {
+            giftItem.setGiftNo(gift.getGiftNo());
+            gMapper.insertGiftItem(giftItem);
+        }
+
+        return gift;
+    }
+
+    @Override
+    @Transactional
+    public Gift saveGift(Gift gift) {
+        gMapper.insertGift(gift);
+        for (GiftItem item : gift.getGiftItems()) {
+            item.setGiftNo(gift.getGiftNo());
+            gMapper.insertGiftItem(item);
+        }
+        return gift;
+    }
+
+    @Override
+    public void processPurchase(Purchase purchase) {
+        purchaseMapper.insertPurchase(purchase);
+
+        int totalTickets = 0;
+
+        for (PurchaseItem item : purchase.getPurchaseItems()) {
+            purchaseMapper.insertPurchaseItem(item);
+
+            if ("영화관람권".equals(item.getProduct().getCategoryName())) {
+                totalTickets += item.getQuantity();
+            }
+        }
+
+        if (totalTickets > 0) {
+            String memberId = purchase.getMemberId();
+            int currentTicketCount = purchaseMapper.getTicketCount(memberId);
+            int newTicketCount = currentTicketCount + totalTickets;
+            purchaseMapper.updateTicketCount(memberId, newTicketCount);
+        }
+    }
+
+    @Override
+    public Product getProductByNo(int productNo) {
+        return pMapper.selectProductByNo(productNo);
+    }
+
+    @Override
+    public Gift getGiftByNo(int giftNo) {
+        Gift gift = gMapper.selectGiftByNo(giftNo);
+        if (gift != null) {
+            List<GiftItem> giftItems = gMapper.selectGiftItemsByGiftNo(giftNo);
+            gift.setGiftItems(giftItems);
+        }
+        return gift;
+    }
+
 }
+

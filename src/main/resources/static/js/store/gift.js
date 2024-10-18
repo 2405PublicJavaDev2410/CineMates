@@ -7,6 +7,35 @@ document.addEventListener('DOMContentLoaded', function() {
     const backButton = document.getElementById('back-button');
     const nextButton = document.getElementById('next-button');
 
+    document.getElementById('giftForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        if (validateInputs()) {
+            const formData = new FormData(this);
+            const giftData = Object.fromEntries(formData.entries());
+
+            fetch('/store/purchase/initiate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(giftData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = data.redirectUrl;
+                    } else {
+                        alert('선물 구매 처리 중 오류가 발생했습니다.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('선물 구매 처리 중 오류가 발생했습니다.');
+                });
+        }
+    });
+
+
     messageType.addEventListener('change', function() {
         giftMessageText.style.display = this.value === 'custom' ? 'block' : 'none';
     });

@@ -1,0 +1,94 @@
+/* 기본 스타일 설정 */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    color: #2c3e50;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th,
+table td {
+    padding: 12px;
+    text-align: center;
+    font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
+    border: none;
+}
+
+table th {
+    background-color: #ffffff;
+    font-size: 16px;
+    border-bottom: 2px solid #D54946;
+}
+
+table td {
+    font-size: 14px;
+}
+
+table tr {
+    border-bottom: 1px solid #ddd;
+}
+
+
+button {
+
+    cursor: pointer;
+    width: 20%;
+    height: 54px;
+    background-color: #EA4E4A;
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+    font-size: 18px;
+    letter-spacing: 2px;
+    color: white;
+    border: none;
+    border-radius: 15px;
+}
+button:hover {
+    background-color: #E12C25;
+}
+tr:nth-child(even) {
+    background-color: #f9f9f9; /* 짝수 행의 배경을 약간 다르게 */
+}
+
+/* 상품 이미지 열의 너비 설정 */
+th:nth-child(2), td:nth-child(2) {
+    width: 150px; /* 2번째 열(상품이미지)의 너비 */
+}
+
+/* 특정 열의 너비를 설정하는 CSS */
+th:nth-child(8), td:nth-child(8) {
+    max-width: 150px; /* 최대 너비 설정 */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+th:nth-child(9), td:nth-child(9) {
+    max-width: 150px; /* 최대 너비 설정 */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 링크 스타일 */
+a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+/* 테이블 행의 마우스오버 스타일 */
+tr:hover td {
+    background-color: #f1f1f1;
+}

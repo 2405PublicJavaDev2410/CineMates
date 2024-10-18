@@ -1,5 +1,6 @@
 package com.filmfellows.cinemates.domain.movie.model.service;
 
+import com.filmfellows.cinemates.app.main.dto.boxOfficeDTO;
 import com.filmfellows.cinemates.app.movie.dto.MovieDTO;
 import com.filmfellows.cinemates.app.movie.dto.MovieListDTO;
 import com.filmfellows.cinemates.app.movie.dto.MovieReservationRateDTO;
@@ -12,7 +13,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface MovieService {
-    List<MovieListDTO> selectAllMovieList();
+
+
+
     List<MovieDTO> selectMovieDetail(Long movieNo);
     void updateMovie(MovieDTO movieDTO);
 
@@ -31,10 +34,15 @@ public interface MovieService {
 
     List<MovieListDTO> getMoviesByStatusAndSort(String status, int page, int size, String sortBy);
 
-
     List<MovieDTO.StillcutDTO> selectStillcutsPaginated(Long movieNo, int page, int size);
 
-    List<ReviewDTO> getReviewByMovieNo(Long movieNo);
+    List<ReviewDTO> getReviewByMovieNo(Long movieNo, int page, int size);
 
-    int addReview(Review addReview);
+    boolean addReview(Review addReview);
+
+    int getTotalReviewCountByMovieNo(Long movieNo);
+
+    void removeReview(String memberId, int reviewNo);
+
+    ReviewDTO getMyReview(Long movieNo, String memberId);
 }

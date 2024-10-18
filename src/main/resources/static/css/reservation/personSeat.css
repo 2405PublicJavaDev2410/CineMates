@@ -1,3 +1,17 @@
+.container {
+    width: 100%;
+    background-color: #444;
+}
+.Seat-Container{
+
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 1400px;
+    height: 550px;
+    margin: 0 auto;
+}
 .seat {
     width: 30px;
     height: 30px;
@@ -23,10 +37,14 @@
 .select_num_people_wrap{
     display: flex;
     width:100%;
+    background-color: white;
 }
 .count_person{
     width:800px;
-
+    flex:8;
+}
+.count_person ul {
+    margin-top:20px;
 }
 .count_person ul li{
     float:left
@@ -57,7 +75,8 @@
 .counter-controls {
     display: flex;
     align-items: center;
-    gap: 5px; /* 버튼과 결과 사이 간격 */
+    justify-content: space-between;
+    width: 100px; /* 조정 가능한 너비 */
 }
 
 .counter-btn {
@@ -66,14 +85,37 @@
     border: 1px solid #ccc;
     background-color: #f0f0f0;
     cursor: pointer;
-    font-size: 18px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.result {
+.result, .result1, .result2 {
     min-width: 20px;
     text-align: center;
-    font-size: 16px;
+}
+/*영화 정보 div */
+.movieInfo{
+    float:left;
+    flex:3;
+    display: flex;
+}
+.movieInfo strong{
+    font-size: 22px;
+}
+.movieInfo div img {
+    width:100px;
+    height: 100px;
+}
+.movie-img{
+    width:100px;
+}
+#seatMap{
+    margin:0 auto;
+}
+.Screen{
+    line-height: 1.1;
+    text-align: center;
+    font-size: 12px;
+    letter-spacing: 0.03em;
 }

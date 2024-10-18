@@ -1,10 +1,10 @@
-
 // let visitorCount = /*[[${rDTO.reservationVisitor}]]*/ 0;
 const countInput = document.getElementById('countInput');
 const adult = document.getElementById('adultReserved');
 const child = document.getElementById('childReserved');
 const senior = document.getElementById('seniorReserved');
 const selectedSeatsInput = document.getElementById('selectedSeatsInput');
+const maxVisitorCount = memberIds.length !== 0 ? memberIds.length : Infinity;
 
 function count(value, resultClass) {
     const resultElement = document.querySelector('.' + resultClass);
@@ -12,7 +12,7 @@ function count(value, resultClass) {
     let targetInput;
 
     // 카테고리에 따른 hidden input 선택
-    switch(resultClass) {
+    switch (resultClass) {
         case 'result':
             targetInput = adult;
             break;
@@ -25,13 +25,14 @@ function count(value, resultClass) {
     }
 
     // 더하기/빼기
-    if (value === "plus") {
+    if (value === "plus" && visitorCount < maxVisitorCount) {
         currentCount++;
         visitorCount++;
     } else if (value === "minus" && currentCount > 0) {
         currentCount--;
         visitorCount--;
     }
+
 
     // 현재 화면에 표시된 값 업데이트
     resultElement.innerText = currentCount;
@@ -42,7 +43,22 @@ function count(value, resultClass) {
         targetInput.value = currentCount;
     }
 }
+function updatePlusButtonStates() {
+    const plusButtons = document.querySelectorAll('[onclick*="count(\'plus\'"]');
+    plusButtons.forEach(button => {
+        if (visitorCount >= maxVisitorCount) {
+            button.disabled = true;
+            button.style.opacity = '0.5';  // 선택적: 비활성화된 버튼의 스타일 변경
+        } else {
+            button.disabled = false;
+            button.style.opacity = '1';
+        }
+    });
+}
 
+
+// 페이지 로드 시 초기 상태 설정
+document.addEventListener('DOMContentLoaded', updatePlusButtonStates);
 
 // const rDTO = /*[[${rDTO}]]*/ {};
 // const reservedSeatsMap = /*[[${reservationSeat}]]*/ {};

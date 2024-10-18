@@ -2,38 +2,19 @@ package com.filmfellows.cinemates.domain.reservation.model.Service.Impl;
 
 import com.filmfellows.cinemates.app.mypage.dto.myReservationRequest;
 import com.filmfellows.cinemates.app.mypage.dto.myReservationResponse;
-import com.filmfellows.cinemates.domain.cinema.model.vo.Showtime;
 import com.filmfellows.cinemates.domain.reservation.model.Service.ReservationService;
 import com.filmfellows.cinemates.domain.reservation.model.mapper.ReservationMapper;
-import com.filmfellows.cinemates.domain.reservation.model.vo.MemberDTO;
-import com.filmfellows.cinemates.domain.reservation.model.vo.ReservationDTO;
-import com.filmfellows.cinemates.domain.reservation.model.vo.ShowInfoDTO;
+import com.filmfellows.cinemates.domain.reservation.model.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class ReservationServiceImpl implements ReservationService {
 
     @Autowired
     private ReservationMapper rmapper;
-
-    @Override
-    public List<ReservationDTO> showReservationPage() {
-        return rmapper.showReservationPage();
-    }
-
-//    @Override
-//    public int insertReservationInfo(Map<String, Object> reserveInfo) {
-//        return rmapper.insertReservationInfo(reserveInfo);
-//    }
-
-    @Override
-    public List<ReservationDTO> showReservedSeats() {
-        return rmapper.showReservedSeats();
-    }
 
     @Override
     public List<String> selectCinemas(String Address) {
@@ -66,11 +47,6 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public Map<String, Integer> getReservationCounts() {
-        return rmapper.getReservationCounts();
-    }
-
-    @Override
     public ShowInfoDTO selectMoviePoster(String title) {
         return rmapper.selectMoviePoster(title);
     }
@@ -81,10 +57,33 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<String> selectAllMovies() {
+    public List<SearchMovieDTO> selectAllMovies() {
         return rmapper.selectAllMovies();
     }
 
+    @Override
+    public List<SearchLocationCodeDTO> selectAllLocationCode() {
+        return rmapper.selectAllLocationCode();
+    }
 
+    @Override
+    public List<String> selectCinemasByCode(Integer cinemaLocationCode) {
+        return rmapper.selectCinemasByCode();
+    }
+
+    @Override
+    public String getAgeRatingByTitle(String title) {
+        return rmapper.getAgeRatingByTitle(title);
+    }
+
+    @Override
+    public MemberDTO selectTicketCount(String memberId) {
+        return rmapper.selectTicketCount(memberId);
+    }
+
+    @Override
+    public List<String> selectTicketCountByIds(String memberIds) {
+        return rmapper.selectTicketCountByIds(memberIds);
+    }
 
 }
