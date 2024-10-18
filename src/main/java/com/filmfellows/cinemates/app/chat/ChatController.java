@@ -195,9 +195,9 @@ public class ChatController {
         }
 
         // 내가 최초입장한 날짜 조회
-        Timestamp myJoinDate = cService.selectMyJoinDate(memberId);
+        Timestamp myJoinDate = cService.selectMyJoinDate(memberId, chatRoom.getRoomNo());
         // 내가 입장한 이후의 채팅기록
-        List<chatMessageAndProfile> chatMessageList = cService.selectChatMessageList(myJoinDate);
+        List<chatMessageAndProfile> chatMessageList = cService.selectChatMessageList(myJoinDate, chatRoom.getRoomNo());
 
 
 
@@ -339,6 +339,17 @@ public class ChatController {
         }
 
         return  ResponseEntity.ok("메시지 저장 성공");
+    }
+
+
+    @PostMapping("/chat/getUserList")
+    public String getUSerList(Model model, Integer roomNo){
+        // 채팅방에 참여한 리스트 조회 ( 프로필 이미지까지 )
+        List<ChatJoinProfile> chatJoinList = cService.selectChatJoinList(roomNo);
+
+        System.out.println("updateProfile : " + chatJoinList);
+        model.addAttribute("chatJoinList", chatJoinList);
+        return "pages/chat/chatRoom::#user-list-container";
     }
 
 }

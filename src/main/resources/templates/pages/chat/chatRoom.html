@@ -46,7 +46,7 @@
                 border-radius: 10px;
                 box-shadow: 0 5px 5px 5px rgb(162, 162, 162);
             }
-            .chat-screen .user-list-container{
+            .chat-screen #user-list-container{
                 width: 100%;
                 height: 100px;
                 display: flex;
@@ -253,7 +253,7 @@
                 </div>
             </div>
             <div class="chat-screen">
-                <div class="user-list-container">
+                <div id="user-list-container">
                     <div th:each="joinList:${chatJoinList}" style="display: flex; flex-direction: column;align-items: center">
                             <th:block th:if="${joinList.filePath == null}">
                                 <img th:id="${joinList.getMemberId()}" alt="프로필" src="/img/default_profile.png" style="width: 60px; height: 60px; border-radius: 50%;">
@@ -316,7 +316,6 @@
 
             function webSocketConnect(){
                 socket = new WebSocket(socketUrl);
-                debugger;
 
                 socket.onopen = function() {
                     const joinMessage = {
@@ -336,7 +335,6 @@
                         // 프로필 이미지 투명하게 처리 (opacity를 0.5로 설정)
                         profileImg.style.opacity = '1';
                     }
-
 
 
                 };
@@ -360,15 +358,20 @@
                             profileImg.style.opacity = '0.5';
                         }
                     }
+
+                    if(message.messageType === 'FIRST'){
+                        // 참여한 유저 리스트 업데이트
+                        updateUserList();
+                    }
                 }
 
 
                 // 대화방을 잠시 나가면 프로필 이미지 투명하게
                 socket.onclose = function(event){
                     console.log("소켓 연결 끊김..")
-                    // setTimeout(function() {
-                    //     webSocketConnect();  // 1초 후 다시 연결 시도
-                    // }, 1000);
+                    // setInterval(function() {
+                    //     webSocketConnect();  // 2초 후 다시 연결 시도
+                    // }, 2000);
                 }
             }
 
@@ -537,7 +540,23 @@
 
 
             // ajax userList 업데이트
-            // function
+            function updateUserList(){
+                $.ajax({
+                    url:"/chat/getUserList",
+                    data:{
+                        roomNo : roomNo,
+                    },
+
+                    type:"post",
+                    success:function(data){
+                        $('#user-list-container').replaceWith(data);
+                    },
+                    error:function(){
+                        console.log("error");
+                    }
+
+                })
+            }
 
         </script>
     </body>

@@ -97,12 +97,12 @@ public interface ChatService {
      * 기능 : 채팅 기록 조회
      * @return List<chatMessageAndProfile>
      */
-    List<chatMessageAndProfile> selectChatMessageList(Timestamp myJoinDate);
+    List<chatMessageAndProfile> selectChatMessageList(Timestamp myJoinDate, Integer roomNo);
 
     /**
      * 담당자 : 이충무
      * 기능 : 채팅방 최초 입장 날짜 조회
      * @return Timestamp
      */
-    Timestamp selectMyJoinDate(String memberId);
+    Timestamp selectMyJoinDate(String memberId, Integer roomNo);
 }

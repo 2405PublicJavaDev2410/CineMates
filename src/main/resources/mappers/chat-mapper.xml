@@ -184,8 +184,9 @@
                  SELECT CHAT_DATE
                  FROM CHAT_TBL
                  WHERE MEMBER_ID = #{memberId}
+                   AND ROOM_NO = #{roomNo}
                    AND CHAT_CONTENT LIKE #{memberId} || '님이 대화방에 참여했습니다' || '%'
-                   AND CHAT_NO > (
+                   AND CHAT_NO >= (
                      -- 마지막으로 나간 시점을 구하는 서브쿼리, 없으면 0으로 처리
                      NVL((
                              SELECT MAX(CHAT_NO)
@@ -202,7 +203,8 @@
     <select id="selectChatMessageList" resultType="chatMessageAndProfile">
         SELECT * FROM CHAT_TBL
             JOIN PROFILE_IMG_TBL USING(MEMBER_ID)
-            WHERE CHAT_DATE >= #{myJoinDate}
+            WHERE ROOM_NO = #{roomNo} AND
+            CHAT_DATE >= #{myJoinDate}
         ORDER BY CHAT_DATE ASC
     </select>
 

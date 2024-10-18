@@ -150,14 +150,14 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public List<chatMessageAndProfile> selectChatMessageList(Timestamp myJoinDate) {
-        List<chatMessageAndProfile> chatMessageList = cMapper.selectChatMessageList(myJoinDate);
+    public List<chatMessageAndProfile> selectChatMessageList(Timestamp myJoinDate, Integer roomNo) {
+        List<chatMessageAndProfile> chatMessageList = cMapper.selectChatMessageList(myJoinDate, roomNo);
         return chatMessageList;
     }
 
     @Override
-    public Timestamp selectMyJoinDate(String memberId) {
-        return cMapper.selectMyJoinDate(memberId);
+    public Timestamp selectMyJoinDate(String memberId, Integer roomNo) {
+        return cMapper.selectMyJoinDate(memberId, roomNo);
     }
 
 
