@@ -19,6 +19,7 @@
     height: auto;
     margin-right: 20px;
     border-radius: 10px;
+    cursor: pointer;
 }
 .movie-info {
     flex: 1;
@@ -296,18 +297,10 @@
     padding: 15px 0;
     border-bottom: 1px solid #eee;
 }
-/*.review-avatar {*/
-/*    width: 40px;*/
-/*    height: 40px;*/
-/*    border-radius: 50%;*/
-/*    background-color: #ddd;*/
-/*    margin-right: 15px;*/
-/*    flex-shrink: 0;*/
-/*}*/
 
 #thumbnail-container img{
-    width: 60px;
-    height: 60px;
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
     margin-right: 15px;
     flex-shrink: 0;
@@ -330,6 +323,13 @@
 .review-username {
     font-weight: bold;
 }
+
+.isMyReview {
+    font-size: 0.8em;
+    background-color: #D54946;
+    color: white;
+    padding: 2px;
+}
 .review-date {
     color: #888;
     font-size: 0.9em;
@@ -339,8 +339,14 @@
     font-size: 1.2em;
     margin-top: 5px;
 }
+.delete-review {
+    color: #D54946;
+    font-size: 0.9em;
+    cursor: pointer;
+    /*margin-right: 10px;*/
+}
 .review-report {
-    color: #888;
+    color: #D54946;
     font-size: 0.9em;
     cursor: pointer;
     /*font-family: 'GmarketSansMedium', serif;*/
@@ -392,6 +398,31 @@
 .submit-review:hover{
     background-color: #242424;
 }
+
+.load-more-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.loadMoreBtn {
+    background-color: #233245;
+    color: white;
+    border: none;
+    padding: 8px 0;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 30%;
+    height: 40px;
+    font-size: 16px;
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+}
+
+.loadMoreBtn:hover {
+    background-color: #242424;
+}
+
 
 
 /*비디오 모달 팝업*/

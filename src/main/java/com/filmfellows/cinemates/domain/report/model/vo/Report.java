@@ -18,5 +18,7 @@ public class Report {
     private Date reportDate;
     private String reportStatus;
     private int reportCount;
+    private int reportWriteno;
+    private String reportCategory;
 
 }

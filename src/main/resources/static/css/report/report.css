@@ -1,0 +1,32 @@
+#dibody{
+    text-align: center;
+}
+label{
+    display: inline-block;
+    width: 300px;
+}
+#etc2{
+    width: 300px;
+    display: none; /* 기본적으로 숨김 처리 */
+}
+button {
+
+    cursor: pointer;
+    width: 30%;
+    height: 54px;
+    background-color: #EA4E4A;
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+    font-size: 18px;
+    letter-spacing: 2px;
+    color: white;
+    border: none;
+    border-radius: 15px;
+}
+button:hover {
+    background-color: #E12C25;
+}
+#subm{
+    border: 1px solid deepskyblue;
+    background-color: deepskyblue;
+    color: white;
+}

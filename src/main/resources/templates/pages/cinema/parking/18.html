@@ -3,91 +3,12 @@
 <head>
 	<meta charset="UTF-8">
 	<title>천안펜타포트</title>
-	<style>
-		body {
-			font-family: 'Arial', sans-serif;
-			margin: 20px;
-			line-height: 1.6;
-			background-color: #f9f9f9;
-			color: #333;
-		}
-
-		h2 {
-			color: #007bff; /* 강조 색상 */
-			font-size: 24px;
-			border-bottom: 2px solid #007bff;
-			padding-bottom: 10px;
-			margin-bottom: 20px;
-		}
-
-		hr {
-			border: 0;
-			height: 1px;
-			background-color: #ddd;
-			margin: 20px 0;
-		}
-
-		pre {
-			background-color: #f0f8ff; /* 가독성을 위한 배경색 */
-			padding: 15px;
-			border-radius: 5px;
-			font-size: 16px;
-			overflow-x: auto;
-			white-space: pre-wrap;
-			word-wrap: break-word;
-		}
-
-		div {
-			text-align: right;
-			margin-bottom: 20px;
-		}
-
-		button {
-			padding: 10px 20px;
-			background-color: #007bff;
-			color: white;
-			border: none;
-			border-radius: 5px;
-			cursor: pointer;
-			font-size: 16px;
-		}
-
-		button:hover {
-			background-color: #0056b3;
-		}
-
-		/* 주차 안내 박스 */
-		.parking-info {
-			background-color: #fff8dc;
-			padding: 20px;
-			border: 1px solid #ccc;
-			border-radius: 10px;
-			margin-top: 20px;
-		}
-
-		/* 미디어 쿼리: 모바일에서의 최적화 */
-		@media (max-width: 600px) {
-			body {
-				margin: 10px;
-			}
-
-			h2 {
-				font-size: 20px;
-			}
-
-			button {
-				width: 100%;
-				font-size: 18px;
-			}
-
-			pre {
-				font-size: 14px;
-			}
-		}
-	</style>
+	<link rel="stylesheet" href="/css/cinema/parking.css">
+	<script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=tnc204ghcf&submodules=geocoder"></script>
 	</head>
 	<body>
 	<div><button th:onclick="mapgo([[${cinemaAddress}]])">길찾기</button></div>
+	<div id="map"></div>
 		<h2>대중교통안내</h2>
 		<hr>
 		
@@ -119,7 +40,7 @@ KTX천안아산역 하차, 1번출구 펜타포트점 방향으로 600m 도보 �
  - 매점, 투썸 구매 금액에 따른 무료주차시간 추가(영수증 제시)
     (1만원-2시간 / 3만원-3시간 / 5만원-5시간)
 		</pre>
-		<script>
+		<script th:inline="javascript">
         // 팝업창 크기 변경 함수
        function maximizePopup() {
 		    // 화면의 가로 및 세로 크기 가져오기
@@ -130,16 +51,43 @@ KTX천안아산역 하차, 1번출구 펜타포트점 방향으로 600m 도보 �
 		    window.resizeTo(screenWidth, screenHeight);
 		}
 
+		function mapgo(a) {
 
-			function mapgo(a){
-	    		
-	            window.location.href = "https://map.naver.com/v5/search/"+a;  // 페이지 이동
-	            maximizePopup();  // 페이지 이동 후 팝업창 크기 조절
+			window.location.href = "https://map.naver.com/v5/search/" + a;  // 페이지 이동
+			maximizePopup();  // 페이지 이동 후 팝업창 크기 조절
+		}
+		var map = new naver.maps.Map('map', {
+			center: new naver.maps.LatLng(37.5665, 126.9780), // 기본 위치: 서울시청
+			zoom: 10
+		});
+		var address = [[${cinemaAddress}]];
+		searchAddressToMarker(address);
 
+		// 주소값을 기반으로 좌표를 얻고 마커를 표시하는 함수
+		function searchAddressToMarker(address) {
+			console.log(address);
+			naver.maps.Service.geocode({query: address}, function(status, response) {
+				if (status !== naver.maps.Service.Status.OK) {
+					console.error('Error status:', status);
+					console.error('Response:', response);
+					return alert('주소 검색에 실패했습니다. 에러 상태: ' + status);
+				}
 
-	    		
+				var result = response.v2.addresses[0];
+				var coords = new naver.maps.LatLng(result.y, result.x);
 
-			}
+				// 마커 표시
+				var marker = new naver.maps.Marker({
+					position: coords,
+					map: map
+				});
+
+				// 지도의 중심을 마커 위치로 이동
+				map.setCenter(coords);
+				map.setZoom(18);
+			});
+
+		}
 		</script>
 	</body>
 </html>

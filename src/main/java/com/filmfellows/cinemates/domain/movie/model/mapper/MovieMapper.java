@@ -1,5 +1,6 @@
 package com.filmfellows.cinemates.domain.movie.model.mapper;
 
+import com.filmfellows.cinemates.app.main.dto.boxOfficeDTO;
 import com.filmfellows.cinemates.app.movie.dto.MovieDTO;
 import com.filmfellows.cinemates.app.movie.dto.MovieListDTO;
 import com.filmfellows.cinemates.app.movie.dto.MovieReservationRateDTO;
@@ -15,7 +16,7 @@ import java.util.Map;
 
 @Mapper
 public interface MovieMapper {
-    List<MovieListDTO> selectAllMovieList();
+
     // [관리자] 영화 세부정보
     List<MovieDTO> selectMovieDetail(Long movieNo);
     // [관리자] 영화 정보 수정
@@ -49,7 +50,15 @@ public interface MovieMapper {
                                                         @Param("offset") int offset,
                                                         @Param("size") int size);
 
-    List<ReviewDTO> selectReviewByMovieNo(@Param("movieNo") Long movieNo);
+    List<ReviewDTO> selectReviewByMovieNo(@Param("movieNo") Long movieNo,
+                                          @Param("offset") int offset,
+                                          @Param("size") int size);
 
-    int insertReview(Review addReview);
+    void insertReview(Review addReview);
+
+    int selectReviewCountByMovieNo(Long movieNo);
+
+    void deleteReview(String memberId, int reviewNo);
+
+    ReviewDTO selectMyReview(Long movieNo, String memberId);
 }

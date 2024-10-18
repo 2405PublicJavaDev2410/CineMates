@@ -3,139 +3,11 @@
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{common/layout/defaultLayout}"
 	  layout:fragment="Content">
+<link rel="stylesheet" href="/css/cinema/cinemamain.css">
 	<head>
 	<meta charset="UTF-8">
 	<title>극장</title>
-	<style>
-	body {
-		font-family: 'NEXON Lv1 Gothic OTF';
-     	text-align: center;
-     	background-color: white; /* 전체 배경을 어두운 색으로 */
-     	color: black; /* 텍스트를 흰색으로 */
 
-    }
-    hr {
-        border: none;
-        height: 2px;
-        background-color: #d3d3d3; /* 구분선 색상 */
-        margin: 20px 0;
-    }
-
-        /* 네비게이션 리스트 */
-    ul {
-		background-color: #444;
-        list-style-type: none;
-		height: 50px;
-    }
-
-    li {
-		margin-top: 14px;
-        display: inline-block;
-    }
-	div{
-		display:inline-block;
-	}
-	a{
-		color: white;
-		text-decoration: none;
-		font-size: 18px;
-		padding: 10px 20px;
-		background-color: #444; /* 버튼 같은 느낌을 위한 배경색 */
-		border-radius: 5px;
-		transition: background-color 0.3s;
-		text-align: center;
-		margin-right: 5px
-	}
-	a:hover {
-        background-color: #ff6f61; /* 마우스 호버시 색상 변경 */
-	}
-	
-	#divmain{
-		width: 80%;
-		height: 400px;
-		background-image: url("https://p.turbosquid.com/ts-thumb/8T/xFrSJN/Fjq8ro22/cinema_hall/jpg/1560286032/1920x1080/fit_q99/097b9acaa2c1e88472be7cb6d6537199ada35780/cinema_hall.jpg");
-		background-size: cover;
-		background-position: center;
-		background-repeat: no-repeat;
-		margin: 20px auto;
-		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* 입체감 있는 그림자 */
-		border-radius: 10px;
-	}
-	#cinemamain{
-		width: 80%;
-   	 	height: 400px;
-   	 	background-image: url("https://p.turbosquid.com/ts-thumb/nW/BH7tbs/SK/01/jpg/1646280743/1920x1080/fit_q99/5e244c834dd8248f8a9cb464663ad98a52328f61/01.jpg");
-   		 background-size: cover;
-   	 	background-position: center;
-    	background-repeat: no-repeat;
-		margin: 20px auto;
-		padding: 20px;
-		color: white;
-		border-radius: 10px;
-		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-		text-align: left;
-	}
-	        #cinemamain div {
-            background-color: rgba(0, 0, 0, 0.7); /* 투명한 검은색 배경 */
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            font-size: 18px;
-        }
-	#searchmap{
-		width: 20px;
-		height: 20px;
-		background-image: url("https://cdn-icons-png.flaticon.com/512/3313/3313795.png");
-		background-size: cover;
-		background-position: center;
-		background-repeat: no-repeat;
-		margin-right: 10px;
-
-		color: white;
-		text-align: left;
-	}
-
-        button {
-            background-color: #ff6f61;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            color: white;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-
-        button:hover {
-            background-color: #e65550;
-        }
-
-        h1,h2 {
-            color: #ff6f61;
-        }
-
-		#footer{
-			height:200px;
-		}
-		.green-background {
-			background-color: green;
-			color: black; /* 텍스트가 잘 보이도록 흰색으로 설정 */
-		}
-
-		.orange-background {
-			background-color: orange;
-			color: black;
-		}
-
-		.red-background {
-			background-color: red;
-			color: black;
-		}
-		.yel-background {
-			background-color: yellow;
-			color: black;
-		}
-	</style>
 	</head>
 	<body>
 		<hr>
@@ -150,8 +22,8 @@
 			<li><a th:href="@{/cinema/location?locationcode=8(cinemaNo=${cinema.cinemaNo})}">광주/전라/제주</a></li>
 		</ul>
 		<hr>
-		<button th:if="${memberId == 'admin'}" onclick="admin()">극장관리</button>
-		<button th:if="${memberId == 'admin'}" th:onclick="adminshowtime([[${cinema.cinemaNo}]])">상영관리</button>
+		<button th:if="${memberId == 'admin1'}" onclick="admin()">극장관리</button>
+		<button th:if="${memberId == 'admin1'}" th:onclick="adminshowtime([[${cinema.cinemaNo}]])">상영관리</button>
 		<br>
 
 		<div  id="divmain" >
@@ -170,26 +42,26 @@
 		</div>
 		<h1>상영정보</h1><br>
 		<h2>상영일자</h2><br>
-		<a  style="background-color: gray; display:inline-block;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${currentdate})}">
-			<div style="height: 50px;"><span style="font-size: 10px;">[[${#temporals.dayOfWeekName(currentdate)}]]</span><br><strong>[[${#temporals.day(currentdate)}]]</strong></div>
+		<a  style="background-color: gray; display:inline-block;border-radius: 5px;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${currentdate})}">
+			<div style="height: 50px;margin: 10px;"><span style="font-size: 10px;">[[${#temporals.dayOfWeekName(currentdate)}]]</span><br><strong style="font-size: 30px;">[[${#temporals.day(currentdate)}]]</strong></div>
 		</a>
-		<a  style="background-color: gray; display:inline-block;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day1})}">
-			<div style="height: 50px;"><span style="font-size: 10px;">[[${#temporals.dayOfWeekName(day1)}]]</span><br><strong>[[${#temporals.day(day1)}]]</strong></div>
+		<a  style="background-color: gray; display:inline-block;border-radius: 5px;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day1})}">
+			<div style="height: 50px;margin: 10px;"><span style="font-size: 10px;">[[${#temporals.dayOfWeekName(day1)}]]</span><br><strong style="font-size: 30px;">[[${#temporals.day(day1)}]]</strong></div>
 		</a>
-		<a  style="background-color: gray; display:inline-block;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day2})}">
-			<div style="height: 50px;"><span style="font-size: 10px;">[[${#temporals.dayOfWeekName(day2)}]]</span><br><strong>[[${#temporals.day(day2)}]]</strong></div>
+		<a  style="background-color: gray; display:inline-block;border-radius: 5px;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day2})}">
+			<div style="height: 50px;margin: 10px;"><span style="font-size: 10px;">[[${#temporals.dayOfWeekName(day2)}]]</span><br><strong style="font-size: 30px;">[[${#temporals.day(day2)}]]</strong></div>
 		</a>
-		<a  style="background-color: gray; display:inline-block;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day3})}">
-			<div style="height: 50px;"><span style="font-size: 10px;">[[${#temporals.dayOfWeekName(day3)}]]</span><br><strong>[[${#temporals.day(day3)}]]</strong></div>
+		<a  style="background-color: gray; display:inline-block;border-radius: 5px;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day3})}">
+			<div style="height: 50px;margin: 10px;"><span style="font-size: 10px;">[[${#temporals.dayOfWeekName(day3)}]]</span><br><strong style="font-size: 30px;">[[${#temporals.day(day3)}]]</strong></div>
 		</a>
-		<a  style="background-color: gray; display:inline-block;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day4})}">
-			<div style="height: 50px;"><span style="font-size: 10px;">[[${#temporals.dayOfWeekName(day4)}]]</span><br><strong>[[${#temporals.day(day4)}]]</strong></div>
+		<a  style="background-color: gray; display:inline-block;border-radius: 5px;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day4})}">
+			<div style="height: 50px;margin: 10px;"><span style="font-size: 10px;">[[${#temporals.dayOfWeekName(day4)}]]</span><br><strong style="font-size: 30px;">[[${#temporals.day(day4)}]]</strong></div>
 		</a>
-		<a  style="background-color: gray; display:inline-block;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day5})}">
-			<div style="height: 50px;"><span style="font-size: 10px;">[[${#temporals.dayOfWeekName(day5)}]]</span><br><strong>[[${#temporals.day(day5)}]]</strong></div>
+		<a  style="background-color: gray; display:inline-block;border-radius: 5px;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day5})}">
+			<div style="height: 50px;margin: 10px;"><span style="font-size: 10px;">[[${#temporals.dayOfWeekName(day5)}]]</span><br><strong style="font-size: 30px;">[[${#temporals.day(day5)}]]</strong></div>
 		</a>
-		<a  style="background-color: gray; display:inline-block;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day6})}">
-		<div style="height: 50px;"><span style="font-size: 10px;">[[${#temporals.dayOfWeekName(day6)}]]</span><br><strong>[[${#temporals.day(day6)}]]</strong></div>
+		<a  style="background-color: gray; display:inline-block;border-radius: 5px;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day6})}">
+		<div style="height: 50px;margin: 10px;"><span style="font-size: 10px;">[[${#temporals.dayOfWeekName(day6)}]]</span><br><strong style="font-size: 30px;">[[${#temporals.day(day6)}]]</strong></div>
 		</a>
 
 		<br><br><br>
@@ -269,10 +141,10 @@
 
 			}
 			function admin(){
-				location.href="/cinema/admin"
+				location.href="/admin/cinema"
 			}
 			function adminshowtime(a){
-				location.href="/cinema/admineshowtime"+a;
+				location.href="/admin/admineshowtime"+a;
 			}
 		</script>
 	</body>
