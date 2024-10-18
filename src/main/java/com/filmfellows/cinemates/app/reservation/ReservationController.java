@@ -80,7 +80,7 @@ public class ReservationController {
         rDTO.setMemberId(memberId);
         ShowInfoDTO sDTO = rService.selectMoviePoster(title);
         System.out.println("영화 포스터: " + sDTO);
-        List<String> memberIds = Arrays.asList("test8", "test7", "admin1");
+        List<String> memberIds = Arrays.asList("test8", "MEM001", "admin1");
 
             // JSON 문자열을 Map으로 변환
             ObjectMapper mapper = new ObjectMapper();
@@ -104,8 +104,8 @@ public class ReservationController {
                 System.out.println(allMemberTicket);
             }
             rDTO.setAllTicketCount(allMemberTicket);
-            rDTO.setMemberIds(memberIds);
             model.addAttribute("rDTO" , rDTO) ;
+            model.addAttribute("memberIds" , memberIds);
             model.addAttribute("allMemberTicket", allMemberTicket);
             return "pages/reservation/personSeat";
         }

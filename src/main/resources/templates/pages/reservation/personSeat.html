@@ -16,7 +16,7 @@
         let visitorCount = /*[[${rDTO.reservationVisitor}]]*/ 0;
         var rDTO = /*[[${rDTO}]]*/ {};
         var reservedSeatsMap = /*[[${reservationSeat}]]*/ {};
-        var memberIds = /*[[${rDTO.memberIds}]]*/{};
+        var memberIds = /*[[${memberIds}]]*/{};
     </script>
     <script crossorigin="anonymous" defer src="/js/reservation/personSeat.js"></script>
 </head>
@@ -87,8 +87,7 @@
         <input name="cinemaNo" th:value="${rDTO.cinemaNo}" type="hidden">
         <input name="reservationDate" th:value="${rDTO.reservationDate}" type="hidden">
         <input name="memberId" th:value="${rDTO.memberId}" type="hidden">
-        <input name="memberIds" th:value="${rDTO.memberIds}" type="hidden">
-        <input type="hidden" name="ticketCount" th:value="${ticketCount}">
+        <input name="memberIds" th:value="${#strings.listJoin(memberIds, ',')}" type="hidden">        <input type="hidden" name="ticketCount" th:value="${ticketCount}">
         <input type="hidden" name="allTicketCount" th:value="${allMemberTicket}">
         <input id="adultReserved" name="adultReserved" th:value="${rDTO.adultReserved}" type="hidden">
         <input id="childReserved" name="childReserved" th:value="${rDTO.childReserved}" type="hidden">

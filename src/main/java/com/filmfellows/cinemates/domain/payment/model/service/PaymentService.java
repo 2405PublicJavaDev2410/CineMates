@@ -2,7 +2,6 @@ package com.filmfellows.cinemates.domain.payment.model.service;
 
 import com.filmfellows.cinemates.domain.payment.model.mapper.PaymentMapper;
 import com.filmfellows.cinemates.domain.reservation.model.mapper.ReservationMapper;
-import com.filmfellows.cinemates.domain.reservation.model.vo.ReservationDTO;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.request.CancelData;
 import com.siot.IamportRestClient.response.IamportResponse;
@@ -14,7 +13,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -82,18 +80,9 @@ public class PaymentService {
         rmapper.deleteReservationInfo(impUid);
         pmapper.deletePaymentInfo(impUid);
     }
-
-
-    public List<ReservationDTO> updateTicketCount(List<String> allMemberId) {
-        List<ReservationDTO> updatedMembers = new ArrayList<>();
-        for (String memberIds : allMemberId) {
-            int updatedRows = rmapper.updateTicketCount(memberIds);
-            if (updatedRows > 0) {
-                ReservationDTO updatedMember = rmapper.selectUpdatedReservation(memberIds);
-                updatedMembers.add(updatedMember);
-            }
-        }
-        return updatedMembers;
+    @Transactional
+    public boolean updateTicketCount(String memberId) {
+        return rmapper.updateTicketCount(memberId) > 0;
     }
     }
 

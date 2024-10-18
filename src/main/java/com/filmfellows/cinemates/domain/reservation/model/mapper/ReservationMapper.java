@@ -49,8 +49,6 @@ public interface ReservationMapper {
 
     List<String> selectTicketCountByIds(String memberIds);
 
+    int updateTicketCount(String memberId);
 
-    ReservationDTO selectUpdatedReservation(String memberId);
-
-    int updateTicketCount(String memberIds);
 }
