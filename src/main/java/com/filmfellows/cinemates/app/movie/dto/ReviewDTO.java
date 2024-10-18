@@ -23,5 +23,5 @@ public class ReviewDTO {
     private String fileName;
     private String fileRename;
     private String filePath;
-    private MultipartFile uploadFile;
+//    private MultipartFile uploadFile;
 }

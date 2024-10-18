@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/defaultLayout}"
+      layout:fragment="Content">
+<head>
+    <link rel="stylesheet" href="/css/main/index.css">
+</head>
+<body>
+<div layout:fragment="content">
+    <main>
+
+    <section class="main-banner">
+        <div class="video-container">
+<!--            <video id="mainVideo" autoplay loop playsinline muted controls>-->
+<!--                <source src="./img/main/21626_301_1.mp4" type="video/mp4" />-->
+<!--            </video>-->
+            <video id="randomVideo" autoplay loop playsinline muted controls>
+            </video>
+            <div class="gradient-overlay"></div>
+        </div>
+    </section>
+
+    <section class="box-office">
+        <h2>박스오피스 TOP 5</h2>
+        <div class="movie-list" >
+            <div class="movie-item" th:each="bList : ${bList}">
+                <a th:href="@{/movie-detail/{movieNo}(movieNo=${bList.movieNo})}">
+                    <img th:src="${bList.posterUrl}" th:alt="${bList.title}" class="movie-poster" />
+                </a>
+                <h3 class="movie-title" th:text="${bList.title}"></h3>
+                <p class="movie-info" th:text="'예매율 '+ ${bList.reservationRate}"></p>
+            </div>
+        </div>
+    </section>
+    <section class="box-office">
+        <h2>박스오피스 TOP 5</h2>
+        <div class="movie-list" >
+            <div class="movie-item" th:each="bList : ${bList}">
+                <a th:href="@{/movie-detail/{movieNo}(movieNo=${bList.movieNo})}">
+                    <img th:src="${bList.posterUrl}" th:alt="${bList.title}" class="movie-poster" />
+                </a>
+                <h3 class="movie-title" th:text="${bList.title}"></h3>
+                <p class="movie-info" th:text="'예매율 '+ ${bList.reservationRate}"></p>
+            </div>
+        </div>
+    </section>
+<!--    <section class="box-office">-->
+<!--        <h2>박스오피스 TOP 5</h2>-->
+<!--        <div class="movie-list">-->
+<!--            <div class="movie-item" th:each="movie : ${bList}">-->
+<!--                <a th:href="@{/movie-detail/{movieNo}(movieNo=${movie.movieNo})}">-->
+<!--                    <img th:src="${movie.posterUrl}" th:alt="${movie.title}" class="movie-poster" />-->
+<!--                </a>-->
+<!--                <div class="movie-info">-->
+<!--                    <h3 class="movie-title" th:text="${movie.title}"></h3>-->
+<!--                    <div class="movie-details">-->
+<!--&lt;!&ndash;                        <span th:text="${movie.releaseDate != null ? #temporals.format(movie.releaseDate, 'yyyy-MM-dd') + ' 개봉' : '개봉일 미정'}"></span>&ndash;&gt;-->
+<!--                        <p th:if="${movie.director != null and !movie.director.isEmpty()}">-->
+<!--                            <strong>감독:</strong> <span th:text="${movie.director}"></span>-->
+<!--                        </p>-->
+<!--                        <p th:if="${movie.genre != null and !movie.genre.isEmpty()}">-->
+<!--                            <strong>장르:</strong> <span th:text="${movie.genre}"></span>-->
+<!--                        </p>-->
+<!--                        <p th:if="${movie.actors != null and !movie.actors.isEmpty()}">-->
+<!--                            <strong>출연:</strong> <span th:text="${movie.actors}"></span>-->
+<!--                        </p>-->
+<!--                        <p>-->
+<!--                            <strong>예매율:</strong> <span th:text="${movie.reservationRate}"></span>-->
+<!--                        </p>-->
+<!--                    </div>-->
+<!--                    <form th:action="@{/Ticketing}" method="get">-->
+<!--                        <input type="hidden" name="movieNo" th:value="${movie.movieNo}"/>-->
+<!--                        <input type="hidden" name="title" th:value="${movie.title}"/>-->
+<!--                        <button type="submit" class="reserve-btn">예매하기</button>-->
+<!--                    </form>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </section>-->
+    </main>
+</div>
+<th:block layout:fragment="script">
+    <script type="text/javascript" src="/js/main/index.js"></script>
+</th:block>
+<script th:inline="javascript">
+</script>
+
+</body>
+</html>

@@ -2,7 +2,7 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     const movieList = document.querySelector('#movie-list');
-    // const loadMoreBtn = document.querySelector('#loadMoreBtn');
+    const loadMoreBtn = document.querySelector('#loadMoreBtn');
     const nowShowingBtn = document.querySelector('#nowShowing');
     const comingSoonBtn = document.querySelector('#commingSoon');
     const sortReservationBtn = document.querySelector('#sort-reservation');

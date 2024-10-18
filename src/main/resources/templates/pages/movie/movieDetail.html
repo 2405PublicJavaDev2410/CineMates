@@ -92,7 +92,7 @@
                 <div class="review-section">
                     <button class="review-write-button">리뷰 작성</button>
                     <form id="reviewForm" class="review-form" action="/addReview" method="post" onsubmit="return false;">
-                        <input type="hidden" name="movieNo" th:value="${movie?.movieNo}">
+                        <input type="hidden" id="movieNo" name="movieNo" th:value="${movie?.movieNo}">
                         <div class="review-form-content">
                             <div class="review-form-fields">
                                 <div class="star-rating">
@@ -112,43 +112,47 @@
                             </div>
                         </div>
                     </form>
-                    <div class="review-list" th:if="${not #lists.isEmpty(reviewList)}">
-                        <div class="review-item" th:each="review : ${reviewList}">
-                            <div id="thumbnail-container">
-                                <img id="profile-thumbnail" alt="사진 미리보기"
-                                     th:src="${(review.filePath != null and review.fileRename != null) ? (review.filePath + review.fileRename) : '/img/default_profile.png'}"
-                                     onerror="this.src='/img/default_profile.png'">
-                            </div>
-                            <div class="review-content">
-                                <div class="review-header" >
-                                    <div class="review-info">
-                                        <span class="review-username" th:text="${review.memberId}"></span>
-                                        <span class="review-date" th:text="${review.regDate}"></span>
-                                        <div th:if="${review.score} == '5'">
-                                            <div class="review-stars" >★★★★★</div>
-                                        </div>
-                                        <div th:if="${review.score} == '4'">
-                                            <div class="review-stars" >★★★★☆</div>
-                                        </div>
-                                        <div th:if="${review.score} == '3'">
-                                            <div class="review-stars" >★★★☆☆</div>
-                                        </div>
-                                        <div th:if="${review.score} == '2'">
-                                            <div class="review-stars" >★★☆☆☆</div>
-                                        </div>
-                                        <div th:if="${review.score} == '1'">
-                                            <div class="review-stars" >★☆☆☆☆</div>
-                                        </div>
-<!--                                        <div th:if="${review.score} == '0'">-->
-<!--                                            <div class="review-stars" >☆☆☆☆☆</div>-->
+<!--                    <div class="review-list" th:if="${not #lists.isEmpty(myReview)}">-->
+<!--                        <div class="review-item" th:each="myReview : ${myReview}">-->
+<!--                            <div id="thumbnail-container" th:if="${session.memberId == myReview.memberId}">-->
+<!--                                <img id="profile-thumbnail" alt="사진 미리보기"-->
+<!--                                     th:src="${(myReview.filePath != null and myReview.fileRename != null) ? (myReview.filePath + myReview.fileRename) : '/img/default_profile.png'}"-->
+<!--                                     onerror="this.src='/img/default_profile.png'">-->
+<!--                            </div>-->
+<!--                            <div class="review-content">-->
+<!--                                <div class="review-header" >-->
+<!--                                    <div class="review-info">-->
+<!--                                        <div class="username-myReview">-->
+<!--                                            <input type="hidden" name="reviewNo" th:value="${myReview.reviewNo}">-->
+<!--                                            <span class="review-username" th:text="${myReview.memberId}"></span>-->
+<!--                                            <span class="my-review">나의 리뷰</span>-->
 <!--                                        </div>-->
-                                    </div>
-                                    <span class="review-report">신고</span>
-                                </div>
-                                <p class="review-text" th:text="${review.reviewContent}"></p>
-                            </div>
-                        </div>
-                    </div>
+<!--                                        <span class="review-date" th:text="${myReview.regDate}"></span>-->
+<!--                                        <div th:if="${myReview.score} == '5'">-->
+<!--                                            <div class="review-stars" >★★★★★</div>-->
+<!--                                        </div>-->
+<!--                                        <div th:if="${myReview.score} == '4'">-->
+<!--                                            <div class="review-stars" >★★★★☆</div>-->
+<!--                                        </div>-->
+<!--                                        <div th:if="${myReview.score} == '3'">-->
+<!--                                            <div class="review-stars" >★★★☆☆</div>-->
+<!--                                        </div>-->
+<!--                                        <div th:if="${myReview.score} == '2'">-->
+<!--                                            <div class="review-stars" >★★☆☆☆</div>-->
+<!--                                        </div>-->
+<!--                                        <div th:if="${myReview.score} == '1'">-->
+<!--                                            <div class="review-stars" >★☆☆☆☆</div>-->
+<!--                                        </div>-->
+<!--                                        <div class="button-menu">-->
+<!--                                            <span class="delete-review" th:if="${session.memberId == myReview.memberId}">삭제</span>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <p class="review-text" th:text="${myReview.reviewContent}"></p>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+                    <div class="review-List" id="reviewList"></div>
                     <div class="load-more-container" id="load-more-container">
                         <button class="loadMoreBtn" id="loadMoreBtn">더보기</button>
                     </div>
@@ -179,7 +183,7 @@
     <script type="text/javascript" src="/js/movie/movieDetail.js"></script>
 </th:block>
 <script th:inline="javascript">
-    // var isLoggedIn = [[${isLoggedIn}]];
+    const memberId = /*[[${session.memberId}]]*/
 </script>
 
 </body>
