@@ -78,16 +78,17 @@ public class MemberController {
         System.out.println("snsId : " + snsId);
         MemberProfile memberProfile = new MemberProfile();
         if (snsId != null) {
-            SnsProfile newMember = mService.loginSnsMember(snsId);
-            memberProfile.setProfileImg(newMember.getProfileImg());
+            SnsProfile snsMember = mService.loginSnsMember(snsId);
+            memberProfile.setProfileImg(snsMember.getProfileImg());
             session.setAttribute("memberProfile", memberProfile);
-            log.info(newMember.toString());
+            log.info(snsMember.toString());
             // 세션에 sns 로그인 정보 저장
-            session.setAttribute("memberId", newMember.getSnsId());
-            session.setAttribute("name", newMember.getName());
-            session.setAttribute("snsType", newMember.getSnsType());
-            session.setAttribute("token", accessToken);
-            model.addAttribute("member", newMember);
+            session.setAttribute("memberId", snsMember.getSnsId()); // 프로필 사진
+            session.setAttribute("name", snsMember.getName()); // 리뷰 등
+            session.setAttribute("snsType", snsMember.getSnsType()); // 드롭다운
+            session.setAttribute("token", accessToken); // 회원탈퇴
+            session.setAttribute("role", "MEMBER"); // 필터
+            model.addAttribute("member", snsMember);
         } else {
             // 기존 MEMBER_TBL의 MEMBER_ID에 SNS_ID 저장
             String formattedSnsId
@@ -105,6 +106,7 @@ public class MemberController {
             session.setAttribute("name", snsProfile.getName());
             session.setAttribute("snsType", snsProfile.getSnsType());
             session.setAttribute("token", accessToken);
+            session.setAttribute("role", "MEMBER");
             model.addAttribute("member", snsProfile);
         }
         // 3. 로그인 후 홈으로 리다이렉트
@@ -128,15 +130,16 @@ public class MemberController {
         System.out.println("snsId : " + snsId);
         MemberProfile memberProfile = new MemberProfile();
         if (snsId != null) {
-            SnsProfile newMember = mService.loginSnsMember(snsId);
-            log.info(newMember.toString());
-            memberProfile.setProfileImg(newMember.getProfileImg());
+            SnsProfile snsMember = mService.loginSnsMember(snsId);
+            log.info(snsMember.toString());
+            memberProfile.setProfileImg(snsMember.getProfileImg());
             session.setAttribute("memberProfile", memberProfile);
-            session.setAttribute("memberId", newMember.getSnsId());
-            session.setAttribute("name", newMember.getName());
-            session.setAttribute("snsType", newMember.getSnsType());
+            session.setAttribute("memberId", snsMember.getSnsId());
+            session.setAttribute("name", snsMember.getName());
+            session.setAttribute("snsType", snsMember.getSnsType());
             session.setAttribute("token", accessToken);
-            model.addAttribute("member", newMember);
+            session.setAttribute("role", "MEMBER");
+            model.addAttribute("member", snsMember);
         } else {
             // 기존 MEMBER_TBL의 MEMBER_ID에 SNS_ID 저장
             String formattedSnsId
@@ -154,6 +157,7 @@ public class MemberController {
             session.setAttribute("name", snsProfile.getName());
             session.setAttribute("snsType", snsProfile.getSnsType());
             session.setAttribute("token", accessToken);
+            session.setAttribute("role", "MEMBER");
             model.addAttribute("member", snsProfile);
         }
         // 3. 로그인 후 홈으로 리다이렉트
@@ -389,7 +393,6 @@ public class MemberController {
         member.setMemberId(loginRequest.getMemberId());
         member.setMemberPw(loginRequest.getMemberPw());
         member = mService.loginMember(member);
-//        System.out.println(member.toString());
         Map<String, Object> response = new HashMap<>();
 
         if (member != null) {
@@ -406,6 +409,7 @@ public class MemberController {
             }
             session.setAttribute("memberId", member.getMemberId());
             session.setAttribute("name", member.getName());
+            session.setAttribute("role", member.getRole());
 
             // 프로필 이미지 처리
             ProfileImg profileImg = mService.getOneProfileImg(member.getMemberId());
@@ -419,7 +423,6 @@ public class MemberController {
             session.setAttribute("memberProfile", memberProfile);
 
             response.put("status", "success");
-            response.put("member", member);
             return ResponseEntity.ok(response);
         }
         response.put("status", "fail");

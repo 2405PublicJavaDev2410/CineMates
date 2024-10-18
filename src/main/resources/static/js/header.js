@@ -4,7 +4,7 @@ window.addEventListener('scroll', function() {
     const headerBottom = document.querySelector('.header-bottom');
     console.log("헤더");
     if (window.scrollY > 83) {
-        headerBottom.style.backgroundColor = 'rgb(255,236,236)';
+        headerBottom.style.backgroundColor = 'rgb(252,242,242)';
     }else {
         headerBottom.style.backgroundColor = '';
     }

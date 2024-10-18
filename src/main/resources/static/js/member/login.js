@@ -19,8 +19,7 @@ function loginMember() {
             }else if(response.status === 'ban') {
                 const banPeriod = new Date(response.member.banPeriod);
                 const formattedBanPeriod = banPeriod.toISOString().split('T')[0];
-
-                let message = "[서비스가 제한된 계정입니다]\n" +
+                const message = "[서비스가 제한된 계정입니다]\n" +
                     "신고 사유: " + response.report.reportOption + "\n" +
                     "제재 기간: " + formattedBanPeriod;
                 alert(message);

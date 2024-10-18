@@ -52,6 +52,7 @@ function modifyMember() {
     }
 }
 
+// 회원정보 수정 카테고리 활성화
 document.addEventListener("DOMContentLoaded", function() {
     document.querySelector('#side-menu-4').classList.add('selected');
 })

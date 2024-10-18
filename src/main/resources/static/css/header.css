@@ -30,9 +30,9 @@
     right: -110%;
 }
 #header-login {
-    width: 35px;
-    top: 40px;
-    right: -110%;
+    width: 52px;
+    top: 28px;
+    right: -109%;
 }
 .header-my-expand {
     display: none;
@@ -40,7 +40,7 @@
     background-color: #ffffff;
     top: 11%;
     z-index: 1000;
-    right: 25px;
+    right: 35px;
     font-family: "NEXON Lv1 Gothic OTF", serif;
     transform: translateX(calc(-100% - 170px)) translateY(-10px);
     width: 160px;

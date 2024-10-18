@@ -37,7 +37,7 @@ const OneResultInfo = (rsv) => {
             </table>
         </div>
         <button type="button" 
-                class="common-primary-btn" 
+                class="common-primary-btn"
                 id="cancel-rsv-btn" 
                 th:onclick="cancelReservation(${rsv.reservationNo})">예매취소</button>
     `;
@@ -46,8 +46,8 @@ const OneResultInfo = (rsv) => {
 
 // 결과 없음 DOM 구성
 const NoResultInfo = () => {
-    const rsvContents = `<b><p id="error-text">해당 예매번호에 대한 영화 정보를 찾을 수 없습니다.</p></b>`;
-    document.querySelector('#error-message').innerHTML = rsvContents;
+    const errorContents = `<b><p id="error-text">해당 예매번호에 대한 영화 정보를 찾을 수 없습니다.</p></b>`;
+    document.querySelector('#error-message').innerHTML = errorContents;
 }
 
 // 데이터가 있으면 영화정보 출력, 없으면 오류 메시지 출력
@@ -87,5 +87,6 @@ document.getElementById('reservation-no').addEventListener("keydown", function (
 document.addEventListener("DOMContentLoaded", function() {
     document.querySelector('#movie-info').style.display = 'none';
     document.querySelector('#error-message').style.display = 'none';
+    // 예매내역 카테고리 활성화
     document.querySelector('#side-menu-1').classList.add('selected');
 })
