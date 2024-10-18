@@ -7,6 +7,7 @@
       layout:fragment="Content">
     <head>
         <title>채팅방</title>
+        <script src="https://kit.fontawesome.com/7d4169cb69.js" crossorigin="anonymous"></script>
         <!-- inline CSS 영역-->
         <style th:inline="css" type="text/css">
             *{
@@ -254,13 +255,15 @@
             </div>
             <div class="chat-screen">
                 <div id="user-list-container">
-                    <div th:each="joinList:${chatJoinList}" style="display: flex; flex-direction: column;align-items: center">
-                            <th:block th:if="${joinList.filePath == null}">
-                                <img th:id="${joinList.getMemberId()}" alt="프로필" src="/img/default_profile.png" style="width: 60px; height: 60px; border-radius: 50%;">
-                            </th:block>
-                            <th:block th:if="${joinList.filePath != null}">
-                                <img th:id="${joinList.getMemberId()}" th:src="@{|${joinList.filePath}${joinList.fileRename}|}" alt="프로필" style="width: 60px; height: 60px; border-radius: 50%;">
-                            </th:block>
+                    <div th:each="joinList:${chatJoinList}" style="display: flex; flex-direction: column;align-items: center; position: relative">
+
+                        <div style="position: absolute; top: -8px; left: 40px; font-size: 24px; transform: rotate(40deg);; color: rgba(255,227,73,0.91)" th:if="${roomWriter != null and joinList.memberId != null and roomWriter.trim() == joinList.memberId.trim()}"><i class="fa-solid fa-crown"></i></div>
+                        <th:block th:if="${joinList.filePath == null}">
+                            <img th:id="${joinList.getMemberId()}" alt="프로필" src="/img/default_profile.png" style="width: 60px; height: 60px; border-radius: 50%;">
+                        </th:block>
+                        <th:block th:if="${joinList.filePath != null}">
+                            <img th:id="${joinList.getMemberId()}" th:src="@{|${joinList.filePath}${joinList.fileRename}|}" alt="프로필" style="width: 60px; height: 60px; border-radius: 50%;">
+                        </th:block>
                         <div th:text="${joinList.memberId}"></div>
                     </div>
                 </div>
@@ -318,26 +321,19 @@
                 socket = new WebSocket(socketUrl);
 
                 socket.onopen = function() {
-                    const joinMessage = {
+                    const firstMessage = {
                         messageType: 'FIRST',
                         memberId: memberId,
                         roomNo: roomNo,
                     };
 
                     if (socket.readyState === WebSocket.OPEN) {
-                        socket.send(JSON.stringify(joinMessage));
+                        socket.send(JSON.stringify(firstMessage));
                         // db에 저장
-                        saveMessage(joinMessage);
+                        saveMessage(firstMessage);
                     }
 
-                    let profileImg = document.querySelector(`#${memberId}`);
-                    if (profileImg) {
-                        // 프로필 이미지 투명하게 처리 (opacity를 0.5로 설정)
-                        profileImg.style.opacity = '1';
-                    }
-
-
-                };
+                }
 
                 socket.onmessage = function(event) {
                     const responseJson = (event.data); // 서버로부터 받은 메시지 json
@@ -350,8 +346,8 @@
                         let memberId = message.memberId;
                         let profileImg = document.querySelector(`#${memberId}`);
                         if (profileImg) {
-                            // 프로필 이미지 투명하게 처리 (opacity를 0.5로 설정)
-                            profileImg.style.opacity = '0.5';
+                            // 프로필 이미지 투명하게 처리 (opacity를 0.3으로 설정)
+                            profileImg.style.opacity = '0.3';
                         }
                     }else{
                         if(memberId !== message.memberId){
@@ -369,7 +365,7 @@
 
                     if(message.messageType === 'FIRST'){
                         // 참여한 유저 리스트 업데이트
-                        updateUserList("");
+                        updateUserList("", message.memberId);
                     }
                 }
 
@@ -455,7 +451,8 @@
                 `;
                    mainScreen.appendChild(noticeBoxDiv);
                }
-
+               // scroll 하단으로 이동
+                scrollBottom();
             }
 
 
@@ -485,9 +482,9 @@
                     memberId: memberId,
                     roomNo: roomNo
                 };
-
-                socket.send(JSON.stringify(waitMessage));
-
+                if (socket.readyState === WebSocket.OPEN) {
+                    socket.send(JSON.stringify(waitMessage));
+                }
             });
 
 
@@ -563,12 +560,14 @@
 
             // ajax userList 업데이트
             function updateUserList(status, memberId){
+                let roomWriter = /*[[${chatRoom.roomWriter}]]*/
                 $.ajax({
                     url:"/chat/getUserListAndDelete",
                     data:{
                         roomNo : roomNo,
                         memberId: memberId,
-                        status: status
+                        status: status,
+                        roomWriter:roomWriter
                     },
 
                     type:"post",
@@ -583,25 +582,13 @@
                 })
             }
 
-            // // ajax userList Join 상태 삭제
-            // function deleteJoinMessage(){
-            //     $.ajax({
-            //         url:"/chat/deleteMember",
-            //         data:{
-            //             roomNo : roomNo,
-            //             memberId: memberId
-            //         },
-            //
-            //         type:"post",
-            //         success:function(data){
-            //             $('#user-list-container').replaceWith(data);
-            //         },
-            //         error:function(){
-            //             console.log("error");
-            //         }
-            //
-            //     })
-            // }
+
+            // scroll 하단으로 이동
+            scrollBottom();
+            function scrollBottom(){
+                let mainScreen = document.querySelector('.main-screen');
+                mainScreen.scrollTop = mainScreen.scrollHeight;
+            }
 
         </script>
     </body>

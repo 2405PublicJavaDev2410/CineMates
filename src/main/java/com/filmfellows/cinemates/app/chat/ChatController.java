@@ -42,9 +42,9 @@ public class ChatController {
 
         // 로그인 확인
         String memberId = (String) session.getAttribute("memberId");
-//        if(memberId == null) {
-//            return "redirect:/login";
-//        }
+        if(memberId == null && "my".equals(status)) {
+            return "redirect:/login";
+        }
         Map<String, String> writerInfo = new HashMap<>();
         writerInfo.put("writer", memberId);
         writerInfo.put("status", status);
@@ -76,6 +76,7 @@ public class ChatController {
         model.addAttribute("pn", map.get("pn"));
         model.addAttribute("relativeTimeList", map.get("relativeTimeList"));
         model.addAttribute("viewMode", viewMode);
+        model.addAttribute("pageStatus", status);
         return "pages/chat/chatRoomList";
     }
 
@@ -343,7 +344,7 @@ public class ChatController {
 
 
     @PostMapping("/chat/getUserListAndDelete")
-    public String getUSerList(Model model, Integer roomNo, String memberId, String status){
+    public String getUSerList(Model model, Integer roomNo, String memberId, String status, String roomWriter){
 
         // delete면 삭제하기
         if("delete".equals(status)){
@@ -355,7 +356,38 @@ public class ChatController {
 
 
         model.addAttribute("chatJoinList", chatJoinList);
+        model.addAttribute("roomWriter", roomWriter);
         return "pages/chat/chatRoom::#user-list-container";
     }
+
+//    @ResponseBody
+//    @PostMapping("/chat/confirmJoin")
+//    public String confirmJoin(HttpSession session, Integer roomNo){
+//
+//        String messageType = "";
+//        String memberId = (String) session.getAttribute("memberId");
+//        List<ChatJoinProfile> chatJoinList = cService.selectChatJoinList(roomNo);
+//
+//        int joinCount = 0;
+//        for(ChatJoinProfile joinList : chatJoinList){
+//            if(joinList.getMemberId().equals(memberId)){
+//                joinCount++;
+//            }
+//        }
+//
+//
+//
+//        // 최초입장하는 경우에만 db에 저장
+//        if(joinCount > 0){
+//            // 두번이상 입장
+//            messageType = "JOIN";
+//        }else{
+//            // 최초입장
+//            messageType = "FIRST";
+//        }
+//
+//        System.out.println("messssssssssssssss : "+messageType);
+//        return messageType;
+//    }
 
 }

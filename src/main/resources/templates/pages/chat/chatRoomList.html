@@ -150,16 +150,29 @@
 
         //    페이지네이션
             function navigatePage(page){
+                let status = /*[[${pageStatus}]]*/;
                 let toListBtn = document.querySelector('#toList-btn');
                 let toCardBtn = document.querySelector('#toCard-btn');
 
-                if(toListBtn.classList.contains('active')){
-                    location.href=`/chat/list?cp=${page}&viewMode=list`;
-                }else if(toCardBtn.classList.contains('active')){
-                    location.href=`/chat/list?cp=${page}&viewMode=card`;
+                if(status === 'my'){
+                    if(toListBtn.classList.contains('active')){
+                        location.href=`/chat/list?cp=${page}&viewMode=list&status=${status}`;
+                    }else if(toCardBtn.classList.contains('active')){
+                        location.href=`/chat/list?cp=${page}&viewMode=card&status=${status}`;
+                    }else{
+                        console.log("location 실패")
+                    }
                 }else{
-                    console.log("location 실패")
+                    if(toListBtn.classList.contains('active')){
+                        location.href=`/chat/list?cp=${page}&viewMode=list`;
+                    }else if(toCardBtn.classList.contains('active')){
+                        location.href=`/chat/list?cp=${page}&viewMode=card`;
+                    }else{
+                        console.log("location 실패")
+                    }
                 }
+
+
 
             }
 
@@ -308,10 +321,12 @@
 <!--                리스트형 레이아웃-->
 
                     <div class="chatRoomList-container" id="toList-container">
-                        <div th:if="${chatRoomList != null}" th:each="chatRoom : ${chatRoomList}" class="chatRoom-item list-item fade-out">
+                        <div th:if="${chatRoomList != null}" th:each="chatRoom : ${chatRoomList}" class="chatRoom-item list-item fade-out"
+                             th:style="${session.memberId != null and chatRoom.roomWriter != null and session.memberId.trim() == chatRoom.roomWriter.trim()} ? 'background-color: beige;' : 'background-color: white;'">
                             <div class="itemBtnFlexContainer">
                                 <div class="item-flex-container">
                                     <div class="flex-item-memberProfile">
+                                        <div style="position: absolute; top: -12px; right: 0; font-size: 45px; transform: rotate(40deg);; color: rgba(255,227,73,0.91)" th:if="${session.memberId != null and chatRoom.roomWriter != null and session.memberId.trim() == chatRoom.roomWriter.trim()}"><i class="fa-solid fa-crown"></i></div>
                                         <th:block th:if="${chatRoom.filePath == null}">
                                             <img alt="프로필" src="/img/default_profile.png" style="width: 100%; height: 100%; border-radius: 30%;">
                                         </th:block>
@@ -335,7 +350,7 @@
                                 </div>
 
                                 <div>
-                                    <div class="joinBtn" th:onclick="joinChatRoom([[${chatRoom.roomNo}]], [[${chatRoom.movieNo}]],[[${chatRoom.title}]], [[${chatRoom.posterUrl}]], [[${chatRoom.cinemaNo}]],[[${chatRoom.cinemaName}]], [[${chatRoom.cinemaLocationCode}]], [[${chatRoom.cinemaAddress}]], [[${chatRoom.roomCategory}]]);">참여</div>
+                                    <div class="joinBtn" th:onclick="joinChatRoom([[${chatRoom.roomNo}]], [[${chatRoom.roomWriter}]], [[${chatRoom.movieNo}]],[[${chatRoom.title}]], [[${chatRoom.posterUrl}]], [[${chatRoom.cinemaNo}]],[[${chatRoom.cinemaName}]], [[${chatRoom.cinemaLocationCode}]], [[${chatRoom.cinemaAddress}]], [[${chatRoom.roomCategory}]]);">참여</div>
                                 </div>
                             </div>
 
@@ -359,7 +374,7 @@
                             <div class="card-mouseover">
                                 <div class="card-mouseover-text" th:if="${chatRoom.roomCategory == 'reservation'}" th:text="'모집방'"></div>
                                 <div class="card-mouseover-text" th:if="${chatRoom.roomCategory == 'talk'}" th:text="'소통방'"></div>
-                                <div class="card-mouseover-text joinBtn" th:onclick="joinChatRoom([[${chatRoom.roomNo}]], [[${chatRoom.movieNo}]],[[${chatRoom.title}]], [[${chatRoom.posterUrl}]], [[${chatRoom.cinemaNo}]],[[${chatRoom.cinemaName}]], [[${chatRoom.cinemaLocationCode}]], [[${chatRoom.cinemaAddress}]], [[${chatRoom.roomCategory}]]);">참여하기</div>
+                                <div class="card-mouseover-text joinBtn" th:onclick="joinChatRoom([[${chatRoom.roomNo}]], [[${chatRoom.roomWriter}]], [[${chatRoom.movieNo}]],[[${chatRoom.title}]], [[${chatRoom.posterUrl}]], [[${chatRoom.cinemaNo}]],[[${chatRoom.cinemaName}]], [[${chatRoom.cinemaLocationCode}]], [[${chatRoom.cinemaAddress}]], [[${chatRoom.roomCategory}]]);">참여하기</div>
                                 <div class="report-btn card-report-btn">신고</div>
                             </div>
                             <div th:style="'width:100%; height: 400px; background-image: url('+${chatRoom.posterUrl}+'); background-position: center; background-size: cover; border-radius:20px;'">

@@ -84,7 +84,8 @@
         JOIN MOVIE_TBL movie ON chat.MOVIE_NO = movie.MOVIE_NO
         JOIN CINEMA_TBL cinema ON chat.CINEMA_NO = cinema.CINEMA_NO
         LEFT JOIN PROFILE_IMG_TBL profile ON chat.ROOM_WRITER = profile.MEMBER_ID
-        WHERE chat.ROOM_WRITER = #{writer}
+        LEFT JOIN CHAT_JOIN_TBL chatJoin ON chat.ROOM_NO = chatJoin.ROOM_NO
+        WHERE chatJoin.MEMBER_ID = #{writer}
 
         ORDER BY chat.ROOM_DATE DESC
     </select>
@@ -159,7 +160,7 @@
     </select>
 
     <select id="getMyTotalCount" resultType="_int">
-        SELECT COUNT(*) FROM CHAT_ROOM_TBL WHERE ROOM_WRITER = #{writer}
+        SELECT COUNT(*) FROM CHAT_JOIN_TBL WHERE MEMBER_ID = #{writer}
     </select>
 
 
@@ -202,7 +203,7 @@
 
     <select id="selectChatMessageList" resultType="chatMessageAndProfile">
         SELECT * FROM CHAT_TBL
-            JOIN PROFILE_IMG_TBL USING(MEMBER_ID)
+           LEFT JOIN PROFILE_IMG_TBL USING(MEMBER_ID)
             WHERE ROOM_NO = #{roomNo} AND
             CHAT_DATE >= #{myJoinDate}
         ORDER BY CHAT_DATE ASC
