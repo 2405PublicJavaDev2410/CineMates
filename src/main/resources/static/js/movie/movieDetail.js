@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="review-stars">${getStars(review.score)}</div>
             </div>
             <div class="button-menu">
-                ${isMyReview ? '<span class="delete-review">삭제</span>' : '<span class="review-report" onclick="report(${review.reviewNo},\'${review.memberId}\');">신고</span>'}
+                ${isMyReview ? '<span class="delete-review">삭제</span>' : `<span class="review-report" data-review-no="${review.reviewNo}" data-member-id="${review.memberId}">신고</span>`}
 <!--                <span class="review-report" onclick="report(${review.reviewNo},'${review.memberId}');">신고</span>-->
             </div>
         </div>
@@ -142,6 +142,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 deleteReview(review.reviewNo);
             });
         }
+
+        const reportButton = reviewDiv.querySelector('.review-report');
+        if (reportButton) {
+            reportButton.addEventListener('click', function() {
+                const reviewNo = this.getAttribute('data-review-no');
+                const memberId = this.getAttribute('data-member-id');
+                report(reviewNo, memberId);
+            });
+        }
+
         return reviewDiv;
     }
 

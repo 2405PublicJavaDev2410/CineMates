@@ -131,14 +131,18 @@ main {
     /*padding: 0 20px;*/
     margin: 30px auto;
 }
+
 .box-office h2 {
     font-size: 1.5em;
     margin-bottom: 20px;
     color: #000000;
     font-family: 'GmarketSansMedium', serif;
     font-weight: bold;
-    border-bottom: 2px solid #D54946;
+    /*border-bottom: 2px solid #D54946;*/
+    text-align: center;
 }
+
+
 .movie-list {
     display: flex;
     justify-content: space-between;
@@ -146,11 +150,27 @@ main {
 }
 .movie-item {
     width: 220px;
+    position: relative;
+    display: inline-block;
 }
 .movie-poster {
     width: 100%;
     height: auto;
     border-radius: 5px;
+}
+.movie-poster:hover {
+    filter: brightness(50%);
+}
+
+.poster-number {
+    position: absolute;
+    top: 266px;
+    left: 184px;
+    color: white;
+    font-size: 50px;
+    font-family: 'GmarketSansMedium', serif;
+    font-weight: bold;
+    font-style: oblique;
 }
 .movie-title {
     font-size: 1em;
@@ -179,19 +199,34 @@ main {
 /*}*/
 /*.movie-item {*/
 /*    display: flex;*/
+/*    margin-bottom: 15px;*/
 /*}*/
 /*.movie-poster {*/
 /*    width: 200px;*/
 /*    height: auto;*/
 /*    border-radius: 5px;*/
 /*    cursor: pointer;*/
+/*    position: relative;*/
 /*}*/
+/*.movie-rank {*/
+/*    position: absolute;*/
+/*    top: 1117px;*/
+/*    left: 512px;*/
+/*    font-family: 'NEXON Lv1 Gothic OTF', serif;*/
+/*    z-index: 1;*/
+/*    color: white;*/
+/*}*/
+/*.movie-item h1{*/
+/*    font-size: 70px;*/
+
+/*}*/
+
 /*.movie-title {*/
 /*    font-size: 28px;*/
 /*    margin-bottom: 10px;*/
 /*    font-family: 'NEXON Lv1 Gothic OTF', serif;*/
 /*    font-weight: bold;*/
-
+/*    color: white;*/
 /*}*/
 /*.movie-info {*/
 /*    margin-left: 40px;*/
@@ -204,6 +239,7 @@ main {
 
 /*.movie-details p{*/
 /*    margin-bottom: 5px;*/
+/*    color: white;*/
 /*}*/
 
 /*.reserve-btn {*/

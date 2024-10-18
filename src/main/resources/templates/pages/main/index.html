@@ -13,9 +13,6 @@
 
     <section class="main-banner">
         <div class="video-container">
-<!--            <video id="mainVideo" autoplay loop playsinline muted controls>-->
-<!--                <source src="./img/main/21626_301_1.mp4" type="video/mp4" />-->
-<!--            </video>-->
             <video id="randomVideo" autoplay loop playsinline muted controls>
             </video>
         </div>
@@ -23,13 +20,17 @@
     </section>
 
     <section class="box-office">
-        <h2>박스오피스 TOP 5</h2>
+        <div >
+            <h2>박스오피스</h2>
+            <button>전체보기</button>
+        </div>
         <div class="movie-list" >
-            <div class="movie-item" th:each="bList : ${bList}">
+            <div class="movie-item" th:each="bList, iterStat  : ${bList}">
                 <a th:href="@{/movie-detail/{movieNo}(movieNo=${bList.movieNo})}">
                     <img th:src="${bList.posterUrl}" th:alt="${bList.title}" class="movie-poster" />
+                    <span class="poster-number" th:text="${iterStat.count}"></span>
                 </a>
-                
+
                 <h3 class="movie-title" th:text="${bList.title}"></h3>
                 <p class="movie-info" th:text="'예매율 '+ ${bList.reservationRate}"></p>
             </div>
@@ -41,6 +42,8 @@
 <!--            <div class="movie-item" th:each="movie : ${bList}">-->
 <!--                <a th:href="@{/movie-detail/{movieNo}(movieNo=${movie.movieNo})}">-->
 <!--                    <img th:src="${movie.posterUrl}" th:alt="${movie.title}" class="movie-poster" />-->
+<!--&lt;!&ndash;                    <span class="movie-rank">1</span>&ndash;&gt;-->
+<!--                    <h1 class="movie-rank">2</h1>-->
 <!--                </a>-->
 <!--                <div class="movie-info">-->
 <!--                    <h3 class="movie-title" th:text="${movie.title}"></h3>-->
