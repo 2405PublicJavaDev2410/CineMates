@@ -18,7 +18,8 @@
     </select>
     <!-- 상영관 출력 By Code-->
     <select id="selectCinemasByCode" resultType="String">
-        SELECT CINEMA_NAME FROM CINEMA_TBL
+        SELECT CINEMA_NAME
+        FROM CINEMA_TBL
         WHERE CINEMA_LOCATION_CODE = #{cinemaLocationCode}
     </select>
     <!--영화 제목 출력 -->
@@ -89,14 +90,16 @@
                                        THEN '성인' || R.ADULTRESERVED || '명/'
                                    ELSE NULL
                                    END, '') WITHIN GROUP (ORDER BY R.ADULTRESERVED) ||
-                LISTAGG(CASE
-                    WHEN R.CHILDRESERVED IS NOT NULL AND R.CHILDRESERVED > 0 THEN '어린이' || R.CHILDRESERVED || '명/'
-                    ELSE NULL
-                    END, '') WITHIN GROUP (ORDER BY R.CHILDRESERVED) ||
-                LISTAGG(CASE
-                    WHEN R.SENIORRESERVED IS NOT NULL AND R.SENIORRESERVED > 0 THEN '경로' || R.SENIORRESERVED || '명/'
-                    ELSE NULL
-                    END, '') WITHIN GROUP (ORDER BY R.SENIORRESERVED),
+                       LISTAGG(CASE
+                                   WHEN R.CHILDRESERVED IS NOT NULL AND R.CHILDRESERVED > 0
+                                       THEN '어린이' || R.CHILDRESERVED || '명/'
+                                   ELSE NULL
+                                   END, '') WITHIN GROUP (ORDER BY R.CHILDRESERVED) ||
+                       LISTAGG(CASE
+                                   WHEN R.SENIORRESERVED IS NOT NULL AND R.SENIORRESERVED > 0
+                                       THEN '경로' || R.SENIORRESERVED || '명/'
+                                   ELSE NULL
+                                   END, '') WITHIN GROUP (ORDER BY R.SENIORRESERVED),
                        '/')
                                                                           AS RESERVATIONPEOPLE,
                REPLACE(R.CINEMA_NAME || '/' || R.SCREEN_NAME, ' ', '')    AS CINEMANAME,
@@ -118,7 +121,7 @@
     </delete>
     <!--영화 전체 조회-->
     <select id="selectAllMovies" resultType="SearchMovieDTO">
-        SELECT TITLE, MOVIE_NO, IS_BOOKABLE,POSTER_URL,RUNNING_TIME
+        SELECT TITLE, MOVIE_NO, IS_BOOKABLE, POSTER_URL, RUNNING_TIME
         FROM MOVIE_TBL
     </select>
     <!--지역 코드 조회-->
@@ -128,6 +131,29 @@
     </select>
     <!--영화 연령대 검색-->
     <select id="getAgeRatingByTitle">
-        select RATING from MOVIE_TBL where title=#{title}
+        select RATING
+        from MOVIE_TBL
+        where title = #{title}
+    </select>
+    <!--티켓 검색-->
+    <select id="selectTicketCount" resultType="MemberDTO">
+        SELECT TICKET_COUNT
+        FROM MEMBER_TBL
+        WHERE MEMBER_ID = #{memberId}
+    </select>
+    <!--대화방 인원 총 티켓 검색-->
+    <select id="selectTicketCountByIds" resultType="String">
+        SELECT TICKET_COUNT AS allTicketCount
+        FROM MEMBER_TBL
+        WHERE MEMBER_ID = #{memberId}
+    </select>
+    <!--결제 후 티켓 차감-->
+    <update id="updateTicketCount">
+        UPDATE MEMBER_TBL
+        SET TICKET_COUNT=TICKET_COUNT - 1
+        where MEMBER_ID = #{memberId}
+    </update>
+    <select id="selectUpdatedReservation" resultType="ReservationDTO">
+        select * from member_tbl where MEMBER_ID=#{memberIds}
     </select>
 </mapper>

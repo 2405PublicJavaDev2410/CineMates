@@ -44,4 +44,14 @@ public interface ReservationMapper {
     List<String> selectCinemasByCode();
 
     String getAgeRatingByTitle(String title);
+
+    MemberDTO selectTicketCount(String memberId);
+
+    List<String> selectTicketCountByIds(List<String> memberIds);
+
+    List<String> selectTicketCountByIds(String memberIds);
+
+    int updateTicketCount(String memberId);
+
+    ReservationDTO selectUpdatedReservation(String memberId);
 }

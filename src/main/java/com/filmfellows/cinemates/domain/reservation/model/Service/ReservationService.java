@@ -5,7 +5,6 @@ import com.filmfellows.cinemates.app.mypage.dto.myReservationResponse;
 import com.filmfellows.cinemates.domain.reservation.model.vo.*;
 
 import java.util.List;
-import java.util.Map;
 
 public interface ReservationService {
 
@@ -101,4 +100,20 @@ public interface ReservationService {
      * @return
      */
     String getAgeRatingByTitle(String title);
+
+    /**
+     * 멤버 아이디 통해 티켓 조회
+     *
+     * @param memberId
+     * @return
+     */
+    MemberDTO selectTicketCount(String memberId);
+
+    /**
+     * 대화 방 인원 티켓 수
+     * @param memberIds
+     * @return
+     */
+    List<String> selectTicketCountByIds(String memberIds);
+
 }

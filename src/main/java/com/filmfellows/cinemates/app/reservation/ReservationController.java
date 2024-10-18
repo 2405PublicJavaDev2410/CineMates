@@ -31,7 +31,7 @@ public class ReservationController {
 
 
     @GetMapping("/Ticketing")
-    public String showShowTimePage(Model model, HttpSession session, String title , Integer movieNo) {
+    public String showShowTimePage(Model model, HttpSession session, String title, Integer movieNo) {
         System.out.println("title : " + title);
         String memberId = (String) session.getAttribute("memberId");
 
@@ -43,7 +43,7 @@ public class ReservationController {
         List<SearchLocationCodeDTO> lList = rService.selectAllLocationCode();
         List<String> rList = rService.selectCinemaName();
         List<String> processedList = new ArrayList<>();
-            Map<String, String> ageRatings = new HashMap<>();
+        Map<String, String> ageRatings = new HashMap<>();
 
         for (SearchMovieDTO movie : movieList) {
             String ageRating = rService.getAgeRatingByTitle(movie.getTitle());
@@ -69,33 +69,51 @@ public class ReservationController {
 
     @PostMapping("/Ticketing/PersonSeat")
     public String showPersonSeatPage(@ModelAttribute ReservationDTO rDTO, @RequestParam String reservationSeat, Model model, HttpSession session,
-                                     @RequestParam String title) {
+                                     @RequestParam String title
+//                                    @RequestParam(value="memberIds", required =false)List<String>memberIds
+    ) {
         String memberId = (String) session.getAttribute("memberId");
+        System.out.println("memberId : " + memberId);
+        List<String> allMemberTicket = new ArrayList<>();
         String randomString = generateRandomString(10);
         rDTO.setReservationNo(randomString);
+        rDTO.setMemberId(memberId);
         ShowInfoDTO sDTO = rService.selectMoviePoster(title);
         System.out.println("영화 포스터: " + sDTO);
+        List<String> memberIds = Arrays.asList("test8", "test7", "admin1");
 
-        // JSON 문자열을 Map으로 변환
-        ObjectMapper mapper = new ObjectMapper();
-        Map<Integer, List<Integer>> reservedSeats;
-        try {
-            reservedSeats = mapper.readValue(reservationSeat, new TypeReference<Map<Integer, List<Integer>>>() {
-            });
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            reservedSeats = new HashMap<>();
+            // JSON 문자열을 Map으로 변환
+            ObjectMapper mapper = new ObjectMapper();
+            Map<Integer, List<Integer>> reservedSeats;
+            try {
+                reservedSeats = mapper.readValue(reservationSeat, new TypeReference<Map<Integer, List<Integer>>>() {
+                });
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+                reservedSeats = new HashMap<>();
+            }
+
+            // 예약된 좌석 정보를 모델에 추가
+            model.addAttribute("reservationSeat", reservedSeats);
+            model.addAttribute("sDTO", sDTO);
+        if (!(memberIds.size() == 0)) {
+            for (String memberIdlist : memberIds) {
+                List<String> memberList = rService.selectTicketCountByIds(memberIdlist);
+                allMemberTicket.addAll(memberList);
+                System.out.println(memberIds);
+                System.out.println(allMemberTicket);
+            }
+            rDTO.setAllTicketCount(allMemberTicket);
+            rDTO.setMemberIds(memberIds);
+            model.addAttribute("rDTO" , rDTO) ;
+            model.addAttribute("allMemberTicket", allMemberTicket);
+            return "pages/reservation/personSeat";
+        }
+            System.out.println("rDTO 보여줘라 " + rDTO);
+            model.addAttribute("rDTO", rDTO);
+            return "pages/reservation/personSeat";
         }
 
-        // 예약된 좌석 정보를 모델에 추가
-        model.addAttribute("reservationSeat", reservedSeats);
-        model.addAttribute("sDTO", sDTO);
-
-        System.out.println("rDTO 보여줘라 " + rDTO);
-        model.addAttribute("memberId", memberId);
-        model.addAttribute("rDTO", rDTO);
-        return "pages/reservation/personSeat";
-    }
 
     private static String generateRandomString(int length) {
         StringBuilder builder = new StringBuilder();

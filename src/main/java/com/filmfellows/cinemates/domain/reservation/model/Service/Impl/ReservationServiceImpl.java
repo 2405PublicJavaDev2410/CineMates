@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class ReservationServiceImpl implements ReservationService {
@@ -77,5 +76,14 @@ public class ReservationServiceImpl implements ReservationService {
         return rmapper.getAgeRatingByTitle(title);
     }
 
+    @Override
+    public MemberDTO selectTicketCount(String memberId) {
+        return rmapper.selectTicketCount(memberId);
+    }
+
+    @Override
+    public List<String> selectTicketCountByIds(String memberIds) {
+        return rmapper.selectTicketCountByIds(memberIds);
+    }
 
 }

@@ -27,6 +27,7 @@
 <h1>예매 결제</h1>
 <button th:onclick="requestPay()">결제하기</button>
 <button th:onClick="cancelPay()">취소하기</button>
+<button th:onClick="goTicketpay()">관람권 결제</button>
 <input id="reservationNo" name="reservationNo" th:value="${rDTO.reservationNo}" type="hidden">
 <input id="reservationVisitor" name="reservationVisitor" th:value="${rDTO.reservationVisitor}" type="hidden">
 <input id="reservationSeat" name="reservationSeat" th:value="${rDTO.reservationSeat}" type="hidden">
