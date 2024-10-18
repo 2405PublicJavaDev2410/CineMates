@@ -15,15 +15,16 @@
     <update id="updateCartItem" parameterType="Cart">
         UPDATE CART_TBL
         SET QUANTITY = QUANTITY + #{quantity}
-        WHERE MEMBER_ID = #{memberId} AND PRODUCT_NO = #{productNo}
+        WHERE CART_NO = #{cartNo} AND PRODUCT_NO = #{productNo}
     </update>
 
-    <delete id="deleteCartItems" parameterType="list">
+    <delete id="deleteCartItems" parameterType="Cart">
         DELETE FROM CART_TBL
-        WHERE CART_NO IN
-        <foreach collection="list" item="cartNo" open="(" separator="," close=")">
-            #{cartNo}
-        </foreach>
+        WHERE CART_NO = #{cartNo} AND PRODUCT_NO = #{productNo}
+<!--        WHERE CART_NO IN-->
+<!--        <foreach collection="list" item="cartNo" open="(" separator="," close=")">-->
+<!--            #{cartNo}-->
+<!--        </foreach>-->
     </delete>
 
     <delete id="clearCart" parameterType="string">
@@ -31,8 +32,8 @@
         WHERE MEMBER_ID = #{memberId}
     </delete>
 
-    <select id="checkCartItemExists" resultType="int">
-        SELECT COUNT (*) FROM CART_TBL
+    <select id="checkCartItemExists" resultType="String">
+        SELECT CART_NO FROM CART_TBL
         WHERE MEMBER_ID = #{memberId} AND PRODUCT_NO = #{productNo}
     </select>
 
@@ -54,28 +55,11 @@
             C.MEMBER_ID = #{memberId}
     </select>
 
-    <select id="selectSelectedCartItems" resultType="Cart">
-        SELECT
-        C.CART_NO as cartNo,
-        C.MEMBER_ID as memberId,
-        C.PRODUCT_NO as productNo,
-        C.QUANTITY as quantity,
-        P.PRODUCT_NAME as "product.productName",
-        P.PRICE as "product.price",
-        P.DISCOUNT_AMOUNT as "product.discountAmount",
-        P.DISCOUNTED_PRICE as "product.discountedPrice",
-        P.IMAGE_URL as "product.imageUrl",
-        P.DESCRIPTION as "product.description"
-        FROM
-        CART_TBL C
-        JOIN
-        PRODUCT_TBL P ON C.PRODUCT_NO = P.PRODUCT_NO
-        WHERE
-        C.MEMBER_ID = #{memberId}
-        AND
-        C.CART_NO IN
-        <foreach item="item" index="index" collection="selectedItems" open="(" separator="," close=")">
-            #{item}
-        </foreach>
+    <select id="getCartItemsByMemberId" resultType="com.filmfellows.cinemates.domain.store.model.vo.Cart">
+        SELECT c.*, p.PRODUCT_NAME, p.PRICE, p.DISCOUNT_AMOUNT
+        FROM CART_TBL c
+                 JOIN PRODUCT p ON c.PRODUCT_NO = p.PRODUCT_NO
+        WHERE c.MEMBER_ID = #{memberId}
     </select>
+
 </mapper>

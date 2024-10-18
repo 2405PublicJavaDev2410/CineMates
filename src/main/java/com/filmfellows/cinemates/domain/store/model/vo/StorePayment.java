@@ -4,18 +4,18 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.Date;
-
 @Setter
 @Getter
 @ToString
 public class StorePayment {
-    private int storePaymentNo;
-    private int purchaseNo;
-    private String purchaseType;   // GIFT 여부
-    private int amount;
-    private String paymentMethod; // 카카오페이 or 신용카드
-    private String paymentStatus;
-    private Date paymentDate;
-    private String paymentKey;  // 외부 결제시스템에서 받은 키
+    private String imp_uid;
+    private String merchant_uid;
+    private Integer amount;
+    private String status;
+    private String buyer_email;
+    private String buyer_name;
+    private String buyer_tel;
+    private String name;
+    private Integer purchaseNo;
+    private String CategoryName;
 }

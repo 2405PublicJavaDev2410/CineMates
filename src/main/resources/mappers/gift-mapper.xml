@@ -17,17 +17,9 @@
         )
     </insert>
 
-    <insert id="insertGiftProducts" parameterType="java.util.List">
-        INSERT ALL
-        <foreach collection="list" item="product" separator=" ">
-            INTO GIFT_ITEM_TBL (
-            GIFT_ITEM_NO, GIFT_NO, PRODUCT_NO, QUANTITY, PRICE, DISCOUNT_AMOUNT
-            ) VALUES (
-            SEQ_GIFT_ITEM_NO.NEXTVAL, #{product.giftNo}, #{product.productNo},
-            #{product.quantity}, #{product.price}, #{product.discountAmount}
-            )
-        </foreach>
-        SELECT * FROM DUAL
+    <insert id="insertGiftItem" parameterType="com.filmfellows.cinemates.domain.store.model.vo.Gift">
+        INSERT INTO GIFT_ITEM_TBL (GIFT_NO, PRODUCT_NO, QUANTITY, PRICE, DISCOUNT_AMOUNT)
+        VALUES (#{giftNo}, #{productNo}, #{quantity}, #{price}, #{discountAmount})
     </insert>
 
     <update id="updateGift" parameterType="Gift">
@@ -45,8 +37,11 @@
         WHERE GIFT_NO = #{giftNo}
     </update>
 
-    <select id="selectOneByGiftNo" resultType="Gift">
-        SELECT * FROM GIFT_TBL WHERE GIFT_NO = #{giftNo}
+    <select id="selectGiftByNo" resultMap="giftResultMap">
+        SELECT g.*, gi.*
+        FROM GIFT_TBL g
+                 LEFT JOIN GIFT_PRODUCT_TBL gi ON g.GIFT_NO = gi.GIFT_NO
+        WHERE g.GIFT_NO = #{giftNo}
     </select>
 
     <!-- 선물받는 회원 정보 조회 쿼리문-->
@@ -56,4 +51,29 @@
           AND PHONE = #{phone}
     </select>
 
+    <select id="selectGiftItemsByGiftNo" resultType="Gift">
+        SELECT * FROM GIFT_TBL
+        WHERE GIFT_NO = #{giftNo}
+    </select>
+
+    <resultMap id="giftResultMap" type="Gift">
+        <id property="giftNo" column="GIFT_NO"/>
+        <result property="senderId" column="SENDER_ID"/>
+        <result property="recipientId" column="RECIPIENT_ID"/>
+        <result property="recipientName" column="RECIPIENT_NAME"/>
+        <result property="recipientPhone" column="RECIPIENT_PHONE"/>
+        <result property="message" column="MESSAGE"/>
+        <result property="totalAmount" column="TOTAL_AMOUNT"/>
+        <result property="totalDiscountAmount" column="TOTAL_DISCOUNT_AMOUNT"/>
+        <result property="finalAmount" column="FINAL_AMOUNT"/>
+        <result property="paymentMethod" column="PAYMENT_METHOD"/>
+        <result property="isTransferred" column="IS_TRANSFERRED"/>
+        <collection property="giftItems" ofType="GiftItem">
+            <id property="giftNo" column="GIFT_NO"/>
+            <id property="productNo" column="PRODUCT_NO"/>
+            <result property="quantity" column="QUANTITY"/>
+            <result property="price" column="PRICE"/>
+            <result property="discountAmount" column="DISCOUNT_AMOUNT"/>
+        </collection>
+    </resultMap>
 </mapper>
