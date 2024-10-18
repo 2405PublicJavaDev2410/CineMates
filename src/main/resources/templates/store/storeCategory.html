@@ -36,18 +36,15 @@
     <div class="product-grid">
         <div class="product-item" th:each="product : ${products}">
             <div class="product-image-container">
-                <img class="product-image" th:src="${product['imageUrl']}" th:alt="${product['productName']}">
+                <img class="product-image" th:src="${product.imageUrl}" th:alt="${product.productName}">
                 <div class="product-icons">
-                    <button type="button" class="cart-icon" th:data-product-no="${product['productNo']}">장바구니 담기</button>
-                    <a th:href="@{'/store/gift/' + ${product['productNo']}}">선물하기</a>
-                    <form th:action="@{'/store/purchase/initiate'}" method="post" style="display: inline;">
-                        <input type="hidden" name="productNo" th:value="${product['productNo']}">
-                        <button type="submit">구매하기</button>
-                    </form>
+                    <button class="cart-icon" th:data-product-no="${product.productNo}">장바구니 담기</button>
+                    <a th:href="@{/store/gift/{productNo}(productNo=${product.productNo})}">선물하기</a>
+                        <button class="buy-now" th:data-product-no="${product.productNo}">구매하기</button>
                 </div>
             </div>
-            <h4 class="product-name" th:text="${product['productName']}"></h4>
-            <p class="product-price" th:text="${#numbers.formatDecimal(product['price'], 0, 'COMMA', 0, 'POINT')} + '원'"></p>
+            <h4 class="product-name" th:text="${product.productName}"></h4>
+            <p class="product-price" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + '원'"></p>
         </div>
     </div>
 </main>

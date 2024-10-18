@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const giftBtn = document.getElementById('giftButton');
     const buyBtn = document.getElementById('buyButton');
 
-    const basePrice = productPrice;
+    const basePrice = productPrice; // 이 변수가 서버에서 제공되어야 합니다
 
     function updateTotalPrice() {
         const quantity = parseInt(quantityInput.value);
@@ -23,17 +23,48 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     plusBtn.addEventListener('click', function() {
-        if (quantityInput.value < 10) {
-            quantityInput.value = parseInt(quantityInput.value) + 1;
-            updateTotalPrice();
-        }
+        quantityInput.value = parseInt(quantityInput.value) + 1;
+        updateTotalPrice();
     });
 
     quantityInput.addEventListener('change', updateTotalPrice);
 
-    addToCartBtn.addEventListener('click', function() {
-        const quantity = parseInt(quantityInput.value);
+    buyBtn.addEventListener('click', function(event) {
+        event.preventDefault();
         const productNo = this.getAttribute('data-product-no');
+        const quantity = parseInt(quantityInput.value);
+        buyNow(productNo, quantity);
+    });
+
+    function buyNow(productNo, quantity) {
+        fetch('/store/purchase/initiate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                items: [{productNo: productNo, quantity: quantity}]
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = data.redirectUrl;
+                } else {
+                    alert(data.message || '구매 처리 중 오류가 발생했습니다.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('오류가 발생했습니다. 다시 시도해주세요.');
+            });
+    }
+
+    addToCartBtn.addEventListener('click', function(event) {
+        event.preventDefault();
+        const productNo = this.getAttribute('data-product-no');
+        const quantity = parseInt(quantityInput.value);
+
         fetch('/store/cart/insert', {
             method: 'POST',
             headers: {
@@ -46,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.success) {
                     alert('상품이 장바구니에 추가되었습니다.');
                 } else {
-                    alert('장바구니 추가에 실패했습니다. 다시 시도해주세요.');
+                    alert(data.message || '장바구니 추가에 실패했습니다. 다시 시도해주세요.');
                 }
             })
             .catch(error => {
@@ -55,11 +86,33 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     });
 
-    giftBtn.addEventListener('click', function(e) {
-        e.preventDefault();
+    giftBtn.addEventListener('click', function(event) {
+        event.preventDefault();
         const productNo = this.getAttribute('data-product-no');
         const quantity = parseInt(quantityInput.value);
-        window.location.href = `/store/gift/${productNo}?quantity=${quantity}`;
+
+        fetch('/store/purchase/initiate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                action: "gift",
+                items: [{productNo: productNo, quantity: quantity}]
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = data.redirectUrl;
+                } else {
+                    alert(data.message || '선물하기 처리 중 오류가 발생했습니다.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('오류가 발생했습니다. 다시 시도해주세요.');
+            });
     });
 
     // 초기 총 가격 설정

@@ -12,13 +12,13 @@ public interface CartMapper {
 
     List<Cart> selectCartItems(String memberId);
 
-    boolean deleteCartItems(List<Integer> cartNos);
+    boolean deleteCartItems(Cart cartItem);
 
     boolean clearCart(String memberId);
 
-    List<Cart> selectSelectedCartItems(String memberId, List<Integer> selectedItems);
-
-    int checkCartItemExists(Cart cartItem);
+    String checkCartItemExists(Cart cartItem);
 
     int insertCartItem(Cart cartItem);
+
+    List<Cart> getCartItemsByMemberId(String memberId);
 }

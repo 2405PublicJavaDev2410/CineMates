@@ -15,4 +15,5 @@ public interface ProductMapper {
 
     List<Product> selectProductsByCategory(String category, Integer limit);
 
+    Product selectProductByNo(@Param("productNo") int productNo);
 }
