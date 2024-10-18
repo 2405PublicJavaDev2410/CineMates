@@ -5,6 +5,7 @@ import com.filmfellows.cinemates.domain.member.model.mapper.MemberMapper;
 import com.filmfellows.cinemates.domain.member.model.service.MemberService;
 import com.filmfellows.cinemates.domain.member.model.vo.Member;
 import com.filmfellows.cinemates.domain.member.model.vo.ProfileImg;
+import com.filmfellows.cinemates.domain.report.model.vo.Report;
 import com.filmfellows.cinemates.domain.snsLogin.model.vo.SnsProfile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -121,6 +122,11 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public boolean isEmailDuplicate(String email) {
         return mMapper.countByEmail(email);
+    }
+
+    @Override
+    public Report searchOneReportById(String reportId) {
+        return mMapper.searchOneReportById(reportId);
     }
 
     @Override

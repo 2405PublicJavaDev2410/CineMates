@@ -129,3 +129,14 @@
 #result-body tr:nth-child(even) {
     background-color: #f8f8f8;
 }
+.hide {
+    display: none;
+}
+#error-message {
+    margin-top: 10px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    text-align: center;
+    padding: 20px;
+}

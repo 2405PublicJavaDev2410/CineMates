@@ -1,5 +1,6 @@
 package com.filmfellows.cinemates.domain.movie.model.service.impl;
 
+import com.filmfellows.cinemates.app.main.dto.boxOfficeDTO;
 import com.filmfellows.cinemates.app.movie.dto.MovieDTO;
 import com.filmfellows.cinemates.app.movie.dto.MovieListDTO;
 import com.filmfellows.cinemates.app.movie.dto.MovieReservationRateDTO;
@@ -25,10 +26,7 @@ public class MovieServiceImpl implements MovieService {
 
     private final MovieMapper movieMapper;
 
-    @Override
-    public List<MovieListDTO> selectAllMovieList() {
-        return movieMapper.selectAllMovieList();
-    }
+
 
     @Override
     public List<MovieDTO> selectMovieDetail(Long movieNo) {
@@ -132,8 +130,28 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public int addReview(Review addReview) {
-        return movieMapper.insertReview(addReview);
+    public boolean addReview(Review addReview) {
+        ReviewDTO existingReview = movieMapper.selectMyReview(addReview.getMovieNo(), addReview.getMemberId());
+        if (existingReview != null) {
+            return false; // 중복된 리뷰가 있음
+        }
+        movieMapper.insertReview(addReview);
+        return true; // 리뷰 추가 성공
+    }
+
+    @Override
+    public int getTotalReviewCountByMovieNo(Long movieNo) {
+        return movieMapper.selectReviewCountByMovieNo(movieNo);
+    }
+
+    @Override
+    public void removeReview(String memberId, int reviewNo) {
+        movieMapper.deleteReview(memberId, reviewNo);
+    }
+
+    @Override
+    public ReviewDTO getMyReview(Long movieNo, String memberId) {
+        return movieMapper.selectMyReview(movieNo, memberId);
     }
 
 

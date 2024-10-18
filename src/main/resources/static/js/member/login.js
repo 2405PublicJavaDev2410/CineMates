@@ -12,11 +12,19 @@ function loginMember() {
         method: 'POST',
         data: JSON.stringify(Object.fromEntries(formData)),
         contentType: 'application/json',
-        dataType: 'text',
-        success: function(data) {
-            if(data === 'success') {
+        dataType: 'json',
+        success: function(response) {
+            if(response.status === 'success') {
                 window.location.href= '/';
-            }else {
+            }else if(response.status === 'ban') {
+                const banPeriod = new Date(response.member.banPeriod);
+                const formattedBanPeriod = banPeriod.toISOString().split('T')[0];
+                const message = "[서비스가 제한된 계정입니다]\n" +
+                    "신고 사유: " + response.report.reportOption + "\n" +
+                    "제재 기간: " + formattedBanPeriod;
+                alert(message);
+            }else if(response.status === 'fail') {
+                console.log("실패 메시지 표시");
                 failureMessage.innerHTML = '아이디 또는 비밀번호를 잘못 입력하셨습니다. 아이디와 비밀번호를 정확히 입력해 주세요.';
                 failureMessage.classList.remove('hide');
                 idInput.classList.add('error-border');

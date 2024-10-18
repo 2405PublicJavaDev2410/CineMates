@@ -156,3 +156,16 @@
 .common-primary-btn:hover {
     background-color: #E12C25;
 }
+.custom-title {
+    font-family: 'GmarketSansMedium', serif;
+}
+.custom-text {
+    font-family: "NEXON Lv1 Gothic OTF", serif;
+
+}
+.confirm-button {
+    background-color: #E12C25;
+    color: #ffffff;
+    border: none;
+    font-family: "NEXON Lv1 Gothic OTF", serif;
+}

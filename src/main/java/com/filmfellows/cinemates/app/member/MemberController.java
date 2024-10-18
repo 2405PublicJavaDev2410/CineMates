@@ -3,6 +3,7 @@ package com.filmfellows.cinemates.app.member;
 import com.filmfellows.cinemates.app.member.dto.*;
 import com.filmfellows.cinemates.domain.emailverification.model.service.EmailVerificationService;
 import com.filmfellows.cinemates.domain.member.model.vo.MemberProfile;
+import com.filmfellows.cinemates.domain.report.model.vo.Report;
 import com.filmfellows.cinemates.domain.snsLogin.model.service.KakaoApiService;
 import com.filmfellows.cinemates.domain.snsLogin.model.vo.KakaoApi;
 import com.filmfellows.cinemates.domain.member.model.service.MemberService;
@@ -15,6 +16,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -76,18 +78,22 @@ public class MemberController {
         System.out.println("snsId : " + snsId);
         MemberProfile memberProfile = new MemberProfile();
         if (snsId != null) {
-            SnsProfile newMember = mService.loginSnsMember(snsId);
-            memberProfile.setProfileImg(newMember.getProfileImg());
+            SnsProfile snsMember = mService.loginSnsMember(snsId);
+            memberProfile.setProfileImg(snsMember.getProfileImg());
             session.setAttribute("memberProfile", memberProfile);
-            log.info(newMember.toString());
+            log.info(snsMember.toString());
             // 세션에 sns 로그인 정보 저장
-            session.setAttribute("memberId", newMember.getSnsId());
-            session.setAttribute("name", newMember.getName());
-            session.setAttribute("snsType", newMember.getSnsType());
-            session.setAttribute("token", accessToken);
-            model.addAttribute("member", newMember);
+            session.setAttribute("memberId", snsMember.getSnsId()); // 프로필 사진
+            session.setAttribute("name", snsMember.getName()); // 리뷰 등
+            session.setAttribute("snsType", snsMember.getSnsType()); // 드롭다운
+            session.setAttribute("token", accessToken); // 회원탈퇴
+            session.setAttribute("role", "MEMBER"); // 필터
+            model.addAttribute("member", snsMember);
         } else {
             // 기존 MEMBER_TBL의 MEMBER_ID에 SNS_ID 저장
+            String formattedSnsId
+                = "N_" + snsProfile.getSnsId().substring(snsProfile.getSnsId().length() - 8);
+            snsProfile.setSnsId(formattedSnsId);
             int result = mService.insertSnsIdToMember(snsProfile.getSnsId());
             if(result == 1) {
                 // SNS_INFO_TBL에 정보 저장
@@ -100,6 +106,7 @@ public class MemberController {
             session.setAttribute("name", snsProfile.getName());
             session.setAttribute("snsType", snsProfile.getSnsType());
             session.setAttribute("token", accessToken);
+            session.setAttribute("role", "MEMBER");
             model.addAttribute("member", snsProfile);
         }
         // 3. 로그인 후 홈으로 리다이렉트
@@ -123,17 +130,21 @@ public class MemberController {
         System.out.println("snsId : " + snsId);
         MemberProfile memberProfile = new MemberProfile();
         if (snsId != null) {
-            SnsProfile newMember = mService.loginSnsMember(snsId);
-            log.info(newMember.toString());
-            memberProfile.setProfileImg(newMember.getProfileImg());
+            SnsProfile snsMember = mService.loginSnsMember(snsId);
+            log.info(snsMember.toString());
+            memberProfile.setProfileImg(snsMember.getProfileImg());
             session.setAttribute("memberProfile", memberProfile);
-            session.setAttribute("memberId", newMember.getSnsId());
-            session.setAttribute("name", newMember.getName());
-            session.setAttribute("snsType", newMember.getSnsType());
+            session.setAttribute("memberId", snsMember.getSnsId());
+            session.setAttribute("name", snsMember.getName());
+            session.setAttribute("snsType", snsMember.getSnsType());
             session.setAttribute("token", accessToken);
-            model.addAttribute("member", newMember);
+            session.setAttribute("role", "MEMBER");
+            model.addAttribute("member", snsMember);
         } else {
             // 기존 MEMBER_TBL의 MEMBER_ID에 SNS_ID 저장
+            String formattedSnsId
+                = "K_" + snsProfile.getSnsId().substring(snsProfile.getSnsId().length() - 8);
+            snsProfile.setSnsId(formattedSnsId);
             int result = mService.insertSnsIdToMember(snsProfile.getSnsId());
             if(result == 1) {
                 // SNS_IFO_TBL에 정보 저장
@@ -146,6 +157,7 @@ public class MemberController {
             session.setAttribute("name", snsProfile.getName());
             session.setAttribute("snsType", snsProfile.getSnsType());
             session.setAttribute("token", accessToken);
+            session.setAttribute("role", "MEMBER");
             model.addAttribute("member", snsProfile);
         }
         // 3. 로그인 후 홈으로 리다이렉트
@@ -375,15 +387,29 @@ public class MemberController {
      */
     @PostMapping("/login")
     @ResponseBody
-    public String loginMember(@RequestBody @Valid LoginRequest loginRequest,
-          HttpSession session, Model model) {
+    public ResponseEntity<Map<String, Object>> loginMember(@RequestBody @Valid LoginRequest loginRequest,
+                                                           HttpSession session) {
         Member member = new Member();
         member.setMemberId(loginRequest.getMemberId());
         member.setMemberPw(loginRequest.getMemberPw());
         member = mService.loginMember(member);
+        Map<String, Object> response = new HashMap<>();
+
         if (member != null) {
+            // 신고 상태 조회
+            Report report = mService.searchOneReportById(member.getMemberId());
+            if(member.getReportCount() >= 3
+                    && member.getBanPeriod() != null
+                    && report.getReportStatus().equals("완료")) {
+                response.put("status", "ban");
+                response.put("member", member);
+                response.put("report", report);
+                // 신고 정보 포함하여 리턴
+                return ResponseEntity.ok(response);
+            }
             session.setAttribute("memberId", member.getMemberId());
             session.setAttribute("name", member.getName());
+            session.setAttribute("role", member.getRole());
 
             // 프로필 이미지 처리
             ProfileImg profileImg = mService.getOneProfileImg(member.getMemberId());
@@ -396,12 +422,11 @@ public class MemberController {
             }
             session.setAttribute("memberProfile", memberProfile);
 
-            // 로그 추가
-            System.out.println("Session memberProfile: " + memberProfile);
-            model.addAttribute("member", member);
-            return "success";
+            response.put("status", "success");
+            return ResponseEntity.ok(response);
         }
-        return "fail";
+        response.put("status", "fail");
+        return ResponseEntity.ok(response);
     }
 
     /**

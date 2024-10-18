@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/defaultLayout}"
+      layout:fragment="Content">
+<link rel="stylesheet" href="/css/report/reportadmin.css">
+
+<head>
+    <meta charset="UTF-8">
+    <title>신고 리스트</title>
+
+</head>
+<body>
+<h1>신고 리스트</h1>
+<a href="/admin/reportlist">
+    <button style="width: 10%">처리중</button>
+</a>
+<a href="/admin/reportlist2">
+    <button style="width: 10%">완료</button>
+</a>
+<table>
+    <tr>
+        <th>신고번호</th>
+        <th>신고ID</th>
+        <th>신고유형</th>
+        <th>신고내용(기타)</th>
+        <th>신고시간</th>
+        <th>신고횟수</th>
+        <th>신고상태</th>
+
+    </tr>
+    <tr th:each="report:${rList}">
+        <td>[[${report.reportNo}]]</td>
+        <td>[[${report.reportId}]]</td>
+        <td>[[${report.reportOption}]]</td>
+        <td>[[${report.reportContent}]]</td>
+        <td>[[${report.reportDate}]]</td>
+        <td>[[${report.reportCount}]]</td>
+        <td>[[${report.reportStatus}]]</td>
+    </tr>
+</table>
+<div style="text-align: center">
+    <div th:if="${pn.endNavi}==0">
+        <h1>등록된 건수가 없습니다.</h1>
+    </div>
+    <div th:if="${pn.currentPage}!=1" style="display: inline-block;">
+        <a th:href="@{/admin/reportlist2(cp=${pn.currentPage-1})}" ><</a></div>
+    <div style="display: inline-block;" th:if="${pn.endNavi}!=0" th:each="p : ${#numbers.sequence(pn.startNavi, pn.endNavi)}">
+        <a th:href="@{/admin/reportlist2(cp=${p})}" th:text="${p}"></a>
+    </div>
+    <div style="display: inline-block;" th:if="${pn.endNavi}!=${pn.currentPage} and ${pn.endNavi}!=0">
+        <a th:href="@{/admin/reportlist2(cp=${pn.currentPage+1})}">></a>
+    </div>
+</div>
+<br>
+<script>
+    function datego(reportId, reportDate,reportNo) {
+        console.log(reportDate);
+        console.log(reportId);
+        location.href = "/admin/outreportid" + reportId + "?reportDate=" + reportDate+"&reportNo"+reportNo;
+    }
+    function report(a,b,c){
+        console.log(b);
+        if(b>=2){
+            openDatePopup(a,c);
+        }else{
+            location.href="/admin/reportid"+a+"?reportNo="+c;
+        }
+        function openDatePopup(a,b) {
+            var popupW = 400;
+            var popupH = 300;
+            var left = (screen.width - popupW) / 2;
+            var top = (screen.height - popupH) / 2;
+            window.open("/admin/overreportid" + a+"?reportNo="+b, "popup", "width=" + popupW + ", height=" + popupH + ", top=" + top + ", left=" + left);
+        }
+    }
+</script>
+</body>
+</html>

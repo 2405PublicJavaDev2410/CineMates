@@ -69,9 +69,7 @@
         SELECT MOVIE_NO, TITLE, RELEASE_DATE, SCREENING_STATUS FROM MOVIE_TBL
     </select>
 
-    <select id="selectAllMovieList" resultType="MovieListDTO">
-        SELECT MOVIE_NO, TITLE, POSTER_URL, RELEASE_DATE, RATING, SCREENING_STATUS FROM MOVIE_TBL
-    </select>
+
 
     <!-- 영화 정보 수정-->
     <update id="updateMovie" parameterType="com.filmfellows.cinemates.app.movie.dto.MovieDTO">
@@ -278,31 +276,53 @@
         WHERE s.MOVIE_NO = #{movieNo}
         ) WHERE ROW_NUM > #{offset} AND ROW_NUM &lt;= (#{offset} + #{size})
     </select>
-    <select id="selectReviewByMovieNo" resultType="com.filmfellows.cinemates.app.movie.dto.ReviewDTO">
-        SELECT *
-        FROM REVIEW_TBL r
-             LEFT JOIN PROFILE_IMG_TBL p
-                ON p.MEMBER_ID = r.MEMBER_ID
-        WHERE MOVIE_NO = #{movieNo}
-        ORDER BY r.REG_DATE DESC
-    </select>
 <!--    <select id="selectReviewByMovieNo" resultType="com.filmfellows.cinemates.app.movie.dto.ReviewDTO">-->
 <!--        SELECT *-->
-<!--        FROM (-->
-<!--        SELECT a.*, ROWNUM rn-->
-<!--        FROM (-->
-<!--        SELECT r.*, p.PROFILE_IMG_PATH-->
 <!--        FROM REVIEW_TBL r-->
-<!--        LEFT JOIN PROFILE_IMG_TBL p ON p.MEMBER_ID = r.MEMBER_ID-->
+<!--             LEFT JOIN PROFILE_IMG_TBL p-->
+<!--                ON p.MEMBER_ID = r.MEMBER_ID-->
 <!--        WHERE MOVIE_NO = #{movieNo}-->
 <!--        ORDER BY r.REG_DATE DESC-->
-<!--        ) a-->
-<!--        WHERE ROWNUM &lt;= #{offset} + #{size}-->
-<!--        )-->
-<!--        WHERE rn > #{offset}-->
 <!--    </select>-->
+    <select id="selectReviewByMovieNo" resultType="com.filmfellows.cinemates.app.movie.dto.ReviewDTO">
+        SELECT *
+        FROM (
+        SELECT a.*, ROWNUM rn
+        FROM (
+        SELECT
+            r.REVIEW_NO,
+            r.MOVIE_NO,
+            r.MEMBER_ID,
+            r.SCORE,
+            r.REVIEW_CONTENT,
+            r.REG_DATE,
+            r.UPDATE_DATE,
+            p.PROFILE_IMG_NO,
+            p.FILE_NAME,
+            p.FILE_RENAME,
+            p.FILE_PATH
+        FROM REVIEW_TBL r
+        LEFT JOIN PROFILE_IMG_TBL p ON p.MEMBER_ID = r.MEMBER_ID
+        WHERE MOVIE_NO = #{movieNo}
+        ORDER BY r.REG_DATE DESC
+        ) a
+        WHERE ROWNUM &lt;= #{offset} + #{size}
+        )
+        WHERE rn > #{offset}
+    </select>
     <insert id="insertReview">
         INSERT INTO REVIEW_TBL (REVIEW_NO, MOVIE_NO, MEMBER_ID, SCORE, REVIEW_CONTENT, REG_DATE, UPDATE_DATE)
         VALUES (SEQ_MOVIE_NO.NEXTVAL, #{movieNo}, #{memberId}, #{score}, #{reviewContent}, DEFAULT, DEFAULT)
     </insert>
+    <select id="selectReviewCountByMovieNo" resultType="_int">
+        SELECT COUNT(*) FROM REVIEW_TBL WHERE MOVIE_NO = #{movieNo}
+    </select>
+    <delete id="deleteReview">
+        DELETE FROM REVIEW_TBL
+        WHERE REVIEW_NO = #{reviewNo}
+          AND MEMBER_ID = #{memberId}
+    </delete>
+    <select id="selectMyReview" resultType="com.filmfellows.cinemates.app.movie.dto.ReviewDTO">
+        SELECT * FROM REVIEW_TBL WHERE MOVIE_NO = #{movieNo} AND MEMBER_ID = #{memberId} ORDER BY REG_DATE DESC
+    </select>
 </mapper>

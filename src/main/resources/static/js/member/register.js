@@ -97,14 +97,12 @@ function verifyCode() {
 
 // 회원가입
 function registerMember() {
-    // const errorFields = [];
 
     if (!idCheck()) {
         window.scrollTo({
             top: idInput.getBoundingClientRect().top + window.pageYOffset - 120,
             behavior: 'smooth'
         });
-        // idInput.scrollIntoView({behavior: 'smooth', block: 'start'});
         return;
     }
     if (!pwCheck()) {
@@ -112,7 +110,6 @@ function registerMember() {
             top: pwInput.getBoundingClientRect().top + window.pageYOffset - 120,
             behavior: 'smooth'
         });
-        // pwInput.scrollIntoView({behavior: 'smooth', block: 'start'});
         return;
     }
     if (!pwCheckCheck()) {
@@ -120,7 +117,6 @@ function registerMember() {
             top: pwCheckInput.getBoundingClientRect().top + window.pageYOffset - 120,
             behavior: 'smooth'
         });
-        // pwCheckInput.scrollIntoView({behavior: 'smooth', block: 'start'});
         return;
     }
     if (!nameCheck()) {
@@ -128,7 +124,6 @@ function registerMember() {
             top: nameInput.getBoundingClientRect().top + window.pageYOffset - 120,
             behavior: 'smooth'
         });
-        // nameInput.scrollIntoView({behavior: 'smooth', block: 'start'});
         return;
     }
     if (!birthDateCheck()) {
@@ -136,7 +131,6 @@ function registerMember() {
             top: birthDateInput.getBoundingClientRect().top + window.pageYOffset - 120,
             behavior: 'smooth'
         });
-        // birthDateInput.scrollIntoView({behavior: 'smooth', block: 'start'});
         return;
     }
     if (!emailCheck()) {
@@ -167,23 +161,8 @@ function registerMember() {
                 top: emailInput.getBoundingClientRect().top + window.pageYOffset - 120,
                 behavior: 'smooth'
             });
-        //     // if (errorFields.length === 0) {
-        //     //     errorFields.push(emailInput);
-        //     // }
-        //     // if (errorFields.length > 0) {
-        //     //     // 첫 번째 에러가 있는 필드로 스크롤
-        //     //     errorFields[0].scrollIntoView({ behavior: 'smooth', block: 'start' });
-        //     // }
             return;
         }
-        // if (errorFields.length > 0) {
-        //     window.scrollTo({
-        //         top: errorFields[0].getBoundingClientRect().top + window.pageYOffset - 180,
-        //         behavior: 'smooth'
-        //     });
-        //     errorFields[0].scrollIntoView({ behavior: 'smooth', block: 'start' });
-        //     return;
-        // }
         const formData = new FormData(document.querySelector('#register-member-form'));
         console.log(formData);
         $.ajax({
@@ -194,8 +173,21 @@ function registerMember() {
             contentType: false, // 브라우저가 알아서 Content-Type 설정하도록 함
             success: function(data) {
                 if (data === 'success') {
-                    alert("회원가입이 완료되었습니다.");
-                    window.location.href = '/login';
+                    Swal.fire({
+                        title: '회원가입 성공!',
+                        text: '씨네메이트에 오신 것을 환영합니다.',
+                        icon: 'success',
+                        confirmButtonText: '확인',
+                        customClass: {
+                            title: 'custom-title',
+                            text: 'custom-text',
+                            confirmButton: 'confirm-button'
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '/';
+                        }
+                    });
                 }
             },
             error: function() {

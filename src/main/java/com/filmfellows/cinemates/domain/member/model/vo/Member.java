@@ -20,4 +20,7 @@ public class Member {
     private String deleteYn;
     private String role;
     private Timestamp regDate;
+    private Integer reportCount;
+    private Timestamp banPeriod;
+    private Integer ticketCount;
 }

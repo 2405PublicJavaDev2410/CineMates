@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
     }
-
+    // 회원탈퇴 카테고리 활성화
     document.querySelector('#side-menu-5').classList.add('selected');
 });
 

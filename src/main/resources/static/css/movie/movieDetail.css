@@ -19,6 +19,7 @@
     height: auto;
     margin-right: 20px;
     border-radius: 10px;
+    cursor: pointer;
 }
 .movie-info {
     flex: 1;
@@ -322,6 +323,13 @@
 .review-username {
     font-weight: bold;
 }
+
+.isMyReview {
+    font-size: 0.8em;
+    background-color: #D54946;
+    color: white;
+    padding: 2px;
+}
 .review-date {
     color: #888;
     font-size: 0.9em;
@@ -331,8 +339,14 @@
     font-size: 1.2em;
     margin-top: 5px;
 }
+.delete-review {
+    color: #D54946;
+    font-size: 0.9em;
+    cursor: pointer;
+    /*margin-right: 10px;*/
+}
 .review-report {
-    color: #888;
+    color: #D54946;
     font-size: 0.9em;
     cursor: pointer;
     /*font-family: 'GmarketSansMedium', serif;*/
