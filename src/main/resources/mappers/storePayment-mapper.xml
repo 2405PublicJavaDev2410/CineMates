@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.filmfellows.cinemates.domain.store.model.mapper.StorePaymentMapper">
+<mapper namespace="com.filmfellows.cinemates.domain.store.model.mapper.StorePayMapper">
 
-    <update id="updateStorePayment" parameterType="StorePayment">
-        UPDATE STORE_PAYMENT_TBL
-        SET PAYMENT_STATUS = #{paymentStatus},
-            PAYMENT_KEY = #{paymentKey},
-            PAYMENT_DATE = #{paymentDate}
-        WHERE STORE_PAYMENT_NO = #{storePaymentNo}
-    </update>
 </mapper>

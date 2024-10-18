@@ -41,22 +41,8 @@
             PRODUCT_NO = #{productNo}
     </select>
 
-    <select id="selectProductsByProductNos" resultType="Product" parameterType="list">
-        SELECT
-            PRODUCT_NO as productNo,
-            PRODUCT_NAME as productName,
-            CATEGORY_NAME as categoryName,
-            PRICE,
-            DISCOUNT_AMOUNT as discountAmount,
-            PRICE - DISCOUNT_AMOUNT as discountedPrice,
-            IMAGE_URL as imageUrl,
-            DESCRIPTION
-        FROM
-            PRODUCT_TBL
-        WHERE
-            PRODUCT_NO IN
-            <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
-                #{item}
-            </foreach>
+    <select id="selectProductByNo" resultType="Product">
+        SELECT * FROM PRODUCT_TBL
+        WHERE PRODUCT_NO = #{productNo}
     </select>
 </mapper>

@@ -23,25 +23,6 @@ public class Gift {
     private int finalAmount;
     private String paymentMethod;
 
-    private List<GiftProductInfo> products = new ArrayList<>();
-
-    @Setter
-    @Getter
-    @ToString
-    public static class GiftProductInfo {
-        private int giftNo;
-        private int productNo;
-        private int quantity;
-        private int price;
-        private int discountAmount;
-        private Product product;
-    }
-
-    public void addProduct(GiftProductInfo product) {
-        if (this.products == null) {
-            this.products = new ArrayList<>();
-        }
-        this.products.add(product);
-    }
+    private List<GiftItem> giftItems = new ArrayList<>();
 
 }

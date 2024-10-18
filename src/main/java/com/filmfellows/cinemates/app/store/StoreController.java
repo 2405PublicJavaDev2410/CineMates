@@ -5,7 +5,7 @@ import com.filmfellows.cinemates.domain.store.model.service.StoreService;
 import com.filmfellows.cinemates.domain.store.model.vo.*;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -13,13 +13,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/store")
 @RequiredArgsConstructor
 public class StoreController {
-
 
     private final StoreService sService;
 
@@ -109,7 +107,11 @@ public class StoreController {
 
     @PostMapping("/cart/update")
     @ResponseBody
-    public ResponseEntity<?> updateCart(@RequestBody Cart cartItem) {
+    public ResponseEntity<?> updateCart(@RequestBody Map<String, Integer> cartData) {
+        Cart cartItem = new Cart();
+        cartItem.setCartNo(cartData.get("cartNo"));
+        cartItem.setProductNo(cartData.get("productNo"));
+        cartItem.setQuantity(cartData.get("quantity"));
         boolean success = sService.updateCartItem(cartItem);
         if(success) {
             return ResponseEntity.ok().body(Map.of("success", true, "message", "장바구니가 업데이트되었습니다."));
@@ -120,9 +122,13 @@ public class StoreController {
 
     @PostMapping("cart/delete")
     @ResponseBody
-    public ResponseEntity<?> deleteFromCart(@RequestBody Map<String, List<Integer>> request) {
-        List<Integer> cartNos = request.get("cartNos");
-        boolean success = sService.deleteCartItems(cartNos);
+    public ResponseEntity<?> deleteFromCart(@RequestBody Map<String, Integer> request) {
+        Integer cartNo = request.get("cartNo");
+        Integer productNo = request.get("productNo");
+        Cart cartItem = new Cart();
+        cartItem.setCartNo(cartNo);
+        cartItem.setProductNo(productNo);
+        boolean success = sService.deleteCartItems(cartItem);
         if(success) {
             return ResponseEntity.ok().body(Map.of("success", true, "message", "선택한 상품(들)이 삭제되었습니다."));
         } else {
@@ -142,83 +148,20 @@ public class StoreController {
         }
     }
 
-/*    @PostMapping("/cart/proceed")
-    public String proceedFromCart(@RequestParam List<Integer> selectedItems
-            , @RequestParam("action") String action
-            , HttpSession session) {
-        String memberId = (String) session.getAttribute("memberId");
-        List<Cart> selectedCarts = sService.getSelectedCartItems(memberId, selectedItems);
-
-        if ("gift".equals(action)) {
-            Gift gift = sService.initializeGiftFromCart(memberId, selectedCarts);
-            session.setAttribute("giftInfo", gift);
-            return "redirect:/store/gift/prepare";
-        } else if ("purchase".equals(action)) {
-            Purchase purchase = new Purchase();
-            purchase.setMemberId(memberId);
-            purchase.setItems(selectedCarts.stream()
-                    .map(cart -> {
-                        PurchaseItem item = new PurchaseItem();
-                        item.setProductNo(cart.getProductNo());
-                        item.setQuantity(cart.getQuantity());
-                        item.setProduct(cart.getProduct());
-                        return item;
-                    })
-                    .collect(Collectors.toList()));
-            session.setAttribute("purchaseInfo", purchase);
-            return "redirect:/store/purchase";
-        } else {
-            return "redirect:/store/cart";
-        }
-    }*/
-
-    @PostMapping("/cart/proceed")
-    public ResponseEntity<?> proceedFromCart(@RequestBody Map<String, Object> request, HttpSession session) {
-        String memberId = (String) session.getAttribute("memberId");
-        if (memberId == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("success", false, "message", "로그인이 필요합니다."));
-        }
-
-        String action = (String) request.get("action");
-        List<Cart> selectedCarts;
-
-        if (request.containsKey("all") && (boolean) request.get("all")) {
-            selectedCarts = sService.getCartItems(memberId);
-        } else {
-            List<Integer> selectedItems = (List<Integer>) request.get("selectedItems");
-            selectedCarts = sService.getSelectedCartItems(memberId, selectedItems);
-        }
-
-        if ("gift".equals(action)) {
-            Gift gift = sService.initializeGiftFromCart(memberId, selectedCarts);
-            session.setAttribute("giftInfo", gift);
-            return ResponseEntity.ok(Map.of("success", true, "redirectUrl", "/store/gift/prepare"));
-        } else if ("purchase".equals(action)) {
-            Purchase purchase = sService.initializePurchaseFromCart(memberId, selectedCarts);
-            session.setAttribute("purchaseInfo", purchase);
-            return ResponseEntity.ok(Map.of("success", true, "redirectUrl", "/store/purchase/" + purchase.getPurchaseNo()));
-        } else {
-            return ResponseEntity.badRequest().body(Map.of("success", false, "message", "잘못된 요청입니다."));
-        }
-    }
-
     @GetMapping("/gift/{productNo}")
-    public String showGiftForProduct(@PathVariable int productNo
-            , Model model
-            , HttpSession session) {
+    public String showGiftForProduct(@PathVariable int productNo, Model model, HttpSession session) {
         String memberId = (String) session.getAttribute("memberId");
         if (memberId == null) {
             return "redirect:/login";
         }
 
-        Gift gift = sService.initializeGift(memberId, productNo, 1);
+        Gift gift = sService.initializeGift(memberId, List.of(Map.of("productNo", productNo, "quantity", 1)), false);
         session.setAttribute("giftInfo", gift);
         model.addAttribute("gift", gift);
         return "store/gift";
     }
 
-    @GetMapping("gift/prepare")
+    @GetMapping("/gift/prepare")
     public String prepareGift(Model model, HttpSession session) {
         Gift gift = (Gift) session.getAttribute("giftInfo");
         if (gift == null) {
@@ -226,37 +169,51 @@ public class StoreController {
         }
 
         model.addAttribute("gift", gift);
-
         return "store/gift";
     }
 
-    @PostMapping("/gift/initiate")
-    public String initiateGift(@RequestParam("productNo") int productNo
-            , @RequestParam("quantity") int quantity
-            , HttpSession session) {
+    @PostMapping("/gift/submit")
+    public String submitGift(@ModelAttribute Gift gift, HttpSession session) {
         String memberId = (String) session.getAttribute("memberId");
         if (memberId == null) {
             return "redirect:/login";
         }
-        Gift gift = sService.initializeGift(memberId, productNo, quantity);
-        session.setAttribute("giftInfo", gift);
-        return "redirect:/store/gift/prepare";
+
+        gift.setSenderId(memberId);
+        Gift savedGift = sService.saveGift(gift);
+        session.setAttribute("giftInfo", savedGift);
+
+        return "redirect:/store/gift/confirm/" + savedGift.getGiftNo();
+    }
+
+    @GetMapping("/gift/{giftNo}")
+    public String confirmGift(@PathVariable int giftNo, Model model, HttpSession session) {
+        String memberId = (String) session.getAttribute("memberId");
+        if (memberId == null) {
+            return "redirect:/login";
+        }
+
+        Gift gift = sService.getGiftByNo(giftNo);
+        if (gift == null || !gift.getSenderId().equals(memberId)) {
+            return "redirect:/error/accessDenied";
+        }
+
+        model.addAttribute("gift", gift);
+        return "store/gift";
     }
 
     // 선물받는 회원 정보 확인
     @PostMapping("/gift/set-recipient")
     @ResponseBody
-    public ResponseEntity<?> setRecipient(@RequestBody Map<String, String> recipientInfo
-            , HttpSession session) {
+    public ResponseEntity<?> setRecipient(@RequestBody Map<String, String> recipientInfo, HttpSession session) {
         String name = recipientInfo.get("name");
         String phone = recipientInfo.get("phone");
         Gift gift = (Gift) session.getAttribute("giftInfo");
 
         if (gift == null) {
-            return ResponseEntity.badRequest().body(Map.of("succtess", false, "message", "선물 정보가 없습니다."));
-
+            return ResponseEntity.badRequest().body(Map.of("success", false, "message", "선물 정보가 없습니다."));
         }
-        boolean success = sService.verifyAndSerRecipient(gift, name, phone);
+        boolean success = sService.verifyAndSetRecipient(gift, name, phone);
         if (success) {
             session.setAttribute("giftInfo", gift);
             return ResponseEntity.ok(Map.of("success", true, "message", "수신자 확인 완료"));
@@ -290,109 +247,98 @@ public class StoreController {
         }
 
         // 구매 정보 조회
+
         Purchase purchase = sService.getPurchaseDetails(purchaseNo);
-        // 구매 정보의 memberId와 로그인한 회원의 ID가 일치하는지 확인
         if (purchase == null || !purchase.getMemberId().equals(memberId)) {
-            // 일치하지 않으면 에러 페이지 리다이렉트
             return "redirect:/error/accessDenied";
         }
 
-        Member orderer = sService.getMemberById(memberId);
-
+        Member member = sService.getMemberById(memberId);
+        model.addAttribute("member", member);  // 회원 정보 모델에 추가
         model.addAttribute("purchase", purchase);
-        model.addAttribute("orderer", orderer);
-
         return "store/purchase";
     }
 
     @PostMapping("/purchase/initiate")
-    public String initiatePurchase(@RequestParam("productNo") int productNo, HttpSession session) {
+    public ResponseEntity<?> initiatePurchase(@RequestBody Map<String, Object> request, HttpSession session) {
         String memberId = (String) session.getAttribute("memberId");
         if (memberId == null) {
-            return "redirect:/login";
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("success", false, "message", "로그인이 필요합니다."));
         }
-        Purchase purchase = sService.initializePurchase(memberId, productNo);
-        session.setAttribute("purchaseInfo", purchase);
-        return "redirect:/store/purchase/" + purchase.getPurchaseNo();
+
+        String action = (String) request.get("action");
+        boolean purchaseAll = (boolean) request.getOrDefault("purchaseAll", false);
+        List<Map<String, Object>> items = (List<Map<String, Object>>) request.get("items");
+
+        try {
+            if ("gift".equals(action)) {
+                Gift gift = sService.initializeGift(memberId, items, purchaseAll);
+                session.setAttribute("giftInfo", gift);
+                return ResponseEntity.ok(Map.of("success", true, "redirectUrl", "/store/gift/prepare"));
+            } else {
+                Purchase purchase = sService.initializePurchase(memberId, items, purchaseAll);
+                return ResponseEntity.ok(Map.of("success", true, "redirectUrl", "/store/purchase/" + purchase.getPurchaseNo()));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("success", false, "message", "주문 처리 중 오류가 발생했습니다: " + e.getMessage()));
+        }
     }
 
-/*    // 결제 준비
-    @PostMapping("/prepare-payment")
+    @PostMapping("/purchase/update")
     @ResponseBody
-    public ResponseEntity<?> preparePayment(@RequestBody Map<String, Object> paymentInfo, HttpSession session) {
-        try {
-            boolean giftYn = (boolean) paymentInfo.get("giftYn");
-            KakaoPayReady kakaoPayReady;
-            if (giftYn) {
-                Gift gift = (Gift) session.getAttribute("giftInfo");
-                if (gift == null) {
-                    return ResponseEntity.badRequest().body(Map.of("error", "Gift information not found"));
-                }
-                kakaoPayReady = sService.prepareGiftPayment(gift);
-            } else {
-                Purchase purchase = (Purchase) session.getAttribute("purchaseInfo");
-                if (purchase == null) {
-                    return ResponseEntity.badRequest().body(Map.of("error", "Purchase information not found"));
-                }
-                kakaoPayReady = sService.preparePurchasePayment(purchase);
-            }
-
-            // 결제 준비 정보를 세션에 저장
-            StorePayment storePayment = new StorePayment();
-            storePayment.setPurchaseType(giftYn ? "GIFT" : "PURCHASE");
-            storePayment.setAmount(giftYn ? ((Gift)session.getAttribute("giftInfo")).getFinalAmount()
-                    : ((Purchase)session.getAttribute("purchaseInfo")).getFinalAmount());
-            storePayment.setPaymentStatus("READY");
-            storePayment.setPaymentKey(kakaoPayReady.getTid());
-            session.setAttribute("storePayment", storePayment);
-
-            return ResponseEntity.ok().body(kakaoPayReady);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+    public ResponseEntity<?> updatePurchase(@RequestBody Purchase purchase, HttpSession session) {
+        String memberId = (String) session.getAttribute("memberId");
+        if (memberId == null || !purchase.getMemberId().equals(memberId)) {
+            return ResponseEntity.badRequest().body("권한이 없습니다.");
         }
+        sService.updatePurchase(purchase);
+        return ResponseEntity.ok("구매 정보가 업데이트되었습니다.");
     }
 
-    // 결제 완료
-    @PostMapping("/complete-payment")
-    public String completePayment(@RequestParam("pg_token") String pgToken,
-                                  HttpSession session) {
+    @PostMapping("/payment/complete")
+    public ResponseEntity<String> completePayment(@RequestBody Map<String, Object> request, HttpSession session) {
         try {
-            StorePayment storePayment = (StorePayment) session.getAttribute("storePayment");
-            if (storePayment == null) {
-                return "redirect:/store/payment-failure";
+            String memberId = (String) session.getAttribute("memberId");
+            if (memberId == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body("User not logged in");
             }
 
-            boolean giftYn = "GIFT".equals(storePayment.getPurchaseType());
-            KakaoPayApproval approval;
+            // 결제 정보 생성
+            Purchase purchase = new Purchase();
+            purchase.setMemberId(memberId);
+            purchase.setPurchaseDate(new Date());
+            purchase.setStatus("COMPLETE");
+            purchase.setPaymentMethod(request.get("paymentMethod").toString());
+            purchase.setTotalAmount(Integer.parseInt(request.get("paid_amount").toString()));
+            purchase.setFinalAmount(Integer.parseInt(request.get("paid_amount").toString()));
 
-            if (giftYn) {
-                Gift gift = (Gift) session.getAttribute("giftInfo");
-                if (gift == null) {
-                    return "redirect:/store/gift";
-                }
-                approval = sService.completeGiftPayment(gift, pgToken, storePayment.getPaymentKey());
-                sService.processGiftSend(gift);
-                session.removeAttribute("giftInfo");
-            } else {
-                Purchase purchase = (Purchase) session.getAttribute("purchaseInfo");
-                if (purchase == null) {
-                    return "redirect:/store/cart";
-                }
-                approval = sService.completePurchasePayment(purchase, pgToken, storePayment.getPaymentKey());
-                session.removeAttribute("purchaseInfo");
-            }
+            // 상품 정보 조회
+            int productNo = Integer.parseInt(request.get("productNo").toString());
+            Product product = sService.getProductByNo(productNo);
 
-            // 결제 완료 처리
-            storePayment.setPaymentStatus("COMPLETED");
-            storePayment.setPaymentDate(new Date());
-            sService.updateStorePayment(storePayment);
+            // 구매 아이템 정보 생성
+            PurchaseItem purchaseItem = new PurchaseItem();
+            purchaseItem.setProductNo(productNo);
+            purchaseItem.setQuantity(Integer.parseInt(request.get("quantity").toString()));
+            purchaseItem.setProduct(product);
+            purchaseItem.setPurchasePrice(product.getPrice());
+            purchaseItem.setPurchaseDiscountAmount(product.getDiscountAmount());
 
-            session.removeAttribute("storePayment");
+            // 구매 정보에 아이템 추가
+            purchase.setPurchaseItems(Collections.singletonList(purchaseItem));
 
-            return giftYn ? "redirect:/store/gift-confirmation" : "redirect:/store/payment-success";
+            // 구매 처리 및 티켓 카운트 증가 (영화관람권인 경우에만)
+            sService.processPurchase(purchase);
+
+            return ResponseEntity.ok("Payment completed successfully.");
         } catch (Exception e) {
-            // 에러 처리
-            return "redirect:/store/payment-failure";
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error processing payment : " + e.getMessage());
         }
-    }*/
+    }
 }
