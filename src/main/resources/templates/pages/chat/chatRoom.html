@@ -256,14 +256,13 @@
                 <div class="user-list-container">
                     <div th:each="joinList:${chatJoinList}" style="display: flex; flex-direction: column;align-items: center">
                             <th:block th:if="${joinList.filePath == null}">
-                                <img alt="프로필" src="/img/default_profile.png" style="width: 60px; height: 60px; border-radius: 50%;">
+                                <img th:id="${joinList.getMemberId()}" alt="프로필" src="/img/default_profile.png" style="width: 60px; height: 60px; border-radius: 50%;">
                             </th:block>
                             <th:block th:if="${joinList.filePath != null}">
-                                <img th:src="@{|${joinList.filePath}${joinList.fileRename}|}" alt="프로필" style="width: 60px; height: 60px; border-radius: 50%;">
+                                <img th:id="${joinList.getMemberId()}" th:src="@{|${joinList.filePath}${joinList.fileRename}|}" alt="프로필" style="width: 60px; height: 60px; border-radius: 50%;">
                             </th:block>
                         <div th:text="${joinList.memberId}"></div>
                     </div>
-
                 </div>
                 <div class="main-screen">
                     <th:block th:each="chatMessageList : ${chatMessageList}">
@@ -294,15 +293,15 @@
                 </div>
 
                 <div class="message-input-box">
-                    <textarea class="message-input" placeholder="메세지 입력"></textarea>
+                    <textarea class="message-input" placeholder="메세지 입력" ></textarea>
                     <div style="display: flex; justify-content: right;">
-                        <button type="button" onclick="sendMessage();" onkeydown="if(event.key === 'Enter'){sendMessage();}">전송</button>
+                        <button type="button" onclick="sendMessage();">전송</button>
                     </div>
                 </div>
             </div>
         </div>
         <div style="width: 100%; display: flex; justify-content: end">
-            <button type="button" onclick="if(confirm('채팅방을 나가시겠습니까?')) leaveChatRoom();">나가기</button>
+            <button type="button" onclick="if(confirm('채팅방을 정말 나가시겠습니까? 나갈 경우 이전의 대화기록을 확인할 수 없습니다.')) leaveChatRoom();">나가기</button>
         </div>
 
         <script th:inline="javascript">
@@ -317,6 +316,7 @@
 
             function webSocketConnect(){
                 socket = new WebSocket(socketUrl);
+                debugger;
 
                 socket.onopen = function() {
                     const joinMessage = {
@@ -331,6 +331,14 @@
                         saveMessage(joinMessage);
                     }
 
+                    let profileImg = document.querySelector(`#${memberId}`);
+                    if (profileImg) {
+                        // 프로필 이미지 투명하게 처리 (opacity를 0.5로 설정)
+                        profileImg.style.opacity = '1';
+                    }
+
+
+
                 };
 
                 socket.onmessage = function(event) {
@@ -343,9 +351,21 @@
                     }else{
                         displayMessage(message, "my")
                     }
+
+                    if(message.messageType === 'WAIT'){
+                        let memberId = message.memberId;
+                        let profileImg = document.querySelector(`#${memberId}`);
+                        if (profileImg) {
+                            // 프로필 이미지 투명하게 처리 (opacity를 0.5로 설정)
+                            profileImg.style.opacity = '0.5';
+                        }
+                    }
                 }
 
+
+                // 대화방을 잠시 나가면 프로필 이미지 투명하게
                 socket.onclose = function(event){
+                    console.log("소켓 연결 끊김..")
                     // setTimeout(function() {
                     //     webSocketConnect();  // 1초 후 다시 연결 시도
                     // }, 1000);
@@ -354,6 +374,7 @@
 
             // 메세지 전송
             function sendMessage(){
+                let messageInput = document.querySelector('.message-input');
                 let message = document.querySelector(".message-input").value;
 
                 const talkMessage = {
@@ -368,6 +389,7 @@
                     socket.send(JSON.stringify(talkMessage));
                     // db에 저장
                     saveMessage(talkMessage);
+                    messageInput.value = "";
                 }
 
             }
@@ -413,7 +435,6 @@
                        mainScreen.appendChild(otherChatBoxDiv);
                    }
                }else {
-
                    let noticeBoxDiv = document.createElement('div');
                    noticeBoxDiv.setAttribute("class", "notice-box");
                    noticeBoxDiv.innerHTML = `
@@ -422,9 +443,7 @@
                     </div>
                 `;
                    mainScreen.appendChild(noticeBoxDiv);
-
                }
-
 
             }
 
@@ -496,6 +515,29 @@
                         console.error('저장 에러:', error);
                     });
             }
+
+
+            // 키 다운 이벤트
+            let messageTextArea = document.querySelector('.message-input');
+            messageTextArea.addEventListener('keydown', function (event) {
+                // Ctrl + Enter를 눌렀을 때 줄바꿈
+                if (event.key === 'Enter' && event.ctrlKey) {
+                    event.preventDefault();
+                    const cursorPosition = messageTextArea.selectionStart;
+                    const text = messageTextArea.value;
+                    messageTextArea.value = text.slice(0, cursorPosition) + '\n' + text.slice(cursorPosition);
+                    messageTextArea.selectionStart = messageTextArea.selectionEnd = cursorPosition + 1;
+                }
+                // 그냥 Enter를 눌렀을 때 메시지 전송
+                else if (event.key === 'Enter') {
+                    event.preventDefault();  // 기본 줄바꿈 기능 막기
+                    sendMessage();  // 메시지 전송 함수 호출
+                }
+            });
+
+
+            // ajax userList 업데이트
+            // function
 
         </script>
     </body>

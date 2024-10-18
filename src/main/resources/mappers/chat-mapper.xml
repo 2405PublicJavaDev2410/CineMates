@@ -180,10 +180,20 @@
     <select id="selectMyJoinDate" resultType="java.sql.Timestamp">
         SELECT CHAT_DATE
         FROM (
-                 SELECT *
+                 -- 대화방에 다시 참여한 시점을 구하는 쿼리
+                 SELECT CHAT_DATE
                  FROM CHAT_TBL
                  WHERE MEMBER_ID = #{memberId}
-                   AND CHAT_CONTENT LIKE '%' || '대화방에 참여했습니다' || '%'
+                   AND CHAT_CONTENT LIKE #{memberId} || '님이 대화방에 참여했습니다' || '%'
+                   AND CHAT_NO > (
+                     -- 마지막으로 나간 시점을 구하는 서브쿼리, 없으면 0으로 처리
+                     NVL((
+                             SELECT MAX(CHAT_NO)
+                             FROM CHAT_TBL
+                             WHERE MEMBER_ID = #{memberId}
+                               AND CHAT_CONTENT LIKE #{memberId} || '님이 대화방을 나갔습니다' || '%'
+                         ), 0)
+                     )
                  ORDER BY CHAT_NO ASC
              )
         WHERE ROWNUM = 1

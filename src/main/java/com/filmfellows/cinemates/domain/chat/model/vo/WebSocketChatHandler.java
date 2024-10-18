@@ -33,7 +33,7 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
         // TODO Auto-generated method stub
         log.info("{} 연결됨", session.getId());
         sessions.add(session);
-        session.sendMessage(new TextMessage("WebSocket 연결 완료"));
+        session.sendMessage(new TextMessage("{chatContent: 'WebSocket 연결 완료'}"));
         System.out.println(session.getId());
     }
 
