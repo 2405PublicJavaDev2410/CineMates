@@ -20,9 +20,9 @@ public class StorePayController {
     private final StorePayService spService;
     private final IamportClient iamportClient;
 
-    @Value("${IMP_API_KEY}")
+    @Value("${IMP_API_KEY2}")
     String apiKey;
-    @Value("${IMP_API_SECRETKEY}")
+    @Value("${IMP_API_SECRETKEY2}")
     String apiSecret;
 
     public StorePayController(StorePayService spService) {
