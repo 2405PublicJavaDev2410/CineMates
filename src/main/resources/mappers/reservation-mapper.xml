@@ -150,8 +150,8 @@
     <!--결제 후 티켓 차감-->
     <update id="updateTicketCount">
         UPDATE MEMBER_TBL
-        SET TICKET_COUNT=TICKET_COUNT - 1
-        where MEMBER_ID = #{memberId}
+        SET TICKET_COUNT=TICKET_COUNT-1
+        where MEMBER_ID = #{memberIds}
     </update>
     <select id="selectUpdatedReservation" resultType="ReservationDTO">
         select * from member_tbl where MEMBER_ID=#{memberIds}

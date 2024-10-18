@@ -14,6 +14,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Configuration
@@ -82,11 +84,16 @@ public class PaymentService {
     }
 
 
-    public int calcTicketCount(String memberId) {
-        return rmapper.updateTicketCount(memberId);
+    public List<ReservationDTO> updateTicketCount(List<String> allMemberId) {
+        List<ReservationDTO> updatedMembers = new ArrayList<>();
+        for (String memberIds : allMemberId) {
+            int updatedRows = rmapper.updateTicketCount(memberIds);
+            if (updatedRows > 0) {
+                ReservationDTO updatedMember = rmapper.selectUpdatedReservation(memberIds);
+                updatedMembers.add(updatedMember);
+            }
+        }
+        return updatedMembers;
+    }
     }
 
-    public ReservationDTO selectUpdatedReservation(String memberId) {
-        return rmapper.selectUpdatedReservation(memberId);
-    }
-}

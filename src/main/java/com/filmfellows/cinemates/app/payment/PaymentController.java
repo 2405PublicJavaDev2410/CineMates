@@ -18,6 +18,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -76,11 +78,12 @@ public class PaymentController {
 
     @ResponseBody
     @PostMapping("/payment/ticket")
-        public ResponseEntity<Integer> payByTicket(String memberId ,Model model){
-        int result = paymentService.calcTicketCount(memberId);
-        ReservationDTO rDTO = paymentService.selectUpdatedReservation(memberId);
-        System.out.println("TicketCount: " + result);
-        return ResponseEntity.ok(result);
+    public ResponseEntity<List<ReservationDTO>> payByTicket(@RequestParam String memberId, Model model) {
+        List<String> allMemberId = Arrays.asList(memberId.split(","));
+        System.out.println("allMemberId:" + allMemberId);
+        List<ReservationDTO> updatedMembers = paymentService.updateTicketCount(allMemberId);
+        System.out.println("Updated members: " + updatedMembers);
+        return ResponseEntity.ok(updatedMembers);
     }
     // 결제 성공 후 결제 한 제품에 대한 정보 조회하는 메소드
     @PostMapping("/validation/{imp_uid}")
