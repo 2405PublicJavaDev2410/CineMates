@@ -1,0 +1,68 @@
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 20px;
+    line-height: 1.6;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+h2 {
+    color: black; /* 강조 색상 */
+    font-size: 24px;
+    border-bottom: 2px solid #EA4E4A;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background-color: #ddd;
+    margin: 20px 0;
+}
+
+pre {
+    background-color: #f0f8ff; /* 가독성을 위한 배경색 */
+    padding: 15px;
+    border-radius: 5px;
+    font-size: 16px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+div {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+button {
+
+    cursor: pointer;
+    width: 100%;
+    height: 54px;
+    background-color: #EA4E4A;
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+    font-size: 18px;
+    letter-spacing: 2px;
+    color: white;
+    border: none;
+    border-radius: 15px;
+}
+button:hover {
+    background-color: #E12C25;
+}
+
+/* 주차 안내 박스 */
+.parking-info {
+    background-color: #fff8dc;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+#map {
+    width: 100%;
+    height: 400px;
+}
