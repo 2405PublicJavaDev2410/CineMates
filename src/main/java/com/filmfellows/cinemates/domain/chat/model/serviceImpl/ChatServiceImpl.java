@@ -160,5 +160,10 @@ public class ChatServiceImpl implements ChatService {
         return cMapper.selectMyJoinDate(memberId, roomNo);
     }
 
+    @Override
+    public void deleteMemberJoinByRoom(Integer roomNo, String memberId) {
+        cMapper.deleteMemberJoinByRoom(roomNo, memberId);
+    }
+
 
 }

@@ -65,6 +65,10 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
             // 퇴장 메세지
             chatRoomSessionMap.get(chatMessage.getRoomNo()).remove(session);
             chatMessage.setChatContent("님이 대화방을 나갔습니다");
+        }else if(chatMessage.getMessageType().equals(ChatMessage.MessageType.WAIT)){
+            chatRoomSessionMap.get(chatMessage.getRoomNo()).remove(session);
+            chatMessage.setChatContent("WAIT");
+            System.out.println("WAIT!!!!!!!!!!!!");
         }
 
         // 채팅 메세지 전송

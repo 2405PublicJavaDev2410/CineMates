@@ -105,4 +105,11 @@ public interface ChatService {
      * @return Timestamp
      */
     Timestamp selectMyJoinDate(String memberId, Integer roomNo);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : 채팅방 나가기
+     * @return Timestamp
+     */
+    void deleteMemberJoinByRoom(Integer roomNo, String memberId);
 }

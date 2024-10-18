@@ -166,7 +166,7 @@
     <select id="selectChatJoinList" resultType="ChatJoinProfile">
         SELECT MEMBER_ID, ROOM_NO, FILE_RENAME, FILE_PATH
         FROM CHAT_JOIN_TBL
-        JOIN PROFILE_IMG_TBL USING(MEMBER_ID) WHERE ROOM_NO=#{roomNo}
+        LEFT JOIN PROFILE_IMG_TBL USING(MEMBER_ID) WHERE ROOM_NO=#{roomNo}
     </select>
 
     <insert id="insertChatJoin">
@@ -207,5 +207,9 @@
             CHAT_DATE >= #{myJoinDate}
         ORDER BY CHAT_DATE ASC
     </select>
+
+    <delete id="deleteMemberJoinByRoom">
+        DELETE FROM CHAT_JOIN_TBL WHERE MEMBER_ID=#{memberId} AND ROOM_NO=#{roomNo}
+    </delete>
 
 </mapper>

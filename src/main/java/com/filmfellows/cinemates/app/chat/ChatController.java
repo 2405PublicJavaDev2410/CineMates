@@ -42,9 +42,9 @@ public class ChatController {
 
         // 로그인 확인
         String memberId = (String) session.getAttribute("memberId");
-        if(memberId == null) {
-            return "redirect:/login";
-        }
+//        if(memberId == null) {
+//            return "redirect:/login";
+//        }
         Map<String, String> writerInfo = new HashMap<>();
         writerInfo.put("writer", memberId);
         writerInfo.put("status", status);
@@ -342,12 +342,18 @@ public class ChatController {
     }
 
 
-    @PostMapping("/chat/getUserList")
-    public String getUSerList(Model model, Integer roomNo){
-        // 채팅방에 참여한 리스트 조회 ( 프로필 이미지까지 )
-        List<ChatJoinProfile> chatJoinList = cService.selectChatJoinList(roomNo);
+    @PostMapping("/chat/getUserListAndDelete")
+    public String getUSerList(Model model, Integer roomNo, String memberId, String status){
 
-        System.out.println("updateProfile : " + chatJoinList);
+        // delete면 삭제하기
+        if("delete".equals(status)){
+            cService.deleteMemberJoinByRoom(roomNo, memberId);
+        }
+        List<ChatJoinProfile> chatJoinList = cService.selectChatJoinList(roomNo);
+        // 채팅방에 참여한 리스트 조회 ( 프로필 이미지까지 )
+
+
+
         model.addAttribute("chatJoinList", chatJoinList);
         return "pages/chat/chatRoom::#user-list-container";
     }
