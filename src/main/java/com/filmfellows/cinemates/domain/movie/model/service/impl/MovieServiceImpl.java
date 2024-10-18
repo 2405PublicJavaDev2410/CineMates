@@ -126,8 +126,9 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<ReviewDTO> getReviewByMovieNo(Long movieNo) {
-        return movieMapper.selectReviewByMovieNo(movieNo);
+    public List<ReviewDTO> getReviewByMovieNo(Long movieNo, int page, int size) {
+        int offset = page * size;
+        return movieMapper.selectReviewByMovieNo(movieNo, offset, size);
     }
 
     @Override

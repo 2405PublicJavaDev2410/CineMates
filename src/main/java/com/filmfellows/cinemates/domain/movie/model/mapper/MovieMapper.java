@@ -49,7 +49,9 @@ public interface MovieMapper {
                                                         @Param("offset") int offset,
                                                         @Param("size") int size);
 
-    List<ReviewDTO> selectReviewByMovieNo(@Param("movieNo") Long movieNo);
+    List<ReviewDTO> selectReviewByMovieNo(@Param("movieNo") Long movieNo,
+                                          @Param("offset") int offset,
+                                          @Param("size") int size);
 
     int insertReview(Review addReview);
 }

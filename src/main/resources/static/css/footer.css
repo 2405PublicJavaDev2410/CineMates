@@ -1,5 +1,23 @@
-footer{
-    background-color:gray;
+.footer{
+    background-color: #233245;
+    width: 100%;
+    margin: 0 auto;
+    color: #000000;
+}
+.footer-content {
+    padding: 55px 0;
     width: 1200px;
     margin: 0 auto;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.footer-content img {
+    height: 70px;
+}
+#footer-copyright {
+    font-size: 13px;
+    line-height: 1.4;
+    color: #dedede;
+    font-family: "NEXON Lv1 Gothic OTF", serif;
 }

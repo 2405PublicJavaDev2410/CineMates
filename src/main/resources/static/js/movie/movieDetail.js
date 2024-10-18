@@ -56,10 +56,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // 리뷰 작성
-//
-
-
-
 document.addEventListener('DOMContentLoaded', function() {
     const reviewsTab = document.querySelector('#reviewsTab');
 
@@ -202,3 +198,5 @@ document.addEventListener('DOMContentLoaded', function() {
         this.classList.toggle('zoomed');
     }
 });
+
+function moveToTicketing() { location.href="/Ticketing" }

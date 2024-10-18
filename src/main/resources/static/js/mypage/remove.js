@@ -1,7 +1,9 @@
+let pwInput, pwIcon, pwFailureMessage;
+
 document.addEventListener("DOMContentLoaded", function() {
-    const pwInput = document.querySelector('#pw-input');
-    const pwIcon = document.querySelector('.pwIcon');
-    const pwFailureMessage = document.querySelector('#pw-failure-message');
+    pwInput = document.querySelector('#pw-input');
+    pwIcon = document.querySelector('.pwIcon');
+    pwFailureMessage = document.querySelector('#pw-failure-message');
 
     // 비밀번호 입력 필드와 아이콘이 존재할 경우
     if (pwInput && pwIcon) {

@@ -97,11 +97,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     <span class="bar">|</span>
                     <span>${movie.releaseDate ? movie.releaseDate + ' 개봉' : '개봉일 미정'}</span>
                 </div>
-                <button class="booking-button">예매</button>
+                <form action="/Ticketing" method="get">
+                    <input type="hidden" name="movieNo" value="${movie.movieNo}">
+                    <input type="hidden" name="title" value="${movie.title}">
+                    <button type="submit" class="booking-button">예매하기</button>
+                </form>
             </div>
         `;
         return movieDiv;
     }
+
+
 
     loadMoreBtn.addEventListener('click', function() {
         if (hasMoreMovies) {

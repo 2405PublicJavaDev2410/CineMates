@@ -16,6 +16,7 @@
         <!-- 일반 회원 정보가 있는 경우 -->
         <div class="update-form">
             <p id="update-title">회원 정보 수정</p><br><br>
+            <br>
             <div id="member-section" th:if="${member != null}">
                 <form id="update-member-form" enctype="multipart/form-data">
                     <div class="input-group">
@@ -70,7 +71,7 @@
                     </div>
                     <div id="thumbnail-container">
                         <img id="profile-thumbnail" alt="사진 미리보기"
-                             th:src="@{${profileImg != null ? profileImg.filePath + profileImg.fileRename : ''}}"
+                             th:src="${profileImg != null ? profileImg.filePath + profileImg.fileRename : ''}"
                              th:style="${profileImg != null ? 'display: block;' : 'display: none;'}">
                     </div>
                     <br><br><br>

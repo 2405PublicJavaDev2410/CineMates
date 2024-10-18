@@ -1,6 +1,6 @@
 /*사이드바 CSS*/
 .my-sidebar {
-    width: 170px;
+    width: 190px;
     height: 100%;
     margin: 0 auto;
     background-color: #f8f8f8;
@@ -9,7 +9,7 @@
     float: left;
 }
 #my-title {
-    width: 170px;
+    width: 190px;
     z-index: 1;
     height: 62px;
     background-color: #233245;
@@ -39,7 +39,7 @@
     text-decoration: none;
     color: black;
     font-size: 16px;
-    padding: 8px 12px;
+    padding: 10px 12px;
     display: block;
     border-radius: 5px;
 }
