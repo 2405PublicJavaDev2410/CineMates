@@ -163,6 +163,19 @@ public class MyPageController {
 
     /**
      * 담당자 : 엄태운
+     * 관련기능 : 구매내역 조회
+     */
+    @GetMapping("/find-order")
+    @ResponseBody
+    public String showOrderList(HttpSession session,
+            @RequestParam("startDate") String startDate,
+            @RequestParam("endDate") String endDate) {
+        String memberId = (String) session.getAttribute("memberId");
+        return "";
+    }
+
+    /**
+     * 담당자 : 엄태운
      * 관련기능 : 문의 등록
      */
     @PostMapping("/qna-register")

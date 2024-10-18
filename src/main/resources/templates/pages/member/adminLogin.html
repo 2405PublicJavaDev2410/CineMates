@@ -1,27 +1,29 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{common/layout/defaultLayout}"
-      layout:fragment="Content">
-<link href="/css/member/adminLogin.css" rel="stylesheet">
-<main>
-    <div id="login-container">
-        <div id="login-form">
-            <h1>관리자 로그인</h1>
-            <br><br>
-            <form id="login-admin-form">
-                <label for="id-input">아이디</label>
-                <input type="text" name="memberId" class="common-input-box" id="id-input" placeholder="아이디를 입력해주세요">
-                <br>
-                <label for="pw-input">비밀번호</label>
-                <input type="password" name="memberPw" class="common-input-box" id="pw-input" placeholder="비밀번호를 입력해주세요">
-                <div class="failure-message hide message" id="failure-message"></div>
-                <br>
-                <button type="button" class="common-primary-btn" onclick="loginAdmin()">로그인</button>
-            </form>
+<html lang="en">
+<head>
+    <link href="/css/common.css" rel="stylesheet">
+    <link href="/css/member/adminLogin.css" rel="stylesheet">
+</head>
+<body>
+    <main>
+        <div id="login-container">
+            <div id="login-form">
+                <h1>관리자 로그인</h1>
+                <br><br>
+                <form id="login-admin-form">
+                    <label for="id-input">아이디</label>
+                    <input type="text" name="memberId" class="common-input-box" id="id-input" placeholder="아이디를 입력해주세요">
+                    <br>
+                    <label for="pw-input">비밀번호</label>
+                    <input type="password" name="memberPw" class="common-input-box" id="pw-input" placeholder="비밀번호를 입력해주세요">
+                    <div class="failure-message hide message" id="failure-message"></div>
+                    <br>
+                    <button type="button" class="common-primary-btn" onclick="loginAdmin()">로그인</button>
+                </form>
+            </div>
         </div>
-    </div>
-</main>
-<script type="text/javascript" src="/js/member/adminLogin.js"></script>
+    </main>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript" src="/js/member/adminLogin.js"></script>
+</body>
 </html>

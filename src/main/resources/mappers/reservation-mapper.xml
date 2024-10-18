@@ -16,6 +16,12 @@
         FROM CINEMA_TBL
         WHERE CINEMA_ADDRESS LIKE '%' || #{cinemaAddress} || '%'
     </select>
+    <!-- 상영관 출력 By Code-->
+    <select id="selectCinemasByCode" resultType="String">
+        SELECT CINEMA_NAME
+        FROM CINEMA_TBL
+        WHERE CINEMA_LOCATION_CODE = #{cinemaLocationCode}
+    </select>
     <!--영화 제목 출력 -->
     <select id="selectMovies" resultType="String">
         SELECT DISTINCT M.TITLE
@@ -24,7 +30,7 @@
                  JOIN SHOWTIME_TBL USING (SCREEN_NO)
                  JOIN MOVIE_TBL M USING (MOVIE_NO)
         WHERE CINEMA_NAME = #{cinemaName}
---           AND SCREENING_STATUS = 'NOW SHOWING'
+          AND IS_BOOKABLE = 'Y'
     </select>
     <!--영화 이름과 번호 출력-->
     <select id="selectCinemaName" resultType="String">
@@ -73,46 +79,81 @@
 
     </select>
     <select id="selectReservationInfo" resultType="myReservationResponse">
-        SELECT
-            R.TITLE AS TITLE,
-            R.RESERVATION_NO AS RESERVATIONNO,
-            TO_CHAR(TO_DATE(P.PAYMENT_DATE, 'YY/MM/DD'), 'YYYY-MM-DD') AS PAYMENTDATE,
-            TO_CHAR(TO_DATE(R.RESERVATION_DATE || ' ' || R.SHOWTIME_TIME, 'YY/MM/DD HH24:MI'), 'YYYY-MM-DD HH24:MI') AS RESERVATIONDATETIME,
-            RTRIM(
-                LISTAGG(CASE
-                    WHEN R.ADULTRESERVED IS NOT NULL AND R.ADULTRESERVED > 0 THEN '성인' || R.ADULTRESERVED || '명/'
-                    ELSE NULL
-                    END, '') WITHIN GROUP (ORDER BY R.ADULTRESERVED) ||
-                LISTAGG(CASE
-                    WHEN R.CHILDRESERVED IS NOT NULL AND R.CHILDRESERVED > 0 THEN '어린이' || R.CHILDRESERVED || '명/'
-                    ELSE NULL
-                    END, '') WITHIN GROUP (ORDER BY R.CHILDRESERVED) ||
-                LISTAGG(CASE
-                    WHEN R.SENIORRESERVED IS NOT NULL AND R.SENIORRESERVED > 0 THEN '경로' || R.SENIORRESERVED || '명/'
-                    ELSE NULL
-                    END, '') WITHIN GROUP (ORDER BY R.SENIORRESERVED),
-                        '/')
-                AS RESERVATIONPEOPLE,
-            REPLACE(R.CINEMA_NAME || '/' || R.SCREEN_NAME, ' ', '') AS CINEMANAME,
-            R.RESERVATION_SEAT AS RESERVATIONSEAT,
-            M.POSTER_URL AS POSTERURL
-        FROM
-            RESERVATION_TBL R
-                JOIN PAYMENT_TBL P ON R.RESERVATION_NO = P.RESERVATION_NO
-                JOIN MOVIE_TBL M  ON p.NAME = m.TITLE
-        WHERE
-            R.RESERVATION_NO = #{reservationNo}
-          AND
-            R.MEMBER_ID = #{memberId}
-        GROUP BY
-            R.MEMBER_ID, R.TITLE, R.RESERVATION_NO, P.PAYMENT_DATE, R.RESERVATION_DATE, R.SHOWTIME_TIME, R.CINEMA_NAME, R.SCREEN_NAME, R.RESERVATION_SEAT, M.POSTER_URL
+        SELECT R.TITLE                                                    AS TITLE,
+               R.RESERVATION_NO                                           AS RESERVATIONNO,
+               TO_CHAR(TO_DATE(P.PAYMENT_DATE, 'YY/MM/DD'), 'YYYY-MM-DD') AS PAYMENTDATE,
+               TO_CHAR(TO_DATE(R.RESERVATION_DATE || ' ' || R.SHOWTIME_TIME, 'YY/MM/DD HH24:MI'),
+                       'YYYY-MM-DD HH24:MI')                              AS RESERVATIONDATETIME,
+               RTRIM(
+                       LISTAGG(CASE
+                                   WHEN R.ADULTRESERVED IS NOT NULL AND R.ADULTRESERVED > 0
+                                       THEN '성인' || R.ADULTRESERVED || '명/'
+                                   ELSE NULL
+                                   END, '') WITHIN GROUP (ORDER BY R.ADULTRESERVED) ||
+                       LISTAGG(CASE
+                                   WHEN R.CHILDRESERVED IS NOT NULL AND R.CHILDRESERVED > 0
+                                       THEN '어린이' || R.CHILDRESERVED || '명/'
+                                   ELSE NULL
+                                   END, '') WITHIN GROUP (ORDER BY R.CHILDRESERVED) ||
+                       LISTAGG(CASE
+                                   WHEN R.SENIORRESERVED IS NOT NULL AND R.SENIORRESERVED > 0
+                                       THEN '경로' || R.SENIORRESERVED || '명/'
+                                   ELSE NULL
+                                   END, '') WITHIN GROUP (ORDER BY R.SENIORRESERVED),
+                       '/')
+                                                                          AS RESERVATIONPEOPLE,
+               REPLACE(R.CINEMA_NAME || '/' || R.SCREEN_NAME, ' ', '')    AS CINEMANAME,
+               R.RESERVATION_SEAT                                         AS RESERVATIONSEAT,
+               M.POSTER_URL                                               AS POSTERURL
+        FROM RESERVATION_TBL R
+                 JOIN PAYMENT_TBL P ON R.RESERVATION_NO = P.RESERVATION_NO
+                 JOIN MOVIE_TBL M ON p.NAME = m.TITLE
+        WHERE R.RESERVATION_NO = #{reservationNo}
+          AND R.MEMBER_ID = #{memberId}
+        GROUP BY R.MEMBER_ID, R.TITLE, R.RESERVATION_NO, P.PAYMENT_DATE, R.RESERVATION_DATE, R.SHOWTIME_TIME,
+                 R.CINEMA_NAME, R.SCREEN_NAME, R.RESERVATION_SEAT, M.POSTER_URL
     </select>
 
     <delete id="deleteReservationInfo">
-        DELETE FROM RESERVATION_TBL WHERE IMP_UID = #{imp_uid}
+        DELETE
+        FROM RESERVATION_TBL
+        WHERE IMP_UID = #{imp_uid}
     </delete>
     <!--영화 전체 조회-->
-    <select id="selectAllMovies" resultType="String">
-        SELECT TITLE FROM MOVIE_TBL
+    <select id="selectAllMovies" resultType="SearchMovieDTO">
+        SELECT TITLE, MOVIE_NO, IS_BOOKABLE, POSTER_URL, RUNNING_TIME
+        FROM MOVIE_TBL
+    </select>
+    <!--지역 코드 조회-->
+    <select id="selectAllLocationCode" resultType="SearchLocationCodeDTO">
+        select distinct CINEMA_LOCATION_CODE as cinemaLocationCode
+        from CINEMA_TBL
+    </select>
+    <!--영화 연령대 검색-->
+    <select id="getAgeRatingByTitle">
+        select RATING
+        from MOVIE_TBL
+        where title = #{title}
+    </select>
+    <!--티켓 검색-->
+    <select id="selectTicketCount" resultType="MemberDTO">
+        SELECT TICKET_COUNT
+        FROM MEMBER_TBL
+        WHERE MEMBER_ID = #{memberId}
+    </select>
+    <!--대화방 인원 총 티켓 검색-->
+    <select id="selectTicketCountByIds" resultType="String">
+        SELECT TICKET_COUNT AS allTicketCount
+        FROM MEMBER_TBL
+        WHERE MEMBER_ID = #{memberId}
+    </select>
+    <!--결제 후 티켓 차감-->
+    <update id="updateTicketCount">
+        UPDATE MEMBER_TBL
+        SET TICKET_COUNT=TICKET_COUNT - 1
+        where MEMBER_ID = #{memberId}
+    </update>
+    <select id="selectUpdatedReservation" resultType="ReservationDTO">
+        select * from member_tbl where MEMBER_ID=#{memberIds}
     </select>
 </mapper>

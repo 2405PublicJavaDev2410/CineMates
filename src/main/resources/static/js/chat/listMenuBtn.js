@@ -20,13 +20,18 @@ function showListByMyOrAll(status){
 }
 
 // 채팅방 입장
-function joinChatRoom(roomNo, title, posterUrl, cinemaName, cinemaAddress, roomCategory){
-    location.href=`
+function joinChatRoom(roomNo, movieNo , title, posterUrl, cinemaNo, cinemaName, cinemaLocationCode, cinemaAddress, roomCategory){
+    if(confirm(`채팅방에 입장하시겠습니까?`)){
+        location.href=`
     /chat/room?roomNo=${roomNo}
-    &title=${title}
+    &movieNo=${movieNo}
+    &title=${encodeURIComponent(title)}
     &posterUrl=${posterUrl}
+    &cinemaNo=${cinemaNo}
     &cinemaName=${cinemaName}
+    &cinemaLocationCode=${cinemaLocationCode}
     &cinemaAddress=${cinemaAddress}
     &roomCategory=${roomCategory}
     `;
+    }
 }

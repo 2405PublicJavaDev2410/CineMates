@@ -2,35 +2,11 @@ package com.filmfellows.cinemates.domain.reservation.model.Service;
 
 import com.filmfellows.cinemates.app.mypage.dto.myReservationRequest;
 import com.filmfellows.cinemates.app.mypage.dto.myReservationResponse;
-import com.filmfellows.cinemates.domain.cinema.model.vo.Showtime;
-import com.filmfellows.cinemates.domain.reservation.model.vo.MemberDTO;
-import com.filmfellows.cinemates.domain.reservation.model.vo.ReservationDTO;
-import com.filmfellows.cinemates.domain.reservation.model.vo.ShowInfoDTO;
+import com.filmfellows.cinemates.domain.reservation.model.vo.*;
 
 import java.util.List;
-import java.util.Map;
 
 public interface ReservationService {
-    /**
-     * 예매 페이지 보기
-     * @return List<Reservation>
-     */
-    List<ReservationDTO> showReservationPage();
-
-//    /**
-//     * 예매 등록 하기
-//     *
-//     * @param rDTO
-//     * @return ReservationDTO
-//     */
-//    int insertReservationInfo(ReservationDTO rDTO);
-
-    /**
-     * 예약 좌석 조회하기
-     *
-     * @return List<Integer>
-     */
-    List<ReservationDTO> showReservedSeats();
 
     /**
      * 상영관 조회
@@ -42,6 +18,7 @@ public interface ReservationService {
 
     /**
      * 영화 조회
+     *
      * @param cinemaName
      * @return List<String>
      */
@@ -78,14 +55,10 @@ public interface ReservationService {
      */
     MemberDTO selectMemberInfo(String memberId);
 
-    /**
-     * 예약 수 구하기
-     * @return Map<String,Integer>
-     */
-    Map<String, Integer> getReservationCounts();
 
     /**
      * 영화 포스터 조회
+     *
      * @param title
      * @return
      */
@@ -101,7 +74,46 @@ public interface ReservationService {
 
     /**
      * 영화 전체 목록 조회
+     *
      * @return
      */
-    List<String> selectAllMovies();
+    List<SearchMovieDTO> selectAllMovies();
+
+    /**
+     * 지역 코드 조회
+     *
+     * @return
+     */
+    List<SearchLocationCodeDTO> selectAllLocationCode();
+
+    /**
+     * 극장 정보 코드로 조회
+     *
+     * @param cinemaLocationCode
+     * @return
+     */
+    List<String> selectCinemasByCode(Integer cinemaLocationCode);
+
+    /**
+     * 영화 제목으로 연령대 조회
+     * @param title
+     * @return
+     */
+    String getAgeRatingByTitle(String title);
+
+    /**
+     * 멤버 아이디 통해 티켓 조회
+     *
+     * @param memberId
+     * @return
+     */
+    MemberDTO selectTicketCount(String memberId);
+
+    /**
+     * 대화 방 인원 티켓 수
+     * @param memberIds
+     * @return
+     */
+    List<String> selectTicketCountByIds(String memberIds);
+
 }

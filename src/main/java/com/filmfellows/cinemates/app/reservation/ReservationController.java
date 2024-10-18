@@ -3,11 +3,8 @@ package com.filmfellows.cinemates.app.reservation;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.filmfellows.cinemates.domain.cinema.model.vo.Showtime;
 import com.filmfellows.cinemates.domain.reservation.model.Service.ReservationService;
-import com.filmfellows.cinemates.domain.reservation.model.vo.Reservation;
-import com.filmfellows.cinemates.domain.reservation.model.vo.ReservationDTO;
-import com.filmfellows.cinemates.domain.reservation.model.vo.ShowInfoDTO;
+import com.filmfellows.cinemates.domain.reservation.model.vo.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,57 +31,90 @@ public class ReservationController {
 
 
     @GetMapping("/Ticketing")
-    public String showShowTimePage(Model model, HttpSession session) {
-        String memberId = (String)session.getAttribute("memberId");
+    public String showShowTimePage(Model model, HttpSession session, String title, Integer movieNo) {
+        System.out.println("title : " + title);
+        String memberId = (String) session.getAttribute("memberId");
 
-        if(memberId==null) {
+        if (memberId == null) {
             return "redirect:/login";
         }
-        List<String>movieList = rService.selectAllMovies();
-        System.out.println(movieList);
+
+        List<SearchMovieDTO> movieList = rService.selectAllMovies();
+        List<SearchLocationCodeDTO> lList = rService.selectAllLocationCode();
         List<String> rList = rService.selectCinemaName();
         List<String> processedList = new ArrayList<>();
+        Map<String, String> ageRatings = new HashMap<>();
 
+        for (SearchMovieDTO movie : movieList) {
+            String ageRating = rService.getAgeRatingByTitle(movie.getTitle());
+            ageRatings.put(movie.getTitle(), ageRating);
+        }
         for (String cinemaGroup : rList) {
             String[] cinemas = cinemaGroup.split(",");
             for (String cinema : cinemas) {
                 processedList.add(cinema.trim());
             }
         }
+
+        if (title != null && movieNo != null) {
+            model.addAttribute("selectedMovieTitle", title);
+            model.addAttribute("selectedMovieNo", movieNo);
+        }
+        model.addAttribute("ageRatings", ageRatings);
         model.addAttribute("movieList", movieList);
         model.addAttribute("rList", processedList);
-        System.out.println("보여줘" + processedList);
+        model.addAttribute("lList", lList);
         return "pages/reservation/showtime";
     }
 
     @PostMapping("/Ticketing/PersonSeat")
     public String showPersonSeatPage(@ModelAttribute ReservationDTO rDTO, @RequestParam String reservationSeat, Model model, HttpSession session,
-                                     @RequestParam String title) {
-        String memberId = (String)session.getAttribute("memberId");
+                                     @RequestParam String title
+//                                    @RequestParam(value="memberIds", required =false)List<String>memberIds
+    ) {
+        String memberId = (String) session.getAttribute("memberId");
+        System.out.println("memberId : " + memberId);
+        List<String> allMemberTicket = new ArrayList<>();
         String randomString = generateRandomString(10);
         rDTO.setReservationNo(randomString);
+        rDTO.setMemberId(memberId);
         ShowInfoDTO sDTO = rService.selectMoviePoster(title);
         System.out.println("영화 포스터: " + sDTO);
+        List<String> memberIds = Arrays.asList("test8", "test7", "admin1");
 
-        // JSON 문자열을 Map으로 변환
-        ObjectMapper mapper = new ObjectMapper();
-        Map<Integer, List<Integer>> reservedSeats;
-        try {
-            reservedSeats = mapper.readValue(reservationSeat, new TypeReference<Map<Integer, List<Integer>>>(){});
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            reservedSeats = new HashMap<>();
+            // JSON 문자열을 Map으로 변환
+            ObjectMapper mapper = new ObjectMapper();
+            Map<Integer, List<Integer>> reservedSeats;
+            try {
+                reservedSeats = mapper.readValue(reservationSeat, new TypeReference<Map<Integer, List<Integer>>>() {
+                });
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+                reservedSeats = new HashMap<>();
+            }
+
+            // 예약된 좌석 정보를 모델에 추가
+            model.addAttribute("reservationSeat", reservedSeats);
+            model.addAttribute("sDTO", sDTO);
+        if (!(memberIds.size() == 0)) {
+            for (String memberIdlist : memberIds) {
+                List<String> memberList = rService.selectTicketCountByIds(memberIdlist);
+                allMemberTicket.addAll(memberList);
+                System.out.println(memberIds);
+                System.out.println(allMemberTicket);
+            }
+            rDTO.setAllTicketCount(allMemberTicket);
+            rDTO.setMemberIds(memberIds);
+            model.addAttribute("rDTO" , rDTO) ;
+            model.addAttribute("allMemberTicket", allMemberTicket);
+            return "pages/reservation/personSeat";
+        }
+            System.out.println("rDTO 보여줘라 " + rDTO);
+            model.addAttribute("rDTO", rDTO);
+            return "pages/reservation/personSeat";
         }
 
-        // 예약된 좌석 정보를 모델에 추가
-        model.addAttribute("reservationSeat", reservedSeats);
-        model.addAttribute("sDTO",sDTO);
 
-        System.out.println("rDTO 보여줘라 " + rDTO);
-        model.addAttribute("memberId", memberId);
-        model.addAttribute("rDTO", rDTO);
-        return "pages/reservation/personSeat";
-    }
     private static String generateRandomString(int length) {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < length; i++) {
@@ -96,7 +126,9 @@ public class ReservationController {
 
     @GetMapping("/getCinemas")
     public ResponseEntity<List<String>> selectCinemas(
-            @RequestParam String cinemaAddress) {
+            @RequestParam String cinemaAddress
+//            @RequestParam Integer cinemaLocationCode
+    ) {
         List<String> addresses = Arrays.asList(cinemaAddress.split("/"));
         List<String> allCinemas = new ArrayList<>();
         for (String address : addresses) {
@@ -104,6 +136,7 @@ public class ReservationController {
             allCinemas.addAll(cinemas);
             System.out.println(cinemas);
         }
+//        List<String>address = rService.selectCinemasByCode(cinemaLocationCode);
         return ResponseEntity.ok(allCinemas);
     }
 
@@ -119,7 +152,7 @@ public class ReservationController {
     public ResponseEntity<Map<String, Object>> selectShowInfo(
             @RequestParam String cinemaName,
             @RequestParam String title,
-            @RequestParam String reservationDate){
+            @RequestParam String reservationDate) {
         List<ShowInfoDTO> sList = rService.selectShowInfo(cinemaName, title);
         List<ReservationDTO> rList = rService.selectReservationSeat(reservationDate);
 

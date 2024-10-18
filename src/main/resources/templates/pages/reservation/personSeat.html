@@ -16,65 +16,85 @@
         let visitorCount = /*[[${rDTO.reservationVisitor}]]*/ 0;
         var rDTO = /*[[${rDTO}]]*/ {};
         var reservedSeatsMap = /*[[${reservationSeat}]]*/ {};
+        var memberIds = /*[[${rDTO.memberIds}]]*/{};
     </script>
     <script crossorigin="anonymous" defer src="/js/reservation/personSeat.js"></script>
 </head>
 
 <body>
-<div class="select_num_people_wrap">
-    <div class="movieInfo">
-        <h3>[[${rDTO.title}]]</h3>
-        <span><img alt="" th:src="@{${sDTO.posterUrl}}"></span>
-    </div>
-    <div class="count_person">
-        <ul class="counter-list">
-            <li class="counter-item">
-                <strong class="tit">성인</strong>
-                <div class="counter-controls">
-                    <button class="counter-btn minus" onclick='count("minus", "result")'>-</button>
-                    <div class="result">0</div>
-                    <button class="counter-btn plus" onclick='count("plus", "result")'>+</button>
-                </div>
-            </li>
-            <li class="counter-item">
-                <strong class="tit">어린이</strong>
-                <button class="counter-btn minus" onclick='count("plus", "result1")' value='+'>+</button>
-                <div class="result1">0</div>
-                <button class="counter-btn plus" onclick='count("minus", "result1")' style="margin-left:10px" value='-'>-</button>
-            </li>
-            <li class="counter-item">
-                <strong class="tit">경로</strong>
-                <button class="counter-btn minus" onclick='count("plus", "result2")' style="margin-right: 10px" value='+'>+</button>
-                <div class="result2">0</div>
-                <button class="counter-btn plus" onclick='count("minus", "result2")' style="margin-left:10px" value='-'>-</button>
-            </li>
-
-        </ul>
+<div class="Seat-Container">
+    <div class="select_num_people_wrap">
+        <div class="movieInfo">
+            <div class="movie-img">
+                <img alt="" th:src="@{${sDTO.posterUrl}}">
+            </div>
+            <div>
+                <strong>[[${rDTO.title}]]</strong>
+                <dl>
+                    <dt>[[${rDTO.reservationDate}]]</dt>
+                    <dt>[[${rDTO.showtimeTime}]]</dt>
+                    <dt>[[${rDTO.cinemaName}]]</dt>
+                </dl>
+            </div>
+        </div>
+        <div class="count_person">
+            <ul class="counter-list">
+                <li class="counter-item">
+                    <strong class="tit">성인</strong>
+                    <div class="counter-controls">
+                        <button class="counter-btn minus" onclick='count("minus", "result")'>-</button>
+                        <div class="result">0</div>
+                        <button class="counter-btn plus" onclick='count("plus", "result")'>+</button>
+                    </div>
+                </li>
+                <li class="counter-item">
+                    <strong class="tit">어린이</strong>
+                    <div class="counter-controls">
+                        <button class="counter-btn minus" onclick='count("minus", "result1")'>-</button>
+                        <div class="result1">0</div>
+                        <button class="counter-btn plus" onclick='count("plus", "result1")'>+</button>
+                    </div>
+                </li>
+                <li class="counter-item">
+                    <strong class="tit">경로</strong>
+                    <div class="counter-controls">
+                        <button class="counter-btn minus" onclick='count("minus", "result2")'>-</button>
+                        <div class="result2">0</div>
+                        <button class="counter-btn plus" onclick='count("plus", "result2")'>+</button>
+                    </div>
+                </li>
+            </ul>
 
         </div>
+    </div>
+    <div class="seatDiv">
+        <div class="Screen"><span>Screen</span></div>
+        <div id="seatMap"></div>
+    </div>
+    <p id="message"></p>
+    <form action="/paymentReady" method="POST">
+        <button type="submit">예약하기</button>
+        <input name="reservationNo" th:value="${rDTO.reservationNo}" type="hidden">
+        <input id="countInput" name="reservationVisitor" th:value="${rDTO.reservationVisitor}" type="hidden">
+        <input id="selectedSeatsInput" name="reservationSeat" th:value="${rDTO.reservationSeat}" type="hidden">
+        <input name="screenNo" th:value="${rDTO.screenNo}" type="hidden">
+        <input name="movieNo" th:value="${rDTO.movieNo}" type="hidden">
+        <input name="showtimeTime" th:value="${rDTO.showtimeTime}" type="hidden">
+        <input name="showtimeNo" th:value="${rDTO.showtimeNo}" type="hidden">
+        <input name="title" th:value="${rDTO.title}" type="hidden">
+        <input name="screenName" th:value="${rDTO.screenName}" type="hidden">
+        <input name="cinemaName" th:value="${rDTO.cinemaName}" type="hidden">
+        <input name="cinemaNo" th:value="${rDTO.cinemaNo}" type="hidden">
+        <input name="reservationDate" th:value="${rDTO.reservationDate}" type="hidden">
+        <input name="memberId" th:value="${rDTO.memberId}" type="hidden">
+        <input name="memberIds" th:value="${rDTO.memberIds}" type="hidden">
+        <input type="hidden" name="ticketCount" th:value="${ticketCount}">
+        <input type="hidden" name="allTicketCount" th:value="${allMemberTicket}">
+        <input id="adultReserved" name="adultReserved" th:value="${rDTO.adultReserved}" type="hidden">
+        <input id="childReserved" name="childReserved" th:value="${rDTO.childReserved}" type="hidden">
+        <input id="seniorReserved" name="seniorReserved" th:value="${rDTO.seniorReserved}" type="hidden">
+        <input id="posterUrl" name="posterUrl" th:value="${sDTO.posterUrl}" type="hidden">
+    </form>
 </div>
-<div id="seatMap"></div>
-<p id="message"></p>
-<form action="/paymentReady" method="POST">
-    <button type="submit">예약하기</button>
-    <input name="reservationNo" th:value="${rDTO.reservationNo}" type="hidden">
-    <input id="countInput" name="reservationVisitor" th:value="${rDTO.reservationVisitor}" type="hidden">
-    <input id="selectedSeatsInput" name="reservationSeat" th:value="${rDTO.reservationSeat}" type="hidden">
-    <input name="screenNo" th:value="${rDTO.screenNo}" type="hidden">
-    <input name="movieNo" th:value="${rDTO.movieNo}" type="hidden">
-    <input name="showtimeTime" th:value="${rDTO.showtimeTime}" type="hidden">
-    <input name="showtimeNo" th:value="${rDTO.showtimeNo}" type="hidden">
-    <input name="title" th:value="${rDTO.title}" type="hidden">
-    <input name="screenName" th:value="${rDTO.screenName}" type="hidden">
-    <input name="cinemaName" th:value="${rDTO.cinemaName}" type="hidden">
-    <input name="cinemaNo" th:value="${rDTO.cinemaNo}" type="hidden">
-    <input name="reservationDate" th:value="${rDTO.reservationDate}" type="hidden">
-    <input name="memberId" th:value="${memberId}" type="hidden">
-    <input id="adultReserved" name="adultReserved" th:value="${rDTO.adultReserved}" type="hidden">
-    <input id="childReserved" name="childReserved" th:value="${rDTO.childReserved}" type="hidden">
-    <input id="seniorReserved" name="seniorReserved" th:value="${rDTO.seniorReserved}" type="hidden">
-    <input id="posterUrl" name="posterUrl" th:value="${sDTO.posterUrl}" type="hidden">
-</form>
-
 </body>
 </html>

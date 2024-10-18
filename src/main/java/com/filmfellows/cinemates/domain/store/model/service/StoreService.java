@@ -1,10 +1,10 @@
 package com.filmfellows.cinemates.domain.store.model.service;
 
-import com.filmfellows.cinemates.common.exception.PaymentException;
 import com.filmfellows.cinemates.domain.member.model.vo.Member;
 import com.filmfellows.cinemates.domain.store.model.vo.*;
 
 import java.util.List;
+import java.util.Map;
 
 public interface StoreService {
 
@@ -20,30 +20,29 @@ public interface StoreService {
 
     boolean updateCartItem(Cart cartItem);
 
-    boolean deleteCartItems(List<Integer> cartNos);
+    boolean deleteCartItems(Cart cartItem);
 
     boolean clearCart(String memberId);
 
-    List<Cart> getSelectedCartItems(String memberId, List<Integer> selectedItems);
-
     Purchase getPurchaseDetails(int purchaseNo);
 
-    void processGiftSend(Gift gift);
+    Gift initializeGift(String memberId, List<Map<String, Object>> items, boolean purchaseAll);
 
-    void updateStorePayment(StorePayment storePayment);
-
-    Gift initializeGift(String memberId, int productNo, int quantity);
-
-    Purchase initializePurchase(String memberId, int productNo);
-
-    Member getMemberById(String memberId);
-
-    Gift initializeGiftFromCart(String memberId, List<Cart> selectedCarts);
-
-    boolean verifyAndSerRecipient(Gift gift, String name, String phone);
+    Purchase initializePurchase(String memberId, List<Map<String, Object>> items, boolean purchaseAll);
 
     void completeGiftPayment(int giftNo);
 
-    Purchase initializePurchaseFromCart(String memberId, List<Cart> selectedCarts);
+    void updatePurchase(Purchase purchase);
 
+    Member getMemberById(String memberId);
+
+    boolean verifyAndSetRecipient(Gift gift, String name, String phone);
+
+    Gift getGiftByNo(int giftNo);
+
+    Gift saveGift(Gift gift);
+
+    void processPurchase(Purchase purchase);
+
+    Product getProductByNo(int productNo);
 }

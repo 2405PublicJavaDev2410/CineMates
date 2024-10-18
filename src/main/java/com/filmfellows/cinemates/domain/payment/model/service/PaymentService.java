@@ -1,7 +1,6 @@
 package com.filmfellows.cinemates.domain.payment.model.service;
 
 import com.filmfellows.cinemates.domain.payment.model.mapper.PaymentMapper;
-import com.filmfellows.cinemates.domain.payment.model.vo.PaymentInfo;
 import com.filmfellows.cinemates.domain.reservation.model.mapper.ReservationMapper;
 import com.filmfellows.cinemates.domain.reservation.model.vo.ReservationDTO;
 import com.siot.IamportRestClient.IamportClient;
@@ -15,7 +14,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Map;
 
 @Configuration
@@ -38,6 +36,7 @@ public class PaymentService {
     private PaymentMapper pmapper;
     @Autowired
     private ReservationMapper rmapper;
+
     // 제품 확인 메소드
     public IamportResponse<Payment> validateIamport(String imp_uid) {
         try {
@@ -49,6 +48,7 @@ public class PaymentService {
             return null;
         }
     }
+
     // 결제 취소 메소드
     public IamportResponse<Payment> cancelPayment(String imp_uid) {
         try {
@@ -62,19 +62,31 @@ public class PaymentService {
             return null;
         }
     }
+
     // 결제 정보 와 주문 정보 저장 메소드
     public void saveBuyerAndOrderInfo(Map<String, Object> buyerInfo, Map<String, Object> reserveInfo) {
         rmapper.insertReservationInfo(reserveInfo);
         pmapper.insertPaymentInfo(buyerInfo);
     }
+
     // imp_uid 조회 메소드
     public String selectImpUid(String reservationNo) {
         return pmapper.selectImpUid(reservationNo);
     }
+
     // 결제 취소 후 결제 db에 저장된 정보와 작성자 기준 예매 정보 삭제 메소드
     @Transactional
     public void deleteReserveAndPaymentInfo(String impUid) {
         rmapper.deleteReservationInfo(impUid);
         pmapper.deletePaymentInfo(impUid);
+    }
+
+
+    public int calcTicketCount(String memberId) {
+        return rmapper.updateTicketCount(memberId);
+    }
+
+    public ReservationDTO selectUpdatedReservation(String memberId) {
+        return rmapper.selectUpdatedReservation(memberId);
     }
 }

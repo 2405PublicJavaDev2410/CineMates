@@ -1,64 +1,59 @@
+// 전역 변수로 선언
+var IMP;
+var purchaseDetail;
+
+// 문서가 로드된 후 실행
 document.addEventListener('DOMContentLoaded', function() {
-    const backButton = document.getElementById('backButton');
-    const paymentButton = document.getElementById('paymentButton');
+    // KG이니시스 결제 모듈 초기화
+    IMP = window.IMP;
+    IMP.init("imp84335481"); // 가맹점 식별코드
 
-    backButton.addEventListener('click', function() {
-        history.back();
-    });
-
-    paymentButton.addEventListener('click', function() {
-        if (validatePaymentMethod()) {
-            initiatePayment();
-        }
-    });
-
-    function validatePaymentMethod() {
-        const selectedMethod = document.querySelector('input[name="paymentMethod"]:checked');
-        if (!selectedMethod) {
-            alert('결제 수단을 선택해주세요.');
-            return false;
-        }
-        return true;
-    }
-
-    function initiatePayment() {
-        const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
-
-        fetch('/store/initiate-payment', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="_csrf"]').getAttribute('content')
-            },
-            body: JSON.stringify({
-                purchaseNo: purchaseNo,
-                amount: finalPrice,
-                paymentMethod: paymentMethod
-            })
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // 결제 진행 (예: 카카오페이 또는 신용카드 결제 창 열기)
-                    if (paymentMethod === 'kakaopay') {
-                        window.location.href = data.paymentUrl;
-                    } else if (paymentMethod === 'creditCard') {
-                        // 신용카드 결제 창 열기 로직
-                        openCreditCardPaymentWindow(data.paymentKey);
-                    }
-                } else {
-                    alert('결제 초기화에 실패했습니다: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('결제 처리 중 오류가 발생했습니다.');
-            });
-    }
-
-    function openCreditCardPaymentWindow(paymentKey) {
-        // 신용카드 결제 창을 여는 로직
-        // 예: 팝업 창 또는 모달 창으로 결제 페이지 열기
-        window.open('/store/credit-card-payment?paymentKey=' + paymentKey, 'CreditCardPayment', 'width=500,height=600');
-    }
+    // HTML에서 전달받은 데이터 할당
+    purchaseDetail = window.purchaseData;
 });
+
+function requestPay() {
+    if (!IMP) {
+        console.error('IMP is not initialized');
+        return;
+    }
+
+    var payMethod = document.getElementById("payMethod").value;
+
+    IMP.request_pay({
+        pg: "html5_inicis",
+        pay_method: payMethod,
+        merchant_uid: "ORDER_" + new Date().getTime(),
+        name: purchaseDetail.productName,
+        amount: purchaseDetail.finalAmount,
+        buyer_email: purchaseDetail.memberEmail,
+        buyer_name: purchaseDetail.memberName,
+        buyer_tel: purchaseDetail.memberPhone,
+    }, function (rsp) {
+        if (rsp.success) {
+            // 결제 성공 시 로직
+            $.ajax({
+                url: "/store/payment/complete",
+                method: "POST",
+                data: JSON.stringify({
+                    imp_uid: rsp.imp_uid,
+                    merchant_uid: rsp.merchant_uid,
+                    paid_amount: rsp.paid_amount,
+                    apply_num: rsp.apply_num,
+                    quantity: purchaseDetail.quantity
+                }),
+                contentType: "application/json"
+            }).done(function (data) {
+                alert("결제가 완료되었습니다.");
+                window.location.href = "/store/payment/result/" + rsp.merchant_uid;
+            });
+        } else {
+            // 결제 실패 시 로직
+            alert("결제에 실패하였습니다. 에러 내용: " + rsp.error_msg);
+        }
+    });
+}
+
+function goBack() {
+    history.back();
+}
