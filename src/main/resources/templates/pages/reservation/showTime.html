@@ -20,8 +20,11 @@
             referrerpolicy="no-referrer"
             src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script crossorigin="anonymous" defer src="/js/reservation/showTime.js"></script>
+    <script crossorigin="anonymous" src="/js/common/scroll.js" defer></script>
     <script th:inline="javascript" type="text/javascript">
-
+        let movieNo = /*[[${movieList.movieNo}*/{};
+        let title = /*[[${movieList.title}*/{};
+        var ageRatings =/*[[${ageRatings}]]*/{};
     </script>
 </head>
 <body>
@@ -34,8 +37,25 @@
                 </div>
                 <div class="movieDiv_movie">
                     <ul id="movie-List">
-                        <li th:each="movie: ${movieList}">
-                            <a href="#none" th:data-title="${movie}" th:text="${movie}"></a>
+                        <li th:class="${movie.movieNo == selectedMovieNo} ? 'selected' : ''"
+                            th:each="movie: ${movieList}">
+                            <a href="#none"
+                               th:data-movie-no="${movie.movieNo}"
+                               th:data-title="${movie.title}">
+
+                                <div class="movie-item">
+                                    <div class="movie-img"><img alt="" th:src="${movie.posterUrl}"></div>
+                                    <div class="movie-info">
+                                        <div class="movie-sub-info">
+                                            <div class="movie-age"></div>
+                                            <span id="movie-title">[[${movie.title}]]</span>
+                                        </div>
+                                        <div class="movie-sub-info1">
+                                            <span class="movie-running-time">[[${movie.runningTime}]]분</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -47,29 +67,16 @@
                 <div class="hidden-region">
                     <div class="regionDiv_region">
                         <ul id="region-list">
-                            <li>
-                                <a data-cinema-address="서울" href="#none">서울</a>
-                            </li>
-                            <li>
-                                <a data-cinema-address="인천" href="#none">인천</a>
-                            </li>
-                            <li>
-                                <a data-cinema-address="경기" href="#none">경기</a>
-                            </li>
-                            <li>
-                                <a data-cinema-address="충청/대전/세종" href="#none">충청/대전/세종</a>
-                            </li>
-                            <li>
-                                <a data-cinema-address="전라/광주/전북/제주" href="#none">전라/광주/제주</a>
-                            </li>
-                            <li>
-                                <a data-cinema-address="경상북도/대구" href="#none">경북/대구</a>
-                            </li>
-                            <li>
-                                <a data-cinema-address="부산/울산" href="#none">부산/울산</a>
-                            </li>
-                            <li>
-                                <a data-cinema-address="강원" href="#none">강원</a>
+                            <li th:each="location : ${lList}">
+                                <th:block
+                                        th:with="regionName=${T(com.filmfellows.cinemates.domain.reservation.model.vo.LocationUtil).getRegionName(location.cinemaLocationCode)}">
+                                    <a href="#none"
+                                       th:data-cinema-address="${regionName}"
+                                       th:data-location-code="${location.cinemaLocationCode}"
+                                       th:value="${location.cinemaLocationCode}">
+                                        <span th:text="${regionName}"></span>
+                                    </a>
+                                </th:block>
                             </li>
                         </ul>
                     </div>
@@ -90,14 +97,15 @@
                         <div class="arrow" id="nextWeek">&gt;</div>
                     </div>
                 </div>
+
                 <div id="showtimes-container">
                     <ul id="showtimes-List"></ul>
                 </div>
             </div>
 
         </div>
-        <div style="display: flex; width: 100%; margin:0 auto; justify-content: end;" >
-            <button id="goPersonSeat">이동</button>
+        <div style="display: flex; width: 100%; margin:0 auto; justify-content: end;">
+            <button id="goPersonSeat">인원/좌석선택</button>
         </div>
         <input id="cinemaName" name="cinemaName" type="hidden" value="">
         <input id="showtimeTime" name="showtimeTime" type="hidden" value="">
@@ -109,6 +117,8 @@
         <input name="cinemaNo" type="hidden" value="">
         <input name="showtimeNo" type="hidden" value="">
         <input name="reservationSeat" type="hidden" value="">
+        <input id="selectedMovieNo" th:value="${selectedMovieNo}" type="hidden">
+        <input id="selectedMovieTitle" th:value="${selectedMovieTitle}" type="hidden">
     </form>
 </div>
 </body>

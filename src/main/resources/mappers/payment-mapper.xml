@@ -16,5 +16,4 @@
     <delete id="deletePaymentInfo">
         DELETE FROM PAYMENT_TBL WHERE IMP_UID = #{imp_uid}
     </delete>
-
 </mapper>

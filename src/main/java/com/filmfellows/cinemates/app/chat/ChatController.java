@@ -3,16 +3,15 @@ package com.filmfellows.cinemates.app.chat;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.filmfellows.cinemates.app.chat.dto.ChatRoomMovie;
-import com.filmfellows.cinemates.app.chat.dto.CinemaInfoByRegion;
-import com.filmfellows.cinemates.app.chat.dto.RegionAndCinemaCount;
-import com.filmfellows.cinemates.app.chat.dto.ReservationInfoAndChatInfo;
+import com.filmfellows.cinemates.app.chat.dto.*;
 import com.filmfellows.cinemates.domain.chat.model.service.ChatService;
+import com.filmfellows.cinemates.domain.chat.model.vo.ChatMessage;
 import com.filmfellows.cinemates.domain.chat.model.vo.ChatRoom;
 import com.filmfellows.cinemates.domain.chat.model.vo.ChatTag;
 import com.filmfellows.cinemates.domain.member.model.vo.ProfileImg;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -171,7 +170,39 @@ public class ChatController {
     }
 
     @GetMapping("/chat/room")
-    public String showChatRoom(Model model, @ModelAttribute("ChatRoom") ChatRoom chatRoom){
+    public String showChatRoom(Model model, @ModelAttribute("ChatRoom") ChatRoom chatRoom, HttpSession session){
+
+        // 채팅방에 참여한 리스트 조회 ( 프로필 이미지까지 )
+        String memberId = (String) session.getAttribute("memberId");
+        List<ChatJoinProfile> chatJoinList = cService.selectChatJoinList(chatRoom.getRoomNo());
+        System.out.println(chatJoinList);
+
+        int joinCount = 0;
+        for(ChatJoinProfile joinList : chatJoinList){
+            if(joinList.getMemberId().equals(memberId)){
+                joinCount++;
+            }
+        }
+        
+        // 최초입장하는 경우에만 db에 저장
+        if(joinCount > 0){
+            // 두번이상 입장
+            System.out.println("이미 참여한 인원입니다.");
+        }else{
+            // 최초입장
+            System.out.println("최초 입장합니다.");
+            int result = cService.insertChatJoin(chatRoom.getRoomNo(), memberId);
+        }
+
+        // 내가 최초입장한 날짜 조회
+        Timestamp myJoinDate = cService.selectMyJoinDate(memberId, chatRoom.getRoomNo());
+        // 내가 입장한 이후의 채팅기록
+        List<chatMessageAndProfile> chatMessageList = cService.selectChatMessageList(myJoinDate, chatRoom.getRoomNo());
+
+
+
+        model.addAttribute("chatMessageList", chatMessageList);
+        model.addAttribute("chatJoinList", chatJoinList);
         model.addAttribute("chatRoom", chatRoom);
         return "pages/chat/chatRoom";
     }
@@ -240,9 +271,14 @@ public class ChatController {
             e.printStackTrace();
         }
     }
+        // 채팅방 참여인원으로 자동 참여
+        String memberId = (String) session.getAttribute("memberId");
+        System.out.println("session : "+memberId + "getRoomNo : "+chatRoom.getRoomNo());
+        cService.insertChatJoin(chatRoom.getRoomNo(), memberId);
 
-        return "redirect:/chat/createForm?roomCategory="+revAndChatInfo.getRoomCategory();
-//        return "pages/chat/chatRoomList";
+
+//        return "redirect:/chat/createForm?roomCategory="+revAndChatInfo.getRoomCategory();
+        return "redirect:/chat/list";
     }
 
     @GetMapping("/chat/navigation")
@@ -284,6 +320,36 @@ public class ChatController {
         return "pages/chat/createChatForm::#region-list-container";
     }
 
+    // ajax db에 채팅기록 저장
+    @ResponseBody
+    @PostMapping("/chat/insertChat")
+    public ResponseEntity<String> insertChatMessage(@RequestBody ChatMessage chatMessage){
 
+        if(chatMessage.getMessageType().equals(ChatMessage.MessageType.FIRST)){
+            chatMessage.setChatContent(chatMessage.getMemberId()+"님이 대화방에 참여했습니다");
+        }else if(chatMessage.getMessageType().equals(ChatMessage.MessageType.LEAVE)){
+            chatMessage.setChatContent(chatMessage.getMemberId()+"님이 대화방을 나갔습니다");
+        }
+
+        // 메세지 db에 저장
+        int result = cService.insertChatMessage(chatMessage);
+
+        if(result > 0 ){
+            System.out.println("message insert 성공");
+        }
+
+        return  ResponseEntity.ok("메시지 저장 성공");
+    }
+
+
+    @PostMapping("/chat/getUserList")
+    public String getUSerList(Model model, Integer roomNo){
+        // 채팅방에 참여한 리스트 조회 ( 프로필 이미지까지 )
+        List<ChatJoinProfile> chatJoinList = cService.selectChatJoinList(roomNo);
+
+        System.out.println("updateProfile : " + chatJoinList);
+        model.addAttribute("chatJoinList", chatJoinList);
+        return "pages/chat/chatRoom::#user-list-container";
+    }
 
 }

@@ -16,4 +16,5 @@ public class MemberDTO {
     private String name;
     private String phone;
     private String email;
+    private Integer TicketCount;
 }

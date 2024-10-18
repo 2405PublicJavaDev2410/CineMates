@@ -18,8 +18,8 @@ public class Purchase {
     private String status;
     private String giftYn;
     private String paymentMethod;
-    private List<PurchaseItem> items;
     private int totalAmount;
     private int totalDiscountAmount;
     private int finalAmount;
+    private List<PurchaseItem> purchaseItems;
 }

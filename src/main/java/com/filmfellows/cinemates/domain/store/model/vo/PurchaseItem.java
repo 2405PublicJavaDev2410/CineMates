@@ -4,16 +4,14 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Setter
 @Getter
+@Setter
 @ToString
 public class PurchaseItem {
-    private int purchaseItemNo;
     private int purchaseNo;
     private int productNo;
     private int quantity;
-    private int originalPrice;
-    private int discountAmount;
-    private int discountedPrice;
+    private int purchasePrice;
+    private int purchaseDiscountAmount;
     private Product product;
 }
