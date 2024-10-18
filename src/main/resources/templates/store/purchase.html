@@ -2,19 +2,23 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>구매하기</title>
-    <link rel="stylesheet" th:href="@{/css/purchase.css}">
+    <title>상품 구매</title>
+    <!--<link rel="stylesheet" href="/css/store/purchase.css">-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="https://stdpay.inicis.com/stdjs/INIStdPay.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 </head>
 <body>
 <div class="container">
     <h1>구매하기</h1>
+
     <div class="progress-bar">
-        <span class="step">장바구니</span>
-        <span class="step active">결제하기</span>
-        <span class="step">결제완료</span>
+        <div class="step">장바구니</div>
+        <div class="step active">결제하기</div>
+        <div class="step">결제완료</div>
     </div>
 
-    <section class="purchase-info">
+    <div class="section purchase-info">
         <h2>구매 상품 정보</h2>
         <table>
             <thead>
@@ -26,70 +30,61 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="item : ${purchase.items}">
-                <td>
-                    <img th:src="${item.product.imageUrl}" alt="상품 이미지">
-                    <span th:text="${item.product.productName}"></span>
-                </td>
-                <td th:text="${#numbers.formatDecimal(item.product.price, 0, 'COMMA', 0, 'POINT')} + '원'"></td>
-                <td th:text="${item.quantity}"></td>
-                <td th:text="${#numbers.formatDecimal(item.discountedPrice * item.quantity, 0, 'COMMA', 0, 'POINT')} + '원'"></td>
-            </tr>
+                 <tr th:each="item : ${purchase.purchaseItems}">
+                    <td th:text="${item.product.productName}"></td>
+                    <td th:text="${#numbers.formatDecimal(item.purchasePrice, 0, 'COMMA', 0, 'POINT')} + '원'"></td>
+                    <td th:text="${item.quantity}"></td>
+                    <td th:text="${#numbers.formatDecimal(item.purchasePrice, 0, 'COMMA', 0, 'POINT')} + '원'"></td>
+                </tr>
             </tbody>
         </table>
-    </section>
+    </div>
 
-    <section class="price-summary">
+    <div class="section price-summary">
         <div>
-            <span>총 상품 금액</span>
-            <span id="totalAmount" th:text="${#numbers.formatDecimal(purchase.totalAmount, 0, 'COMMA', 0, 'POINT')} + '원'"></span>
+            총 상품 금액: <span id="totalAmount" th:text="${#numbers.formatDecimal(purchase.totalAmount, 0, 'COMMA', 0, 'POINT')} + '원'"></span>
         </div>
         <div>
-            <span>총 할인 금액</span>
-            <span id="totalDiscount" th:text="${#numbers.formatDecimal(purchase.totalDiscountAmount, 0, 'COMMA', 0, 'POINT')} + '원'"></span>
+            총 할인 금액: <span id="totalDiscount" th:text="${#numbers.formatDecimal(purchase.totalDiscountAmount, 0, 'COMMA', 0, 'POINT')} + '원'"></span>
         </div>
         <div>
-            <span>총 결제 예정금액</span>
-            <span id="finalPrice" th:text="${#numbers.formatDecimal(purchase.finalAmount, 0, 'COMMA', 0, 'POINT')} + '원'"></span>
+            총 결제 예정금액: <span id="finalPrice" th:text="${#numbers.formatDecimal(purchase.finalAmount, 0, 'COMMA', 0, 'POINT')} + '원'"></span>
         </div>
-    </section>
+    </div>
 
-    <section class="orderer-info">
+    <div class="section orderer-info">
         <h2>주문자 정보</h2>
         <div>
-            <span>이름:</span>
-            <span th:text="${orderer.name}"></span>
+            이름: <span th:text="${member.name}"></span>
         </div>
         <div>
-            <span>휴대전화 번호:</span>
-            <span th:text="${orderer.phone}"></span>
+            휴대전화 번호: <span th:text="${member.phone}"></span>
         </div>
-    </section>
+        <div>
+            이메일: <span th:text="${member.email}"></span>
+        </div>
+    </div>
 
-    <section class="payment-method">
+    <div class="section payment-method">
         <h2>결제 수단</h2>
-        <div>
-            <input type="radio" id="creditCard" name="paymentMethod" value="creditCard">
-            <label for="creditCard">신용카드</label>
-        </div>
-        <div>
-            <input type="radio" id="kakaopay" name="paymentMethod" value="kakaopay">
-            <label for="kakaopay">카카오페이</label>
-        </div>
-    </section>
+        <select id="payMethod">
+            <option value="Card">신용카드</option>
+            <option value="DirectBank">계좌이체</option>
+            <option value="VBank">가상계좌</option>
+            <option value="HPP">휴대폰 소액결제</option>
+        </select>
+    </div>
 
     <div class="action-buttons">
-        <button id="backButton">이전단계</button>
-        <button id="paymentButton">결제하기</button>
+        <button onclick="goBack()">이전단계</button>
+        <button onclick="requestPay()">결제하기</button>
     </div>
 </div>
-
 <script th:inline="javascript">
     /*<![CDATA[*/
-    var purchaseNo = /*[[${purchaseNo}]]*/ null;
-    var finalPrice = /*[[${finalPrice}]]*/ 0;
+    var purchaseData = /*[[${purchase}]]*/ null;
     /*]]>*/
 </script>
-<script th:src="@{/js/store/purchase.js}"></script>
+<script src="/js/store/purchase.js"></script>
 </body>
 </html>

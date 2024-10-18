@@ -27,20 +27,20 @@
         </thead>
         <tbody>
         <tr th:each="item : ${cartItems}">
-            <td><input type="checkbox" name="selectedItems" th:value="${item.cartNo}"></td>
+            <td><input type="checkbox" name="selectedItems" th:value="${item.productNo}"></td>
             <td>
                 <img th:src="${item.product.imageUrl}" alt="상품 이미지" class="product-image" style="width: 100px; height: auto;">
                 <span th:text="${item.product.productName}"></span>
             </td>
             <td>
-                <button class="quantity-btn decrease" th:data-cart-no="${item.cartNo}">-</button>
-                <span th:text="${item.quantity}" th:id="'quantity-' + ${item.cartNo}"></span>
-                <button class="quantity-btn increase" th:data-cart-no="${item.cartNo}">+</button>
+                <button class="quantity-btn decrease" th:data-cart-no="${item.cartNo}" th:data-product-no="${item.productNo}">-</button>
+                <span th:text="${item.quantity}" th:id="'quantity-' + ${item.cartNo} + ${item.productNo}"></span>
+                <button class="quantity-btn increase" th:data-cart-no="${item.cartNo}" th:data-product-no="${item.productNo}">+</button>
             </td>
             <td th:text="${#numbers.formatDecimal(item.product.price, 0, 'COMMA', 0, 'POINT')} + '원'" th:data-price="${item.product.price}"></td>
             <td th:text="${#numbers.formatDecimal(item.product.discountAmount, 0, 'COMMA', 0, 'POINT')} + '원'" th:data-discount="${item.product.discountAmount}"></td>
-            <td th:text="${#numbers.formatDecimal(item.product.price * item.quantity, 0, 'COMMA', 0, 'POINT')} + '원'" th:id="'total-' + ${item.cartNo}"></td>
-            <td><button th:onclick="'removeItem(' + ${item.cartNo} + ')'">삭제</button></td>
+            <td th:text="${#numbers.formatDecimal(item.product.price * item.quantity, 0, 'COMMA', 0, 'POINT')} + '원'" th:id="'total-' + ${item.cartNo} + ${item.productNo}"></td>
+            <td><button th:onclick="'removeItem(' + ${item.cartNo} + ', '+ ${item.productNo}+')'" class="btn btn-danger btn-sm">삭제</button></td>
         </tr>
         </tbody>
     </table>
@@ -52,8 +52,9 @@
     </div>
 
     <div class="cart-actions">
-        <button onclick="deleteSelected()">선택상품 삭제</button>
-        <button onclick="clearCart()">장바구니 비우기</button>
+<!--        <button type="button" th:onclick="'removeItems(' + ${cartItems[0].cartNo} +')'">전체상품 삭제</button>-->
+<!--        <button onclick="deleteSelected()">선택상품 삭제</button>-->
+<!--        <button onclick="clearCart()">장바구니 비우기</button>-->
         <button onclick="orderSelected()">선택상품 구매</button>
         <button onclick="orderAll()">전체상품 구매</button>
     </div>

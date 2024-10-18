@@ -1,10 +1,13 @@
-/*
 package com.filmfellows.cinemates.app.store;
 
-import com.filmfellows.cinemates.domain.store.model.service.StorePaymentService;
-import com.filmfellows.cinemates.domain.store.model.vo.StorePaymentInfo;
+import com.filmfellows.cinemates.domain.member.model.vo.Member;
+import com.filmfellows.cinemates.domain.store.model.service.StorePayService;
+import com.filmfellows.cinemates.domain.store.model.vo.StorePayment;
+import com.siot.IamportRestClient.IamportClient;
+import com.siot.IamportRestClient.response.IamportResponse;
+import com.siot.IamportRestClient.response.Payment;
 import jakarta.servlet.http.HttpSession;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,25 +15,41 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/store")
-@RequiredArgsConstructor
-public class StorePaymentController {
+public class StorePayController {
 
-    private final StorePaymentService spService;
+    private final StorePayService spService;
+    private final IamportClient iamportClient;
+
+    @Value("${IMP_API_KEY2}")
+    String apiKey;
+    @Value("${IMP_API_SECRETKEY2}")
+    String apiSecret;
+
+    public StorePayController(StorePayService spService) {
+        this.spService = spService;
+        this.iamportClient = new IamportClient(apiKey, apiSecret);
+    }
 
     @PostMapping("/ready")
-    public String readyToPayStore(@ModelAttribute("StorePaymentInfo") StorePaymentInfo pInfo
+    public String readyToPayStore(@ModelAttribute("StorePaymentInfo") StorePayment pInfo
             , Model model, HttpSession session) {
         String memberId = (String) session.getAttribute("memberId");
 
         // 여기에서 회원 정보를 조회하여 pInfo에 설정하는 로직 추가
+        Member member = spService.getMemberById(memberId);
+        if (member != null) {
+            pInfo.setBuyer_email(member.getEmail());
+            pInfo.setBuyer_name(member.getName());
+            pInfo.setBuyer_tel(member.getPhone());
+        } else {
+            // 회원 정보가 없을 경우 에러 처리
+            return "redirect:/error";
+        }
 
         session.setAttribute("pInfo", pInfo);
         model.addAttribute("pInfo", pInfo);
         return "store/storePayment";
     }
-
-    @GetMapping("/storepayment")
-    public String showPayForm(@ModelAttribute)
 
     @PostMapping("/validation/{imp_uid}")
     @ResponseBody
@@ -40,7 +59,7 @@ public class StorePaymentController {
 
     @PostMapping("/save_buyerInfo")
     @ResponseBody
-    public ResponseEntity<String> saveBuyerInfo(@RequestBody StorePaymentInfo paymentInfo, HttpSession session) {
+    public ResponseEntity<String> saveBuyerInfo(@RequestBody StorePayment paymentInfo, HttpSession session) {
         String memberId = (String) session.getAttribute("memberId");
 
         spService.saveBuyerAndOrderInfo(paymentInfo);
@@ -60,4 +79,3 @@ public class StorePaymentController {
         return ResponseEntity.ok(impUid);
     }
 }
-*/

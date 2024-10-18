@@ -33,7 +33,7 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
         // TODO Auto-generated method stub
         log.info("{} 연결됨", session.getId());
         sessions.add(session);
-        session.sendMessage(new TextMessage("WebSocket 연결 완료"));
+        session.sendMessage(new TextMessage("{chatContent: 'WebSocket 연결 완료'}"));
         System.out.println(session.getId());
     }
 
@@ -53,18 +53,18 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
         if(chatMessage.getMessageType().equals(ChatMessage.MessageType.FIRST)){
             // 입장 메세지
             chatRoomSessionMap.computeIfAbsent(chatMessage.getRoomNo(), s -> new HashSet<>()).add(session);
-            chatMessage.setChatContent("님이 입장하셨습니다.");
+            chatMessage.setChatContent("님이 대화에 참여하셨습니다");
 
         }else if(chatMessage.getMessageType().equals(ChatMessage.MessageType.JOIN)){
             // 입장 메세지
             chatRoomSessionMap.computeIfAbsent(chatMessage.getRoomNo(), s -> new HashSet<>()).add(session);
-            chatMessage.setChatContent("님이 입장하셨습니다.");
+            chatMessage.setChatContent("님이 대화에 참여하셨습니다");
 
         }
         else if(chatMessage.getMessageType().equals(ChatMessage.MessageType.LEAVE)){
             // 퇴장 메세지
             chatRoomSessionMap.get(chatMessage.getRoomNo()).remove(session);
-            chatMessage.setChatContent("님이 퇴장하셨습니다.");
+            chatMessage.setChatContent("님이 대화방을 나갔습니다");
         }
 
         // 채팅 메세지 전송
@@ -78,7 +78,11 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         // TODO Auto-generated method stub
         log.info("{} 연결 끊김", session.getId());
+//        session.sendMessage(new TextMessage("WebSocket 연결 종료"));
         sessions.remove(session);
-        session.sendMessage(new TextMessage("WebSocket 연결 종료"));
+        System.out.println("sessions.size : "+sessions.size());
+
     }
+
+
 }
