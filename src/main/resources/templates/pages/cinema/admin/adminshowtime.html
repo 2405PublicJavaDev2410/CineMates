@@ -3,110 +3,12 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{common/layout/defaultLayout}"
       layout:fragment="Content">
+<link rel="stylesheet" href="/css/cinema/showtimeadmin.css">
 
   <head>
       <meta charset="UTF-8">
       <title>상영일정</title>
-      <style>
-          body {
-              text-align: center;
-              font-family: Arial, sans-serif;
-              background-color: white; /* 전체 배경을 어두운 색으로 */
-              color: black; /* 텍스트를 흰색으로 */
-              margin: 0;
-              padding: 0;
-          }
-          hr {
-              border: none;
-              height: 2px;
-              background-color: #d3d3d3; /* 구분선 색상 */
-              margin: 20px 0;
-          }
 
-          /* 네비게이션 리스트 */
-          ul {
-              padding: 0;
-              margin: 0;
-              list-style-type: none;
-          }
-
-          li {
-              display: inline-block;
-              margin-right: 15px;
-          }
-          div{
-              display:inline-block;
-          }
-          a{
-              color: white;
-              text-decoration: none;
-              font-size: 18px;
-              padding: 10px 20px;
-              background-color: #444; /* 버튼 같은 느낌을 위한 배경색 */
-              border-radius: 5px;
-              transition: background-color 0.3s;
-              text-align: center;
-              margin-right: 5px
-
-          }
-          a:hover {
-              background-color: #ff6f61; /* 마우스 호버시 색상 변경 */
-          }
-
-          #cinemamain div {
-              background-color: rgba(0, 0, 0, 0.7); /* 투명한 검은색 배경 */
-              padding: 10px;
-              margin-bottom: 10px;
-              border-radius: 5px;
-              font-size: 18px;
-          }
-
-          button {
-              background-color: #ff6f61;
-              border: none;
-              padding: 10px 20px;
-              font-size: 16px;
-              color: white;
-              cursor: pointer;
-              border-radius: 5px;
-              transition: background-color 0.3s;
-          }
-
-          button:hover {
-              background-color: #e65550;
-          }
-
-          h1 {
-              color: #ff6f61;
-          }
-          table {
-              width: 80%;
-              margin: 20px auto;
-              border-collapse: collapse;
-              background-color: white;
-              color: #333;
-              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 테이블에 그림자 추가 */
-          }
-
-          th, td {
-              padding: 12px;
-              text-align: center;
-              border: 1px solid #ddd; /* 테두리 추가 */
-          }
-
-          th {
-              background-color: #ff6f61; /* 헤더 배경 색상 */
-              color: white;
-          }
-
-          td {
-              color: #333;
-          }
-
-          tr:nth-child(even) {
-              background-color: #f9f9f9; /* 짝수 행의 배경을 약간 다르게 */
-          }
-          </style>
   </head>
   <body>
   <h1>상영 일정</h1>
@@ -128,14 +30,14 @@
 
           <div th:if="${stat.index == 0} or ${sList[0].screenName==showtime.screenName} or${sList[stat.index - 1].screenName == showtime.screenName}"  style="width:100px;height:100px;" >
               <!-- showtimeTime 출력 -->
-              <a style="display:block; height:60px;">
+              <a class="screen" style="display:block; height:60px;">
                   <div>[[${showtime.showtimeTime}]] <br>[[${showtime.availableSeats}]]석</div><br>
               </a>
           </div>
           <div th:unless="${stat.index == 0} or ${sList[0].screenName==showtime.screenName} or${sList[stat.index - 1].screenName == showtime.screenName}"  style="width:100px;height:100px;" >
 
               <!-- showtimeTime 출력 -->
-              <a style="display:block; height:60px;">
+              <a class="screen" style="display:block; height:60px;">
                   <div>[[${showtime.showtimeTime}]] <br>[[${showtime.availableSeats}]]석</div><br>
               </a>
 
@@ -172,17 +74,17 @@
           var popupH = 800;
           var left = Math.ceil((window.screen.width - popupW)/2);
           var top = Math.ceil((window.screen.height - popupH)/2);
-          writeWindow=window.open("/cinema/showtimeinsert"+a,"pop","width=600,height=800,left="+left+",top="+top+"");
+          writeWindow=window.open("/admin/showtimeinsert"+a,"pop","width=600,height=800,left="+left+",top="+top+"");
       }
       function adminscreen(a){
-          location.href="/cinema/screen"+a;
+          location.href="/admin/screen"+a;
       }
       function updateshowtime(a){
           var popupW = 600;
           var popupH = 800;
           var left = Math.ceil((window.screen.width - popupW)/2);
           var top = Math.ceil((window.screen.height - popupH)/2);
-          writeWindow=window.open("/cinema/updateshowtime"+a,"pop","width=600,height=800,left="+left+",top="+top+"");
+          writeWindow=window.open("/admin/updateshowtime"+a,"pop","width=600,height=800,left="+left+",top="+top+"");
       }
       function backone(){
           window.history.back();

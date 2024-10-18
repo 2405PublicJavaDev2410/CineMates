@@ -4,6 +4,7 @@ import com.filmfellows.cinemates.domain.cinema.model.mapper.CinemaMapper;
 import com.filmfellows.cinemates.domain.report.model.mapper.ReportMapper;
 import com.filmfellows.cinemates.domain.report.model.service.ReportService;
 import com.filmfellows.cinemates.domain.report.model.vo.Report;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +21,18 @@ public class ReportServiceImpl implements ReportService {
         this.mapper=mapper;
     }
     @Override
-    public List<Report> reportlist() {
-        List<Report> rlist = mapper.reportlist();
+    public List<Report> reportlist(Integer currentPage, RowBounds rowBounds) {
+        List<Report> rlist = mapper.reportlist(currentPage,rowBounds);
         return rlist;
     }
+
+    @Override
+    public List<Report> reportlist2(Integer currentPage, RowBounds rowBounds) {
+        List<Report> rlist = mapper.reportlist2(currentPage,rowBounds);
+        return rlist;
+    }
+
+
 
     @Override
     public int reportinsert(Report report) {
@@ -52,6 +61,42 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public int allupdatereportid(String reportId) {
         int result=mapper.allupdatereportid(reportId);
+        return result;
+    }
+
+    @Override
+    public Report onereport(int reportNo) {
+        Report repot=mapper.onereport(reportNo);
+        return repot;
+    }
+
+    @Override
+    public int deletechat(int reportWriteno) {
+        int result=mapper.deletechat(reportWriteno);
+        return result;
+    }
+
+    @Override
+    public int deletereview(int reportWriteno) {
+        int result=mapper.deletereview(reportWriteno);
+        return result;
+    }
+
+
+    @Override
+    public int countreportlist() {
+        int totalcount=mapper.countreportlist();
+        return totalcount;
+    }
+    @Override
+    public int countreportlist2() {
+        int totalcount=mapper.countreportlist2();
+        return totalcount;
+    }
+
+    @Override
+    public int deletechating(int reportWriteno) {
+        int result=mapper.deletechating(reportWriteno);
         return result;
     }
 }

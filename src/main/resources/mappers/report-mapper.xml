@@ -6,10 +6,10 @@
 <mapper namespace="com.filmfellows.cinemates.domain.report.model.mapper.ReportMapper">
 
     <select id="reportlist">
-        SELECT * FROM REPORT_TBL A JOIN MEMBER_TBL B ON A.REPORT_ID=B.MEMBER_ID
+        SELECT * FROM REPORT_TBL A JOIN MEMBER_TBL B ON A.REPORT_ID=B.MEMBER_ID WHERE REPORT_STATUS='처리중'
     </select>
     <insert id="reportinsert">
-        INSERT INTO REPORT_TBL VALUES(SEQ_REPORT_NO.NEXTVAL,#{reportId},#{reportOption},#{reportContent},DEFAULT,DEFAULT)
+        INSERT INTO REPORT_TBL VALUES(SEQ_REPORT_NO.NEXTVAL,#{reportId},#{reportOption},#{reportContent},DEFAULT,DEFAULT,#{reportWriteno},#{reportCategory})
     </insert>
     <update id="reportid">
         UPDATE MEMBER_TBL
@@ -27,9 +27,27 @@
     <update id="allupdatereportid">
         UPDATE REPORT_TBL SET REPORT_STATUS='완료' WHERE REPORT_ID=#{reportId}
     </update>
+    <select id="onereport">
+        SELECT * FROM REPORT_TBL WHERE REPORT_NO=#{reportNo}
+    </select>
+    <delete id="deletechat">
+        DELETE FROM CHAT_ROOM_TBL WHERE ROOM_NO=#{reportWriteno}
+    </delete>
+    <delete id="deletereview">
+        DELETE FROM REVIEW_TBL WHERE REVIEW_NO=#{reportWriteno}
+    </delete>
+    <delete id="deletechating">
+        DELETE FROM CHAT_TBL WHERE CHAT_NO=#{reportWriteno}
+    </delete>
+    <select id="countreportlist" resultType="_int">
+        SELECT COUNT(*) FROM REPORT_TBL A JOIN MEMBER_TBL B ON A.REPORT_ID=B.MEMBER_ID WHERE REPORT_STATUS='처리중'
+    </select>
+    <select id="countreportlist2" resultType="_int">
+        SELECT COUNT(*) FROM REPORT_TBL A JOIN MEMBER_TBL B ON A.REPORT_ID=B.MEMBER_ID WHERE REPORT_STATUS='완료'
+    </select>
+    <select id="reportlist2">
+        SELECT * FROM REPORT_TBL A JOIN MEMBER_TBL B ON A.REPORT_ID=B.MEMBER_ID WHERE REPORT_STATUS='완료'
+    </select>
 
 
-
-
-  
 </mapper>

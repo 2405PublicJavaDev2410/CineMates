@@ -1,66 +1,9 @@
 <!DOCTYPE html>
 <html lang="ko">
-
+<link rel="stylesheet" href="/css/cinema/insert.css">
 <head>
   <meta charset="UTF-8">
   <title>상영추가</title>
-
-  <style>
-    /* CSS는 이전과 동일 */
-    body {
-      font-family: 'Arial', sans-serif;
-      width: 100%;
-      max-width: 500px;
-      margin: 0 auto;
-      padding: 20px;
-      background-color: #f0f0f0;
-      color: #333;
-      box-sizing: border-box;
-    }
-    h1 {
-      color: #2c3e50;
-      text-align: center;
-      margin-bottom: 15px;
-    }
-    form {
-      background-color: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    div {
-      margin: 15px 0;
-      text-align: left;
-    }
-    input, select {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      box-sizing: border-box;
-    }
-    small {
-      display: block;
-      color: #e74c3c;
-      font-size: 12px;
-      margin-top: 5px;
-    }
-    button {
-      width: 100%;
-      padding: 10px;
-      background-color: #3498db;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 16px;
-      margin-top: 20px;
-    }
-    button:hover {
-      background-color: #2980b9;
-    }
-  </style>
 
   <script>
     function updateSeatCount() {
@@ -104,7 +47,7 @@
 </head>
 <body>
 <h1>상영 추가</h1>
-<form action="/cinema/showtimeinsert" method="post">
+<form action="/admin/showtimeinsert" method="post">
   <div>
     <label for="screenName">상영관 이름</label>
     <select name="screenName" id="screenName" onchange="updateSeatCount()">
