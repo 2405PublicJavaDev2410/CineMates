@@ -26,10 +26,10 @@
 </head>
 
 <body>
-<h1>예매 결제</h1>
 <h2>관람권 결제용 페이지</h2>
 <span>[[${memberIds}]]</span>
 <button onclick="goPay();">결제 하기</button>
+
 <input id="reservationNo" name="reservationNo" th:value="${rDTO.reservationNo}" type="hidden">
 <input id="reservationVisitor" name="reservationVisitor" th:value="${rDTO.reservationVisitor}" type="hidden">
 <input id="reservationSeat" name="reservationSeat" th:value="${rDTO.reservationSeat}" type="hidden">
@@ -51,6 +51,7 @@
 <input id="childReserved" name="adultReserved" th:value="${rDTO.childReserved}" type="hidden">
 <input id="seniorReserved" name="adultReserved" th:value="${rDTO.seniorReserved}" type="hidden">
 <input type="hidden" th:value="${rDTO.allTicketCount}">
+
 <div>
   <img alt="" th:src="@{${rDTO.posterUrl}}">
   <span th:text="${rDTO.reservationSeat}"></span>
@@ -60,11 +61,11 @@
   <span th:text="${rDTO.cinemaName}"></span>
   <!--  값이 null 이면 안보이게.    -->
   <span class="reservation-detail"
-        th:text="${rDTO.adultReserved != null} ? '어른: ' + ${rDTO.adultReserved}"></span>
+        th:text="${rDTO.adultReserved != 0} ? '어른: ' + ${rDTO.adultReserved}"></span>
   <span class="reservation-detail"
-        th:text="${rDTO.childReserved != null} ? '아이: ' + ${rDTO.childReserved}"></span>
+        th:text="${rDTO.childReserved != 0} ? '아이: ' + ${rDTO.childReserved}"></span>
   <span class="reservation-detail"
-        th:text="${rDTO.seniorReserved != null} ? '경로: ' + ${rDTO.seniorReserved}"></span>
+        th:text="${rDTO.seniorReserved != 0} ? '경로: ' + ${rDTO.seniorReserved}"></span>
 </div>
 </body>
 </html>

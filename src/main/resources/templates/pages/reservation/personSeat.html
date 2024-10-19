@@ -28,7 +28,7 @@
             <div class="movie-img">
                 <img alt="" th:src="@{${sDTO.posterUrl}}">
             </div>
-            <div>
+            <div class="movie-info_1">
                 <strong>[[${rDTO.title}]]</strong>
                 <dl>
                     <dt>[[${rDTO.reservationDate}]]</dt>
@@ -69,11 +69,22 @@
     </div>
     <div class="seatDiv">
         <div class="Screen"><span>Screen</span></div>
-        <div id="seatMap"></div>
+        <div id="seatMap">
+
+        </div>
     </div>
     <p id="message"></p>
     <form action="/paymentReady" method="POST">
-        <button type="submit">예약하기</button>
+        <div class="reserveInfo" style="display:flex; width: 1200px; margin: 0 auto;">
+            <div class="how-much-Pay">
+                <dl class="totalPrice">
+                    <dd><Strong></Strong></dd>
+                </dl>
+            </div>
+            <div class="goToPay" style="display: flex; width: 1200px; margin:0 auto; justify-content: end;">
+                <button type="submit" id="reserve-button">예약하기</button>
+            </div>
+        </div>
         <input name="reservationNo" th:value="${rDTO.reservationNo}" type="hidden">
         <input id="countInput" name="reservationVisitor" th:value="${rDTO.reservationVisitor}" type="hidden">
         <input id="selectedSeatsInput" name="reservationSeat" th:value="${rDTO.reservationSeat}" type="hidden">
@@ -87,7 +98,8 @@
         <input name="cinemaNo" th:value="${rDTO.cinemaNo}" type="hidden">
         <input name="reservationDate" th:value="${rDTO.reservationDate}" type="hidden">
         <input name="memberId" th:value="${rDTO.memberId}" type="hidden">
-        <input name="memberIds" th:value="${#strings.listJoin(memberIds, ',')}" type="hidden">        <input type="hidden" name="ticketCount" th:value="${ticketCount}">
+        <input name="memberIds" th:value="${#strings.listJoin(memberIds, ',')}" type="hidden">
+        <input type="hidden" name="ticketCount" th:value="${ticketCount}">
         <input type="hidden" name="allTicketCount" th:value="${allMemberTicket}">
         <input id="adultReserved" name="adultReserved" th:value="${rDTO.adultReserved}" type="hidden">
         <input id="childReserved" name="childReserved" th:value="${rDTO.childReserved}" type="hidden">
