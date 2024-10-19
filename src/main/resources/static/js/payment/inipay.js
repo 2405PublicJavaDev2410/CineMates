@@ -132,6 +132,9 @@ function goPay() {
                 }
             });
         }
+        else{
+            alert("관람권이 부족합니다");
+        }
     } else {
         console.log("결제가 취소되었습니다.");
     }

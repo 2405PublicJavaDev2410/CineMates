@@ -62,12 +62,14 @@ public class PaymentController {
     // readyTogoPay 메소드 값 가지고 html 파일 가는 메소드
     @GetMapping("/payment")
     public String showPayForm(HttpSession session, Model model
-            , String memberIds) {
+            , String memberIds
+                              ) {
         ReservationDTO rDTO = (ReservationDTO) session.getAttribute("rDTO");
         MemberDTO mDTO = rService.selectMemberInfo(rDTO.getMemberId());
         rDTO.setBuyer_email(mDTO.getEmail());
         rDTO.setBuyer_name(mDTO.getName());
         rDTO.setBuyer_tel(mDTO.getPhone());
+
         System.out.println("showPayForm" + rDTO);
         System.out.println("info" + mDTO);
         System.out.println("memberIdsShowPayForm: " + memberIds);
@@ -75,7 +77,7 @@ public class PaymentController {
         model.addAttribute("rDTO", rDTO);
         model.addAttribute("mDTO", mDTO);
 
-        if (rDTO.getMemberId() != null && !(rDTO.getAllTicketCount().isEmpty())) {
+        if (rDTO.getMemberId() != null) {
             return "pages/payment/payByTicket";
         } else {
             return "pages/payment/inipay";

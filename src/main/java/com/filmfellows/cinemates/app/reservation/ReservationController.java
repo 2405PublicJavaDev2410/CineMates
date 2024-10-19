@@ -70,7 +70,7 @@ public class ReservationController {
     @PostMapping("/Ticketing/PersonSeat")
     public String showPersonSeatPage(@ModelAttribute ReservationDTO rDTO, @RequestParam String reservationSeat, Model model, HttpSession session,
                                      @RequestParam String title,
-                                     @RequestParam(value="memberIds", required=false) String memberIdList) {
+                                     @RequestParam(value = "memberIds", required = false) String memberIdList) {
         String memberId = (String) session.getAttribute("memberId");
         System.out.println("memberId : " + memberId);
         List<String> allMemberTicket = new ArrayList<>();
@@ -79,7 +79,8 @@ public class ReservationController {
         rDTO.setMemberId(memberId);
         ShowInfoDTO sDTO = rService.selectMoviePoster(title);
         System.out.println("영화 포스터: " + sDTO);
-
+        //테스트용 리스트
+//        memberIdList = "test8,MEM001,admin1";
         // memberIdList가 null이 아니고 비어있지 않을 때만 처리
         if (memberIdList != null && !memberIdList.isEmpty()) {
             List<String> memberIds = Arrays.asList(memberIdList.split(","));
@@ -92,6 +93,7 @@ public class ReservationController {
             }
             model.addAttribute("memberIds", memberIds);
             rDTO.setAllTicketCount(allMemberTicket);
+            System.out.println("rDTO TicketCOunt: " + rDTO);
             model.addAttribute("allMemberTicket", allMemberTicket);
         }
 
@@ -99,7 +101,8 @@ public class ReservationController {
         ObjectMapper mapper = new ObjectMapper();
         Map<Integer, List<String>> reservedSeats;
         try {
-            reservedSeats = mapper.readValue(reservationSeat, new TypeReference<Map<Integer, List<String>>>() {});
+            reservedSeats = mapper.readValue(reservationSeat, new TypeReference<Map<Integer, List<String>>>() {
+            });
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             reservedSeats = new HashMap<>();
