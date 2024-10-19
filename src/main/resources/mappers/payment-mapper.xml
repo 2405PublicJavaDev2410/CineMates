@@ -6,7 +6,7 @@
 <mapper namespace="com.filmfellows.cinemates.domain.payment.model.mapper.PaymentMapper">
     <!--결제 정보 insert -->
     <insert id="insertPaymentInfo">
-        INSERT INTO PAYMENT_TBL (IMP_UID, MERCHANT_UID, AMOUNT, STATUS,BUYER_EMAIL, BUYER_NAME, BUYER_TEL, NAME,MOVIE_NO,SCREEN_NO,RESERVATION_NO) VALUES (#{imp_uid},#{merchant_uid},#{amount},DEFAULT,#{buyer_email},#{buyer_name},#{buyer_tel},#{name},#{movieNo},#{screenNo},#{reservationNo})
+        INSERT INTO PAYMENT_TBL (IMP_UID, MERCHANT_UID, AMOUNT, STATUS,BUYER_EMAIL, BUYER_NAME, BUYER_TEL, NAME,MOVIE_NO,SCREEN_NO,RESERVATION_NO,PAY_METHOD) VALUES (#{imp_uid},#{merchant_uid},#{amount},DEFAULT,#{buyer_email},#{buyer_name},#{buyer_tel},#{name},#{movieNo},#{screenNo},#{reservationNo},#{pay_method})
     </insert>
     <!-- imp_uid select-->
     <select id="selectImpUid" resultType="String">

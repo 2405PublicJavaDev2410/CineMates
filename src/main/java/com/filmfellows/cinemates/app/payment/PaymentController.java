@@ -9,6 +9,7 @@ import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
 import jakarta.servlet.http.HttpSession;
+import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -81,15 +82,15 @@ public class PaymentController {
         List<String> memberIdsList = Arrays.asList(memberIds.split(","));
         System.out.println("memberIds payByTicket:" + memberIdsList);
         List<String> updatedMembers = new ArrayList<>();
-//        for (String memberId : memberIdsList) {
-//            boolean updated = paymentService.updateTicketCount(memberId);
-//            if (updated) {
-//                updatedMembers.add(memberId);
-//                System.out.println("Updated ticket count for memberId: " + memberId);
-//            } else {
-//                System.out.println("Failed to update ticket count for memberId: " + memberId);
-//            }
-//        }
+        for (String memberId : memberIdsList) {
+            boolean updated = paymentService.updateTicketCount(memberId);
+            if (updated) {
+                updatedMembers.add(memberId);
+                System.out.println("Updated ticket count for memberId: " + memberId);
+            } else {
+                System.out.println("Failed to update ticket count for memberId: " + memberId);
+            }
+        }
         System.out.println("Test: ");
         return ResponseEntity.ok(updatedMembers);
     }
@@ -102,7 +103,13 @@ public class PaymentController {
         System.out.println("validation Controller :" + imp_uid);
         return paymentService.validateIamport(imp_uid);
     }
-
+//    //관람권 결제 시 제품 정보 조회 메소드
+//    @PostMapping("/validationByTicket/{imp_uid}")
+//    @ResponseBody
+//    public ResponseEntity<String> validateTicket(@PathVariable String imp_uid) {
+//        System.out.println("validation Controller :" + imp_uid);
+//        return paymentService.validateTicket(imp_uid);
+//    }
     // 정보 조회한 결제 제품 저장하는 메소드
     @PostMapping("/save_buyerInfo")
     @ResponseBody

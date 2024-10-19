@@ -10,6 +10,7 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,6 +50,8 @@ public class PaymentService {
         }
     }
 
+
+
     // 결제 취소 메소드
     public IamportResponse<Payment> cancelPayment(String imp_uid) {
         try {
@@ -84,5 +87,6 @@ public class PaymentService {
     public boolean updateTicketCount(String memberId) {
         return rmapper.updateTicketCount(memberId) > 0;
     }
-    }
+
+}
 
