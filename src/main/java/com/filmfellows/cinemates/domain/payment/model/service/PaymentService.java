@@ -2,7 +2,6 @@ package com.filmfellows.cinemates.domain.payment.model.service;
 
 import com.filmfellows.cinemates.domain.payment.model.mapper.PaymentMapper;
 import com.filmfellows.cinemates.domain.reservation.model.mapper.ReservationMapper;
-import com.filmfellows.cinemates.domain.reservation.model.vo.ReservationDTO;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.request.CancelData;
 import com.siot.IamportRestClient.response.IamportResponse;
@@ -11,9 +10,11 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 
 @Configuration
@@ -49,6 +50,8 @@ public class PaymentService {
         }
     }
 
+
+
     // 결제 취소 메소드
     public IamportResponse<Payment> cancelPayment(String imp_uid) {
         try {
@@ -80,13 +83,10 @@ public class PaymentService {
         rmapper.deleteReservationInfo(impUid);
         pmapper.deletePaymentInfo(impUid);
     }
-
-
-    public int calcTicketCount(String memberId) {
-        return rmapper.updateTicketCount(memberId);
+    @Transactional
+    public boolean updateTicketCount(String memberId) {
+        return rmapper.updateTicketCount(memberId) > 0;
     }
 
-    public ReservationDTO selectUpdatedReservation(String memberId) {
-        return rmapper.selectUpdatedReservation(memberId);
-    }
 }
+

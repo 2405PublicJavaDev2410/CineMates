@@ -70,6 +70,7 @@ public class ReservationController {
     @PostMapping("/Ticketing/PersonSeat")
     public String showPersonSeatPage(@ModelAttribute ReservationDTO rDTO, @RequestParam String reservationSeat, Model model, HttpSession session,
                                      @RequestParam String title
+//                                     ,@RequestParam("memberIds") String memberIdList // 대화방 인원 아이디
 //                                    @RequestParam(value="memberIds", required =false)List<String>memberIds
     ) {
         String memberId = (String) session.getAttribute("memberId");
@@ -80,7 +81,11 @@ public class ReservationController {
         rDTO.setMemberId(memberId);
         ShowInfoDTO sDTO = rService.selectMoviePoster(title);
         System.out.println("영화 포스터: " + sDTO);
-        List<String> memberIds = Arrays.asList("test8", "test7", "admin1");
+        //테스트용 리스트
+        List<String> memberIds = Arrays.asList("test8", "MEM001", "admin1");
+        // 실제 대화방 인원 아이디 받는 리스트
+//        List<String> memberIds = Arrays.asList(memberIdList.split(","));
+        System.out.println("ReservationController: " + memberIds);
 
             // JSON 문자열을 Map으로 변환
             ObjectMapper mapper = new ObjectMapper();
@@ -104,8 +109,8 @@ public class ReservationController {
                 System.out.println(allMemberTicket);
             }
             rDTO.setAllTicketCount(allMemberTicket);
-            rDTO.setMemberIds(memberIds);
             model.addAttribute("rDTO" , rDTO) ;
+            model.addAttribute("memberIds" , memberIds);
             model.addAttribute("allMemberTicket", allMemberTicket);
             return "pages/reservation/personSeat";
         }

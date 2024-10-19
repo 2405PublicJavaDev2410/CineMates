@@ -13,10 +13,11 @@
 
   <!-- inline JS 영역-->
   <script th:inline="javascript" type="text/javascript">
-    const memberId =/*${allMemberId}]]*/{};
+    /*<![CDATA[*/
+    var memberIds = /*[[${memberIds}]]*/ [];
+    /*]]>*/
   </script>
-  <script crossOrigin="anonymous" src="/js/payment/inipay.js" defer></script>
-  <script crossorigin="anonymous"src="/js/payment/payByTicket.js" defer></script>
+  <script crossorigin="anonymous" src="/js/payment/payByTicket.js" defer></script>
   <script
           crossorigin="anonymous"
           integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
@@ -27,6 +28,7 @@
 <body>
 <h1>예매 결제</h1>
 <h2>관람권 결제용 페이지</h2>
+<span>[[${memberIds}]]</span>
 <button onclick="goPay();">결제 하기</button>
 <input id="reservationNo" name="reservationNo" th:value="${rDTO.reservationNo}" type="hidden">
 <input id="reservationVisitor" name="reservationVisitor" th:value="${rDTO.reservationVisitor}" type="hidden">
@@ -40,6 +42,7 @@
 <input id="cinemaName" name="cinemaName" th:value="${rDTO.cinemaName}" type="hidden">
 <input id="cinemaNo" name="cinemaNo" th:value="${rDTO.cinemaNo}" type="hidden">
 <input id="memberId" name="memberId" th:value="${memberId}" type="hidden">
+<input id="allMemberId" name="allMemberId" th:value="${allTicketCount}" type="hidden">
 <input id="reservationDate" name="reservationDate" th:value="${rDTO.reservationDate}" type="hidden">
 <input id="buyer_tel" name="buyer_tel" th:value="${rDTO.buyer_tel}" type="hidden">
 <input id="buyer_email" name="buyer_email" th:value="${rDTO.buyer_email}" type="hidden">
