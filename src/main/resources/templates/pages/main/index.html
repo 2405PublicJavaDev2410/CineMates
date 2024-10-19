@@ -18,8 +18,8 @@
 <!--            </video>-->
             <video id="randomVideo" autoplay loop playsinline muted controls>
             </video>
-            <div class="gradient-overlay"></div>
         </div>
+<!--            <div class="gradient-overlay"></div>-->
     </section>
 
     <section class="box-office">
@@ -29,18 +29,7 @@
                 <a th:href="@{/movie-detail/{movieNo}(movieNo=${bList.movieNo})}">
                     <img th:src="${bList.posterUrl}" th:alt="${bList.title}" class="movie-poster" />
                 </a>
-                <h3 class="movie-title" th:text="${bList.title}"></h3>
-                <p class="movie-info" th:text="'예매율 '+ ${bList.reservationRate}"></p>
-            </div>
-        </div>
-    </section>
-    <section class="box-office">
-        <h2>박스오피스 TOP 5</h2>
-        <div class="movie-list" >
-            <div class="movie-item" th:each="bList : ${bList}">
-                <a th:href="@{/movie-detail/{movieNo}(movieNo=${bList.movieNo})}">
-                    <img th:src="${bList.posterUrl}" th:alt="${bList.title}" class="movie-poster" />
-                </a>
+                
                 <h3 class="movie-title" th:text="${bList.title}"></h3>
                 <p class="movie-info" th:text="'예매율 '+ ${bList.reservationRate}"></p>
             </div>
