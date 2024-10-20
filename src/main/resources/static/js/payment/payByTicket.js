@@ -18,7 +18,9 @@ function goPay() {
         showtimeNo: document.getElementById('showtimeNo').value,
         adultReserved: document.getElementById('adultReserved').value,
         childReserved: document.getElementById('childReserved').value,
-        seniorReserved: document.getElementById('seniorReserved').value
+        seniorReserved: document.getElementById('seniorReserved').value,
+        selectSeat : document.getElementById('selectSeat').value
+
     };
     if (confirm("결제 하시겠습니까?")) {
         $.ajax({
@@ -66,7 +68,7 @@ function goPay() {
                     var reserveInfo = {
                         "reservationNo": reservationData.reservationNo,
                         "reservationVisitor": reservationData.reservationVisitor,
-                        "reservationSeat": reservationData.reservationSeat,
+                        "reservationSeat": reservationData.selectSeat,
                         "reservationDate": reservationData.reservationDate,
                         "memberId": reservationData.memberId,
                         "cinemaName": reservationData.cinemaName,

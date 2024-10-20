@@ -81,24 +81,24 @@ public class ReservationController {
         ShowInfoDTO sDTO = rService.selectMoviePoster(title);
         System.out.println("영화 포스터: " + sDTO);
         //테스트용 리스트
-//        memberIdList = "test8,MEM001,admin1";
+        memberIdList = ("test8,MEM001,admin1");
         // memberIdList가 null이 아니고 비어있지 않을 때만 처리
-        if(prevPage != null && "chatRoom".equals(prevPage)) {
+//        if(prevPage != null && "chatRoom".equals(prevPage)) {
             if (memberIdList != null && !memberIdList.isEmpty()) {
                 List<String> memberIds = Arrays.asList(memberIdList.split(","));
                 System.out.println("ReservationController: " + memberIds);
                 for (String memberIdlist : memberIds) {
                     List<String> memberList = rService.selectTicketCountByIds(memberIdlist);
                     allMemberTicket.addAll(memberList);
-                    System.out.println(memberIds);
-                    System.out.println(allMemberTicket);
+                    System.out.println("PersonSeat MemberIds" + memberIds);
+                    System.out.println("PersonSeat MemberTicket" + allMemberTicket);
                 }
                 model.addAttribute("memberIds", memberIds);
                 rDTO.setAllTicketCount(allMemberTicket);
-                System.out.println("rDTO TicketCOunt: " + rDTO);
+                System.out.println("rDTO TicketCount: " + rDTO);
                 model.addAttribute("allMemberTicket", allMemberTicket);
             }
-        }
+//        }
 
         // JSON 문자열을 Map으로 변환
         ObjectMapper mapper = new ObjectMapper();
