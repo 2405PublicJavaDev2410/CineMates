@@ -191,4 +191,25 @@ public interface ChatMapper {
      * @return String
      */
     List<ChatJoin> selectAcceptAll(Integer roomNo);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : 채팅방 참여인원 수 조회
+     * @return Integer
+     */
+    Integer selectJoinCountByRoomNo(Integer roomNo);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : 최근 대화 내용 조회
+     * @return String
+     */
+    String selectRecentChatContent(Integer roomNo);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : TOP5 채팅방 리스트 조회
+     * @return String
+     */
+    List<ChatRoom> selectChatRoomListByTop();
 }

@@ -233,7 +233,13 @@
                                         <span th:each="tag : ${tagList}" th:if="${tag.roomNo == chatRoom.roomNo}" th:text="'#'+${tag.tagName}+' '"></span>
                                     </div>
                                     <div style="display: flex">
-                                        <div style="margin-right: 50px">참여인원: 00명 참여중 | 1시간전</div>
+                                        <th:block th:if="${chatRoom.joinCount == null}">
+                                            <div style="margin-right: 50px" th:text="'1명 참여중'"></div>
+                                        </th:block>
+                                        <th:block th:if="${chatRoom.joinCount != null}">
+                                            <div style="margin-right: 50px" th:text="${chatRoom.joinCount}+'명 참여중'"></div>
+                                        </th:block>
+<!--                                        <div style="margin-right: 50px" th:text="'참여인원: '+${chatRoom.joinCount}+'명 참여중'"></div>-->
                                         <div th:text="${chatRoom.title}+' ('+${chatRoom.cinemaAddress}+' / '+${chatRoom.cinemaName}+')'"></div>
                                     </div>
                                 </div>

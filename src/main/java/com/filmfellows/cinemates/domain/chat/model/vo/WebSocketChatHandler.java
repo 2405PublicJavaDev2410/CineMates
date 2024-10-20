@@ -53,7 +53,7 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
         if(chatMessage.getMessageType().equals(ChatMessage.MessageType.FIRST)){
             // 입장 메세지
             chatRoomSessionMap.computeIfAbsent(chatMessage.getRoomNo(), s -> new HashSet<>()).add(session);
-            chatMessage.setChatContent("님이 대화에 참여하셨습니다");
+            chatMessage.setChatContent("FIRST");
 
         }else if(chatMessage.getMessageType().equals(ChatMessage.MessageType.JOIN)){
             // 입장 메세지
@@ -63,10 +63,10 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
         }
         else if(chatMessage.getMessageType().equals(ChatMessage.MessageType.LEAVE)){
             // 퇴장 메세지
-            chatRoomSessionMap.get(chatMessage.getRoomNo()).remove(session);
-            chatMessage.setChatContent("님이 대화방을 나갔습니다");
+//            chatRoomSessionMap.get(chatMessage.getRoomNo()).remove(session);
+            chatMessage.setChatContent("LEAVE");
         }else if(chatMessage.getMessageType().equals(ChatMessage.MessageType.WAIT)){
-            chatRoomSessionMap.get(chatMessage.getRoomNo()).remove(session);
+//            chatRoomSessionMap.get(chatMessage.getRoomNo()).remove(session);
             chatMessage.setChatContent("WAIT");
             System.out.println("WAIT!!!!!!!!!!!!");
         }

@@ -7,94 +7,7 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Document</title>
         <style>
-            #btnWrap {
-                width: 500px;
-                margin: 100px auto;
-            }
-            #popupBtn {
-                width: 150px;
-                height: 50px;
-                padding: 10px 5px;
-                background-color: #007bff;
-                color: #fff; /* 텍스트 색상 */
-                border: none; /* 테두리 제거 */
-                cursor: pointer;
-            }
-            #modalWrap {
-                position: fixed; /* 화면에 고정 */
-                z-index: 10; /* 상위에 위치 */
-                padding-top: 150px;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                overflow: auto;
-                background-color: rgba(0, 0, 0, 0.7); /* 반투명한 배경색 */
-                display: none; /* 초기에는 숨김 */
 
-            }
-
-            #modalBody {
-                width: 600px;
-                height: 350px;
-                padding: 30px 30px;
-                margin: 0 auto;
-                border: 1px solid #777;
-                border-radius: 20px;
-                background-color: #fff;
-
-                position: relative;
-            }
-            #modalBody-flex{
-                display: flex;
-                flex-direction: row;
-                justify-content: space-around;
-            }
-
-            #closeBtn {
-                position: absolute;
-                right: 20px;
-                top: 10px;
-                font-weight: bold;
-                color: #777;
-                font-size: 40px;
-                cursor: pointer;
-            }
-            #closeBtn:hover{
-                color: #EA4E4A;
-                font-weight: bold;
-            }
-
-            .modalBody-box{
-                cursor: pointer;
-                width: 250px;
-                height: 220px;
-                background: #6e6e6e;
-                border-radius: 20px;
-                transition: all 200ms;
-            }
-            .modalBody-box:hover{
-                transform: scale(1.05);
-                box-shadow: 0 5px 5px 5px rgb(162, 162, 162);
-            }
-            .modal-category{
-                font-size: 25px;
-                font-weight: bold;
-                text-align: center;
-                margin-bottom: 20px;
-            }
-            .left-box{
-                background: url("/img/chat/together.jpg");
-                background-position: center;
-                background-repeat: no-repeat;
-                background-size: cover;
-            }
-            .right-box{
-                background: url("/img/chat/talk.png");
-                background-position: center;
-                background-repeat: no-repeat;
-                background-size: cover;
-            }
 
         </style>
     </head>
@@ -102,44 +15,9 @@
         <ul>
             <li><a class="createRoom-modal-btn" href="javascript:void(0)">채팅방 개설</a></li>
         </ul>
-        <div id="modalWrap"> <!-- 모달 창을 감싸는 div -->
 
-            <div id="modalBody">
-                <div class="modal-category">채팅방 카테고리 정하기</div>
-                <div id="modalBody-flex">
-                    <a href="/chat/createForm?roomCategory=reservation">
-                        <div class="modalBody-box left-box"></div>
-                    </a>
-                    <a href="/chat/createForm?roomCategory=talk">
-                        <div class="modalBody-box right-box"></div>
-                    </a>
-
-                </div>
-                <div style="text-align: center; font-size: 18px; margin-top: 20px;">
-                        <span style="margin-right: 100px;">사람들과 함께 봐요</span>
-                        <span style="margin-left: 50px;">사람들과 이야기해요</span>
-                </div>
-                <span id="closeBtn">&times;</span> <!-- 모달을 닫는 X 버튼 -->
-            </div>
-        </div>
         <script>
-            // 모달 - 술 검색창
-            function searchLiquor(){
-            }
 
-            const createRoomBtn = document.querySelector('.createRoom-modal-btn');
-            const modal = document.getElementById("modalWrap");
-            const closeBtn = document.getElementById("closeBtn");
-
-            createRoomBtn.addEventListener('click', ()=>{
-                modal.style.display = "block"; // 버튼을 클릭하면 모달을 보이게 함
-                searchLiquor();
-
-            });
-
-            closeBtn.addEventListener('click', ()=>{
-                modal.style.display = "none"; // 모달을 닫는 버튼(X)을 클릭하면 모달을 숨김
-            });
         </script>
     </body>
 
