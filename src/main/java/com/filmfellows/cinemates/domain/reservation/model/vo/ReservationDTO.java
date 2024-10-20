@@ -25,6 +25,7 @@ public class ReservationDTO {
     private Integer seniorReserved;
     private String reservationSeat;
     private String reservationDate;
+    private String selectSeat;
 
     //Member - 회원
     private String memberId;
@@ -53,6 +54,7 @@ public class ReservationDTO {
     private String buyer_tel;
     private String imp_uid;
     private String pay_method;
+    private String totalPrice;
 
     //ShowTime - 상영
     private String showtimeTime;

@@ -136,7 +136,7 @@
         where title = #{title}
     </select>
     <!--티켓 검색-->
-    <select id="selectTicketCount" resultType="MemberDTO">
+    <select id="selectTicketCount" resultType="Integer">
         SELECT TICKET_COUNT
         FROM MEMBER_TBL
         WHERE MEMBER_ID = #{memberId}
@@ -156,7 +156,7 @@
     <!-- 결제 후 티켓 차감 ( 혼자 )   -->
     <update id="updateTicketCountOnlySolo">
         UPDATE MEMBER_TBL
-        SET TICKET_COUNT = TICKET_COUNT - 1
+        SET TICKET_COUNT = TICKET_COUNT - #{ticketCount}
         WHERE MEMBER_ID = #{memberId}
     </update>
 

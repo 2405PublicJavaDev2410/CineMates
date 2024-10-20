@@ -45,11 +45,11 @@ public interface ReservationMapper {
 
     String getAgeRatingByTitle(String title);
 
-    MemberDTO selectTicketCount(String memberId);
+    Integer selectTicketCount(String memberId);
 
     List<String> selectTicketCountByIds(String memberIds);
 
     int updateTicketCount(String memberId);
 
-    int updateTicketCountOnlySolo(String memberId);
+    int updateTicketCountOnlySolo(String memberId, String ticketCount);
 }
