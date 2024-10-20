@@ -190,6 +190,7 @@
                 showtimeNoInput.value = "";
                 showtimeTimeInput.value = "";
                 screenNameInput.value = "";
+                opener.document.querySelector('input[name=reservationSeat]').value = "";
 
                 reservationDateText.innerText = "";
                 showtimeTimeText.innerText = "";
@@ -207,6 +208,7 @@
             let movieNo = /*[[${chatRoom.movieNo}]]*/;
             let cinemaNo = /*[[${chatRoom.cinemaNo}]]*/;
 
+
             $.ajax({
                 url:"/chat/selectScreenByCinema",
                 data:{
@@ -217,6 +219,7 @@
                 type:"post",
                 success:function(response){
                     $('#screenList-container').replaceWith(response);
+                    getShowtimes(selectedDate);
                     console.log(response);
                 },
                 error:function(){
@@ -224,6 +227,32 @@
                 }
             })
         });
+
+
+        function getShowtimes(date) {
+            let title = /*[[${chatRoom.title}]]*/;
+            let cinemaName = /*[[${chatRoom.cinemaName}]]*/;
+            $.ajax({
+                url: '/getShowtimes',
+                method: 'GET',
+                data: {
+                    reservationDate: date,
+                    title: title,
+                    cinemaName: cinemaName
+                },
+                success: function (response) {
+                    if (response && response.showInfoList && Array.isArray(response.showInfoList)) {
+                        // displayShowtimes(response.showInfoList, date);
+                        // 예약된 좌석 정보를 저장
+                        opener.document.querySelector('input[name=reservationSeat]').value = JSON.stringify(response.reservationSeat);
+                        console.log(opener.document.querySelector('input[name=reservationSeat]'))
+                    }
+                },
+                error: function () {
+
+                }
+            });
+        }
 
 
     </script>
