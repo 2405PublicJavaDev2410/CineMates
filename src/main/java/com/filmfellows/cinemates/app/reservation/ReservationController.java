@@ -111,6 +111,8 @@ public class ReservationController {
             reservedSeats = new HashMap<>();
         }
 
+        Integer ticketCount = rService.selectTicketCount(memberId);
+        rDTO.setTicketCount(ticketCount);
         // 예약된 좌석 정보를 모델에 추가
         model.addAttribute("reservationSeat", reservedSeats);
         model.addAttribute("sDTO", sDTO);

@@ -27,7 +27,27 @@
 
 <body>
 <h2>관람권 결제용 페이지</h2>
-<span>[[${memberIds}]]</span>
+
+<div class="reserveInfo">
+  <div class="reserve_info_1">
+  <img alt="" th:src="@{${rDTO.posterUrl}}">
+  <span th:text="${rDTO.reservationSeat}"></span>
+  <span th:text="${rDTO.reservationDate}"></span>
+  <span th:text="${rDTO.screenName}"></span>
+  <span th:text="${rDTO.showtimeTime}"></span>
+  <span th:text="${rDTO.cinemaName}"></span>
+  <!--  값이 null 이면 안보이게.    -->
+  <span class="reservation-detail"
+        th:text="${rDTO.adultReserved != 0} ? '어른: ' + ${rDTO.adultReserved}"></span>
+  <span class="reservation-detail"
+        th:text="${rDTO.childReserved != 0} ? '아이: ' + ${rDTO.childReserved}"></span>
+  <span class="reservation-detail"
+        th:text="${rDTO.seniorReserved != 0} ? '경로: ' + ${rDTO.seniorReserved}"></span>
+  </div>
+  <div class="reserve_info_2">
+    <strong>좌석: [[${rDTO.reservationSeat}]]</strong>
+  </div>
+</div>
 <button onclick="goPay();">결제 하기</button>
 
 <input id="reservationNo" name="reservationNo" th:value="${rDTO.reservationNo}" type="hidden">
@@ -51,21 +71,5 @@
 <input id="childReserved" name="adultReserved" th:value="${rDTO.childReserved}" type="hidden">
 <input id="seniorReserved" name="adultReserved" th:value="${rDTO.seniorReserved}" type="hidden">
 <input type="hidden" th:value="${rDTO.allTicketCount}">
-
-<div>
-  <img alt="" th:src="@{${rDTO.posterUrl}}">
-  <span th:text="${rDTO.reservationSeat}"></span>
-  <span th:text="${rDTO.reservationDate}"></span>
-  <span th:text="${rDTO.screenName}"></span>
-  <span th:text="${rDTO.showtimeTime}"></span>
-  <span th:text="${rDTO.cinemaName}"></span>
-  <!--  값이 null 이면 안보이게.    -->
-  <span class="reservation-detail"
-        th:text="${rDTO.adultReserved != 0} ? '어른: ' + ${rDTO.adultReserved}"></span>
-  <span class="reservation-detail"
-        th:text="${rDTO.childReserved != 0} ? '아이: ' + ${rDTO.childReserved}"></span>
-  <span class="reservation-detail"
-        th:text="${rDTO.seniorReserved != 0} ? '경로: ' + ${rDTO.seniorReserved}"></span>
-</div>
 </body>
 </html>

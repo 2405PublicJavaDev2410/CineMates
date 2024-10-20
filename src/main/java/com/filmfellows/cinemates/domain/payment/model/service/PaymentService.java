@@ -87,8 +87,8 @@ public class PaymentService {
     }
 
     @Transactional
-    public int updateTicketCountOnlySolo(String memberId) {
-        return rmapper.updateTicketCountOnlySolo(memberId);
+    public int updateTicketCountOnlySolo(String memberId, String ticketCount) {
+        return rmapper.updateTicketCountOnlySolo(memberId,ticketCount);
     }
 }
 

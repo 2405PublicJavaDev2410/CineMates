@@ -6,6 +6,9 @@ const selectedSeatsInput = document.getElementById('selectedSeatsInput');
 const validMemberIds = Array.isArray(memberIds) ? memberIds : [];
 const maxVisitorCount = validMemberIds.length !== 0 ? validMemberIds.length : Infinity;
 
+
+
+// 나이 별 인원 선택
 function count(value, resultClass) {
     const resultElement = document.querySelector('.' + resultClass);
     let currentCount = parseInt(resultElement.innerText);
@@ -64,8 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
     updateTotalPrice();
 });
 
-// const rDTO = /*[[${rDTO}]]*/ {};
-// const reservedSeatsMap = /*[[${reservationSeat}]]*/ {};
+
 const reservedSeats = reservedSeatsMap[rDTO.showtimeNo] || [];
 console.log(reservedSeats);
 const rows = 8; // A부터 H까지 8행
@@ -73,8 +75,8 @@ const seatsPerRow = 23; // 1부터 23까지 23열
 const seats = Array(rows * seatsPerRow).fill(false);
 let selectedSeats = [];
 
-const ADULT_PRICE = 14000;
-const CHILD_PRICE = 12000;
+const ADULT_PRICE = 15000;
+const CHILD_PRICE = 13000;
 const SENIOR_PRICE = 7000;
 function initializeSeatMap() {
     const seatMap = document.getElementById('seatMap');
@@ -144,7 +146,16 @@ function toggleSeat(index, seatId) {
 }
 
 function updateSelectedSeatsInput() {
-    console.log("선택된 좌석:", selectedSeats.join(', '));
+    const selectedSeatsString = selectedSeats.join(',');
+    console.log("선택된 좌석:", selectedSeatsString);
+
+    // hidden input 필드 업데이트
+    document.getElementById('selectedSeatsInput').value = selectedSeatsString;
+
+    // rDTO 객체 업데이트 (JavaScript에서 rDTO를 사용한다고 가정)
+    if (typeof rDTO !== 'undefined') {
+        rDTO.selectSeat = selectedSeatsString;
+    }
 }
 
 function getTotalSelectedCount() {
@@ -163,6 +174,7 @@ function updateTotalPrice() {
 
     const totalPriceText = document.querySelector('.how-much-Pay Strong');
     totalPriceText.innerHTML = `총금액: ${totalPrice.toLocaleString()}원`;
+    document.getElementById('totalPrice').value = totalPrice;
 
 }
 

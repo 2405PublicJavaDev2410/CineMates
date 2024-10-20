@@ -1,4 +1,3 @@
-let selectedPaymentMethod = '';
 var reservationData = {
     reservationNo: document.getElementById('reservationNo').value,
     reservationVisitor: document.getElementById('reservationVisitor').value,
@@ -18,8 +17,24 @@ var reservationData = {
     showtimeNo: document.getElementById('showtimeNo').value,
     adultReserved: document.getElementById('adultReserved').value,
     childReserved: document.getElementById('childReserved').value,
-    seniorReserved: document.getElementById('seniorReserved').value
+    seniorReserved: document.getElementById('seniorReserved').value,
+    selectSeat : document.getElementById('selectSeat').value
 };
+let selectedPaymentMethod = '';
+var reservedSeatCount = 0;
+
+// 페이지 로드 시 실행
+document.addEventListener('DOMContentLoaded', function() {
+    // 예약한 좌석 수 계산
+    const seatInfo = document.querySelector('.reserveInfo_2 strong').textContent;
+    reservedSeatCount = seatInfo.split(',').length;
+
+    // 총 상품 금액 가져오기
+    const formattedPrice = parseInt(totalPrice).toLocaleString('ko-KR');
+    document.getElementById('productPrice').textContent = '상품 금액: ' + formattedPrice  + '원';
+    // 초기 결제 금액 설정
+    updateFinalPrice(0);
+});
 
 function PayMethod(method) {
     selectedPaymentMethod = method;
@@ -32,8 +47,31 @@ function PayMethod(method) {
     // 선택된 결제 방식 버튼 스타일 변경
     document.querySelector(`#${method}-btn`).classList.add('selected');
 
-    // 결제하기 버튼 활성화
-    document.getElementById('pay-button').disabled = false;
+    // 관람권 선택 시 input number 표시
+    const payment = document.querySelector('.payment');
+    const payment1 = document.querySelector('.payment_1');
+    const payment2 = document.querySelector('.payment_pay');
+    if (method === 'ticket') {
+        payment.style.display = 'none';
+        payment1.style.display = 'none';
+        payment2.style.display = 'none';
+    }
+
+    // 결제하기 버튼 상태 업데이트
+    updatePayButtonState();
+}
+
+function updateFinalPrice() {
+    const finalPrice = Math.max(0, totalPrice);
+    document.getElementById('finalPrice').textContent = `결제 금액: ${finalPrice.toLocaleString()}원`;
+}
+
+function updatePayButtonState() {
+    const payButton = document.getElementById('pay-button');
+
+    if (selectedPaymentMethod === 'ticket') {
+        payButton.disabled = (Ticket <= 0);
+    } else payButton.disabled = selectedPaymentMethod !== 'credit';
 }
 
 function processPayment() {
@@ -47,13 +85,14 @@ function processPayment() {
 }
 
 function goPay() {
-
     if (confirm("결제 하시겠습니까?")) {
+        const ticketCount = reservedSeatCount;
         if (Ticket > 0) {
             $.ajax({
                 url: "/payment/ticket",
                 data: {
-                    memberId: memberId
+                    memberId: memberId,
+                    ticketCount:ticketCount
                 },
                 type: "POST",
                 dataType: "json",
@@ -93,7 +132,7 @@ function goPay() {
                     var reserveInfo = {
                         "reservationNo": reservationData.reservationNo,
                         "reservationVisitor": reservationData.reservationVisitor,
-                        "reservationSeat": reservationData.reservationSeat,
+                        "reservationSeat": reservationData.selectSeat,
                         "reservationDate": reservationData.reservationDate,
                         "memberId": reservationData.memberId,
                         "cinemaName": reservationData.cinemaName,
@@ -151,7 +190,7 @@ function requestPay() {
         pay_method: 'card',
         merchant_uid: 'merchant_' + new Date().getTime(),
         name: reservationData.title,
-        // amount: 14000 * reservationData.adultReserved + 12000 * reservationData.childReserved + 7000 * reservationData.seniorReserved,
+        // amount: 15000 * reservationData.adultReserved + 13000 * reservationData.childReserved + 7000 * reservationData.seniorReserved,
         amount: 100,
         buyer_email: reservationData.buyer_email,
         buyer_name: reservationData.buyer_name,
@@ -184,13 +223,13 @@ function requestPay() {
                     "screenNo": reservationData.screenNo,
                     "movieNo": reservationData.movieNo,
                     "reservationNo": reservationData.reservationNo,
-                    "pay_method": rsp.pay_method
+                    "pay_method": 'card',
                 };
                 //  작성자 기준 예매 정보
                 var reserveInfo = {
                     "reservationNo": reservationData.reservationNo,
                     "reservationVisitor": reservationData.reservationVisitor,
-                    "reservationSeat": reservationData.reservationSeat,
+                    "reservationSeat": reservationData.selectSeat,
                     "reservationDate": reservationData.reservationDate,
                     "memberId": reservationData.memberId,
                     "cinemaName": reservationData.cinemaName,

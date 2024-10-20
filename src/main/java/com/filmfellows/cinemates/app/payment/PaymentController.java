@@ -77,7 +77,7 @@ public class PaymentController {
         model.addAttribute("rDTO", rDTO);
         model.addAttribute("mDTO", mDTO);
 
-        if (rDTO.getMemberId() != null) {
+        if (memberIds != null && !memberIds.isEmpty()) {
             return "pages/payment/payByTicket";
         } else {
             return "pages/payment/inipay";
@@ -105,8 +105,9 @@ public class PaymentController {
     @PostMapping("/payment/ticket")
     @ResponseBody
     public ResponseEntity<Boolean> payByTicket(@RequestParam String memberId
+    ,@RequestParam String ticketCount
     ) {
-        int updated = paymentService.updateTicketCountOnlySolo(memberId);
+        int updated = paymentService.updateTicketCountOnlySolo(memberId,ticketCount);
         return ResponseEntity.ok(updated>0);
     }
 
