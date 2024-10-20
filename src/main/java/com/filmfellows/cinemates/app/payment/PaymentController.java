@@ -50,35 +50,43 @@ public class PaymentController {
         System.out.println("paymentReady" + rDTO);
         session.setAttribute("rDTO", rDTO);
         session.setAttribute("memberIds", memberIdList);
+        if(!(memberIdList.isEmpty())){
         return "redirect:/payment?reservationNo=" + rDTO.getReservationNo() + "&memberIds=" + memberIdList;
+        }
+        else{
+            return "redirect:/payment?reservationNo=" + rDTO.getReservationNo();
+        }
     }
 
 
     // readyTogoPay 메소드 값 가지고 html 파일 가는 메소드
     @GetMapping("/payment")
     public String showPayForm(HttpSession session, Model model
-            , String memberIds) {
+            , String memberIds
+                              ) {
         ReservationDTO rDTO = (ReservationDTO) session.getAttribute("rDTO");
         MemberDTO mDTO = rService.selectMemberInfo(rDTO.getMemberId());
         rDTO.setBuyer_email(mDTO.getEmail());
         rDTO.setBuyer_name(mDTO.getName());
         rDTO.setBuyer_tel(mDTO.getPhone());
+
         System.out.println("showPayForm" + rDTO);
         System.out.println("info" + mDTO);
         System.out.println("memberIdsShowPayForm: " + memberIds);
         model.addAttribute("memberIds", memberIds);
         model.addAttribute("rDTO", rDTO);
+        model.addAttribute("mDTO", mDTO);
 
-        if (rDTO.getMemberId() != null && !(rDTO.getAllTicketCount().isEmpty())) {
+        if (rDTO.getMemberId() != null) {
             return "pages/payment/payByTicket";
         } else {
             return "pages/payment/inipay";
         }
     }
 
-    @PostMapping("/payment/ticket")
+    @PostMapping("/payment/ticketFromChat")
     @ResponseBody
-    public ResponseEntity<List<String>> payByTicket(@RequestParam String memberIds) {
+    public ResponseEntity<List<String>> payByTicketFromChat(@RequestParam String memberIds) {
         List<String> memberIdsList = Arrays.asList(memberIds.split(","));
         System.out.println("memberIds payByTicket:" + memberIdsList);
         List<String> updatedMembers = new ArrayList<>();
@@ -93,6 +101,13 @@ public class PaymentController {
         }
         System.out.println("Test: ");
         return ResponseEntity.ok(updatedMembers);
+    }
+    @PostMapping("/payment/ticket")
+    @ResponseBody
+    public ResponseEntity<Boolean> payByTicket(@RequestParam String memberId
+    ) {
+        int updated = paymentService.updateTicketCountOnlySolo(memberId);
+        return ResponseEntity.ok(updated>0);
     }
 
     // 결제 성공 후 결제 한 제품에 대한 정보 조회하는 메소드

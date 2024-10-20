@@ -69,10 +69,9 @@ public class ReservationController {
 
     @PostMapping("/Ticketing/PersonSeat")
     public String showPersonSeatPage(@ModelAttribute ReservationDTO rDTO, @RequestParam String reservationSeat, Model model, HttpSession session,
-                                     @RequestParam String title
-//                                     ,@RequestParam("memberIds") String memberIdList // 대화방 인원 아이디
-//                                    @RequestParam(value="memberIds", required =false)List<String>memberIds
-    ) {
+                                     @RequestParam String title,
+                                     @RequestParam(value="prevPage", required = false) String prevPage,
+                                     @RequestParam(value = "memberIds", required = false) String memberIdList) {
         String memberId = (String) session.getAttribute("memberId");
         System.out.println("memberId : " + memberId);
         List<String> allMemberTicket = new ArrayList<>();
@@ -82,42 +81,43 @@ public class ReservationController {
         ShowInfoDTO sDTO = rService.selectMoviePoster(title);
         System.out.println("영화 포스터: " + sDTO);
         //테스트용 리스트
-        List<String> memberIds = Arrays.asList("test8", "MEM001", "admin1");
-        // 실제 대화방 인원 아이디 받는 리스트
-//        List<String> memberIds = Arrays.asList(memberIdList.split(","));
-        System.out.println("ReservationController: " + memberIds);
-
-            // JSON 문자열을 Map으로 변환
-            ObjectMapper mapper = new ObjectMapper();
-            Map<Integer, List<Integer>> reservedSeats;
-            try {
-                reservedSeats = mapper.readValue(reservationSeat, new TypeReference<Map<Integer, List<Integer>>>() {
-                });
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-                reservedSeats = new HashMap<>();
+//        memberIdList = "test8,MEM001,admin1";
+        // memberIdList가 null이 아니고 비어있지 않을 때만 처리
+        if(prevPage != null && "chatRoom".equals(prevPage)) {
+            if (memberIdList != null && !memberIdList.isEmpty()) {
+                List<String> memberIds = Arrays.asList(memberIdList.split(","));
+                System.out.println("ReservationController: " + memberIds);
+                for (String memberIdlist : memberIds) {
+                    List<String> memberList = rService.selectTicketCountByIds(memberIdlist);
+                    allMemberTicket.addAll(memberList);
+                    System.out.println(memberIds);
+                    System.out.println(allMemberTicket);
+                }
+                model.addAttribute("memberIds", memberIds);
+                rDTO.setAllTicketCount(allMemberTicket);
+                System.out.println("rDTO TicketCOunt: " + rDTO);
+                model.addAttribute("allMemberTicket", allMemberTicket);
             }
+        }
 
-            // 예약된 좌석 정보를 모델에 추가
-            model.addAttribute("reservationSeat", reservedSeats);
-            model.addAttribute("sDTO", sDTO);
-        if (!(memberIds.size() == 0)) {
-            for (String memberIdlist : memberIds) {
-                List<String> memberList = rService.selectTicketCountByIds(memberIdlist);
-                allMemberTicket.addAll(memberList);
-                System.out.println(memberIds);
-                System.out.println(allMemberTicket);
-            }
-            rDTO.setAllTicketCount(allMemberTicket);
-            model.addAttribute("rDTO" , rDTO) ;
-            model.addAttribute("memberIds" , memberIds);
-            model.addAttribute("allMemberTicket", allMemberTicket);
-            return "pages/reservation/personSeat";
+        // JSON 문자열을 Map으로 변환
+        ObjectMapper mapper = new ObjectMapper();
+        Map<Integer, List<String>> reservedSeats;
+        try {
+            reservedSeats = mapper.readValue(reservationSeat, new TypeReference<Map<Integer, List<String>>>() {
+            });
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            reservedSeats = new HashMap<>();
         }
-            System.out.println("rDTO 보여줘라 " + rDTO);
-            model.addAttribute("rDTO", rDTO);
-            return "pages/reservation/personSeat";
-        }
+
+        // 예약된 좌석 정보를 모델에 추가
+        model.addAttribute("reservationSeat", reservedSeats);
+        model.addAttribute("sDTO", sDTO);
+        System.out.println("rDTO 보여줘라 " + rDTO);
+        model.addAttribute("rDTO", rDTO);
+        return "pages/reservation/personSeat";
+    }
 
 
     private static String generateRandomString(int length) {
@@ -161,20 +161,20 @@ public class ReservationController {
         List<ShowInfoDTO> sList = rService.selectShowInfo(cinemaName, title);
         List<ReservationDTO> rList = rService.selectReservationSeat(reservationDate);
 
-        Map<Integer, List<Integer>> reservedSeatsMap = new HashMap<>();
+        Map<Integer, List<String>> reservedSeatsMap = new HashMap<>();
 
         for (ShowInfoDTO show : sList) {
             int totalSeats = Integer.parseInt(show.getScreenSeat());
-            List<Integer> reservedSeats = rList.stream()
+            List<String> reservedSeats = rList.stream()
                     .filter(r -> r.getScreenName().equals(show.getScreenName()) &&
                             r.getShowtimeTime().equals(show.getShowtimeTime()))
-                    .flatMap(r -> Arrays.stream(r.getReservationSeat().split(",")).map(Integer::parseInt))
+                    .flatMap(r -> Arrays.stream(r.getReservationSeat().split(",")))
                     .collect(Collectors.toList());
 
             int availableSeats = totalSeats - reservedSeats.size();
             show.setAvailableSeats(availableSeats);
 
-            reservedSeatsMap.put((show.getShowtimeNo()), reservedSeats);
+            reservedSeatsMap.put(show.getShowtimeNo(), reservedSeats);
         }
 
         Map<String, Object> response = new HashMap<>();

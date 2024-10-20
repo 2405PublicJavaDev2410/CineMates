@@ -51,4 +51,5 @@ public interface ReservationMapper {
 
     int updateTicketCount(String memberId);
 
+    int updateTicketCountOnlySolo(String memberId);
 }
