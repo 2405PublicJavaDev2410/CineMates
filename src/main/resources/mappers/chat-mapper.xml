@@ -232,4 +232,34 @@
     <update id="updateAcceptStatus">
         UPDATE CHAT_JOIN_TBL SET ACCEPT_STATUS = #{acceptStatus} WHERE ROOM_NO = #{roomNo} AND MEMBER_ID = #{memberId}
     </update>
+
+<!--    극장별 상영관 리스트-->
+    <select id="selectScreenByCinema" resultType="finalReserveInfoByTicket">
+        SELECT DISTINCT c.SCREEN_NO, c.SCREEN_NAME
+        FROM MOVIE_TBL a
+                 JOIN SHOWTIME_TBL b ON b.MOVIE_NO = a.MOVIE_NO
+                 JOIN SCREEN_TBL c ON b.SCREEN_NO = c.SCREEN_NO
+                 JOIN CINEMA_TBL d ON c.CINEMA_NO = d.CINEMA_NO
+        WHERE d.CINEMA_NO = #{cinemaNo} AND a.MOVIE_NO = #{movieNo}
+        ORDER BY c.SCREEN_NO ASC
+    </select>
+
+<!--    날짜별 상영시간 리스트-->
+    <select id="selectShowtimeByScreen" resultType="finalReserveInfoByTicket">
+        SELECT c.SCREEN_NO, c.SCREEN_NAME, b.SHOWTIME_NO, b.SHOWTIME_TIME
+        FROM MOVIE_TBL a
+        JOIN SHOWTIME_TBL b ON b.MOVIE_NO = a.MOVIE_NO
+        JOIN SCREEN_TBL c ON b.SCREEN_NO = c.SCREEN_NO
+        JOIN CINEMA_TBL d ON c.CINEMA_NO = d.CINEMA_NO
+        WHERE d.CINEMA_NO = #{cinemaNo} AND a.MOVIE_NO = #{movieNo}
+        AND b.SHOWTIME_START &lt;=  #{selectedDate} AND b.SHOWTIME_END &gt;= #{selectedDate}
+        ORDER BY c.SCREEN_NO ASC, b.SHOWTIME_TIME ASC
+    </select>
+
+<!--    동의 여부 체크 리스트-->
+    <select id="selectAcceptAll" resultType="ChatJoin">
+        SELECT * FROM CHAT_JOIN_TBL
+        LEFT JOIN MEMBER_TBL USING(MEMBER_ID)
+        WHERE ROOM_NO = #{roomNo}
+    </select>
 </mapper>

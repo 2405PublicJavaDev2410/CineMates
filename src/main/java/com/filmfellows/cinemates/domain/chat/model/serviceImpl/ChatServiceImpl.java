@@ -4,10 +4,7 @@ import com.filmfellows.cinemates.app.chat.dto.*;
 import com.filmfellows.cinemates.common.Pagination;
 import com.filmfellows.cinemates.domain.chat.model.mapper.ChatMapper;
 import com.filmfellows.cinemates.domain.chat.model.service.ChatService;
-import com.filmfellows.cinemates.domain.chat.model.vo.ChatMessage;
-import com.filmfellows.cinemates.domain.chat.model.vo.ChatRoom;
-import com.filmfellows.cinemates.domain.chat.model.vo.ChatTag;
-import com.filmfellows.cinemates.domain.chat.model.vo.ChatTimeUtils;
+import com.filmfellows.cinemates.domain.chat.model.vo.*;
 import com.filmfellows.cinemates.domain.member.model.vo.ProfileImg;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -192,6 +189,24 @@ public class ChatServiceImpl implements ChatService {
     public int updateAcceptStatus(Integer roomNo, String memberId, String acceptStatus) {
         int result = cMapper.updateAcceptStatus(roomNo, memberId, acceptStatus);
         return result;
+    }
+
+    @Override
+    public List<finalReserveInfoByTicket> selectScreenByCinema(Integer cinemaNo, Integer movieNo) {
+        List<finalReserveInfoByTicket> finalReserveInfoByTicket = cMapper.selectScreenByCinema(cinemaNo, movieNo);
+        return finalReserveInfoByTicket;
+    }
+
+    @Override
+    public List<finalReserveInfoByTicket> selectShowtimeByScreen(Integer cinemaNo, Integer movieNo, String selectedDate) {
+        List<finalReserveInfoByTicket> showtimeByScreen = cMapper.selectShowtimeByScreen(cinemaNo, movieNo, selectedDate);
+        return showtimeByScreen;
+    }
+
+    @Override
+    public List<ChatJoin> selectAcceptAll(Integer roomNo) {
+        List<ChatJoin> chatJoinAcceptList = cMapper.selectAcceptAll(roomNo);
+        return chatJoinAcceptList;
     }
 
 

@@ -12,4 +12,7 @@ public class ChatJoin {
     private String memberId;
     private String status;
     private String acceptStatus;
+
+    // ticketCount
+    private Integer ticketCount;
 }

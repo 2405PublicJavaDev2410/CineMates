@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.filmfellows.cinemates.app.chat.dto.*;
 import com.filmfellows.cinemates.domain.chat.model.service.ChatService;
+import com.filmfellows.cinemates.domain.chat.model.vo.ChatJoin;
 import com.filmfellows.cinemates.domain.chat.model.vo.ChatMessage;
 import com.filmfellows.cinemates.domain.chat.model.vo.ChatRoom;
 import com.filmfellows.cinemates.domain.chat.model.vo.ChatTag;
@@ -460,14 +461,35 @@ public class ChatController {
     }
 
 
-//    @PostMapping("chat/selectScreenByDate")
-//    public String selectScreenByDate(Model model, @RequestParam("selectedDate") String selectedDate){
-//
-//        // 상영관 리스트
-////        List<finalReserveInfoByTicket>
-//
-//        // 상영관별 상영시간 리스트
-//
-//        return "";
-//    }
+
+    @PostMapping("chat/selectScreenByCinema")
+    public String selectScreenByCinema(Model model,
+                                     @RequestParam("selectedDate") String selectedDate,
+                                     @RequestParam("cinemaNo") Integer cinemaNo,
+                                     @RequestParam("movieNo") Integer movieNo){
+
+        System.out.println(cinemaNo +  ", " + movieNo);
+        // 상영관 리스트
+        List<finalReserveInfoByTicket> screenListByCinema = cService.selectScreenByCinema(cinemaNo, movieNo);
+        System.out.println(screenListByCinema);
+
+        // 상영관별 상영시간 리스트
+        List<finalReserveInfoByTicket> showtimeByScreen = cService.selectShowtimeByScreen(cinemaNo, movieNo, selectedDate);
+        System.out.println(showtimeByScreen);
+
+        model.addAttribute("screenListByCinema", screenListByCinema);
+        model.addAttribute("showtimeByScreen", showtimeByScreen);
+        return "pages/chat/finalReservationInfoSelect::#screenList-container";
+    }
+
+
+    @ResponseBody
+    @PostMapping("/chat/checkAcceptAll")
+    public List<ChatJoin> checkAcceptAll(@RequestParam("roomNo") Integer roomNo){
+        System.out.println("roomNoroomNo"+roomNo);
+        List<ChatJoin> chatJoinAccept = cService.selectAcceptAll(roomNo);
+        System.out.println("ChatJoin         " + chatJoinAccept);
+
+        return chatJoinAccept;
+    }
 }

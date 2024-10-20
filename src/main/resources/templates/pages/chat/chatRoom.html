@@ -249,6 +249,57 @@
                 box-shadow: 0 1px 1px 1px rgb(0, 0, 0);
             }
 
+            #resv-btn{
+                margin: 20px 0 50px 520px;
+                text-align: center;
+                width: 100px;
+                height: 40px;
+                color: white;
+                background-color: #EA4E4A;
+                font-size: 20px;
+                font-weight: bold;
+                border: none;
+                border-radius: 10px;
+                cursor: pointer;
+                opacity: 0.8;
+                transition: all 200ms;
+            }
+            #resv-btn:hover, #resv-btn:active, #leave-btn:hover, #delete-btn:hover{
+                opacity: 1;
+            }
+            #resv-btn:active, #leave-btn:active, #delete-btn:active{
+                transform: scale(0.95);
+            }
+
+            #delete-btn{
+                text-align: center;
+                width: 120px;
+                height: 40px;
+                color: white;
+                background-color: #EA4E4A;
+                font-size: 20px;
+                font-weight: bold;
+                border: none;
+                border-radius: 10px;
+                cursor: pointer;
+                opacity: 0.8;
+                transition: all 200ms;
+            }
+            #leave-btn{
+                text-align: center;
+                width: 100px;
+                height: 40px;
+                color: white;
+                background-color: #EA4E4A;
+                font-size: 20px;
+                font-weight: bold;
+                border: none;
+                border-radius: 10px;
+                cursor: pointer;
+                opacity: 0.8;
+                transition: all 200ms;
+            }
+
         </style>
 
         <!-- inline JS 영역-->
@@ -278,13 +329,13 @@
                     </div>
                     <div class="grid-item grid-date">
                         <div class="grid-item-name">DATE</div>
-                        <div style="font-size: 20px">
+                        <div id="reservationDate" style="font-size: 20px">
                             미정
                         </div>
                     </div>
                     <div class="grid-item grid-time">
                         <div class="grid-item-name">TIME</div>
-                        <div style="font-size: 20px">미정</div>
+                        <div id="showtimeTime" style="font-size: 20px">미정</div>
                     </div>
                     <div class="grid-item grid-region">
                         <div class="grid-item-name">CINEMA</div>
@@ -293,7 +344,7 @@
                     </div>
                     <div class="grid-item grid-screen">
                         <div class="grid-item-name">SCREEN</div>
-                        <div style="font-size: 32px">
+                        <div id="screenName" style="font-size: 32px">
                             미정
                         </div>
                     </div>
@@ -303,7 +354,7 @@
                 <div id="user-list-container">
                     <div th:id="${joinList.getMemberId()}" th:each="joinList:${chatJoinList}" style="display: flex; flex-direction: column;align-items: center; position: relative">
 
-                        <div style="position: absolute; top: -8px; left: 40px; font-size: 24px; transform: rotate(40deg);; color: rgba(255,227,73,0.91)" th:if="${roomWriter != null and joinList.memberId != null and roomWriter.trim() == joinList.memberId.trim()}"><i class="fa-solid fa-crown"></i></div>
+                        <div style="position: absolute; top: -8px; left: 40px; font-size: 24px; transform: rotate(40deg);; color: rgba(255,227,73,0.91)" th:if="${chatRoom.roomWriter == joinList.memberId}"><i class="fa-solid fa-crown"></i></div>
                         <th:block th:if="${joinList.filePath == null}">
                             <img alt="프로필" src="/img/default_profile.png" style="width: 60px; height: 60px; border-radius: 50%;">
                         </th:block>
@@ -350,7 +401,15 @@
             </div>
         </div>
         <div>
-            <h1>영화예매 진행에 동의하십니까?</h1>
+            <div style="width: 100%; display: flex; justify-content: space-between; padding-right: 25px">
+                <h1>영화예매 진행에 동의하십니까?</h1>
+                <th:block th:if="${session.memberId == chatRoom.roomWriter}">
+                    <button id="delete-btn" type="button" onclick="deleteChatRoom()">채팅방 삭제</button>
+                </th:block>
+                <th:block th:if="${session.memberId != chatRoom.roomWriter}">
+                    <button id="leave-btn" type="button" onclick="if(confirm('채팅방을 정말 나가시겠습니까? 나갈 경우 이전의 대화기록을 확인할 수 없습니다.')) leaveChatRoom();">나가기</button>
+                </th:block>
+            </div>
             <div style="display: inline-flex; flex-direction: column; align-items: end">
                 <div style="margin: 30px 0;">방장이 예매의 다음 절차를 진행하려면 대화에 참여한 모든 회원의 동의가 필요합니다</div>
                 <label style="font-size: 18px; font-weight: bold" id="acceptCheck">
@@ -360,28 +419,28 @@
             </div>
 
         </div>
-        <div style="width: 100%; display: flex; justify-content: end">
-            <th:block th:if="${session.memberId.trim() == chatRoom.roomWriter.trim()}">
-                <button type="button" onclick="deleteChatRoom()">채팅방 삭제</button>
-            </th:block>
-            <button type="button" onclick="if(confirm('채팅방을 정말 나가시겠습니까? 나갈 경우 이전의 대화기록을 확인할 수 없습니다.')) leaveChatRoom();">나가기</button>
-        </div>
 
 
-        <form action="">
-            <input type="hidden" name="movieNo" th:value="${chatRoom.movieNo}">
-            <input type="hidden" name="title" th:value="${chatRoom.title}">
-            <input type="hidden" name="posterUrl" th:value="${chatRoom.posterUrl}">
-            <input type="hidden" name="cinemaLocationCode" th:value="${chatRoom.cinemaLocationCode}">
-            <input type="hidden" name="cinemaNo" th:value="${chatRoom.cinemaNo}">
-            <input type="hidden" name="cinemaName" th:value="${chatRoom.cinemaName}">
-            <input type="hidden" name="screenNo">
-            <input type="hidden" name="showtimeNo">
-            <input type="hidden" name="showtimeTime">
-            <input type="hidden" name="screenName">
-            <input type="hidden" name="reservationDate">
+        <th:block th:if="${session.memberId == chatRoom.roomWriter}">
+            <form action="/Ticketing/PersonSeat" method="post">
+                <input type="hidden" name="movieNo" th:value="${chatRoom.movieNo}">
+                <input type="hidden" name="title" th:value="${chatRoom.title}">
+                <input type="hidden" name="posterUrl" th:value="${chatRoom.posterUrl}">
+                <input type="hidden" name="cinemaLocationCode" th:value="${chatRoom.cinemaLocationCode}">
+                <input type="hidden" name="cinemaNo" th:value="${chatRoom.cinemaNo}">
+                <input type="hidden" name="cinemaName" th:value="${chatRoom.cinemaName}">
+                <input type="hidden" name="screenNo">
+                <input type="hidden" name="showtimeNo">
+                <input type="hidden" name="showtimeTime">
+                <input type="hidden" name="screenName">
+                <input type="hidden" name="reservationDate">
+                <input type="hidden" name="prevPage" value="chatRoom">
+                <input type="hidden" name="memberIds" value="">
+                <input name="reservationSeat" type="hidden" value="">
+                <button type="submit" id="resv-btn" onclick="return openReservationWindow(event)">예매하기</button>
+            </form>
+        </th:block>
 
-        </form>
 
         <script th:inline="javascript">
             let roomNo = /*[[${chatRoom.roomNo}]]*/; // 방번호
@@ -749,7 +808,7 @@
             }
 
 
-            // 영화 예매 동의 여부 체크
+            // 영화 예매 동의 여부 체크 업데이트
             function checkAcceptReservation(){
                 let acceptCheckBox = document.querySelector("input[name=acceptCheck]");
                 console.log(acceptCheckBox.checked);
@@ -797,35 +856,71 @@
             //
             // }
 
-            function openReservationWindow(){
-
+            function openReservationWindow(event){
+                event.preventDefault();
                 $.ajax({
                     url: "/chat/checkAcceptAll",
                     data:{
-                        roomN:roomNo
+                        roomNo:roomNo
                     },
-                    type:"post",
+                    type:"POST",
+                    dataType: 'json',
                     success:function(response){
+                        // 상영관 선택 체크
+                        let screenName = document.querySelector('#screenName').innerText;
+
+                        console.log("screenName   "+screenName);
+                        if(screenName.trim() === "미정"){
+                            alert("상영관을 먼저 선택해주세요");
+                            return false;
+                        }
+
+                        // 티켓 유무 확인
+                        let noTicketMember = "";
+                        let noTicketCount = 0;
+                        response.forEach(member=>{
+                            if(member.ticketCount < 1){
+                                noTicketMember += member.memberId+ ", ";
+                                noTicketCount++;
+                            }
+                        })
+                        if(noTicketCount > 0) {
+                            noTicketMember = noTicketMember.substring(0, noTicketMember.length - 2);
+                            alert(noTicketMember + "님이 티켓을 갖고있지 않습니다.");
+                            return false;
+                        }else{
+                            console.log("티켓 모두 갖고있음.")
+                        }
+
                         let noAcceptMember = "";
                         let noAcceptCount = 0;
                         console.log("accept 성공!!")
                         response.forEach(member => {
                             if(member.acceptStatus === "NO"){
-                                noAcceptMember += member.memberId+" ";
+                                noAcceptMember += member.memberId+", ";
                                 noAcceptCount++;
                             }
                         })
 
+
+
+
                         if(noAcceptCount > 0){
-                            noAcceptMember = noAcceptMember.substring(0,noAcceptMember.length-1);
+                            noAcceptMember = noAcceptMember.substring(0,noAcceptMember.length-2);
                             alert(noAcceptMember+"님이 아직 동의하지 않았습니다.");
 
+                            return false;
                         }else{
-                            const queryParams = new URLSearchParams(window.location.search);
-                            console.log(queryParams);
-                            // 쿼리스트링 정보 포함하여 팝업창 열기
-                            window.open("popup.html?" + queryParams.toString(), "popupWindow", "width=600,height=400");
-
+                            let acceptMemberIds = "";
+                            response.forEach(member => {
+                                acceptMemberIds += member.memberId+", ";
+                            })
+                            acceptMemberIds = acceptMemberIds.substring(0,acceptMemberIds.length-2);
+                            let memberIdsInput = document.querySelector('input[name=memberIds]');
+                            memberIdsInput.value = acceptMemberIds;
+                            document.querySelector("form").submit();
+                            console.log("모두 동의하였습니다.")
+                            return true;
                         }
 
                     },
@@ -837,14 +932,19 @@
 
             //
             function testOpen(roomNo, roomWriter, movieNo , title, posterUrl, cinemaNo, cinemaName, cinemaLocationCode, cinemaAddress, roomCategory){
-                let popupW = 600;
-                let popupH = 400;
+                let popupW = 500;
+                let popupH = 600;
                 let left = Math.ceil((window.screen.width - popupW)/2);
                 let top = Math.ceil((window.screen.height - popupH)/2);
-                // 쿼리스트링 정보 포함하여 팝업창 열기
-                window.open(`/chat/finalSelectInfo?roomNo=${roomNo}
-                            &roomWriter=${encodeURIComponent(roomWriter)}&movieNo=${movieNo}&title=${encodeURIComponent(title)}&posterUrl=${posterUrl}&cinemaNo=${cinemaNo}&cinemaName=${cinemaName}&cinemaLocationCode=${cinemaLocationCode}&cinemaAddress=${cinemaAddress}&roomCategory=${roomCategory}`
-                    , "popupWindow", `width=600,height=400,left=${left},top=${top}`);
+                if(memberId === roomWriter){
+                    // 쿼리스트링 정보 포함하여 팝업창 열기
+                    window.open(`/chat/finalSelectInfo?roomNo=${roomNo}&roomWriter=${encodeURIComponent(roomWriter)}&movieNo=${movieNo}&title=${encodeURIComponent(title)}&posterUrl=${posterUrl}&cinemaNo=${cinemaNo}&cinemaName=${cinemaName}&cinemaLocationCode=${cinemaLocationCode}&cinemaAddress=${cinemaAddress}&roomCategory=${roomCategory}`
+                        , "popupWindow", `width=500,height=600,left=${left},top=${top}`);
+                }else{
+                    alert("방장만 선택이 가능합니다.")
+                }
+
+
             }
 
 

@@ -22,9 +22,9 @@ public class finalReserveInfoByTicket {
         // 마지막 상영날짜 선택
         private Integer screenNo;
         private Integer showtimeNo;
-        private Timestamp showtimeTime;
+        private String showtimeTime;
         private String screenName;
-        private Timestamp reservationDate;
+        private String reservationDate;
 
 
         // screenNo, movieNo, showtimeTime, showTimeNo, title, screenName, cinemaName, cinemaNo, reservationDate(상영날짜), cinemaLocationCode 보내야됨!!!
