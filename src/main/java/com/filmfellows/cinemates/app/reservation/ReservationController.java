@@ -70,6 +70,7 @@ public class ReservationController {
     @PostMapping("/Ticketing/PersonSeat")
     public String showPersonSeatPage(@ModelAttribute ReservationDTO rDTO, @RequestParam String reservationSeat, Model model, HttpSession session,
                                      @RequestParam String title,
+                                     @RequestParam(value="prevPage", required = false) String prevPage,
                                      @RequestParam(value = "memberIds", required = false) String memberIdList) {
         String memberId = (String) session.getAttribute("memberId");
         System.out.println("memberId : " + memberId);
@@ -82,19 +83,21 @@ public class ReservationController {
         //테스트용 리스트
 //        memberIdList = "test8,MEM001,admin1";
         // memberIdList가 null이 아니고 비어있지 않을 때만 처리
-        if (memberIdList != null && !memberIdList.isEmpty()) {
-            List<String> memberIds = Arrays.asList(memberIdList.split(","));
-            System.out.println("ReservationController: " + memberIds);
-            for (String memberIdlist : memberIds) {
-                List<String> memberList = rService.selectTicketCountByIds(memberIdlist);
-                allMemberTicket.addAll(memberList);
-                System.out.println(memberIds);
-                System.out.println(allMemberTicket);
+        if(prevPage != null && "chatRoom".equals(prevPage)) {
+            if (memberIdList != null && !memberIdList.isEmpty()) {
+                List<String> memberIds = Arrays.asList(memberIdList.split(","));
+                System.out.println("ReservationController: " + memberIds);
+                for (String memberIdlist : memberIds) {
+                    List<String> memberList = rService.selectTicketCountByIds(memberIdlist);
+                    allMemberTicket.addAll(memberList);
+                    System.out.println(memberIds);
+                    System.out.println(allMemberTicket);
+                }
+                model.addAttribute("memberIds", memberIds);
+                rDTO.setAllTicketCount(allMemberTicket);
+                System.out.println("rDTO TicketCOunt: " + rDTO);
+                model.addAttribute("allMemberTicket", allMemberTicket);
             }
-            model.addAttribute("memberIds", memberIds);
-            rDTO.setAllTicketCount(allMemberTicket);
-            System.out.println("rDTO TicketCOunt: " + rDTO);
-            model.addAttribute("allMemberTicket", allMemberTicket);
         }
 
         // JSON 문자열을 Map으로 변환
