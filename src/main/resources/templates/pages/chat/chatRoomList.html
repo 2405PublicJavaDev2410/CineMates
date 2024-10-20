@@ -374,7 +374,7 @@
                             <div class="card-mouseover">
                                 <div class="card-mouseover-text" th:if="${chatRoom.roomCategory == 'reservation'}" th:text="'모집방'"></div>
                                 <div class="card-mouseover-text" th:if="${chatRoom.roomCategory == 'talk'}" th:text="'소통방'"></div>
-                                <div class="card-mouseover-text joinBtn" th:onclick="joinChatRoom([[${chatRoom.roomNo}]], [[${chatRoom.roomWriter}]], [[${chatRoom.movieNo}]],[[${chatRoom.title}]], [[${chatRoom.posterUrl}]], [[${chatRoom.cinemaNo}]],[[${chatRoom.cinemaName}]], [[${chatRoom.cinemaLocationCode}]], [[${chatRoom.cinemaAddress}]], [[${chatRoom.roomCategory}]]);">참여하기</div>
+                                <div class="card-mouseover-text joinBtn" th:onclick="joinChatRoom([[${chatRoom.roomNo}]],[[${chatRoom.roomWriter}]],[[${chatRoom.movieNo}]],[[${chatRoom.title}]], [[${chatRoom.posterUrl}]], [[${chatRoom.cinemaNo}]],[[${chatRoom.cinemaName}]], [[${chatRoom.cinemaLocationCode}]], [[${chatRoom.cinemaAddress}]], [[${chatRoom.roomCategory}]]);">참여하기</div>
                                 <div class="report-btn card-report-btn">신고</div>
                             </div>
                             <div th:style="'width:100%; height: 400px; background-image: url('+${chatRoom.posterUrl}+'); background-position: center; background-size: cover; border-radius:20px;'">

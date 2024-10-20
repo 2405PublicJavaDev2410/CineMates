@@ -10,6 +10,7 @@ import com.filmfellows.cinemates.domain.chat.model.vo.ChatRoom;
 import com.filmfellows.cinemates.domain.chat.model.vo.ChatTag;
 import com.filmfellows.cinemates.domain.member.model.vo.ProfileImg;
 import jakarta.servlet.http.HttpSession;
+import org.eclipse.angus.mail.iap.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -184,15 +185,17 @@ public class ChatController {
                 joinCount++;
             }
         }
-        
+        String firstOrJoin = "";
         // 최초입장하는 경우에만 db에 저장
         if(joinCount > 0){
             // 두번이상 입장
             System.out.println("이미 참여한 인원입니다.");
+            firstOrJoin= "JOIN";
         }else{
             // 최초입장
             System.out.println("최초 입장합니다.");
             int result = cService.insertChatJoin(chatRoom.getRoomNo(), memberId);
+            firstOrJoin= "FIRST";
         }
 
         // 내가 최초입장한 날짜 조회
@@ -205,6 +208,7 @@ public class ChatController {
         model.addAttribute("chatMessageList", chatMessageList);
         model.addAttribute("chatJoinList", chatJoinList);
         model.addAttribute("chatRoom", chatRoom);
+        model.addAttribute("firstOrJoin", firstOrJoin);
         return "pages/chat/chatRoom";
     }
 
@@ -276,6 +280,12 @@ public class ChatController {
         String memberId = (String) session.getAttribute("memberId");
         System.out.println("session : "+memberId + "getRoomNo : "+chatRoom.getRoomNo());
         cService.insertChatJoin(chatRoom.getRoomNo(), memberId);
+        ChatMessage chatMessage = new ChatMessage();
+        chatMessage.setRoomNo(chatRoom.getRoomNo());
+        chatMessage.setMemberId(memberId);
+        chatMessage.setMessageType(ChatMessage.MessageType.FIRST);
+        chatMessage.setChatContent(chatMessage.getMemberId()+"님이 대화방에 참여했습니다");
+        cService.insertChatMessage(chatMessage);
 
 
 //        return "redirect:/chat/createForm?roomCategory="+revAndChatInfo.getRoomCategory();
@@ -360,6 +370,57 @@ public class ChatController {
         return "pages/chat/chatRoom::#user-list-container";
     }
 
+
+    @ResponseBody
+    @PostMapping("chat/selectOnOffStatus")
+    public List<ChatJoinProfile> checkOnOffStatus(@RequestParam("roomNo") Integer roomNo){
+
+        List<ChatJoinProfile> statusList = cService.checkOnOffStatus(roomNo);
+
+        System.out.println(statusList);
+
+        return statusList;
+    }
+
+
+    @ResponseBody
+    @PostMapping("/chat/updateOnOffStatus")
+    public String updateOnOffStatus(@RequestParam("memberId") String memberId,
+                                    @RequestParam("roomNo") Integer roomNo,
+                                    @RequestParam("onOffStatus") String onOffStatus){
+
+        cService.updateOnOffStatus(roomNo, memberId, onOffStatus);
+
+
+        return "success";
+    }
+
+
+
+    @GetMapping("/chat/deleteRoom")
+    public String deleteChatRoom(@RequestParam("roomNo") Integer roomNo){
+
+        int result = cService.deleteChatRoom(roomNo);
+        int result2 = cService.deleteMessageOfChatRoom(roomNo);
+
+        System.out.println(result);
+
+        return "redirect:/chat/list";
+    }
+
+
+    @ResponseBody
+    @PostMapping("/chat/updateAcceptStatus")
+    public String updateAcceptStatus(@RequestParam("acceptStatus") String acceptStatus,
+                                     @RequestParam("roomNo") Integer roomNo,
+                                     @RequestParam("memberId") String memberId){
+
+        int result = cService.updateAcceptStatus(roomNo, memberId, acceptStatus);
+
+        return "성공";
+    }
+
+
 //    @ResponseBody
 //    @PostMapping("/chat/confirmJoin")
 //    public String confirmJoin(HttpSession session, Integer roomNo){
@@ -375,9 +436,6 @@ public class ChatController {
 //            }
 //        }
 //
-//
-//
-//        // 최초입장하는 경우에만 db에 저장
 //        if(joinCount > 0){
 //            // 두번이상 입장
 //            messageType = "JOIN";
@@ -390,4 +448,26 @@ public class ChatController {
 //        return messageType;
 //    }
 
+
+
+    @GetMapping("/chat/finalSelectInfo")
+    public String showFinalSelectInfo(@ModelAttribute("ChatRoom") ChatRoom chatRoom, Model model){
+        System.out.println(chatRoom);
+
+
+        model.addAttribute("chatRoom", chatRoom);
+        return "/pages/chat/finalReservationInfoSelect";
+    }
+
+
+//    @PostMapping("chat/selectScreenByDate")
+//    public String selectScreenByDate(Model model, @RequestParam("selectedDate") String selectedDate){
+//
+//        // 상영관 리스트
+////        List<finalReserveInfoByTicket>
+//
+//        // 상영관별 상영시간 리스트
+//
+//        return "";
+//    }
 }

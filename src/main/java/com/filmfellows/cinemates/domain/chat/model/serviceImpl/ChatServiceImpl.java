@@ -165,5 +165,34 @@ public class ChatServiceImpl implements ChatService {
         cMapper.deleteMemberJoinByRoom(roomNo, memberId);
     }
 
+    @Override
+    public List<ChatJoinProfile> checkOnOffStatus(Integer roomNo) {
+        List<ChatJoinProfile> statusList = cMapper.checkOnOffStatus(roomNo);
+        return statusList;
+    }
+
+    @Override
+    public void updateOnOffStatus(Integer roomNo, String memberId, String onOffStatus) {
+        cMapper.updateOnOffStatus(roomNo, memberId, onOffStatus);
+    }
+
+    @Override
+    public int deleteChatRoom(Integer roomNo) {
+        int result = cMapper.deleteChatRoom(roomNo);
+        return result;
+    }
+
+    @Override
+    public int deleteMessageOfChatRoom(Integer roomNo) {
+        int result = cMapper.deleteMessageOfChatRoom(roomNo);
+        return result;
+    }
+
+    @Override
+    public int updateAcceptStatus(Integer roomNo, String memberId, String acceptStatus) {
+        int result = cMapper.updateAcceptStatus(roomNo, memberId, acceptStatus);
+        return result;
+    }
+
 
 }

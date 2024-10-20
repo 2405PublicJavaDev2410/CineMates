@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1>상영관 선택</h1>
+    <label id="dateName">
+        <input style="width:50%; height: 50px; font-size: 20px" type="date" id="datePicker" name="dateName">
+    </label>
+
+    <button type="button" id="selectedBtn">확인</button>
+
+    <script th:inline="javascript">
+        let datePicker = document.querySelector('#datePicker');
+        // 현재 날짜 구하기
+        const today = new Date();
+
+        // 2주 후 날짜 구하기
+        const twoWeeksFromNow = new Date();
+        twoWeeksFromNow.setDate(today.getDate() + 30);
+
+        // 날짜를 YYYY-MM-DD 형식으로 변환
+        const formatDate = (date) => {
+            return date.toISOString().split('T')[0];
+        }
+
+        // min 및 max 속성 설정
+        document.getElementById("datePicker").setAttribute("min", formatDate(today));
+        document.getElementById("datePicker").setAttribute("max", formatDate(twoWeeksFromNow));
+
+
+
+
+        let selectedBtn = document.querySelector('#selectedBtn');
+        selectedBtn.addEventListener('click', ()=>{
+            let date = document.querySelector('#datePicker');
+            opener.document.querySelector('#resultInput').value= date.value;
+
+            // window.close();
+        });
+
+        let screenNoInput = document.querySelector('input[name=screenNo]');
+        let showtimeNoInput = document.querySelector('input[name=showtimeNo]');
+        let showtimeTimeInput = document.querySelector('input[name=showtimeTime]');
+        let screenNameInput = document.querySelector('input[name=screenName]');
+        let reservationDateInput = document.querySelector('input[name=reservationDate]');
+        
+        // datePicker.addEventListener('change',(e)=>{
+        //     let selectedDate = e.target.value;
+        //
+        //     $.ajax({
+        //         url:"chat/selectScreenByDate",
+        //         data:{
+        //             selectedDate:selectedDate
+        //         },
+        //         type:"post",
+        //         success:function(response){
+        //
+        //         },
+        //         error:function(){
+        //
+        //         }
+        //     })
+        // });
+
+
+    </script>
+</body>
+</html>
