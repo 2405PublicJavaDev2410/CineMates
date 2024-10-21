@@ -36,11 +36,16 @@ public class ReportController {
         return "/pages/report/report";
     }
     @PostMapping("/report")
-    public String insertreport(Report report,String writer,String category,String writeNo) {
+    public String insertreport(Report report,String writer,String category,String writeNo,Model model) {
         System.out.println(report.toString());
         report.setReportId(writer);
         report.setReportWriteno(Integer.parseInt(writeNo));
         report.setReportCategory(category);
+        int count=rService.overlapreport(Integer.parseInt(writeNo),category);
+        if(count>0) {
+            model.addAttribute("message", "중복건입니다.");
+            return "pages/cinema/admin/failmessage";
+        }
         int result=rService.reportinsert(report);
         if(result>0) {
             return "pages/cinema/admin/sucess";
