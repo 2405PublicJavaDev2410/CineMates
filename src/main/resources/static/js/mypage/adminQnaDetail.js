@@ -16,7 +16,7 @@ modal.addEventListener('click', function(event) {
     }
 });
 
-function registerReply(qnaNo) {
+function registerReply(cp) {
     if(confirm("답변을 등록합니다.")) {
         const formData = new FormData(document.querySelector('#register-reply-form'));
         const data = {
@@ -31,7 +31,7 @@ function registerReply(qnaNo) {
             processData: false,
             success: function(data) {
                 if(data === 'success') {
-                    window.location.href = `/admin/qna-detail/${qnaNo}`;
+                    window.location.href = `/admin/qna-list?cp=${cp}`;
                 }else {
                     alert('등록 실패. 다시 시도해 주세요.');
                 }
@@ -41,4 +41,8 @@ function registerReply(qnaNo) {
             }
         });
     }
+}
+
+function goToList() {
+    history.go(-1);
 }

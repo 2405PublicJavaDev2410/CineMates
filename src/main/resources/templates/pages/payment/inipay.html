@@ -71,11 +71,12 @@
                 </div>
             </div>
             <div class="payment_pay">
-                <div class="payPrice"><strong id="finalPrice"></strong></div>
+                <div class="payment_Info_2">
+                    <div class="payPrice"><strong id="finalPrice"></strong></div>
+                </div>
             </div>
         </div>
-
-        <button disabled id="pay-button" onclick="processPayment()">결제하기</button>
+        <button disabled id="pay-btn" onclick="processPayment()">결제하기</button>
     </div>
 </div>
 <input id="reservationNo" name="reservationNo" th:value="${rDTO.reservationNo}" type="hidden">

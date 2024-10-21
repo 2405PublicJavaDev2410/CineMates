@@ -33,8 +33,16 @@
                                 <span class="poster-number" th:text="${iterStat.count}"></span>
                             </a>
                             <h3 class="movie-title" th:text="${bList.title}"></h3>
-                            <p class="movie-info" th:text="'예매율 '+ ${bList.reservationRate}"></p>
-<!--                            <p class="review-star">★ 3.4/5</p>-->
+                            <div class="movie-info-review">
+                                <div>
+                                    <p class="movie-info" th:text="'예매율 '+ ${bList.reservationRate}"></p>
+                                </div>
+                                    <p class="and">|</p>
+                                <div class="starAndReview">
+                                    <p class="star">★</p>
+                                    <p class="review-star" th:text="${bList.averageScore} + '/'+ '5'">3.4/5</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -53,7 +61,7 @@
                 <div class="chat-list-card-slider">
                     <div class="chat-list-card-wrapper">
                         <div class="chat-list-card-container" th:each="room : ${cList}">
-                            <a class="char-room-link" th:href="@{/chat/room/{roomNo}(roomNo=${room.roomNo})}">
+                            <a class="chat-room-link" th:href="@{/chat/room/{roomNo}(roomNo=${room.roomNo})}">
                                 <div class="card">
                                     <div class="image">
                                         <img th:src="${room.posterUrl}" th:alt="${room.title}">

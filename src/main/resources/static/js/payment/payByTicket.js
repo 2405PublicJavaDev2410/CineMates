@@ -1,3 +1,4 @@
+// 관람권으로 결제 하는 로직
 function goPay() {
     var reservationData = {
         reservationNo: document.getElementById('reservationNo').value,

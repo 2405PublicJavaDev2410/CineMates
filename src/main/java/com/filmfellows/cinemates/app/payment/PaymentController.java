@@ -40,7 +40,7 @@ public class PaymentController {
         this.iamportClient = new IamportClient(apiKey, apiSecret);
     }
 
-    //결제 준비 매핑 별 다른 html 파일 없음 결제로 오기 전 가져와야하는 데이터 가져오기 위해 POST 매핑용 메소드
+//결제 준비 매핑 별 다른 html 파일 없음 결제로 오기 전 가져와야하는 데이터 가져오기 위해 POST 매핑용 메소드
     @PostMapping("/paymentReady")
     public String readyTogoPay(@ModelAttribute("ReservationDTO") ReservationDTO rDTO,
                                Model model, HttpSession session,
@@ -59,7 +59,7 @@ public class PaymentController {
     }
 
 
-    // readyTogoPay 메소드 값 가지고 html 파일 가는 메소드
+// readyTogoPay 메소드 값 가지고 html 파일 가는 메소드
     @GetMapping("/payment")
     public String showPayForm(HttpSession session, Model model
             , String memberIds
@@ -83,7 +83,7 @@ public class PaymentController {
             return "pages/payment/inipay";
         }
     }
-
+// 채팅방에서 결제 페이지까지 이동했을 때 멤버들의 관람권 확인 메소드
     @PostMapping("/payment/ticketFromChat")
     @ResponseBody
     public ResponseEntity<List<String>> payByTicketFromChat(@RequestParam String memberIds) {
@@ -102,6 +102,7 @@ public class PaymentController {
         System.out.println("Test: ");
         return ResponseEntity.ok(updatedMembers);
     }
+// 메인 -> 예매 페이지로 이동하여 결제 시 개인 티켓 조회
     @PostMapping("/payment/ticket")
     @ResponseBody
     public ResponseEntity<Boolean> payByTicket(@RequestParam String memberId
@@ -111,7 +112,7 @@ public class PaymentController {
         return ResponseEntity.ok(updated>0);
     }
 
-    // 결제 성공 후 결제 한 제품에 대한 정보 조회하는 메소드
+// 결제 성공 후 결제 한 제품에 대한 정보 조회하는 메소드
     @PostMapping("/validation/{imp_uid}")
     @ResponseBody
     public IamportResponse<Payment> validateIamport(@PathVariable String imp_uid)
@@ -119,14 +120,8 @@ public class PaymentController {
         System.out.println("validation Controller :" + imp_uid);
         return paymentService.validateIamport(imp_uid);
     }
-//    //관람권 결제 시 제품 정보 조회 메소드
-//    @PostMapping("/validationByTicket/{imp_uid}")
-//    @ResponseBody
-//    public ResponseEntity<String> validateTicket(@PathVariable String imp_uid) {
-//        System.out.println("validation Controller :" + imp_uid);
-//        return paymentService.validateTicket(imp_uid);
-//    }
-    // 정보 조회한 결제 제품 저장하는 메소드
+
+// 정보 조회한 결제 제품 저장하는 메소드
     @PostMapping("/save_buyerInfo")
     @ResponseBody
     public ResponseEntity<String> saveBuyerInfo(
@@ -144,7 +139,7 @@ public class PaymentController {
         return ResponseEntity.ok("결제정보 저장 완");
     }
 
-    // 결제 취소 하는 메소드
+// 결제 취소 하는 메소드
     @GetMapping("/payments/cancel/{imp_uid}")
     public ResponseEntity<String> cancelPayment(@PathVariable String imp_uid) {
         System.out.println("Cancel: " + imp_uid);
@@ -153,7 +148,7 @@ public class PaymentController {
         return ResponseEntity.ok("취소 완!");
     }
 
-    // 결제 취소 하기 위해 필요한 imp_Uid 라는 키 얻는 메소드
+// 결제 취소 하기 위해 필요한 imp_Uid 라는 키 얻는 메소드
     @GetMapping("/getImpUid")
     public ResponseEntity<String> getImpUid(@RequestParam String reservationNo) {
         System.out.println("getReservationNo: " + reservationNo);

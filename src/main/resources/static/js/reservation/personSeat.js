@@ -214,5 +214,12 @@ document.getElementById('reserve-button').addEventListener('click', function(e) 
 function setMessage(msg) {
     document.getElementById('message').innerText = msg;
 }
+$('form').on('submit', function (e) {
+    if (!$('#cinemaName').val() || !$('#title').val() ||
+        !$('#selectedDate').val() || !$('#showtimeTime').val() || !$('#screenName').val()) {
+        e.preventDefault();
+        alert('모든 항목을 선택해주세요.');
+    }
+});
 
 initializeSeatMap();

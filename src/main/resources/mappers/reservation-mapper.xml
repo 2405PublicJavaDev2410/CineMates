@@ -113,7 +113,7 @@
         GROUP BY R.MEMBER_ID, R.TITLE, R.RESERVATION_NO, P.PAYMENT_DATE, R.RESERVATION_DATE, R.SHOWTIME_TIME,
                  R.CINEMA_NAME, R.SCREEN_NAME, R.RESERVATION_SEAT, M.POSTER_URL
     </select>
-
+    <!--예약 정보 삭제-->
     <delete id="deleteReservationInfo">
         DELETE
         FROM RESERVATION_TBL
@@ -160,7 +160,4 @@
         WHERE MEMBER_ID = #{memberId}
     </update>
 
-    <!--    <select id="selectUpdatedReservations" resultType="ReservationDTO">-->
-    <!--        select * from member_tbl where MEMBER_ID=#{memberIds}-->
-    <!--    </select>-->
 </mapper>
