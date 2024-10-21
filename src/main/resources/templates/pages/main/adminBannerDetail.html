@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<!-- Default Layout Import-->
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/adminLayout}"
+      layout:fragment="Content">
+<link rel="stylesheet" href="/css/main/adminBannerDetail.css">
+
+<body>
+<div layout:fragment="content">
+    <main>
+        <h1>배너 정보</h1>
+        <div class="detail-area">
+            <div th:each="banner : ${bList}">
+                <div class="detail-left">
+                    <div class="bannerUrl">
+                        <img th:src="${banner?.bannerUrl}" th:alt="${banner?.bannerTitle}"/>
+                        <video controls muted th:src="${banner?.bannerUrl}" th:alt="${banner?.bannerTitle}"></video>
+                    </div>
+                </div>
+                <div class="detail-right" >
+                    <form action="/admin/update-banner" method="post" class="detail-form">
+                        <input type="hidden" name="bannerNo" th:value="${banner?.bannerNo}" />
+
+                        <label for="">제목</label>
+                        <input type="text" name="bannerTitle" required placeholder="제목을 입력해주세요" th:value="${banner?.bannerTitle}" />
+
+                        <label for="">내용</label>
+                        <input type="text" name="bannerContent" placeholder="내용을 입력해주세요" th:value="${banner?.bannerContent}" />
+
+                        <label for="">배너Url</label>
+                        <input type="text" name="bannerUrl" required placeholder="배너Url을 입력해주세요" th:value="${banner?.bannerUrl}" />
+
+                        <label for="">링크Url</label>
+                        <input type="text" name="linkUrl" placeholder="링크Url을 입력해주세요" th:value="${banner?.linkUrl}" />
+
+                        <label for="">시작날짜</label>
+                        <input type="text" name="startDate" placeholder="ex) 2024-10-23" th:value="${banner?.startDate}" />
+
+                        <label for="">종료날짜</label>
+                        <input type="text" name="endDate" placeholder="ex) 2024-10-23" th:value="${banner?.endDate}" />
+
+
+                        <label for="">페이지 타입</label>
+                        <div class="category-info">
+                            <select name="pageType" class="pageType">
+                                <option value="" disabled th:selected="${banner?.pageType == ''}">페이지 타입</option>
+                                <option value="MAIN" th:selected="${banner?.pageType == 'MAIN'}">메인 페이지</option>
+                                <option value="MOVIE_LIST" th:selected="${banner?.pageType == 'MOVIE_LIST'}">영화리스트 페이지</option>
+                                <option value="OTHER" th:selected="${banner?.pageType == 'OTHER'}">기타</option>
+                            </select>
+                        </div>
+
+                        <label for="">상태</label>
+                        <div class="category-info">
+                            <select name="isActive" class="isActive">
+                                <option value="" disabled th:selected="${banner?.isActive == ''}">게시 상태</option>
+                                <option value="Y" th:selected="${banner?.isActive == 'Y'}">게시</option>
+                                <option value="N" th:selected="${banner?.isActive == 'N'}">미게시</option>
+                            </select>
+                        </div>
+
+                        <button class="buttons modify" type="submit">수정</button>
+                        <button class="buttons remove" type="button" onclick="removeBanner()">삭제</button>
+                        <button class="buttons cancel" type="button" onclick="goBack();">뒤로</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+<th:block layout:fragment="script">
+    <script>
+
+        function removeBanner() {
+            if(confirm('정말로 삭제하시겠습니까?')) {
+                var form = document.createElement('form');
+                form.method = 'GET';
+                form.action = '/admin/remove-banner';
+                var input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'bannerNo';
+                input.value = document.querySelector('input[name="bannerNo"]').value;
+                form.appendChild(input);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+
+        function goBack() {
+            if(confirm("정보 수정을 취소하시겠습니까?")) {
+                location.href = "/admin/banner"
+            }
+        }
+
+    </script>
+</th:block>
+</body>
+</html>

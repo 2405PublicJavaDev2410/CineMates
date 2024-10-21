@@ -12,11 +12,48 @@ document.addEventListener('DOMContentLoaded', function() {
     // 리뷰 작성 버튼 이벤트
     reviewsTab.addEventListener('click', function(e) {
         if (e.target.classList.contains('review-write-button')) {
-            const reviewForm = document.querySelector('#reviewForm');
-            reviewForm.style.display = reviewForm.style.display === 'none' ? 'block' : 'none';
-            e.target.textContent = reviewForm.style.display === 'none' ? '리뷰 작성' : '작성 취소';
+            checkLoginAndReview();
         }
     });
+
+    function checkLoginAndReview() {
+        fetch(`/checkLoginAndReview?movieNo=${movieNo}`, {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // 리뷰 작성 가능
+                    toggleReviewForm();
+                } else {
+                    // 이미 리뷰를 작성했거나 다른 이유로 작성 불가
+                    alert(data.message);
+                    if (data.message === "이미 이 영화에 대한 리뷰를 작성하셨습니다.") {
+                        // document.querySelector('.review-write-button').style.display = 'none';
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                if (error.status === 401) {
+                    alert('로그인이 필요합니다.');
+                    // window.location.href = '/login';
+                } else {
+                    alert('오류가 발생했습니다. 다시 시도해주세요.');
+                }
+            });
+    }
+
+    function toggleReviewForm() {
+        const reviewForm = document.querySelector('#reviewForm');
+        const reviewWriteButton = document.querySelector('.review-write-button');
+        reviewForm.style.display = reviewForm.style.display === 'none' ? 'block' : 'none';
+        reviewWriteButton.textContent = reviewForm.style.display === 'none' ? '리뷰 작성' : '작성 취소';
+    }
+
 
     // 폼 제출 이벤트 리스너
     document.addEventListener('submit', function(e) {
@@ -33,35 +70,34 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 body: JSON.stringify(reviewData)
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // 리뷰 추가 성공 시 첫 페이지 리뷰를 다시 로드
-                    currentPage = 0;
-                    fetchReviews(currentPage, false);
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // 리뷰 추가 성공 시 첫 페이지 리뷰를 다시 로드
+                        currentPage = 0;
+                        fetchReviews(currentPage, false);
 
-                    // 폼 리셋 및 숨기기
-                    e.target.reset();
-                    e.target.style.display = 'none';
-                    document.querySelector('.review-write-button').textContent = '리뷰 작성';
+                        // 폼 리셋 및 숨기기
+                        e.target.reset();
+                        toggleReviewForm();
 
-                    alert(data.message);
-                } else {
-                    if (data.message === "이미 이 영화에 대한 리뷰를 작성하셨습니다.") {
-                        // 이미 리뷰를 작성한 경우
                         alert(data.message);
-                        e.target.style.display = 'none';
-                        document.querySelector('.review-write-button').style.display = 'none';
                     } else {
-                        // 기타 오류
-                        alert(data.message || '리뷰 등록에 실패했습니다. 다시 시도해주세요.');
+                        if (data.message === "이미 이 영화에 대한 리뷰를 작성하셨습니다.") {
+                            // 이미 리뷰를 작성한 경우
+                            alert(data.message);
+                            toggleReviewForm();
+                            document.querySelector('.review-write-button').style.display = 'none';
+                        } else {
+                            // 기타 오류
+                            alert(data.message || '리뷰 등록에 실패했습니다. 다시 시도해주세요.');
+                        }
                     }
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('리뷰 등록 중 오류가 발생했습니다.');
-            });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('리뷰 등록 중 오류가 발생했습니다.');
+                });
         }
     });
 
@@ -128,7 +164,6 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
             <div class="button-menu">
                 ${isMyReview ? '<span class="delete-review">삭제</span>' : `<span class="review-report" data-review-no="${review.reviewNo}" data-member-id="${review.memberId}">신고</span>`}
-<!--                <span class="review-report" onclick="report(${review.reviewNo},'${review.memberId}');">신고</span>-->
             </div>
         </div>
         <p class="review-text">${review.reviewContent}</p>
@@ -197,18 +232,9 @@ document.addEventListener('DOMContentLoaded', function() {
             fetchReviews(currentPage, true);
         }
     });
-
     // 초기 로드
     fetchReviews(currentPage);
 });
-
-
-
-
-
-
-
-
 
 
 
@@ -268,86 +294,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // 초기 상태 설정
     updateTrailerSlide();
 });
-
-// // 리뷰 작성
-// document.addEventListener('DOMContentLoaded', function() {
-//     const reviewsTab = document.querySelector('#reviewsTab');
-//
-//     // 이벤트 위임을 사용하여 동적으로 추가된 요소에도 이벤트 처리
-//     reviewsTab.addEventListener('click', function(e) {
-//         if (e.target.classList.contains('review-write-button')) {
-//             const reviewForm = document.querySelector('#reviewForm');
-//             reviewForm.style.display = reviewForm.style.display === 'none' ? 'block' : 'none';
-//             e.target.textContent = reviewForm.style.display === 'none' ? '리뷰 작성' : '작성 취소';
-//         }
-//     });
-//
-//     // 폼 제출 이벤트 리스너
-//     document.addEventListener('submit', function(e) {
-//         if (e.target.id === 'reviewForm') {
-//             e.preventDefault();
-//
-//             const formData = new FormData(e.target);
-//             const reviewData = Object.fromEntries(formData.entries());
-//
-//             fetch('/addReview', {
-//                 method: 'POST',
-//                 headers: {
-//                     'Content-Type': 'application/json',
-//                 },
-//                 body: JSON.stringify(reviewData)
-//             })
-//                 .then(response => response.json())
-//                 .then(data => {
-//                     if (data.success) {
-//                         // 리뷰 등록 성공 시 리뷰 탭 내용을 새로고침
-//                         fetch(window.location.pathname + ' #reviewsTab')
-//                             .then(response => response.text())
-//                             .then(html => {
-//                                 const parser = new DOMParser();
-//                                 const doc = parser.parseFromString(html, 'text/html');
-//                                 const newReviewsTab = doc.querySelector('#reviewsTab');
-//                                 reviewsTab.innerHTML = newReviewsTab.innerHTML;
-//                             })
-//                             .catch(error => console.error('Error:', error));
-//
-//                         // 폼 리셋 및 숨기기
-//                         e.target.reset();
-//                         e.target.style.display = 'none';
-//                         document.querySelector('.review-write-button').textContent = '리뷰 작성';
-//
-//                         alert(data.message);
-//                     } else {
-//                         alert(data.message || '리뷰 등록에 실패했습니다. 다시 시도해주세요.');
-//                     }
-//                 })
-//                 .catch(error => {
-//                     console.error('Error:', error);
-//                     alert('리뷰 등록 중 오류가 발생했습니다.');
-//                 });
-//         }
-//     });
-// });
-
-
-
-
-
-// 리뷰 작성창
-// document.addEventListener('DOMContentLoaded', function() {
-//     const writeButton = document.querySelector('.review-write-button');
-//     const reviewForm = document.querySelector('.review-form');
-//
-//     writeButton.addEventListener('click', function() {
-//         // if (isLoggedIn) {
-//             reviewForm.style.display = reviewForm.style.display === 'none' ? 'block' : 'none';
-//             writeButton.textContent = reviewForm.style.display === 'none' ? '리뷰 작성' : '작성 취소';
-//         // } else {
-//         //     alert('리뷰를 작성하려면 로그인이 필요합니다.');
-//             // window.location.href = '/login';
-//         // }
-//     });
-// });
 
 
 // 비디오 모달 팝업

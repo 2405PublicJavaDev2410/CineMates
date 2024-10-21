@@ -38,6 +38,9 @@ h2 {
     /*height: 400px;*/
     margin-top: 75px;
 }
+.poster img{
+    width: 400px;
+ }
 
 /* 정보 입력란 */
 .detail-right {

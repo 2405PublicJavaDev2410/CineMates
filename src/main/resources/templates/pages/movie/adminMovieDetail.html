@@ -3,7 +3,7 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{common/layout/defaultLayout}"
+      layout:decorate="~{common/layout/adminLayout}"
       layout:fragment="Content">
 <link rel="stylesheet" href="/css/movie/adminMovieDetail.css">
 
@@ -128,14 +128,15 @@
 
             <!-- 스틸컷 템플릿 -->
             <template id="stillcutTemplate">
-            <div class="stillcut-container">
-              <input type="hidden" name="stillcutNo" value="" />
-              <input type="text" name="stillcutUrl" placeholder="스틸컷Url" required />
-              <button type="button" class="remove-input-Btn">삭제</button>
-            </div>
-          </template>
+              <div class="stillcut-container">
+                <input type="hidden" name="stillcutNo" value="" />
+                <input type="text" name="stillcutUrl" placeholder="스틸컷Url" required />
+                <button type="button" class="remove-input-Btn">삭제</button>
+              </div>
+            </template>
+
             <button class="buttons modify" type="submit">수정</button>
-            <button class="buttons remove" type="submit">삭제</button>
+            <button class="buttons remove" type="button" onclick="removeMovie()">삭제</button>
             <button class="buttons cancel" type="button" onclick="goBack();">뒤로</button>
           </form>
         </div>
@@ -215,6 +216,21 @@
           }
         });
       });
+
+      function removeMovie() {
+        if(confirm('정말로 삭제하시겠습니까?')) {
+          var form = document.createElement('form');
+          form.method = 'GET';
+          form.action = '/removeMovie';
+          var input = document.createElement('input');
+          input.type = 'hidden';
+          input.name = 'movieNo';
+          input.value = document.querySelector('input[name="movieNo"]').value;
+          form.appendChild(input);
+          document.body.appendChild(form);
+          form.submit();
+        }
+      }
 
       function goBack() {
         if(confirm("정보 수정을 취소하시겠습니까?")) {

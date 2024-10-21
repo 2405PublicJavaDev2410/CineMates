@@ -32,10 +32,11 @@ h2 {
     float: left;
 }
 
-.poster img{
-    /*border: 1px solid #ddd;*/
+.bannerUrl img {
     width: 400px;
-    /*height: 400px;*/
+}
+.bannerUrl video {
+    width: 400px;
 }
 
 /* 정보 입력란 */

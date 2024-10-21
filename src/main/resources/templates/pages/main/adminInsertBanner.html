@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<!-- Default Layout Import-->
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/adminLayout}"
+      layout:fragment="Content">
+<link rel="stylesheet" href="/css/main/adminInsertBanner.css">
+
+<body>
+<div layout:fragment="content">
+    <main>
+        <h1>배너 정보</h1>
+        <div class="detail-area">
+            <div>
+                <div class="detail-left">
+                    <div class="bannerUrl">
+                        <img id="imgPreview" src="" alt="배너 미리보기" />
+                        <video id="videoPreview" src="" alt="배너 미리보기" controls muted ></video>
+                    </div>
+                </div>
+                <div class="detail-right" >
+                    <form action="/admin/insertBanner" method="post" class="detail-form">
+                        <label for="">제목</label>
+                        <input type="text" name="bannerTitle" placeholder="제목을 입력해주세요" required />
+
+                        <label for="">내용</label>
+                        <input type="text" name="bannerContent" placeholder="내용을 입력해주세요"/>
+
+                        <label for="">배너Url</label>
+                        <input type="text" name="bannerUrl" id="bannerUrl" placeholder="배너Url을 입력해주세요" oninput="updateBannerPreview()" required/>
+
+                        <label for="">링크Url</label>
+                        <input type="text" name="linkUrl" placeholder="링크Url을 입력해주세요"/>
+
+                        <label for="">시작날짜</label>
+                        <input type="text" name="startDate" placeholder="ex) 2024-10-23"/>
+
+                        <label for="">종료날짜</label>
+                        <input type="text" name="endDate" placeholder="ex) 2024-10-23"/>
+
+
+                        <label for="">페이지 타입</label>
+                        <div class="category-info">
+                            <select name="pageType" class="pageType">
+                                <option value="" disabled >페이지 타입</option>
+                                <option value="MAIN" >메인 페이지</option>
+                                <option value="MOVIE_LIST" >영화리스트 페이지</option>
+                                <option value="OTHER">기타</option>
+                            </select>
+                        </div>
+
+                        <label for="">상태</label>
+                        <div class="category-info">
+                            <select name="isActive" class="isActive">
+                                <option value="" disabled >게시 상태</option>
+                                <option value="Y" >게시</option>
+                                <option value="N" >미게시</option>
+                            </select>
+                        </div>
+                        <button class="buttons modify" type="submit">등록</button>
+<!--                        <button class="buttons modify" type="submit">수정</button>-->
+<!--                        <button class="buttons remove" type="button" onclick="removeMovie()">삭제</button>-->
+                        <button class="buttons cancel" type="button" onclick="goBack();">뒤로</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+<th:block layout:fragment="script">
+    <script>
+        function updateBannerPreview() {
+            const bannerUrl = document.getElementById('bannerUrl').value;
+            const imgPreview = document.getElementById('imgPreview');
+            const videoPreview = document.getElementById('videoPreview');
+
+            if (bannerUrl) {
+                imgPreview.src = bannerUrl;
+                videoPreview.src = bannerUrl;
+            } else {
+                imgPreview.src = ''; // URL이 비어있으면 이미지 제거
+                videoPreview.src = ''; // URL이 비어있으면 이미지 제거
+            }
+        }
+
+        // 페이지 로드 시 이미지 미리보기 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            updateBannerPreview();
+        });
+
+
+        function goBack() {
+            if(confirm("배너 등록을 취소하시겠습니까?")) {
+                location.href = "/admin/banner"
+            }
+        }
+
+    </script>
+</th:block>
+</body>
+</html>

@@ -32,10 +32,11 @@ h2 {
     float: left;
 }
 
-.poster img{
-    /*border: 1px solid #ddd;*/
+.bannerUrl img{
     width: 400px;
-    /*height: 400px;*/
+}
+.postbannerUrler video{
+    width: 400px;
 }
 
 /* 정보 입력란 */
@@ -56,25 +57,16 @@ input {
     padding: 10px;
     margin-bottom: 13px;
     border: 1px solid #ddd;
-    /*border-radius: 4px;*/
     box-sizing: border-box;
     font-size: 14px;
     font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
 }
 
 select {
-    /* width: 49%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box;
-    font-family: 'Noto Sans KR', sans-serif; */
     width: 100%;
     padding: 10px;
     margin-bottom: 13px;
     border: 1px solid #ddd;
-    /*border-radius: 4px;*/
     box-sizing: border-box;
     font-size: 14px;
     font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
@@ -89,7 +81,6 @@ textarea {
     padding: 10px;
     margin-bottom: 13px;
     border: 1px solid #ddd;
-    /*border-radius: 4px;*/
     box-sizing: border-box;
     font-size: 14px;
     font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
@@ -129,7 +120,6 @@ select:focus {
     border: none;
     font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
     font-size: 12px;
-    /*border-radius: 15px;*/
     cursor: pointer;
 }
 
@@ -142,7 +132,6 @@ select:focus {
     border: none;
     font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
     font-size: 16px;
-    /*border-radius: 15px;*/
     cursor: pointer;
 }
 
@@ -154,7 +143,6 @@ select:focus {
     border: none;
     font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
     font-size: 18px;
-    /*border-radius: 15px;*/
     cursor: pointer;
     margin: 30px 10px;
 }
