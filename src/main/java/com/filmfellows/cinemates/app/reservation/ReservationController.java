@@ -26,15 +26,13 @@ public class ReservationController {
 
     @Autowired
     ReservationService rService;
-    @Autowired
-    private ReservationDTO reservationDTO;
 
-
+// 예매 페이지
     @GetMapping("/Ticketing")
     public String showShowTimePage(Model model, HttpSession session, String title, Integer movieNo) {
         System.out.println("title : " + title);
         String memberId = (String) session.getAttribute("memberId");
-
+// 로그인 체크
         if (memberId == null) {
             return "redirect:/login";
         }

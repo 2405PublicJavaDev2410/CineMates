@@ -93,6 +93,8 @@ public class ChatServiceImpl implements ChatService {
 
         System.out.println("cList 결과 : " + cList);
 
+
+
         // 채팅방 개설 상대 시간 계산
         List<RelativeTime> relativeTimeList = new ArrayList<>();
 
@@ -103,8 +105,15 @@ public class ChatServiceImpl implements ChatService {
             rTime.setRoomDate(item.getRoomDate());
             rTime.setRelativeTime(relativeTime);
             relativeTimeList.add(rTime);
+            // 참여인원수 조회
+            Integer joinCountByRoomNo = cMapper.selectJoinCountByRoomNo(item.getRoomNo());
+            item.setJoinCount(joinCountByRoomNo);
+            //최근대화내용조회
+            String recentChatContent = cMapper.selectRecentChatContent(item.getRoomNo());
+            item.setRecentContent(recentChatContent);
         }
 
+        System.out.println(cList);
         // map 생성
         Map<String, Object> map = new HashMap<>();
 
@@ -207,6 +216,37 @@ public class ChatServiceImpl implements ChatService {
     public List<ChatJoin> selectAcceptAll(Integer roomNo) {
         List<ChatJoin> chatJoinAcceptList = cMapper.selectAcceptAll(roomNo);
         return chatJoinAcceptList;
+    }
+
+    @Override
+    public Map<String, Object> selectChatRoomListByTop() {
+        List<ChatRoom> chatRoomListByTop = cMapper.selectChatRoomListByTop();
+
+        // 채팅방 개설 상대 시간 계산
+        List<RelativeTime> relativeTimeList = new ArrayList<>();
+
+        for(ChatRoom item : chatRoomListByTop){
+            RelativeTime rTime = new RelativeTime();
+            // 계산 메소드
+            String relativeTime = ChatTimeUtils.getRelativeTime(item.getRoomDate());
+            rTime.setRoomDate(item.getRoomDate());
+            rTime.setRelativeTime(relativeTime);
+            relativeTimeList.add(rTime);
+
+            // 참여인원수 조회
+            Integer joinCountByRoomNo = cMapper.selectJoinCountByRoomNo(item.getRoomNo());
+            item.setJoinCount(joinCountByRoomNo);
+            //최근대화내용조회
+            String recentChatContent = cMapper.selectRecentChatContent(item.getRoomNo());
+            item.setRecentContent(recentChatContent);
+        }
+        Map<String, Object> map = new HashMap<>();
+
+
+        map.put("relativeTimeList", relativeTimeList);
+        map.put("chatRoomListByTop", chatRoomListByTop);
+
+        return map;
     }
 
 

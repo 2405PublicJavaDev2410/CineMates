@@ -4,14 +4,11 @@
     <select id="selectBoxOfficeList" resultType="com.filmfellows.cinemates.app.main.dto.boxOfficeDTO">
         WITH BOOKABLE_MOVIES AS (
             SELECT m.MOVIE_NO, m.TITLE, m.POSTER_URL,
-                   TO_CHAR(m.RELEASE_DATE, 'YYYY-MM-DD') AS RELEASE_DATE,
-                   m.RUNNING_TIME, m.RATING, m.DIRECTOR, m.ACTORS, m.GENRE,
                    COALESCE(SUM(r.RESERVATION_VISITOR), 0) AS VISITOR_COUNT
             FROM MOVIE_TBL m
                      LEFT JOIN RESERVATION_TBL r ON m.MOVIE_NO = r.MOVIE_NO
             WHERE m.IS_BOOKABLE = 'Y'
-            GROUP BY m.MOVIE_NO, m.TITLE, m.POSTER_URL, m.RELEASE_DATE, m.RUNNING_TIME,
-                     m.RATING, m.DIRECTOR, m.ACTORS, m.GENRE
+            GROUP BY m.MOVIE_NO, m.TITLE, m.POSTER_URL
         ),
              TOTAL_VISITORS AS (
                  SELECT SUM(VISITOR_COUNT) AS TOTAL_COUNT
@@ -22,12 +19,6 @@
                      bm.MOVIE_NO AS movieNo,
                      bm.TITLE AS title,
                      bm.POSTER_URL AS posterUrl,
-                     bm.RELEASE_DATE AS releaseDate,
-                     bm.RUNNING_TIME AS runningTime,
-                     bm.RATING AS rating,
-                     bm.DIRECTOR AS director,
-                     bm.ACTORS AS actors,
-                     bm.GENRE AS genre,
                      bm.VISITOR_COUNT AS visitorCount,
                      tv.TOTAL_COUNT AS totalCount,
                      CASE
@@ -41,9 +32,76 @@
                  WHERE bm.VISITOR_COUNT > 0
              )
         SELECT
-            movieNo, title, posterUrl, releaseDate, runningTime, rating,
-            director, actors, genre, visitorCount, totalCount, reservationRate
+            movieNo, title, posterUrl, visitorCount, totalCount, reservationRate
         FROM RANKED_MOVIES
-        WHERE rn &lt;= 5
+        ORDER BY rn ASC
     </select>
+    <select id="selectBannerList" resultType="BannerDTO">
+        SELECT *
+        FROM BANNERS_TBL
+        ORDER BY
+            CASE
+                WHEN IS_ACTIVE = 'Y' THEN 0
+                ELSE 1
+                END,
+            BANNER_NO DESC
+    </select>
+    <insert id="insertBanner">
+        INSERT INTO BANNERS_TBL (BANNER_NO, BANNER_TITLE, BANNER_CONTENT, BANNER_URL, LINK_URL, PAGE_TYPE, START_DATE, END_DATE, IS_ACTIVE, REG_DATE)
+        VALUES (SEQ_BANNERS_NO.NEXTVAL, #{bannerTitle}, #{bannerContent}, #{bannerUrl}, #{linkUrl}, #{pageType}, #{startDate}, #{endDate}, #{isActive}, SYSDATE)
+    </insert>
+    <select id="selectBannerByBannerNo" resultType="BannerDTO">
+        SELECT * FROM BANNERS_TBL WHERE BANNER_NO = #{bannerNo}
+    </select>
+    <update id="updateBanner">
+        UPDATE BANNERS_TBL
+        SET
+            BANNER_TITLE = #{bannerTitle},
+            BANNER_CONTENT = #{bannerContent},
+            BANNER_URL = #{bannerUrl},
+            LINK_URL = #{linkUrl},
+            PAGE_TYPE = #{pageType},
+            START_DATE = #{startDate},
+            END_DATE = #{endDate},
+            IS_ACTIVE = #{isActive},
+            UPDATE_DATE = SYSDATE
+        WHERE BANNER_NO = #{bannerNo}
+    </update>
+    <delete id="deleteBanner">
+        DELETE FROM BANNERS_TBL WHERE BANNER_NO = #{bannerNo}
+    </delete>
+    <select id="selectMainBannerList" resultType="BannerDTO">
+        SELECT * FROM BANNERS_TBL WHERE PAGE_TYPE = 'MAIN'
+    </select>
+    <select id="selectChatRoomList" resultType="ChatRoomDTO">
+        SELECT chat.ROOM_NO, chat.ROOM_NAME, chat.ROOM_WRITER, chat.ROOM_DATE, chat.ROOM_CATEGORY,
+               chat.MOVIE_NO, movie.TITLE, movie.POSTER_URL,
+               chat.CINEMA_LOCATION_CODE,
+               SUBSTR(cinema.CINEMA_ADDRESS, 1, INSTR(cinema.CINEMA_ADDRESS, ' ') - 1) CINEMA_ADDRESS, cinema.CINEMA_NO, cinema.CINEMA_NAME
+        FROM CHAT_ROOM_TBL chat
+                 JOIN MOVIE_TBL movie ON chat.MOVIE_NO = movie.MOVIE_NO
+                 JOIN CINEMA_TBL cinema ON chat.CINEMA_NO = cinema.CINEMA_NO
+    </select>
+<!--    <select id="selectChatRoomList" resultType="ChatRoomDTO">-->
+<!--        SELECT * FROM (-->
+<!--            SELECT chat.ROOM_NO, -->
+<!--                   chat.ROOM_NAME, -->
+<!--                   chat.ROOM_WRITER, -->
+<!--                   chat.ROOM_DATE, -->
+<!--                   chat.ROOM_CATEGORY,-->
+<!--                   chat.MOVIE_NO, -->
+<!--                   movie.TITLE, -->
+<!--                   movie.POSTER_URL,-->
+<!--                   chat.CINEMA_LOCATION_CODE,-->
+<!--                   SUBSTR(cinema.CINEMA_ADDRESS, 1, INSTR(cinema.CINEMA_ADDRESS, ' ') - 1) AS CINEMA_ADDRESS,-->
+<!--                   cinema.CINEMA_NO,-->
+<!--                   cinema.CINEMA_NAME,-->
+<!--                   ROW_NUMBER() OVER (ORDER BY chat.ROOM_DATE DESC) AS rn-->
+<!--            FROM CHAT_ROOM_TBL chat-->
+<!--            JOIN MOVIE_TBL movie ON chat.MOVIE_NO = movie.MOVIE_NO-->
+<!--            JOIN CINEMA_TBL cinema ON chat.CINEMA_NO = cinema.CINEMA_NO-->
+<!--            )-->
+<!--            WHERE rn <= 60-->
+<!--            ORDER BY ROOM_DATE DESC-->
+<!--    </select>-->
 </mapper>

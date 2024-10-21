@@ -1,0 +1,166 @@
+main {
+    margin-bottom: 100px;
+}
+
+/* 화면 타이틀 */
+h1 {
+    font-family: 'GmarketSansMedium', sans-serif;
+    padding-bottom: 50px;
+    padding-top: 20px;
+    text-align: center;
+}
+
+
+/* 글쓰기 섹션 */
+
+.register-section {
+    display: inline-flex;
+    margin-left: 25px;
+    font-size: 0.9em;
+}
+
+
+
+/* 글쓰기 버튼 */
+.register-btn {
+    background-color: #EA4E4A;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    height: 38px;
+    width: 80px;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
+}
+
+
+
+/*영화정보, 관람평 탭*/
+.tabs {
+    margin-top: 30px;
+}
+.tab-buttons {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+.tab-button {
+    width: 600px;
+    padding: 10px 20px;
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    font-family: 'GmarketSansMedium', serif;
+    font-weight: bold;
+}
+.tab-button.active {
+    border-bottom: 2px solid black;
+}
+.tab-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+}
+.hidden {
+    display: none;
+}
+
+
+
+
+
+
+
+
+
+.common-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.common-table th,
+.common-table td {
+    padding: 12px;
+    text-align: center;
+    font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
+    border: none;
+}
+
+.common-table th {
+    background-color: #ffffff;
+    font-size: 16px;
+    border-bottom: 2px solid #D54946;
+}
+
+.common-table td {
+    font-size: 14px;
+}
+
+.common-table tr {
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.common-table tr:hover {
+    background-color: #e2e2e26c;
+}
+
+/*페이지네이션*/
+
+.common-pagination-li-end {
+    display: inline-block;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.common-pagination {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    justify-content: center;
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+.common-pagination-li {
+    width: 30px;
+    height: 30px;
+    /*border-radius: 50%;*/
+    /*border: 1px solid #E8E9ED;*/
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.common-pagination-li a{
+    text-decoration: none;
+    /*color: #78797B;*/
+
+    width: 100%;
+    text-align: center;
+}
+
+.common-pagination-li-end a {
+    text-decoration: none;
+    color: black;
+}
+
+/*.common-pagination-li-active {*/
+/*    !*background-color: #EA4E4A;*!*/
+/*    border: transparent;*/
+/*}*/
+
+.common-pagination-li-active a {
+    /*color: white;*/
+    color: #EA4E4A;
+    font-weight: bold;
+}
+

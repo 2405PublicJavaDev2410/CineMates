@@ -1,10 +1,6 @@
 package com.filmfellows.cinemates.domain.movie.model.service;
 
-import com.filmfellows.cinemates.app.main.dto.boxOfficeDTO;
-import com.filmfellows.cinemates.app.movie.dto.MovieDTO;
-import com.filmfellows.cinemates.app.movie.dto.MovieListDTO;
-import com.filmfellows.cinemates.app.movie.dto.MovieReservationRateDTO;
-import com.filmfellows.cinemates.app.movie.dto.ReviewDTO;
+import com.filmfellows.cinemates.app.movie.dto.*;
 import com.filmfellows.cinemates.domain.movie.model.vo.Movie;
 import com.filmfellows.cinemates.domain.movie.model.vo.Review;
 import org.apache.ibatis.session.RowBounds;
@@ -38,11 +34,15 @@ public interface MovieService {
 
     List<ReviewDTO> getReviewByMovieNo(Long movieNo, int page, int size);
 
-    boolean addReview(Review addReview);
+    int addReview(Review addReview);
 
     int getTotalReviewCountByMovieNo(Long movieNo);
 
     void removeReview(String memberId, int reviewNo);
 
     ReviewDTO getMyReview(Long movieNo, String memberId);
+
+    void removeMovie(Long movieNo);
+
+    List<MovieBannerDTO> getMovieBanner();
 }

@@ -262,4 +262,47 @@
         LEFT JOIN MEMBER_TBL USING(MEMBER_ID)
         WHERE ROOM_NO = #{roomNo}
     </select>
+
+    <select id="selectJoinCountByRoomNo" resultType="_int">
+        SELECT COUNT(*) FROM CHAT_JOIN_TBL
+        WHERE ROOM_NO = #{roomNo}
+        GROUP BY ROOM_NO
+    </select>
+
+<!--    공지 제외한 최근 대화 내용-->
+    <select id="selectRecentChatContent" resultType="string">
+        SELECT * FROM (
+              SELECT CHAT_CONTENT
+              FROM CHAT_TBL
+              WHERE ROOM_NO = #{roomNo}
+                AND CHAT_CONTENT NOT LIKE '%' || '님이 대화방에 참여했습니다' || '%'
+                AND CHAT_CONTENT NOT LIKE '%' || '님이 대화방을 나갔습니다' || '%'
+              ORDER BY CHAT_DATE DESC
+                      )
+        WHERE ROWNUM = 1
+    </select>
+
+<!--    top5 채팅방 리스트-->
+    <select id="selectChatRoomListByTop" resultType="ChatRoom">
+        SELECT * FROM (
+        SELECT chat.ROOM_NO, chat.ROOM_NAME, chat.ROOM_WRITER, chat.ROOM_DATE, chat.ROOM_CATEGORY,
+        chat.MOVIE_NO, movie.TITLE, movie.POSTER_URL,
+        chat.CINEMA_LOCATION_CODE,
+        SUBSTR(cinema.CINEMA_ADDRESS, 1, INSTR(cinema.CINEMA_ADDRESS, ' ') - 1) AS CINEMA_ADDRESS,
+        cinema.CINEMA_NO, cinema.CINEMA_NAME,
+        profile.FILE_RENAME, profile.FILE_PATH,
+        COUNT(cj.MEMBER_ID) AS MEMBER_COUNT
+        FROM CHAT_ROOM_TBL chat
+        JOIN MOVIE_TBL movie ON chat.MOVIE_NO = movie.MOVIE_NO
+        JOIN CINEMA_TBL cinema ON chat.CINEMA_NO = cinema.CINEMA_NO
+        LEFT JOIN PROFILE_IMG_TBL profile ON chat.ROOM_WRITER = profile.MEMBER_ID
+        LEFT JOIN CHAT_JOIN_TBL cj ON chat.ROOM_NO = cj.ROOM_NO
+        GROUP BY chat.ROOM_NO, chat.ROOM_NAME, chat.ROOM_WRITER, chat.ROOM_DATE, chat.ROOM_CATEGORY,
+        chat.MOVIE_NO, movie.TITLE, movie.POSTER_URL,
+        chat.CINEMA_LOCATION_CODE, cinema.CINEMA_ADDRESS,
+        cinema.CINEMA_NO, cinema.CINEMA_NAME,
+        profile.FILE_RENAME, profile.FILE_PATH
+        ORDER BY MEMBER_COUNT DESC, ROOM_DATE DESC )
+        WHERE ROWNUM &lt;= 5
+    </select>
 </mapper>

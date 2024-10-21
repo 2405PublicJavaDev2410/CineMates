@@ -1,10 +1,7 @@
 package com.filmfellows.cinemates.app.mypage;
 
-import com.filmfellows.cinemates.app.mypage.dto.myReservationRequest;
-import com.filmfellows.cinemates.app.mypage.dto.myReservationResponse;
+import com.filmfellows.cinemates.app.mypage.dto.*;
 import com.filmfellows.cinemates.common.Pagination;
-import com.filmfellows.cinemates.app.mypage.dto.QnaDTO;
-import com.filmfellows.cinemates.app.mypage.dto.RegisterQnaRequest;
 import com.filmfellows.cinemates.domain.mypage.model.service.MyPageService;
 import com.filmfellows.cinemates.domain.mypage.model.vo.Qna;
 import com.filmfellows.cinemates.domain.mypage.model.vo.QnaFile;
@@ -13,6 +10,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.RowBounds;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -167,11 +165,23 @@ public class MyPageController {
      */
     @GetMapping("/find-order")
     @ResponseBody
-    public String showOrderList(HttpSession session,
-            @RequestParam("startDate") String startDate,
-            @RequestParam("endDate") String endDate) {
+    public ResponseEntity<List<myOrderResponse>> showOrderList(HttpSession session,
+           @ModelAttribute myOrderRequest request,
+           @RequestParam("startDate") String startDate,
+           @RequestParam("endDate") String endDate) {
         String memberId = (String) session.getAttribute("memberId");
-        return "";
+        request.setStartDate(startDate);
+        request.setEndDate(endDate);
+        request.setMemberId(memberId);
+        System.out.println(request);
+        List<myOrderResponse> response = myService.selectOrderList(request);
+        System.out.println("응답" + response);
+
+        if (response != null && !response.isEmpty()) {
+            return ResponseEntity.ok(response); // 200 OK와 함께 리스트 반환
+        } else {
+            return ResponseEntity.noContent().build(); // 204 No Content
+        }
     }
 
     /**

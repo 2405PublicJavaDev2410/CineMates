@@ -329,6 +329,9 @@ h1.page-title {
 .itemCard-title, .itemCard-recentContent, .itemCard-roomDate {
     display: none;
 }
+.itemCard-recentContent{
+    height: 100px;
+}
 
 .card-mouseover {
     user-select: none;
@@ -370,4 +373,32 @@ h1.page-title {
 .card-mouseover-text.joinBtn:hover {
     background-color: white;
     color: black;
+}
+
+.result-empty{
+    text-align: center;
+    font-size: 25px;
+}
+
+#chatNavigation{
+    text-align: center;
+    width: 130px;
+    height: 50px;
+    color: white;
+    background-color: #466288;
+    font-size: 20px;
+    line-height: 50px;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: all 200ms;
+}
+
+#chatNavigation:hover{
+    opacity: 1;
+}
+#chatNavigation:active{
+    transform: scale(0.95);
 }
