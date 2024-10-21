@@ -510,12 +510,7 @@ public class ChatController {
         List<ChatTag> tagList = cService.selectChatTagList("default");
 
         //top5 채팅방 조회
-        Map<String, Object> map = cService.selectChatRoomListByTop();
-
-
-
-
-
+        Map<String, Object> map = cService.selectChatRoomListByTop("top5");
 
 
 //        model.addAttribute("profileList", profileList);

@@ -96,5 +96,11 @@ public class AdminReportController {
         return "redirect:/admin/reportlist";
 
     }
+    @GetMapping("/reportcancel{reportNo}")
+    public String reportcancel(Model model,@PathVariable("reportNo") String reportNo) {
+        int result=rService.reportcancel(reportNo);
+        return "redirect:/admin/reportlist";
+    }
+
 
 }

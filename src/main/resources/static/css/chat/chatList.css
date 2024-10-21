@@ -164,16 +164,15 @@ h1.page-title {
 
 /* list형 기본 스타일 */
 .list-item {
-    width: 90%;
-    height: 150px;
+    width: 70%;
+    height: 120px;
     background-color: white;
     padding: 15px;
     border-radius: 15px;
     /*transition: opacity 0.5s ease, transform 0.5s ease;*/
     opacity: 1;
     /*transform: scale(1);*/
-    margin: 0 auto;
-    margin-bottom: 20px;
+    margin: 0 auto 20px;
 
     visibility: visible; /* 처음엔 숨겨져 있음 */
     transform: translateY(20px);
@@ -188,6 +187,7 @@ h1.page-title {
 
 /* list형 fade-in 스타일 */
 .list-item.fade-in {
+    box-shadow: 0 2px 2px 2px rgb(162, 162, 162);
     visibility: visible; /* 0.5초 후에 보이게 */
     opacity: 1;
     transform: translateY(0);
@@ -237,19 +237,19 @@ h1.page-title {
     justify-content: left;
     width: 100%;
     height: 100%;
-    font-size: 20px;
+    font-size: 16px;
 }
 
 .flex-item-memberProfile {
-    width: 120px;
-    height: 120px;
+    width: 90px;
+    height: 90px;
     margin-right: 20px;
     position: relative;
 }
 
 .chatRoomName {
-    font-size: 25px;
-    /*font-weight: bold;*/
+    font-size: 22px;
+    font-weight: bold;
 }
 
 .chatTagList {
@@ -263,6 +263,7 @@ h1.page-title {
 }
 
 .itemBtnFlexContainer {
+    height: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
