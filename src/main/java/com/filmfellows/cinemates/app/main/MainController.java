@@ -3,6 +3,8 @@ package com.filmfellows.cinemates.app.main;
 import com.filmfellows.cinemates.app.main.dto.BannerDTO;
 import com.filmfellows.cinemates.app.main.dto.ChatRoomDTO;
 import com.filmfellows.cinemates.app.main.dto.boxOfficeDTO;
+import com.filmfellows.cinemates.domain.chat.model.service.ChatService;
+import com.filmfellows.cinemates.domain.chat.model.vo.ChatTag;
 import com.filmfellows.cinemates.domain.main.model.service.MainService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @Slf4j
