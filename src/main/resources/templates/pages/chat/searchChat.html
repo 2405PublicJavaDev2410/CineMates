@@ -20,6 +20,7 @@
         <link rel="stylesheet" href="/css/chat/searchList.css">
         <!-- script src-->
         <script crossorigin="anonymous" src="/js/chat/listMenuBtn.js" defer></script>
+        <script crossorigin="anonymous" src="/js/chat/chatReport.js" defer></script>
 
         <!-- inline CSS 영역-->
         <style th:inline="css" type="text/css">
@@ -246,7 +247,7 @@
                             </div>
 
                             <div style="position: relative;">
-                                <div class="report-btn">신고</div>
+                                <div class="report-btn" th:onclick="report([[${chatRoom.roomNo}]],[[${chatRoom.roomWriter}]]);">신고</div>
                                 <div class="joinBtn" th:onclick="joinChatRoom([[${chatRoom.roomNo}]], [[${chatRoom.roomWriter}]], [[${chatRoom.movieNo}]],[[${chatRoom.title}]], [[${chatRoom.posterUrl}]], [[${chatRoom.cinemaNo}]],[[${chatRoom.cinemaName}]], [[${chatRoom.cinemaLocationCode}]], [[${chatRoom.cinemaAddress}]], [[${chatRoom.roomCategory}]]);">참여</div>
                             </div>
                         </div>
