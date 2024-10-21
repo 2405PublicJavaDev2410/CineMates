@@ -6,7 +6,7 @@
 <mapper namespace="com.filmfellows.cinemates.domain.report.model.mapper.ReportMapper">
 
     <select id="reportlist">
-        SELECT * FROM REPORT_TBL A JOIN MEMBER_TBL B ON A.REPORT_ID=B.MEMBER_ID WHERE REPORT_STATUS='처리중'
+        SELECT * FROM REPORT_TBL A JOIN MEMBER_TBL B ON A.REPORT_ID=B.MEMBER_ID WHERE REPORT_STATUS='처리중' ORDER BY A.REPORT_NO ASC
     </select>
     <insert id="reportinsert">
         INSERT INTO REPORT_TBL VALUES(SEQ_REPORT_NO.NEXTVAL,#{reportId},#{reportOption},#{reportContent},DEFAULT,DEFAULT,#{reportWriteno},#{reportCategory})
@@ -46,11 +46,14 @@
         SELECT COUNT(*) FROM REPORT_TBL A JOIN MEMBER_TBL B ON A.REPORT_ID=B.MEMBER_ID WHERE REPORT_STATUS='완료'
     </select>
     <select id="reportlist2">
-        SELECT * FROM REPORT_TBL A JOIN MEMBER_TBL B ON A.REPORT_ID=B.MEMBER_ID WHERE REPORT_STATUS='완료'
+        SELECT * FROM REPORT_TBL A JOIN MEMBER_TBL B ON A.REPORT_ID=B.MEMBER_ID WHERE REPORT_STATUS='완료' ORDER BY A.REPORT_NO DESC
     </select>
     <select id="overlapreport" resultType="_int">
         SELECT COUNT(*) FROM REPORT_TBL WHERE REPORT_WRITENO=#{writeno} AND REPORT_CATEGORY=#{category}
     </select>
+    <update id="reportcancel">
+        UPDATE REPORT_TBL SET REPORT_STATUS='완료' WHERE REPORT_NO=#{reportNo}
+    </update>
 
 
 </mapper>

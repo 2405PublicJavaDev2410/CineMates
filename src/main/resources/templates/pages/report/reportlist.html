@@ -37,7 +37,10 @@
         <td>[[${report.reportDate}]]</td>
         <td>[[${report.reportCount}]]</td>
         <td>[[${report.reportStatus}]]</td>
-        <td ><button th:onclick="report([[${report.reportId}]],[[${report.reportCount}]],[[${report.reportNo}]])">신고</button></td>
+        <td >
+            <button style="width: 45%;"th:onclick="report([[${report.reportId}]],[[${report.reportCount}]],[[${report.reportNo}]])">수락</button>
+            <button style="width: 45%;" th:onclick="reportcancel([[${report.reportNo}]]);">거절</button>
+        </td>
     </tr>
 </table>
 <div style="text-align: center">
@@ -78,6 +81,11 @@
             window.open("/admin/overreportid" + a+"?reportNo="+b, "popup", "width=" + popupW + ", height=" + popupH + ", top=" + top + ", left=" + left);
         }
     }
+    function reportcancel(a){
+
+        location.href="/admin/reportcancel"+a
+    }
+
 </script>
 </body>
 </html>

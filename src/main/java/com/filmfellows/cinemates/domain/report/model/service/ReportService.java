@@ -107,4 +107,11 @@ public interface ReportService {
 
      */
     int overlapreport(int writeno, String category);
+    /**
+     * 신고 취소
+     * pram reportNo
+     * return result
+
+     */
+    int reportcancel(String reportNo);
 }

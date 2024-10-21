@@ -105,4 +105,10 @@ public class ReportServiceImpl implements ReportService {
         int count=mapper.overlapreport(writeno,category);
         return count;
     }
+
+    @Override
+    public int reportcancel(String reportNo) {
+        int result=mapper.reportcancel(reportNo);
+        return result;
+    }
 }

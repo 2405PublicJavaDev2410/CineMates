@@ -85,7 +85,7 @@ ul a{
 }
 
 button {
-    background-color: #ff6f61;
+    background-color: #EA4E4A;
     border: none;
     padding: 10px 20px;
     font-size: 16px;
@@ -93,6 +93,7 @@ button {
     cursor: pointer;
     border-radius: 5px;
     transition: background-color 0.3s;
+    font-family: 'NEXON Lv1 Gothic OTF';
 }
 
 button:hover {
@@ -100,7 +101,7 @@ button:hover {
 }
 
 h1,h2 {
-    color: #ff6f61;
+    color: #EA4E4A;
 }
 
 
