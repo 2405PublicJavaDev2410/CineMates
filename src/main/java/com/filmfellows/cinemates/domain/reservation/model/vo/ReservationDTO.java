@@ -52,6 +52,7 @@ public class ReservationDTO {
     private String buyer_name;
     private String buyer_tel;
     private String imp_uid;
+    private String pay_method;
 
     //ShowTime - 상영
     private String showtimeTime;

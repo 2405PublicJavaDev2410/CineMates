@@ -62,7 +62,8 @@ function requestPay() {
                     "buyer_tel": rsp.buyer_tel,
                     "screenNo": reservationData.screenNo,
                     "movieNo": reservationData.movieNo,
-                    "reservationNo": reservationData.reservationNo
+                    "reservationNo": reservationData.reservationNo,
+                    "pay_method": rsp.pay_method
                 };
                 //  작성자 기준 예매 정보
                 var reserveInfo = {
