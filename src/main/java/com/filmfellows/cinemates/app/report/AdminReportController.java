@@ -53,13 +53,18 @@ public class AdminReportController {
     @GetMapping("/reportid{memberId}")
     public String reportid(Model model,@PathVariable("memberId") String memberId,
                            @RequestParam int reportNo) {
+        System.out.println(memberId);
         int result=rService.reportid(memberId);
+        System.out.println("여기1");
         result=rService.updatereportid(reportNo);
+        System.out.println("여기2");
         Report report=rService.onereport(reportNo);
+        System.out.println("여기3");
         if(report.getReportCategory().equals("채팅")){
             //삭제
             result=rService.deletechat(report.getReportWriteno());
         }else if(report.getReportCategory().equals("리뷰")){
+            System.out.println("리뷰여기");
             result=rService.deletereview(report.getReportWriteno());
         }else{
             result=rService.deletechating(report.getReportWriteno());

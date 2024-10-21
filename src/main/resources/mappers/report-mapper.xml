@@ -18,7 +18,7 @@
     </update>
     <update id="outreportid">
         UPDATE MEMBER_TBL
-        SET REPORT_COUNT = 0,BAN_PERIOD=#{reportDate}
+        SET BAN_PERIOD=#{reportDate}
         WHERE MEMBER_ID = #{reportId}
     </update>
     <update id="updatereportid">
@@ -47,6 +47,9 @@
     </select>
     <select id="reportlist2">
         SELECT * FROM REPORT_TBL A JOIN MEMBER_TBL B ON A.REPORT_ID=B.MEMBER_ID WHERE REPORT_STATUS='완료'
+    </select>
+    <select id="overlapreport" resultType="_int">
+        SELECT COUNT(*) FROM REPORT_TBL WHERE REPORT_WRITENO=#{writeno} AND REPORT_CATEGORY=#{category}
     </select>
 
 

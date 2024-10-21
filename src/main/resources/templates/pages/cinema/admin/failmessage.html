@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <script th:inline="javascript">
+    /*<![CDATA[*/
+    var message = /*[[${message}]]*/ null;
+    if (message) {
+      alert(message);
+      opener.parent.location.reload();
+      window.close();
+    }
+    /*]]>*/
+  </script>
+</head>
+<body>
+<!-- 페이지 내용 -->
+</body>
+</html>
