@@ -241,9 +241,11 @@ public class StoreController {
         }
     }
 
-    @RequestMapping(value="/purchase/{purchaseNo}", method={RequestMethod.GET, RequestMethod.POST})
-    public String showPurchase(@PathVariable int purchaseNo
-            , Model model, HttpSession session) {
+    @RequestMapping(value="/purchase/{purchaseNo}/{productNo}/{quantity}", method={RequestMethod.GET, RequestMethod.POST})
+    public String showPurchase(@PathVariable int productNo
+            , @PathVariable int quantity
+            , @PathVariable int purchaseNo
+            ,Model model, HttpSession session) {
         // 로그인한 회원 정보 가져오기
         String memberId = (String) session.getAttribute("memberId");
         List<String> categories = Arrays.asList("기프트카드", "영화관람권", "콤보", "팝콘", "스낵", "음료");
@@ -254,6 +256,7 @@ public class StoreController {
         // 구매 정보 조회
 
         Purchase purchase = sService.getPurchaseDetails(purchaseNo);
+        Product product = sService.getProductByNo(productNo);
         if (purchase == null || !purchase.getMemberId().equals(memberId)) {
             return "redirect:/error/accessDenied";
         }
@@ -262,6 +265,8 @@ public class StoreController {
         model.addAttribute("categories", categories);
         model.addAttribute("member", member);  // 회원 정보 모델에 추가
         model.addAttribute("purchase", purchase);
+        model.addAttribute("product", product);
+        model.addAttribute("quantity", quantity);
         return "store/purchase";
     }
 
@@ -284,7 +289,9 @@ public class StoreController {
                 return ResponseEntity.ok(Map.of("success", true, "redirectUrl", "/store/gift/prepare"));
             } else {
                 Purchase purchase = sService.initializePurchase(memberId, items, purchaseAll);
-                return ResponseEntity.ok(Map.of("success", true, "redirectUrl", "/store/purchase/" + purchase.getPurchaseNo()));
+                return ResponseEntity.ok(Map.of("success", true, "redirectUrl"
+                        , "/store/purchase/" + purchase.getPurchaseNo()
+                        + "/" + items.get(0).get("productNo") + "/" + items.get(0).get("quantity")));
             }
         } catch (Exception e) {
             e.printStackTrace();
