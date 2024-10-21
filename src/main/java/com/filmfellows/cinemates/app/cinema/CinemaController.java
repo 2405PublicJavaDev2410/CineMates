@@ -82,7 +82,13 @@ public class CinemaController {
         model.addAttribute("day5",day5);
         model.addAttribute("day6",day6);
         model.addAttribute("memberId",memberId);
-        return"pages/cinema/main";
+        System.out.println(memberId);
+        if(memberId.equals("admin1")) {
+            return"pages/cinema/admin/adminmain";
+        }else{
+            return"pages/cinema/main";
+        }
+
     }
     @GetMapping("/parking/{cinemaNo}&{cinemaAddress}")
     public String showParking(@PathVariable("cinemaNo") Integer cinemaNo,

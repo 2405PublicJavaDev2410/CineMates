@@ -1,70 +1,53 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/defaultLayout}"
+      layout:fragment="Content">
 <head>
     <meta charset="UTF-8">
-<!--    <meta name="_csrf" th:content="${_csrf.token}"/>
-    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>-->
-    <title>CGV 스토어</title>
+    <title>CINEMATES-StoreMain</title>
     <link rel="stylesheet" th:href="@{/css/store/storeMain.css}">
 </head>
 <body>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      th:fragment="HeaderFragment">
-<header class="header">
-    <div class="header-top">
-        <div class="header-logo">
-            <img src="/img/logo.png" alt="cinemates">
-        </div>
-        <div class="header-login-area" th:if="${session.memberId != null && session.memberId != ''}">
-            <img id="header-my" src="" alt="profile">
-        </div>
-        <div class="header-login-area" th:if="${session.memberId == null || session.memberId == ''}">
-            <img id="header-login" src="/img/login.png" alt="login" onclick="moveToLogin();">
-        </div>
-    </div>
-    <div class="header-bottom">
-        <nav class="nav-menu">
-            <a href="/movie-list">영화</a>
-            <a href="#">영화관</a>
-            <a href="#">예매</a>
-            <a href="#">커뮤니티</a>
-            <a href="#">스토어</a>
-        </nav>
-    </div>
-</header>
+
 <script>
-    function moveToLogin() {location.href="/login"}
+    function moveToLogin() {
+        location.href = "/login"
+    }
 </script>
 <main>
     <div role="main">
-        <div class="content">
-            <nav>
+        <div class="store-content">
+            <store-nav>
                 <a th:each="category : ${categories}" th:href="@{'/store/' + ${category}}" th:text="${category}"></a>
-                <a class="cart-link" th:href="@{/store/cart}">장바구니</a>
-            </nav>
+                <a class="store-cart-link" th:href="@{/store/cart}">장바구니</a>
+            </store-nav>
         </div>
 
-        <div th:each="entry : ${productsByCategory}" th:class="${'section category-section ' + entry.key.toLowerCase() + '-section'}">
-            <h2 th:text="${entry.key}"></h2>
-            <div class="product-grid">
-                <div class="product-item" th:each="product : ${entry.value}">
-                    <div class="product-info">
+        <div th:each="entry : ${productsByCategory}"
+             th:class="${'section category-section ' + entry.key.toLowerCase() + '-section'}">
+            <br>
+            <div class="store-category-header">
+                <h2 class="store-category-title" th:text="${entry.key}"></h2>
+                <a class="store-btn-more" th:href="@{'/store/' + ${entry.key}}">더보기</a>
+            </div>
+            <div class="store-product-grid">
+                <div class="store-product-item" th:each="product : ${entry.value}">
+                    <div class="store-product-info">
                         <img th:src="${product.imageUrl}" th:alt="${product.productName}">
                         <h3 th:text="${product.productName}"></h3>
                         <p th:text="${product.description}">짧은 설명</p>
-                        <p class="price" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + '원'"></p>
-                        <a class="btn-detail" th:href="@{'/store/product/' + ${product.productNo}}">상세보기</a>
+                        <p class="store-price"
+                           th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + '원'"></p>
+                        <a class="store-btn-detail" th:href="@{'/store/product/' + ${product.productNo}}">상세보기</a>
                     </div>
                 </div>
             </div>
-            <a class="btn-more" th:href="@{'/store/' + ${entry.key}}">더보기</a>
         </div>
     </div>
 </main>
-<footer style="border: solid 1px blue">
-    <h1>Footer 영역입니다.</h1>
-</footer>
-    <script th:src="@{/js/store/storeMain.js}"></script>
+
+<script th:src="@{/js/store/storeMain.js}"></script>
 </body>
 </html>

@@ -17,9 +17,9 @@
         )
     </insert>
 
-    <insert id="insertGiftItem" parameterType="com.filmfellows.cinemates.domain.store.model.vo.Gift">
-        INSERT INTO GIFT_ITEM_TBL (GIFT_NO, PRODUCT_NO, QUANTITY, PRICE, DISCOUNT_AMOUNT)
-        VALUES (#{giftNo}, #{productNo}, #{quantity}, #{price}, #{discountAmount})
+    <insert id="insertGiftItem" parameterType="GiftItem">
+        INSERT INTO GIFT_ITEM_TBL (GIFT_ITEM_NO, GIFT_NO, PRODUCT_NO, QUANTITY, PRICE, DISCOUNT_AMOUNT)
+        VALUES (SEQ_GIFT_ITEM_NO.NEXTVAL, #{giftNo}, #{productNo}, #{quantity}, #{price}, #{discountAmount})
     </insert>
 
     <update id="updateGift" parameterType="Gift">
