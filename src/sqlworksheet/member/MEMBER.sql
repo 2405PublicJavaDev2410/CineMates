@@ -100,19 +100,14 @@ VALUES('admin', 'Admin12!@', '운영자', SYSTIMESTAMP, '01012345678', 'admin@ad
 
 -- 회원 더미데이터 생성
 BEGIN
-FOR i IN 1..100 LOOP
+FOR i IN 1..500 LOOP
         INSERT INTO MEMBER_TBL (
             MEMBER_ID,
             MEMBER_PW,
             NAME,
             BIRTH_DATE,
             PHONE,
-            EMAIL,
-            PROFILE_IMG,
-            STATUS,
-            DELETE_YN,
-            ROLE,
-            REG_DATE
+            EMAIL
         )
         VALUES (
             'MEM' || LPAD(i, 3, '0'),
@@ -120,12 +115,7 @@ FOR i IN 1..100 LOOP
             '멤버'||i,
             TO_DATE('1990-01-01', 'YYYY-MM-DD') + DBMS_RANDOM.VALUE(0, 10000),
             '010' || LPAD(ROUND(DBMS_RANDOM.VALUE(1000, 9999)), 4, '0') || LPAD(ROUND(DBMS_RANDOM.VALUE(1000, 9999)), 4, '0'),
-            'mem' || LPAD(i, 3, '0') || '@cinemates.com',
-            NULL,
-            'NORMAL',
-            'N',
-            'MEMBER',
-            SYSTIMESTAMP
+            'mem' || LPAD(i, 3, '0') || '@cinemates.com'
         );
 END LOOP;
 COMMIT;

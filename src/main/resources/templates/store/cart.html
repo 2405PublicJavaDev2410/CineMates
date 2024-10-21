@@ -1,49 +1,67 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/defaultLayout}"
+      layout:fragment="Content">
 <head>
-    <meta name="_csrf" charset="UTF-8">
-    <title>장바구니</title>
-    <style>
-        table {width : 100%; border-collapse: collapse; }
-        th, td {border : 1px solid #ddd; padding : 8px; text-align: left; }
-        .quantity-btn { cursor : pointer; }
-    </style>
+    <meta charset="UTF-8">
+    <title>storeCart</title>
+    <link rel="stylesheet" th:href="@{/css/store/cart.css}">
 </head>
 <body>
-<main role="main">
-    <h1>장바구니</h1>
+<main class="store-cart">
+    <div class="store-content">
+        <store-nav>
+            <a th:each="category : ${categories}" th:href="@{'/store/' + ${category}}" th:text="${category}"></a>
+            <a class="store-cart-link" th:href="@{/store/cart}">장바구니</a>
+        </store-nav>
+    </div>
 
-    <table>
-        <thead>
-        <tr>
-            <th><input type="checkbox" id="selectAll"> 전체선택</th>
-            <th>상품정보</th>
-            <th>수량</th>
-            <th>가격</th>
-            <th>할인</th>
-            <th>구매금액</th>
-            <th>선택</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="item : ${cartItems}">
-            <td><input type="checkbox" name="selectedItems" th:value="${item.productNo}"></td>
-            <td>
-                <img th:src="${item.product.imageUrl}" alt="상품 이미지" class="product-image" style="width: 100px; height: auto;">
-                <span th:text="${item.product.productName}"></span>
-            </td>
-            <td>
-                <button class="quantity-btn decrease" th:data-cart-no="${item.cartNo}" th:data-product-no="${item.productNo}">-</button>
-                <span th:text="${item.quantity}" th:id="'quantity-' + ${item.cartNo} + ${item.productNo}"></span>
-                <button class="quantity-btn increase" th:data-cart-no="${item.cartNo}" th:data-product-no="${item.productNo}">+</button>
-            </td>
-            <td th:text="${#numbers.formatDecimal(item.product.price, 0, 'COMMA', 0, 'POINT')} + '원'" th:data-price="${item.product.price}"></td>
-            <td th:text="${#numbers.formatDecimal(item.product.discountAmount, 0, 'COMMA', 0, 'POINT')} + '원'" th:data-discount="${item.product.discountAmount}"></td>
-            <td th:text="${#numbers.formatDecimal(item.product.price * item.quantity, 0, 'COMMA', 0, 'POINT')} + '원'" th:id="'total-' + ${item.cartNo} + ${item.productNo}"></td>
-            <td><button th:onclick="'removeItem(' + ${item.cartNo} + ', '+ ${item.productNo}+')'" class="btn btn-danger btn-sm">삭제</button></td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="cart-steps">
+        <span class="step step-active">STEP 01 장바구니</span>
+        <span class="step-divider">&gt;</span>
+        <span class="step">STEP 02 선물정보 입력</span>
+        <span class="step-divider">&gt;</span>
+        <span class="step">STEP 03 결제하기</span>
+        <span class="step-divider">&gt;</span>
+        <span class="step">STEP 04 결제완료</span>
+    </div>
+
+    <!-- 상품 리스트 헤더 -->
+    <div class="cart-item-header">
+        <div class="cart-header-checkbox">
+        <input type="checkbox" id="selectAll"> <!-- 전체 선택 체크박스 -->
+        </div>
+        <div class="cart-header-info">상품 정보</div>
+        <div class="cart-header-quantity">수량</div>
+        <div class="cart-header-total">구매 금액</div>
+        <div class="cart-header-actions">삭제</div>
+    </div>
+
+    <div class="cart-items">
+        <div class="cart-item" th:each="item : ${cartItems}" th:data-cart-no="${item.cartNo}" th:data-product-no="${item.productNo}">
+            <div class="cart-item-checkbox">
+            <input type="checkbox" name="selectedItems" th:value="${item.cartNo}">
+            </div>
+            <div class="cart-product-info">
+                <img th:src="${item.product.imageUrl}" alt="상품 이미지" class="cart-product-image">
+                <div>
+                    <span th:text="${item.product.productName}"></span>
+                    <span th:hidden="'판매가격: ' + ${item.product.price} + '원'" th:data-price="${item.product.price}"></span>
+                </div>
+            </div>
+            <div class="cart-product-quantity">
+                <button class="cart-quantity-btn decrease" th:data-cart-no="${item.cartNo}" th:data-product-no="${item.productNo}">-</button>
+                <span th:text="${item.quantity}" th:id="'quantity' + ${item.cartNo} + ${item.productNo}"></span>
+                <button class="cart-quantity-btn increase" th:data-cart-no="${item.cartNo}" th:data-product-no="${item.productNo}">+</button>
+            </div>
+            <div class="cart-product-total" th:text="${item.product.price * item.quantity} + '원'"></div>
+            <div class="cart-product-actions">
+                <button class="cart-btn-delete" th:data-cart-no="${item.cartNo}" th:data-product-no="${item.productNo}">삭제</button>
+            </div>
+        </div>
+    </div>
 
     <div class="cart-summary">
         <p>총 상품금액: <span id="totalAmount">0원</span></p>
@@ -52,9 +70,6 @@
     </div>
 
     <div class="cart-actions">
-<!--        <button type="button" th:onclick="'removeItems(' + ${cartItems[0].cartNo} +')'">전체상품 삭제</button>-->
-<!--        <button onclick="deleteSelected()">선택상품 삭제</button>-->
-<!--        <button onclick="clearCart()">장바구니 비우기</button>-->
         <button onclick="orderSelected()">선택상품 구매</button>
         <button onclick="orderAll()">전체상품 구매</button>
     </div>

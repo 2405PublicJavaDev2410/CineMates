@@ -28,5 +28,4 @@ public interface MyPageService {
     int getTotalQnaCount();
     int getTotalQnaCountByIdAndKeyword(String memberId, String searchCondition, String searchKeyword);
     int getTotalQnaCountByKeyword(String searchKeyword);
-
 }

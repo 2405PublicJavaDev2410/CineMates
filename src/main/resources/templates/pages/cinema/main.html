@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{common/layout/defaultLayout}"
@@ -28,11 +29,11 @@
 
 		<div  id="divmain" >
 		<br>
-			<div th:each="cinema:${cList}"><a style="background: none; color: #E12C25; padding: 0; margin: 10px; border: none; text-decoration: underline; cursor: pointer;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo})}">[[${cinema.cinemaName}]]</a></div>
+			<div th:each="cinema:${cList}"><a style="background: rgba(0, 0, 0, 0.3); color: white; padding: 0; margin: 10px; border: none; font-size: 20px; cursor: pointer;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo})}">[[${cinema.cinemaName}]]</a></div>
 		</div>
 		<h1>극   장</h1><br><br>
 		<h1>[[${cinema.cinemaName}]]</h1><br>
-			
+
 		<div id="searchmap"></div><div><button th:onclick="parking([[${cinema.cinemaNo}]],[[${cinema.cinemaAddress}]])">위치/길찾기</button></div><br>
 		<div id="cinemamain">
 		<br><br><br><br><br><br><br><br><br><br><br>

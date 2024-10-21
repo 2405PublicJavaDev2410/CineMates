@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+
+<html lang="en"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{common/layout/adminLayout}"
+	  layout:fragment="Content">
+<link rel="stylesheet" href="/css/cinema/cinemamain.css">
+	<head>
+	<meta charset="UTF-8">
+	<title>극장</title>
+
+	</head>
+	<body>
+		<hr>
+		<ul>
+			<li><a th:href="@{/cinema/location?locationcode=1(cinemaNo=${cinema.cinemaNo})}">서울</a></li>
+			<li><a th:href="@{/cinema/location?locationcode=2(cinemaNo=${cinema.cinemaNo})}">인천</a></li>
+			<li><a th:href="@{/cinema/location?locationcode=3(cinemaNo=${cinema.cinemaNo})}">경기</a></li>
+			<li><a th:href="@{/cinema/location?locationcode=4(cinemaNo=${cinema.cinemaNo})}">대전/충천</a></li>
+			<li><a th:href="@{/cinema/location?locationcode=5(cinemaNo=${cinema.cinemaNo})}">부산/울산</a></li>
+			<li><a th:href="@{/cinema/location?locationcode=6(cinemaNo=${cinema.cinemaNo})}">대구/경상</a></li>
+			<li><a th:href="@{/cinema/location?locationcode=7(cinemaNo=${cinema.cinemaNo})}">강원</a></li>
+			<li><a th:href="@{/cinema/location?locationcode=8(cinemaNo=${cinema.cinemaNo})}">광주/전라/제주</a></li>
+		</ul>
+		<hr>
+		<button th:if="${memberId == 'admin1'}" onclick="admin()">극장관리</button>
+		<button th:if="${memberId == 'admin1'}" th:onclick="adminshowtime([[${cinema.cinemaNo}]])">상영관리</button>
+		<br>
+
+		<div  id="divmain" >
+		<br>
+			<div th:each="cinema:${cList}"><a style="background: none; color: #EA4E4A; padding: 0; margin: 10px; border: none; font-size: 20px; cursor: pointer;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo})}">[[${cinema.cinemaName}]]</a></div>
+		</div>
+
+		<br>
+		<div id="footer"></div>
+		<script type="text/javascript">
+			// 스크롤 위치 저장
+			function saveScrollPosition() {
+				localStorage.setItem('scrollPosition', window.scrollY);  // 현재 스크롤 위치를 저장
+			}
+
+			// 페이지가 로드되었을 때 스크롤 위치 복원
+			window.onload = function() {
+				const scrollPosition = localStorage.getItem('scrollPosition');
+				if (scrollPosition) {
+					window.scrollTo(0, scrollPosition);  // 저장된 스크롤 위치로 이동
+					localStorage.removeItem('scrollPosition');  // 스크롤 복원 후 저장된 값을 제거
+				}
+			};
+			function parking(a,b){
+	    		var popupW = 600;
+	    		var popupH = 750;
+	    		var left = Math.ceil((window.screen.width - popupW)/2);
+	    		var top = Math.ceil((window.screen.height - popupH)/2);
+	    		myWindow=window.open("/cinema/parking/"+a+"&"+b,"pop","width=600,height=750,left="+left+",top="+top+"");
+
+			}
+			function admin(){
+				location.href="/admin/cinema"
+			}
+			function adminshowtime(a){
+				location.href="/admin/admineshowtime"+a;
+			}
+		</script>
+	</body>
+</html>

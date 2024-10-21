@@ -1,3 +1,8 @@
+/* common */
+*{
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+}
+
 .container {
     width: 100%;
     background-color: #444;
@@ -11,21 +16,44 @@
 }
 body {
     font-family: 'Noto Sans KR', sans-serif;
-    background-color: #f3f3f3;
     margin: 0;
     padding: 0;
     color: #333;
 }
-
 .payment-container {
     width:1000px;
     margin: 0 auto;
-    height:500px;
+    height:627px;
     background-color: #fff;
-    border: 1px solid #ddd;
+
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
+/* payment */
 
+.payment-methods {
+    padding: 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.payment-hidden{
+    /*padding:20px;*/
+    width:100%;
+}
+.payment_pay , .payment_1{
+    margin-top:10px;
+}
+
+.payment ,.payment_pay , .payment_1{
+    border-bottom: 1px solid #ddd;
+    padding:20px;
+}
+#finalPrice , #salePrice , #productPrice{
+    font-size: 16px;
+}
+#salePrice{
+    height:100%;
+}
+/*Reserve */
 .reserveInfo {
     display: flex;
     padding: 20px;
@@ -54,19 +82,33 @@ body {
     flex: 2;
 }
 
-.payment-methods {
-    padding: 20px;
-    border-bottom: 1px solid #ddd;
-}
-
-.payment-hidden{
-    width:100%;
-    border-bottom: 1px solid #ddd;
-}
 .group-top h3 {
     margin-bottom: 10px;
     color: #333;
     font-size: 18px;
+}
+/* product */
+.productPrice, .payPrice ,.salePrice{
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+/* btn */
+#ticket-btn , #credit-btn{
+    border-radius: 3px;
+
+}
+
+#pay-btn {
+    width: 100%;
+    padding: 0;
+    height:50px;
+    background-color: #ed1c24;
+    color: white;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    margin-top:58px;
 }
 
 .payment-method-btn {
@@ -84,36 +126,12 @@ body {
     border-color: #ed1c24;
 }
 
-.payment ,.payment_pay , .payment_1{
-    padding: 10px 0 10px 10px;
-    border-bottom: 1px solid #ddd;
-}
-
-
-.productPrice, .payPrice {
-    margin-bottom: 10px;
-    font-size: 16px;
-}
-#ticket-btn , #credit-btn{
-    border-radius: 3px;
-
-}
-#pay-button {
-
-    width: 100%;
-    padding: 15px;
-    background-color: #ed1c24;
-    color: white;
-    border: none;
-    font-size: 18px;
-    cursor: pointer;
-}
-
 #pay-button:disabled {
     background-color: #ccc;
     cursor: not-allowed;
 }
 
+/* else */
 #ticketCount {
     width: 50px;
     padding: 5px;
@@ -122,5 +140,5 @@ body {
 .hidden{
     width:100%;
     height: 100%;
-    padding:50px 0 50px 0;
+    padding:30px 0 30px 0;
 }

@@ -37,7 +37,7 @@ public class CinemaController {
                                    @RequestParam(value="cinemaNo", required=false,defaultValue="0") int cinemaNo,
                                    @RequestParam(value="selectDate", required=false) LocalDate selectDate,
                                    Model model,
-                                   HttpSession session) {
+                                   HttpSession session)throws NullPointerException {
         String memberId=(String)session.getAttribute("memberId");
         List<Cinema> cList= cService.locationsearch(locationcode);
         LocalDate currentdate= LocalDate.now();
@@ -82,7 +82,16 @@ public class CinemaController {
         model.addAttribute("day5",day5);
         model.addAttribute("day6",day6);
         model.addAttribute("memberId",memberId);
-        return"pages/cinema/main";
+        System.out.println(memberId);
+        if (memberId==null) {
+            memberId = "미지정";
+        }
+        if(memberId.equals("admin1")) {
+            return"pages/cinema/admin/adminmain";
+        }else{
+            return "pages/cinema/main";
+        }
+
     }
     @GetMapping("/parking/{cinemaNo}&{cinemaAddress}")
     public String showParking(@PathVariable("cinemaNo") Integer cinemaNo,

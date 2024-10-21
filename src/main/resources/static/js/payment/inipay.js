@@ -1,3 +1,4 @@
+//  input hidden 타입 값들 JS 로 표시
 var reservationData = {
     reservationNo: document.getElementById('reservationNo').value,
     reservationVisitor: document.getElementById('reservationVisitor').value,
@@ -35,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // 초기 결제 금액 설정
     updateFinalPrice(0);
 });
-
+// 결제 방식 선택 로직
 function PayMethod(method) {
     selectedPaymentMethod = method;
 
@@ -52,36 +53,42 @@ function PayMethod(method) {
     const payment1 = document.querySelector('.payment_1');
     const payment2 = document.querySelector('.payment_pay');
     const payment3 = document.querySelector('.payment-hidden');
+    const paymentbtn = document.querySelector('#pay-btn');
     if (method === 'ticket') {
         payment.style.display = 'none';
         payment1.style.display = 'none';
         payment2.style.display = 'none';
         payment3.style.width='100%';
         payment3.style.height='148px';
+        paymentbtn.style.position='relative';
+        paymentbtn.style.top='97px';
+
     }
     if(method ==='credit'){
         payment.style.display ='block';
         payment1.style.display ='block';
         payment2.style.display ='block';
+        payment3.style.display ='block';
 
     }
     // 결제하기 버튼 상태 업데이트
     updatePayButtonState();
 }
-
+//  결제 금액 최신화
 function updateFinalPrice() {
     const finalPrice = Math.max(0, totalPrice);
     document.getElementById('finalPrice').textContent = `결제 금액: ${finalPrice.toLocaleString()}원`;
 }
-
+// 결제 방식에 따른 결제 버튼 활성화
 function updatePayButtonState() {
-    const payButton = document.getElementById('pay-button');
+    const payButton = document.getElementById('pay-btn');
 
     if (selectedPaymentMethod === 'ticket') {
         payButton.disabled = (Ticket <= 0);
     } else payButton.disabled = selectedPaymentMethod !== 'credit';
 }
 
+// 결제 방식에 따른 결제 방식 로직 선택
 function processPayment() {
     if (selectedPaymentMethod === 'ticket') {
         goPay();
@@ -91,7 +98,7 @@ function processPayment() {
         alert('결제 방식을 선택해주세요.');
     }
 }
-
+// 관람권 결제 로직
 function goPay() {
     if (confirm("결제 하시겠습니까?")) {
         const ticketCount = reservedSeatCount;
@@ -186,7 +193,7 @@ function goPay() {
         console.log("결제가 취소되었습니다.");
     }
 }
-
+// 신용카드 결제 로직
 var IMP = window.IMP;
 
 IMP.init('imp68486865'); // 아임포트 가맹점 식별코드 --> manual 에 있는 url 에서 식별코드.apikeys 의 고객사 식별코드 확인
@@ -297,14 +304,7 @@ function cancelPay() {
                     $.ajax({
                         url: "/payments/cancel/" + response,
                         type: "GET",
-                        contentType: "application/json",
-                        // data:
-                        // JSON.stringify({
-                        // merchant_uid: response.merchant_uid,
-                        // cancel_request_amount: response.amount,
-                        // reason: "고객 요청",
-                        // }),
-                        // dataType: "json"
+                        contentType: "application/json"
                     })
                         .done(function (data) {
                             alert("취소가 완료되었습니다!");

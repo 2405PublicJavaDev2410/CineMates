@@ -10,9 +10,6 @@ import java.util.Map;
 @Mapper
 public interface PaymentMapper {
 
-
-    List<ReservationDTO> searchPayment(ReservationDTO rDto);
-
     void insertPaymentInfo(Map<String, Object> buyerInfo);
 
     String selectImpUid(String reservationNo);
