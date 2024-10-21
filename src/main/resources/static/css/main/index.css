@@ -124,8 +124,10 @@ main {
 }
 
 .movie-poster {
-    width: 100%;
-    height: auto;
+    /*width: 100%;*/
+    /*height: auto;*/
+    width: 220px;
+    height: 314.28px;
     display: block;
     border-radius: 8px;
 }
@@ -168,6 +170,10 @@ main {
     font-weight: bold;
     font-family: 'GmarketSansMedium', serif;
     /*font-family: 'NEXON Lv1 Gothic OTF', serif;*/
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .movie-info {
     font-size: 0.9em;
@@ -179,6 +185,34 @@ main {
 /*    filter: brightness(50%);*/
 /*}*/
 
+.movie-info-review {
+    display: flex;
+    justify-content: center
+}
+
+.review-star {
+    font-size: 0.9em;
+    color: #666;
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+}
+.and {
+    font-size: 0.9em;
+    color: #9f9f9f;
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.star{
+    color: #ffd700;
+    font-size: 0.9em;
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+    margin-right: 3px;
+}
+
+.starAndReview{
+    display: flex;
+}
 
 
 

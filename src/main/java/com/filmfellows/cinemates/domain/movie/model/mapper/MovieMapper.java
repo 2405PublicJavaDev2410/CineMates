@@ -33,18 +33,10 @@ public interface MovieMapper {
 
     List<MovieReservationRateDTO> getMovieReservationRates();
 
-    List<MovieListDTO> selectComingSoonMovies();
-
-    List<MovieListDTO> selectNowShowingMovies();
-
     List<MovieListDTO> selectMoviesByStatusAndSort(@Param("status") String status,
                                             @Param("offset") int offset,
                                             @Param("size") int size,
                                             @Param("sortBy") String sortBy);
-
-    List<MovieDTO.StillcutDTO> selectStillcutsPaginated(@Param("movieNo") Long movieNo,
-                                                        @Param("offset") int offset,
-                                                        @Param("size") int size);
 
     List<ReviewDTO> selectReviewByMovieNo(@Param("movieNo") Long movieNo,
                                           @Param("offset") int offset,

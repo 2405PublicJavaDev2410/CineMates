@@ -19,4 +19,10 @@ public class boxOfficeDTO {
 
     private String reservationRate;
 
+//    private Long ReviewNo;
+//    private Integer score;
+
+    private String reviewCount;
+    private String averageScore;
+
 }

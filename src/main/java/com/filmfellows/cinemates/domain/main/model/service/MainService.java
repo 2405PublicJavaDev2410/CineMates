@@ -23,4 +23,5 @@ public interface MainService {
     List<BannerDTO> getMainBannerList();
 
     List<ChatRoomDTO> getChatRoomList();
+
 }
