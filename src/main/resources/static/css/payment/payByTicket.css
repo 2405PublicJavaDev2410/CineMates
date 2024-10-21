@@ -20,7 +20,7 @@ body {
 }
 
 .payment-container {
-    width: 1200px;
+    width: 1000px;
     margin: 0 auto;
     height: 500px;
     background-color: #fff;
@@ -65,9 +65,9 @@ body {
 .payment-method-btn {
     padding: 10px 20px;
     margin-right: 10px;
-    background-color: #fff;
+    background-color: #ed1c24;
     border: 1px solid #ccc;
-    color: #333;
+    color: #fff;
     cursor: pointer;
 }
 
@@ -99,4 +99,9 @@ body {
     width: 50px;
     padding: 5px;
     margin-left: 10px;
+}
+.hidden{
+    width:100%;
+    height: 100%;
+    padding:50px 0 50px 0;
 }

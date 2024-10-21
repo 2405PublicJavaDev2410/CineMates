@@ -1,8 +1,14 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{common/layout/defaultLayout}"
-      layout:fragment="Content">
+      layout:decorate="~{common/layout/adminLayout}"
+      layout:fragment="Content"
+      th:if="${memberId == admin1}">
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/adminLayout}"
+      layout:fragment="Content"
+      th:unless="${memberId == admin1}">
 <link rel="stylesheet" href="/css/productadmin/productadmin.css">
 
 <head>

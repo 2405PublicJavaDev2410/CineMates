@@ -51,12 +51,20 @@ function PayMethod(method) {
     const payment = document.querySelector('.payment');
     const payment1 = document.querySelector('.payment_1');
     const payment2 = document.querySelector('.payment_pay');
+    const payment3 = document.querySelector('.payment-hidden');
     if (method === 'ticket') {
         payment.style.display = 'none';
         payment1.style.display = 'none';
         payment2.style.display = 'none';
+        payment3.style.width='100%';
+        payment3.style.height='148px';
     }
+    if(method ==='credit'){
+        payment.style.display ='block';
+        payment1.style.display ='block';
+        payment2.style.display ='block';
 
+    }
     // 결제하기 버튼 상태 업데이트
     updatePayButtonState();
 }
