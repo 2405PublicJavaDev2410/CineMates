@@ -18,11 +18,13 @@ function goPay() {
         showtimeNo: document.getElementById('showtimeNo').value,
         adultReserved: document.getElementById('adultReserved').value,
         childReserved: document.getElementById('childReserved').value,
-        seniorReserved: document.getElementById('seniorReserved').value
+        seniorReserved: document.getElementById('seniorReserved').value,
+        selectSeat : document.getElementById('selectSeat').value
+
     };
     if (confirm("결제 하시겠습니까?")) {
         $.ajax({
-            url: "/payment/ticket",
+            url: "/payment/ticketFromChat",
             data: {
                 memberIds: memberIds
             },
@@ -30,8 +32,8 @@ function goPay() {
             dataType: "json",
             success: function (response) {
                 console.log("Updated members:", response);
+                location.href='/';
                 if (response.length > 0) {
-                    alert("결제 완료 되었습니다. 업데이트된 멤버: " + response.join(', '));
 
                     // 여기서 기존의 결제 로직을 실행합니다.
                     var rsp = {
@@ -66,7 +68,7 @@ function goPay() {
                     var reserveInfo = {
                         "reservationNo": reservationData.reservationNo,
                         "reservationVisitor": reservationData.reservationVisitor,
-                        "reservationSeat": reservationData.reservationSeat,
+                        "reservationSeat": reservationData.selectSeat,
                         "reservationDate": reservationData.reservationDate,
                         "memberId": reservationData.memberId,
                         "cinemaName": reservationData.cinemaName,

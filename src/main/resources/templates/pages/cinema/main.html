@@ -42,25 +42,32 @@
 		</div>
 		<h1>상영정보</h1><br>
 		<h2>상영일자</h2><br>
-		<a  style="background-color: gray; display:inline-block;border-radius: 5px;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${currentdate})}">
+		<a  style="background-color: gray; display:inline-block;border-radius: 5px;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${currentdate})}"
+			onclick="saveScrollPosition()">
 			<div style="height: 50px;margin: 10px;"><span style="font-size: 10px;">[[${#temporals.dayOfWeekName(currentdate)}]]</span><br><strong style="font-size: 30px;">[[${#temporals.day(currentdate)}]]</strong></div>
 		</a>
-		<a  style="background-color: gray; display:inline-block;border-radius: 5px;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day1})}">
+		<a  style="background-color: gray; display:inline-block;border-radius: 5px;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day1})}"
+			onclick="saveScrollPosition()">
 			<div style="height: 50px;margin: 10px;"><span style="font-size: 10px;">[[${#temporals.dayOfWeekName(day1)}]]</span><br><strong style="font-size: 30px;">[[${#temporals.day(day1)}]]</strong></div>
 		</a>
-		<a  style="background-color: gray; display:inline-block;border-radius: 5px;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day2})}">
+		<a  style="background-color: gray; display:inline-block;border-radius: 5px;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day2})}"
+			onclick="saveScrollPosition()">
 			<div style="height: 50px;margin: 10px;"><span style="font-size: 10px;">[[${#temporals.dayOfWeekName(day2)}]]</span><br><strong style="font-size: 30px;">[[${#temporals.day(day2)}]]</strong></div>
 		</a>
-		<a  style="background-color: gray; display:inline-block;border-radius: 5px;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day3})}">
+		<a  style="background-color: gray; display:inline-block;border-radius: 5px;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day3})}"
+			onclick="saveScrollPosition()">
 			<div style="height: 50px;margin: 10px;"><span style="font-size: 10px;">[[${#temporals.dayOfWeekName(day3)}]]</span><br><strong style="font-size: 30px;">[[${#temporals.day(day3)}]]</strong></div>
 		</a>
-		<a  style="background-color: gray; display:inline-block;border-radius: 5px;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day4})}">
+		<a  style="background-color: gray; display:inline-block;border-radius: 5px;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day4})}"
+			onclick="saveScrollPosition()">
 			<div style="height: 50px;margin: 10px;"><span style="font-size: 10px;">[[${#temporals.dayOfWeekName(day4)}]]</span><br><strong style="font-size: 30px;">[[${#temporals.day(day4)}]]</strong></div>
 		</a>
-		<a  style="background-color: gray; display:inline-block;border-radius: 5px;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day5})}">
+		<a  style="background-color: gray; display:inline-block;border-radius: 5px;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day5})}"
+			onclick="saveScrollPosition()">
 			<div style="height: 50px;margin: 10px;"><span style="font-size: 10px;">[[${#temporals.dayOfWeekName(day5)}]]</span><br><strong style="font-size: 30px;">[[${#temporals.day(day5)}]]</strong></div>
 		</a>
-		<a  style="background-color: gray; display:inline-block;border-radius: 5px;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day6})}">
+		<a  style="background-color: gray; display:inline-block;border-radius: 5px;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo},selectDate=${day6})}"
+			onclick="saveScrollPosition()">
 		<div style="height: 50px;margin: 10px;"><span style="font-size: 10px;">[[${#temporals.dayOfWeekName(day6)}]]</span><br><strong style="font-size: 30px;">[[${#temporals.day(day6)}]]</strong></div>
 		</a>
 
@@ -131,7 +138,19 @@
 		<br>
 		<div id="footer"></div>
 		<script type="text/javascript">
+			// 스크롤 위치 저장
+			function saveScrollPosition() {
+				localStorage.setItem('scrollPosition', window.scrollY);  // 현재 스크롤 위치를 저장
+			}
 
+			// 페이지가 로드되었을 때 스크롤 위치 복원
+			window.onload = function() {
+				const scrollPosition = localStorage.getItem('scrollPosition');
+				if (scrollPosition) {
+					window.scrollTo(0, scrollPosition);  // 저장된 스크롤 위치로 이동
+					localStorage.removeItem('scrollPosition');  // 스크롤 복원 후 저장된 값을 제거
+				}
+			};
 			function parking(a,b){
 	    		var popupW = 600;
 	    		var popupH = 750;

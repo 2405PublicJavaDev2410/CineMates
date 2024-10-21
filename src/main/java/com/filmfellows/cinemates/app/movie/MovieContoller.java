@@ -1,9 +1,6 @@
 package com.filmfellows.cinemates.app.movie;
 
-import com.filmfellows.cinemates.app.movie.dto.MovieDTO;
-import com.filmfellows.cinemates.app.movie.dto.MovieListDTO;
-import com.filmfellows.cinemates.app.movie.dto.MovieReservationRateDTO;
-import com.filmfellows.cinemates.app.movie.dto.ReviewDTO;
+import com.filmfellows.cinemates.app.movie.dto.*;
 import com.filmfellows.cinemates.domain.movie.model.service.MovieService;
 import com.filmfellows.cinemates.domain.movie.model.vo.Review;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,6 +34,7 @@ public class MovieContoller {
                             @RequestParam(defaultValue = "releaseDate") String sortBy) {
         List<MovieListDTO> mList = movieService.getMoviesByStatusAndSort(status, page, size, sortBy);
         List<MovieReservationRateDTO> reservationRates = movieService.getMovieReservationRates();
+        List<MovieBannerDTO> bList = movieService.getMovieBanner();
 
         Map<Long, Double> rateMap = reservationRates.stream()
                 .collect(Collectors.toMap(
@@ -57,6 +55,7 @@ public class MovieContoller {
         } else {
             // 일반 요청인 경우 HTML 페이지 렌더링
             model.addAttribute("mList", mList);
+            model.addAttribute("bList", bList);
             return "pages/movie/movieList";
         }
     }
@@ -124,24 +123,24 @@ public class MovieContoller {
         addReview.setReviewContent(review.getReviewContent());
 
         log.info(addReview.toString());
-        boolean success = movieService.addReview(addReview);
-//        int result = success ? 1 : 0;
-        if (success) {
-            return ResponseEntity.ok(Map.of("success", true, "message", "리뷰가 성공적으로 추가되었습니다."));
-        } else {
-            return ResponseEntity.ok(Map.of("success", false, "message", "이미 이 영화에 대한 리뷰를 작성하셨습니다."));
-        }
-//        try {
-//            if (result > 0) {
-//                return ResponseEntity.ok(Map.of("success", true, "message", "리뷰가 성공적으로 등록되었습니다."));
-//            } else {
-//                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                        .body(Map.of("success", false, "message", "리뷰 등록에 실패했습니다."));
-//            }
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                    .body(Map.of("success", false, "message", "리뷰 등록 중 오류가 발생했습니다."));
+//        boolean success = movieService.addReview(addReview);
+        int result = movieService.addReview(addReview);
+//        if (success) {
+//            return ResponseEntity.ok(Map.of("success", true, "message", "리뷰가 성공적으로 추가되었습니다."));
+//        } else {
+//            return ResponseEntity.ok(Map.of("success", false, "message", "이미 이 영화에 대한 리뷰를 작성하셨습니다."));
 //        }
+        try {
+            if (result > 0) {
+                return ResponseEntity.ok(Map.of("success", true, "message", "리뷰가 성공적으로 등록되었습니다."));
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body(Map.of("success", false, "message", "리뷰 등록에 실패했습니다."));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("success", false, "message", "리뷰 등록 중 오류가 발생했습니다."));
+        }
     }
 
     @DeleteMapping("/removeReview/{reviewNo}")
@@ -161,6 +160,20 @@ public class MovieContoller {
         }
     }
 
+    @GetMapping("/checkLoginAndReview")
+    @ResponseBody
+    public ResponseEntity<?> checkLoginAndReview(HttpSession session, Long movieNo) {
+        String memberId = (String) session.getAttribute("memberId");
+        if (memberId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("success", false, "message", "로그인이 필요합니다."));
+        }
 
+        ReviewDTO existingReview = movieService.getMyReview(movieNo, memberId);
+        if (existingReview == null) {
+            return ResponseEntity.ok(Map.of("success", true, "message", "리뷰가 성공적으로 추가되었습니다."));
+        }
+        return ResponseEntity.ok(Map.of("success", false, "message", "이미 이 영화에 대한 리뷰를 작성하셨습니다."));
+    }
 }
 

@@ -107,7 +107,7 @@ public interface ReservationService {
      * @param memberId
      * @return
      */
-    MemberDTO selectTicketCount(String memberId);
+    Integer selectTicketCount(String memberId);
 
     /**
      * 대화 방 인원 티켓 수

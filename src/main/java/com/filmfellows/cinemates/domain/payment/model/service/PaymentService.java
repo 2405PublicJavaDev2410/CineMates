@@ -10,11 +10,9 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Map;
 
 @Configuration
@@ -51,7 +49,6 @@ public class PaymentService {
     }
 
 
-
     // 결제 취소 메소드
     public IamportResponse<Payment> cancelPayment(String imp_uid) {
         try {
@@ -83,10 +80,15 @@ public class PaymentService {
         rmapper.deleteReservationInfo(impUid);
         pmapper.deletePaymentInfo(impUid);
     }
+
     @Transactional
     public boolean updateTicketCount(String memberId) {
         return rmapper.updateTicketCount(memberId) > 0;
     }
 
+    @Transactional
+    public int updateTicketCountOnlySolo(String memberId, String ticketCount) {
+        return rmapper.updateTicketCountOnlySolo(memberId,ticketCount);
+    }
 }
 

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<!-- Thymeleaf 선언 / headerFragment 임을 선언-->
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      th:fragment="HeaderFragment">
+        <div class="header-top">
+            <div class="header-top-inner">
+                <div class="header-logo">
+                    <img src="/img/logo.png" alt="cinemates" onclick="moveToMain()">
+                </div>
+                <img id="header-my"
+                     th:if="${session.memberId != null && session.memberId != ''}"
+                     th:src="${session.memberProfile != null
+                             ? session.memberProfile.profileImg
+                             : '/img/default_profile.png'}"
+                     alt="profile">
+                <img id="header-login"
+                     th:if="${session.memberId == null || session.memberId == ''}"
+                     src="/img/login.png" alt="login" onclick="moveToLogin();">
+            </div>
+            <div class="header-my-expand" th:if="${session.memberId != null && session.memberId != ''}">
+                <p th:text="${session.name + ' 님'}"></p>
+                <p onclick="goMyPage();">마이페이지</p>
+                <p onclick="logout();">로그아웃</p>
+            </div>
+        </div>
+        <div class="header-bottom">
+            <nav class="nav-menu">
+                <a href="/admin/banner">배너</a>
+                <a href="/admin/movie-list">영화</a>
+                <a href="/cinema/main">영화관</a>
+                <a href="/admin/product">상품관리</a>
+                <a href="/admin/reportlist">신고내역</a>
+                <a href="/admin/qna-list">문의내역</a>
+            </nav>
+        </div>
+    <script type="text/javascript" src="/js/header.js"></script>
+</html>
