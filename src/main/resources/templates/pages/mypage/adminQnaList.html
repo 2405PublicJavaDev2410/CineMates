@@ -40,7 +40,7 @@
                     th:style="${qna.replyStatus == '미답변' ? 'background-color: #F7F6F4;' : 'background-color: #ffffff;'}">
                     <td th:text="${qna.qnaNo}"></td>
                     <td><a class="qna-detail-link"
-                           th:href="@{/admin/qna-detail/{qnaNo}(qnaNo=${qna.qnaNo})}"
+                           th:href="@{/admin/qna-detail/{qnaNo}(qnaNo=${qna.qnaNo}, cp=${pn.currentPage})}"
                            th:text="${qna.title}"></a></td>
                     <td th:text="${qna.memberId}"></td>
                     <td th:text="${#dates.format(qna.regDate, 'yyyy-MM-dd')}"></td>

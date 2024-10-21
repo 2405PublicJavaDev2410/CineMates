@@ -35,9 +35,13 @@
             <form id="register-reply-form">
                 <input type="hidden" name="parentQnaNo" th:value="${qna.qnaNo}">
                 <textarea class="reply-content" id="reply-content" cols="90" rows="5" style="resize: none;" name="content"></textarea>
-                <button type="submit" class="common-secondary-btn" id="register-reply-btn" th:onclick="registerReply(/*[[${qna.qnaNo}]]*/)">답변 등록</button>
+                <button type="submit" class="common-secondary-btn" id="register-reply-btn" th:onclick="registerReply(/*[[${cp}]]*/)">답변 등록</button>
             </form>
         </div>
+        <button type="button"
+                class="common-primary-btn"
+                id="go-qna-list-btn"
+                onclick="goToList()">목록으로</button>
     </div>
     </div>
 </main>
