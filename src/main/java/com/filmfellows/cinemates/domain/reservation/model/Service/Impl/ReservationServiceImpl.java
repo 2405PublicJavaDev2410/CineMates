@@ -77,7 +77,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public MemberDTO selectTicketCount(String memberId) {
+    public Integer selectTicketCount(String memberId) {
         return rmapper.selectTicketCount(memberId);
     }
 

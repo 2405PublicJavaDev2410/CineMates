@@ -4,12 +4,12 @@ import com.filmfellows.cinemates.domain.payment.model.service.PaymentService;
 import com.filmfellows.cinemates.domain.reservation.model.Service.ReservationService;
 import com.filmfellows.cinemates.domain.reservation.model.vo.MemberDTO;
 import com.filmfellows.cinemates.domain.reservation.model.vo.ReservationDTO;
-import com.filmfellows.cinemates.domain.reservation.model.vo.ShowInfoDTO;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
 import jakarta.servlet.http.HttpSession;
+import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +18,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -41,47 +43,74 @@ public class PaymentController {
     //결제 준비 매핑 별 다른 html 파일 없음 결제로 오기 전 가져와야하는 데이터 가져오기 위해 POST 매핑용 메소드
     @PostMapping("/paymentReady")
     public String readyTogoPay(@ModelAttribute("ReservationDTO") ReservationDTO rDTO,
-                               Model model, HttpSession session) {
+                               Model model, HttpSession session,
+                               @RequestParam("memberIds") String memberIdList
+    ) {
+        System.out.println("memberIds readyTogoPay: " + memberIdList);
         System.out.println("paymentReady" + rDTO);
-//        String memberId = (String) session.getAttribute("memberId");
         session.setAttribute("rDTO", rDTO);
-//        model.addAttribute("rDTO", rDTO);
-        return "redirect:/payment?reservationNo=" + rDTO.getReservationNo();
+        session.setAttribute("memberIds", memberIdList);
+        if(!(memberIdList.isEmpty())){
+        return "redirect:/payment?reservationNo=" + rDTO.getReservationNo() + "&memberIds=" + memberIdList;
+        }
+        else{
+            return "redirect:/payment?reservationNo=" + rDTO.getReservationNo();
+        }
     }
 
 
     // readyTogoPay 메소드 값 가지고 html 파일 가는 메소드
     @GetMapping("/payment")
-    public String showPayForm(HttpSession session, Model model) {
-//        String memberId = (String) session.getAttribute("memberId");
+    public String showPayForm(HttpSession session, Model model
+            , String memberIds
+                              ) {
         ReservationDTO rDTO = (ReservationDTO) session.getAttribute("rDTO");
         MemberDTO mDTO = rService.selectMemberInfo(rDTO.getMemberId());
-        String allMemberId = String.join(",", rDTO.getMemberIds());
         rDTO.setBuyer_email(mDTO.getEmail());
         rDTO.setBuyer_name(mDTO.getName());
         rDTO.setBuyer_tel(mDTO.getPhone());
-//        rDTO.setTicketCount(mDTO.getTicketCount());
+
         System.out.println("showPayForm" + rDTO);
         System.out.println("info" + mDTO);
-        model.addAttribute("allMemberId", allMemberId);
+        System.out.println("memberIdsShowPayForm: " + memberIds);
+        model.addAttribute("memberIds", memberIds);
         model.addAttribute("rDTO", rDTO);
-//        model.addAttribute("ticketCount", ticketCountString);
+        model.addAttribute("mDTO", mDTO);
 
-        if (rDTO.getMemberId() != null && rDTO.getAllTicketCount() != null) {
+        if (memberIds != null && !memberIds.isEmpty()) {
             return "pages/payment/payByTicket";
         } else {
             return "pages/payment/inipay";
         }
     }
 
+    @PostMapping("/payment/ticketFromChat")
     @ResponseBody
-    @PostMapping("/payment/ticket")
-        public ResponseEntity<Integer> payByTicket(String memberId ,Model model){
-        int result = paymentService.calcTicketCount(memberId);
-        ReservationDTO rDTO = paymentService.selectUpdatedReservation(memberId);
-        System.out.println("TicketCount: " + result);
-        return ResponseEntity.ok(result);
+    public ResponseEntity<List<String>> payByTicketFromChat(@RequestParam String memberIds) {
+        List<String> memberIdsList = Arrays.asList(memberIds.split(","));
+        System.out.println("memberIds payByTicket:" + memberIdsList);
+        List<String> updatedMembers = new ArrayList<>();
+        for (String memberId : memberIdsList) {
+            boolean updated = paymentService.updateTicketCount(memberId);
+            if (updated) {
+                updatedMembers.add(memberId);
+                System.out.println("Updated ticket count for memberId: " + memberId);
+            } else {
+                System.out.println("Failed to update ticket count for memberId: " + memberId);
+            }
+        }
+        System.out.println("Test: ");
+        return ResponseEntity.ok(updatedMembers);
     }
+    @PostMapping("/payment/ticket")
+    @ResponseBody
+    public ResponseEntity<Boolean> payByTicket(@RequestParam String memberId
+    ,@RequestParam String ticketCount
+    ) {
+        int updated = paymentService.updateTicketCountOnlySolo(memberId,ticketCount);
+        return ResponseEntity.ok(updated>0);
+    }
+
     // 결제 성공 후 결제 한 제품에 대한 정보 조회하는 메소드
     @PostMapping("/validation/{imp_uid}")
     @ResponseBody
@@ -90,7 +119,13 @@ public class PaymentController {
         System.out.println("validation Controller :" + imp_uid);
         return paymentService.validateIamport(imp_uid);
     }
-
+//    //관람권 결제 시 제품 정보 조회 메소드
+//    @PostMapping("/validationByTicket/{imp_uid}")
+//    @ResponseBody
+//    public ResponseEntity<String> validateTicket(@PathVariable String imp_uid) {
+//        System.out.println("validation Controller :" + imp_uid);
+//        return paymentService.validateTicket(imp_uid);
+//    }
     // 정보 조회한 결제 제품 저장하는 메소드
     @PostMapping("/save_buyerInfo")
     @ResponseBody

@@ -244,6 +244,7 @@ h1.page-title {
     width: 120px;
     height: 120px;
     margin-right: 20px;
+    position: relative;
 }
 
 .chatRoomName {

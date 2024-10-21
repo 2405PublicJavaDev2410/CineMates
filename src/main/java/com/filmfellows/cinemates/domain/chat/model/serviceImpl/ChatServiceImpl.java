@@ -4,10 +4,7 @@ import com.filmfellows.cinemates.app.chat.dto.*;
 import com.filmfellows.cinemates.common.Pagination;
 import com.filmfellows.cinemates.domain.chat.model.mapper.ChatMapper;
 import com.filmfellows.cinemates.domain.chat.model.service.ChatService;
-import com.filmfellows.cinemates.domain.chat.model.vo.ChatMessage;
-import com.filmfellows.cinemates.domain.chat.model.vo.ChatRoom;
-import com.filmfellows.cinemates.domain.chat.model.vo.ChatTag;
-import com.filmfellows.cinemates.domain.chat.model.vo.ChatTimeUtils;
+import com.filmfellows.cinemates.domain.chat.model.vo.*;
 import com.filmfellows.cinemates.domain.member.model.vo.ProfileImg;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -158,6 +155,58 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public Timestamp selectMyJoinDate(String memberId, Integer roomNo) {
         return cMapper.selectMyJoinDate(memberId, roomNo);
+    }
+
+    @Override
+    public void deleteMemberJoinByRoom(Integer roomNo, String memberId) {
+        cMapper.deleteMemberJoinByRoom(roomNo, memberId);
+    }
+
+    @Override
+    public List<ChatJoinProfile> checkOnOffStatus(Integer roomNo) {
+        List<ChatJoinProfile> statusList = cMapper.checkOnOffStatus(roomNo);
+        return statusList;
+    }
+
+    @Override
+    public void updateOnOffStatus(Integer roomNo, String memberId, String onOffStatus) {
+        cMapper.updateOnOffStatus(roomNo, memberId, onOffStatus);
+    }
+
+    @Override
+    public int deleteChatRoom(Integer roomNo) {
+        int result = cMapper.deleteChatRoom(roomNo);
+        return result;
+    }
+
+    @Override
+    public int deleteMessageOfChatRoom(Integer roomNo) {
+        int result = cMapper.deleteMessageOfChatRoom(roomNo);
+        return result;
+    }
+
+    @Override
+    public int updateAcceptStatus(Integer roomNo, String memberId, String acceptStatus) {
+        int result = cMapper.updateAcceptStatus(roomNo, memberId, acceptStatus);
+        return result;
+    }
+
+    @Override
+    public List<finalReserveInfoByTicket> selectScreenByCinema(Integer cinemaNo, Integer movieNo) {
+        List<finalReserveInfoByTicket> finalReserveInfoByTicket = cMapper.selectScreenByCinema(cinemaNo, movieNo);
+        return finalReserveInfoByTicket;
+    }
+
+    @Override
+    public List<finalReserveInfoByTicket> selectShowtimeByScreen(Integer cinemaNo, Integer movieNo, String selectedDate) {
+        List<finalReserveInfoByTicket> showtimeByScreen = cMapper.selectShowtimeByScreen(cinemaNo, movieNo, selectedDate);
+        return showtimeByScreen;
+    }
+
+    @Override
+    public List<ChatJoin> selectAcceptAll(Integer roomNo) {
+        List<ChatJoin> chatJoinAcceptList = cMapper.selectAcceptAll(roomNo);
+        return chatJoinAcceptList;
     }
 
 

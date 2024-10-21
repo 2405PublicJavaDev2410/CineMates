@@ -2,11 +2,11 @@ package com.filmfellows.cinemates.domain.chat.model.service;
 
 
 import com.filmfellows.cinemates.app.chat.dto.*;
+import com.filmfellows.cinemates.domain.chat.model.vo.ChatJoin;
 import com.filmfellows.cinemates.domain.chat.model.vo.ChatMessage;
 import com.filmfellows.cinemates.domain.chat.model.vo.ChatRoom;
 import com.filmfellows.cinemates.domain.chat.model.vo.ChatTag;
 import com.filmfellows.cinemates.domain.member.model.vo.ProfileImg;
-import org.apache.ibatis.session.RowBounds;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -105,4 +105,67 @@ public interface ChatService {
      * @return Timestamp
      */
     Timestamp selectMyJoinDate(String memberId, Integer roomNo);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : 채팅방 나가기
+     * @return Timestamp
+     */
+    void deleteMemberJoinByRoom(Integer roomNo, String memberId);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : onOff 체크
+     * @return String
+     */
+    List<ChatJoinProfile> checkOnOffStatus(Integer roomNo);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : onOff 상태 업데이트
+     * @return String
+     */
+    void updateOnOffStatus(Integer roomNo, String memberId, String onOffStatus);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : 채팅방 삭제
+     * @return String
+     */
+    int deleteChatRoom(Integer roomNo);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : 채팅방 삭제 시 내용도 삭제
+     * @return String
+     */
+    int deleteMessageOfChatRoom(Integer roomNo);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : 예매 동의 여부 업데이트
+     * @return String
+     */
+    int updateAcceptStatus(Integer roomNo, String memberId, String acceptStatus);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : 극장별 상영관 리스트
+     * @return String
+     */
+    List<finalReserveInfoByTicket> selectScreenByCinema(Integer cinemaNo, Integer movieNo);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : 날짜별 상영시간
+     * @return String
+     */
+    List<finalReserveInfoByTicket> selectShowtimeByScreen(Integer cinemaNo, Integer movieNo, String selectedDate);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : 예매 동의 여부 체크 리스트
+     * @return String
+     */
+    List<ChatJoin> selectAcceptAll(Integer roomNo);
 }

@@ -7,15 +7,19 @@
       layout:fragment="Content">
     <head>
         <title>채팅방</title>
+        <script src="https://kit.fontawesome.com/7d4169cb69.js" crossorigin="anonymous"></script>
         <!-- inline CSS 영역-->
         <style th:inline="css" type="text/css">
-            *{
-                font-family: "NEXON Lv1 Gothic OTF", serif;
-            }
+            @import url('https://fonts.googleapis.com/css2?family=Moul&display=swap');
+            @import url('https://fonts.googleapis.com/css2?family=IM+Fell+French+Canon:ital@0;1&family=Moul&display=swap');
+            @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
+            /**{*/
+            /*    font-family: "NEXON Lv1 Gothic OTF", serif;*/
+            /*}*/
             .chat-room-container{
                 display: flex;
                 justify-content: space-around;
-                margin: 20px 0;
+                margin: 20px 0 50px;
             }
             .reservation-info-background{
                 width: 45%;
@@ -24,9 +28,9 @@
             }
             .reservation-info-box{
                 width: 88%;
-                height: 700px; /* background 높이에 맞춤 */
-                margin: 50px auto 0;
-                border: 2px solid white;
+                height: 600px; /* background 높이에 맞춤 */
+                margin: 20px auto 0;
+                border: 3px solid #d3c5a8;
                 position: relative;
                 z-index: 3;
             }
@@ -90,10 +94,15 @@
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 grid-template-rows: 1fr 2fr 0.5fr 1fr;
+
             }
 
             .grid-item {
-                border: 2px solid white;
+                border: 3px solid #d3c5a8;
+                text-align: center;
+                font-family: "Black Han Sans", sans-serif;
+                font-weight: 400;
+                font-style: normal;
             }
 
             .grid-title {
@@ -104,6 +113,9 @@
             .grid-movieImg {
                 grid-column: 1 / 3;
                 grid-row: 2;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
             }
 
             .grid-date {
@@ -127,11 +139,11 @@
             }
             .grid-item-name{
                 text-align: center;
-                font-family: 'GmarketSansMedium', sans-serif;
-                font-size: 18px;
-                font-weight: bold;
-                margin-top: 3px;
-                color: white;
+                /*font-family: "Moul", serif;*/
+                font-family: "IM Fell French Canon", serif;
+                font-size: 30px;
+                margin-top: 10px;
+                color: #d3c5a8;
             }
 
             .notice-box{
@@ -206,6 +218,88 @@
                 word-wrap: break-word;
             }
 
+
+            #ticket-title{
+                font-family: "Moul", serif;
+                text-align: center;
+                position: relative;
+                z-index: 3;
+                font-size: 40px;
+                color: #b25651;
+                margin: 40px auto 0;
+                width: 70%;
+                background-color: #d3c5a8;
+            }
+
+            #select-reservationInfo-btn{
+                padding: 10px;
+                font-size: 25px;
+                margin-right: 45px;
+                color: #d3c5a8;
+                background-color: #b25651;
+                border: none;
+                box-shadow: 0 2px 2px 2px rgb(0, 0, 0);
+                font-family: "NEXON Lv1 Gothic OTF", serif;
+                cursor:pointer;
+            }
+
+            #select-reservationInfo-btn:active{
+                color: black;
+                transform:translateY(2px);
+                box-shadow: 0 1px 1px 1px rgb(0, 0, 0);
+            }
+
+            #resv-btn{
+                margin: 20px 0 50px 520px;
+                text-align: center;
+                width: 100px;
+                height: 40px;
+                color: white;
+                background-color: #EA4E4A;
+                font-size: 20px;
+                font-weight: bold;
+                border: none;
+                border-radius: 10px;
+                cursor: pointer;
+                opacity: 0.8;
+                transition: all 200ms;
+            }
+            #resv-btn:hover, #resv-btn:active, #leave-btn:hover, #delete-btn:hover{
+                opacity: 1;
+            }
+            #resv-btn:active, #leave-btn:active, #delete-btn:active{
+                transform: scale(0.95);
+            }
+
+            #delete-btn{
+                text-align: center;
+                width: 120px;
+                height: 40px;
+                color: white;
+                background-color: #EA4E4A;
+                font-size: 20px;
+                font-weight: bold;
+                border: none;
+                border-radius: 10px;
+                cursor: pointer;
+                opacity: 0.8;
+                transition: all 200ms;
+            }
+            #leave-btn{
+                text-align: center;
+                width: 100px;
+                height: 40px;
+                color: white;
+                background-color: #EA4E4A;
+                font-size: 20px;
+                font-weight: bold;
+                border: none;
+                border-radius: 10px;
+                cursor: pointer;
+                opacity: 0.8;
+                transition: all 200ms;
+            }
+
         </style>
 
         <!-- inline JS 영역-->
@@ -219,48 +313,54 @@
         <div class="chat-room-container">
             <div class="reservation-info-background">
                 <img class="ticket-img" src="/img/chat/ticket.png" alt="티켓">
+                <div id="ticket-title" style="">TICKET</div>
                 <div class="reservation-info-box grid-container">
                     <div class="grid-item grid-title">
                         <div class="grid-item-name">TITLE</div>
-                        <div th:text="${chatRoom.title}"></div>
+                        <div style="font-size: 36px; margin-top: 20px;" th:text="${chatRoom.title}"></div>
                     </div>
                     <div class="grid-item grid-movieImg">
-                        <div class="grid-item-name"></div>
-                        <div class="posterImg" th:style="'width:50%; height:100%; background-image: url('+${chatRoom.posterUrl}+'); background-position: center; background-size: cover; border-radius:20px;'">
+                        <div class="posterImg" th:style="'width:45%; height:90%; margin-left:10px; background-image: url('+${chatRoom.posterUrl}+'); background-position: center; background-size: cover; border-radius:20px;'">
+                        </div>
+                        <div>
+                            <button id="select-reservationInfo-btn" type="button"
+                                    th:onclick="testOpen([[${chatRoom.roomNo}]],[[${chatRoom.roomWriter}]],[[${chatRoom.movieNo}]],[[${chatRoom.title}]], [[${chatRoom.posterUrl}]], [[${chatRoom.cinemaNo}]],[[${chatRoom.cinemaName}]], [[${chatRoom.cinemaLocationCode}]], [[${chatRoom.cinemaAddress}]], [[${chatRoom.roomCategory}]]);">상영관 선택</button>
                         </div>
                     </div>
                     <div class="grid-item grid-date">
                         <div class="grid-item-name">DATE</div>
-                        <div>
-                            선택하기
+                        <div id="reservationDate" style="font-size: 20px">
+                            미정
                         </div>
                     </div>
                     <div class="grid-item grid-time">
                         <div class="grid-item-name">TIME</div>
-                        <div></div>
+                        <div id="showtimeTime" style="font-size: 20px">미정</div>
                     </div>
                     <div class="grid-item grid-region">
                         <div class="grid-item-name">CINEMA</div>
-                        <div th:text="${chatRoom.cinemaAddress}"></div>
-                        <div th:text="${chatRoom.cinemaName}"></div>
+                        <div style="font-size: 25px;" th:text="${chatRoom.cinemaAddress}"></div>
+                        <div style="font-size: 25px;" th:text="${chatRoom.cinemaName}"></div>
                     </div>
                     <div class="grid-item grid-screen">
                         <div class="grid-item-name">SCREEN</div>
-                        <div>
-                            선택하기
+                        <div id="screenName" style="font-size: 32px">
+                            미정
                         </div>
                     </div>
                 </div>
             </div>
             <div class="chat-screen">
                 <div id="user-list-container">
-                    <div th:each="joinList:${chatJoinList}" style="display: flex; flex-direction: column;align-items: center">
-                            <th:block th:if="${joinList.filePath == null}">
-                                <img th:id="${joinList.getMemberId()}" alt="프로필" src="/img/default_profile.png" style="width: 60px; height: 60px; border-radius: 50%;">
-                            </th:block>
-                            <th:block th:if="${joinList.filePath != null}">
-                                <img th:id="${joinList.getMemberId()}" th:src="@{|${joinList.filePath}${joinList.fileRename}|}" alt="프로필" style="width: 60px; height: 60px; border-radius: 50%;">
-                            </th:block>
+                    <div th:id="${joinList.getMemberId()}" th:each="joinList:${chatJoinList}" style="display: flex; flex-direction: column;align-items: center; position: relative">
+
+                        <div style="position: absolute; top: -8px; left: 40px; font-size: 24px; transform: rotate(40deg);; color: rgba(255,227,73,0.91)" th:if="${chatRoom.roomWriter == joinList.memberId}"><i class="fa-solid fa-crown"></i></div>
+                        <th:block th:if="${joinList.filePath == null}">
+                            <img alt="프로필" src="/img/default_profile.png" style="width: 60px; height: 60px; border-radius: 50%;">
+                        </th:block>
+                        <th:block th:if="${joinList.filePath != null}">
+                            <img th:src="@{|${joinList.filePath}${joinList.fileRename}|}" alt="프로필" style="width: 60px; height: 60px; border-radius: 50%;">
+                        </th:block>
                         <div th:text="${joinList.memberId}"></div>
                     </div>
                 </div>
@@ -300,14 +400,52 @@
                 </div>
             </div>
         </div>
-        <div style="width: 100%; display: flex; justify-content: end">
-            <button type="button" onclick="if(confirm('채팅방을 정말 나가시겠습니까? 나갈 경우 이전의 대화기록을 확인할 수 없습니다.')) leaveChatRoom();">나가기</button>
+        <div>
+            <div style="width: 100%; display: flex; justify-content: space-between; padding-right: 25px">
+                <h1>영화예매 진행에 동의하십니까?</h1>
+                <th:block th:if="${session.memberId == chatRoom.roomWriter}">
+                    <button id="delete-btn" type="button" onclick="deleteChatRoom()">채팅방 삭제</button>
+                </th:block>
+                <th:block th:if="${session.memberId != chatRoom.roomWriter}">
+                    <button id="leave-btn" type="button" onclick="if(confirm('채팅방을 정말 나가시겠습니까? 나갈 경우 이전의 대화기록을 확인할 수 없습니다.')) leaveChatRoom();">나가기</button>
+                </th:block>
+            </div>
+            <div style="display: inline-flex; flex-direction: column; align-items: end">
+                <div style="margin: 30px 0;">방장이 예매의 다음 절차를 진행하려면 대화에 참여한 모든 회원의 동의가 필요합니다</div>
+                <label style="font-size: 18px; font-weight: bold" id="acceptCheck">
+                    동의함
+                    <input type="checkbox" name="acceptCheck" onclick="checkAcceptReservation();">
+                </label>
+            </div>
+
         </div>
+
+
+        <th:block th:if="${session.memberId == chatRoom.roomWriter}">
+            <form action="/Ticketing/PersonSeat" method="post">
+                <input type="hidden" name="movieNo" th:value="${chatRoom.movieNo}">
+                <input type="hidden" name="title" th:value="${chatRoom.title}">
+                <input type="hidden" name="posterUrl" th:value="${chatRoom.posterUrl}">
+                <input type="hidden" name="cinemaLocationCode" th:value="${chatRoom.cinemaLocationCode}">
+                <input type="hidden" name="cinemaNo" th:value="${chatRoom.cinemaNo}">
+                <input type="hidden" name="cinemaName" th:value="${chatRoom.cinemaName}">
+                <input type="hidden" name="screenNo">
+                <input type="hidden" name="showtimeNo">
+                <input type="hidden" name="showtimeTime">
+                <input type="hidden" name="screenName">
+                <input type="hidden" name="reservationDate">
+                <input type="hidden" name="prevPage" value="chatRoom">
+                <input type="hidden" name="memberIds" value="">
+                <input name="reservationSeat" type="hidden" value="">
+                <button type="submit" id="resv-btn" onclick="return openReservationWindow(event)">예매하기</button>
+            </form>
+        </th:block>
+
 
         <script th:inline="javascript">
             let roomNo = /*[[${chatRoom.roomNo}]]*/; // 방번호
             let memberId = /*[[${session.memberId}]]*/; // 사용자 이름 입력받기
-
+            let firstOrJoin = /*[[${firstOrJoin}]]*/;
             const socketUrl = `ws://localhost:9000/ws/chat`;
             let socket = null;
 
@@ -318,53 +456,76 @@
                 socket = new WebSocket(socketUrl);
 
                 socket.onopen = function() {
-                    const joinMessage = {
-                        messageType: 'FIRST',
+                    let messageType = firstOrJoin;
+                    const firstOrJoinMessage = {
+                        messageType: messageType,
                         memberId: memberId,
                         roomNo: roomNo,
                     };
 
-                    if (socket.readyState === WebSocket.OPEN) {
-                        socket.send(JSON.stringify(joinMessage));
-                        // db에 저장
-                        saveMessage(joinMessage);
+                    if(messageType === 'FIRST'){
+                        if (socket.readyState === WebSocket.OPEN) {
+                            socket.send(JSON.stringify(firstOrJoinMessage));
+                            // db에 저장
+                            saveMessage(firstOrJoinMessage);
+                        }
+                    }else if(messageType === 'JOIN'){
+                        if (socket.readyState === WebSocket.OPEN) {
+                            updateOnOffStatus('ON');
+                            socket.send(JSON.stringify(firstOrJoinMessage));
+
+                        }
                     }
 
-                    let profileImg = document.querySelector(`#${memberId}`);
-                    if (profileImg) {
-                        // 프로필 이미지 투명하게 처리 (opacity를 0.5로 설정)
-                        profileImg.style.opacity = '1';
-                    }
 
 
-                };
+                }
 
                 socket.onmessage = function(event) {
                     const responseJson = (event.data); // 서버로부터 받은 메시지 json
                     let message = JSON.parse(responseJson);
                     console.log("onmessage : "+event.data)
                     console.log(message);
-                    if(memberId !== message.memberId){
-                        displayMessage(message, "other");
-                    }else{
-                        displayMessage(message, "my")
+
+                    // WAIT을 보내면 처리
+                    if(message.messageType === 'WAIT'){
+                        confirmOnOffStatus();
+                    }else if(message.messageType === 'JOIN'){
+                        console.log("onmessage 로 join 받은겨 만겨")
+                        confirmOnOffStatus();
+                    } else{
+                        if(memberId !== message.memberId){
+                            displayMessage(message, "other");
+                        }else{
+                            displayMessage(message, "my")
+                        }
                     }
 
-                    if(message.messageType === 'WAIT'){
-                        let memberId = message.memberId;
-                        let profileImg = document.querySelector(`#${memberId}`);
-                        if (profileImg) {
-                            // 프로필 이미지 투명하게 처리 (opacity를 0.5로 설정)
-                            profileImg.style.opacity = '0.5';
-                        }
+                    if(message.messageType === 'LEAVE'){
+                        // db에서 join상태 삭제
+                        updateUserList("delete", message.memberId);
                     }
 
                     if(message.messageType === 'FIRST'){
                         // 참여한 유저 리스트 업데이트
-                        updateUserList();
+                        updateUserList("", message.memberId);
                     }
                 }
 
+                // 들어오면 db에 ON으로 상태변경
+                window.addEventListener('load', function(){
+                    // const waitMessage = {
+                    //     messageType: 'JOIN',
+                    //     memberId: memberId,
+                    //     roomNo: roomNo
+                    // };
+                    // if (socket.readyState === WebSocket.OPEN) {
+                    //     updateOnOffStatus('ON');
+                    //     socket.send(JSON.stringify(waitMessage));
+                    //
+                    // }
+                    confirmOnOffStatus();
+                })
 
                 // 대화방을 잠시 나가면 프로필 이미지 투명하게
                 socket.onclose = function(event){
@@ -394,7 +555,6 @@
                     saveMessage(talkMessage);
                     messageInput.value = "";
                 }
-
             }
 
             function displayMessage(message, status){
@@ -447,7 +607,8 @@
                 `;
                    mainScreen.appendChild(noticeBoxDiv);
                }
-
+               // scroll 하단으로 이동
+                scrollBottom();
             }
 
 
@@ -463,11 +624,30 @@
                     socket.send(JSON.stringify(leaveMessage));
                     // db 저장
                     saveMessage(leaveMessage);
+
                 }
 
                 // list로 이동
                 location.href= '/chat/list';
             }
+
+            // 다른 페이지로 이동 시 "WAIT" 메시지 전송
+            window.addEventListener('beforeunload', function (event) {
+                const waitMessage = {
+                    messageType: 'WAIT',
+                    memberId: memberId,
+                    roomNo: roomNo
+                };
+                if (socket.readyState === WebSocket.OPEN) {
+                    // 나가면 db에 OFF로 상태변경
+                    updateOnOffStatus('OFF');
+                    socket.send(JSON.stringify(waitMessage));
+
+                }
+            });
+
+
+
 
             function checkProfile(message){
                 let joinProfile = /*[[${chatJoinList}]]*/;
@@ -540,16 +720,22 @@
 
 
             // ajax userList 업데이트
-            function updateUserList(){
+            function updateUserList(status, memberId){
+                let roomWriter = /*[[${chatRoom.roomWriter}]]*/
                 $.ajax({
-                    url:"/chat/getUserList",
+                    url:"/chat/getUserListAndDelete",
                     data:{
                         roomNo : roomNo,
+                        memberId: memberId,
+                        status: status,
+                        roomWriter:roomWriter
                     },
 
                     type:"post",
                     success:function(data){
+                        console.log(data);
                         $('#user-list-container').replaceWith(data);
+                        confirmOnOffStatus();
                     },
                     error:function(){
                         console.log("error");
@@ -557,6 +743,214 @@
 
                 })
             }
+
+
+            // scroll 하단으로 이동
+            scrollBottom();
+            function scrollBottom(){
+                let mainScreen = document.querySelector('.main-screen');
+                mainScreen.scrollTop = mainScreen.scrollHeight;
+            }
+
+
+
+            function updateOnOffStatus(onOffStatus){
+                $.ajax({
+                    url:"/chat/updateOnOffStatus",
+                    data:{
+                        roomNo:roomNo,
+                        memberId:memberId,
+                        onOffStatus:onOffStatus
+                    },
+                    type:"post",
+                    success: function(data){
+                        console.log(data);
+                        console.log("update 성공");
+                    },
+                    error: function(){
+                        console.log("update error");
+                    }
+                })
+            }
+
+            function confirmOnOffStatus(){
+                $.ajax({
+                    url:"/chat/selectOnOffStatus",
+                    data:{
+                        roomNo:roomNo,
+                    },
+                    dataType: 'json',
+                    type:"post",
+                    success: function(response){
+                        response.forEach(item=>{
+                            let profileImg = document.querySelector(`#${item.memberId}`);
+                            if(item.status === 'OFF'){
+                                // 프로필 이미지 투명하게 처리 (opacity를 0.3으로 설정)
+                                profileImg.style.opacity = '0.3';
+                            } else{
+                                profileImg.style.opacity = '1';
+                            }
+                        })
+
+                    },
+                    error: function(){
+                        console.log("opacity error");
+                    }
+                })
+            }
+
+
+            // 채팅방 삭제
+            function deleteChatRoom(){
+                if (confirm("정말 삭제하시겠습니까? 삭제 시 나눈 대화 내용은 모두 삭제됩니다.")){
+                    location.href=`/chat/deleteRoom?roomNo=${roomNo}`;
+                }
+            }
+
+
+            // 영화 예매 동의 여부 체크 업데이트
+            function checkAcceptReservation(){
+                let acceptCheckBox = document.querySelector("input[name=acceptCheck]");
+                console.log(acceptCheckBox.checked);
+                let acceptStatus = "";
+                if(acceptCheckBox.checked){
+                    acceptStatus = "YES";
+                }else{
+                    acceptStatus = "NO";
+                }
+
+                $.ajax({
+                    url:"/chat/updateAcceptStatus",
+                    data:{
+                        roomNo:roomNo,
+                        memberId:memberId,
+                        acceptStatus:acceptStatus
+                    },
+                    type:"post",
+                    success: function(response){
+
+                    },
+                    error: function(){
+                        console.log("accept error");
+                    }
+                })
+            }
+
+            // 최초 입장시 FIRST 전달
+            // function confirmJoin(){
+            //     let messageType;
+            //     $.ajax({
+            //         url:"/chat/confirmJoin",
+            //         data:{
+            //             roomNo:roomNo
+            //         },
+            //         type:"post",
+            //         success:function(data){
+            //             console.log("data" + data);
+            //             messageType = data;
+            //         },
+            //         error:function(){
+            //             console.log("first 여부 실패")
+            //         }
+            //     })
+            //
+            // }
+
+            function openReservationWindow(event){
+                event.preventDefault();
+                $.ajax({
+                    url: "/chat/checkAcceptAll",
+                    data:{
+                        roomNo:roomNo
+                    },
+                    type:"POST",
+                    dataType: 'json',
+                    success:function(response){
+                        // 상영관 선택 체크
+                        let screenName = document.querySelector('#screenName').innerText;
+
+                        console.log("screenName   "+screenName);
+                        if(screenName.trim() === "미정"){
+                            alert("상영관을 먼저 선택해주세요");
+                            return false;
+                        }
+
+                        // 티켓 유무 확인
+                        let noTicketMember = "";
+                        let noTicketCount = 0;
+                        response.forEach(member=>{
+                            if(member.ticketCount < 1){
+                                noTicketMember += member.memberId+ ", ";
+                                noTicketCount++;
+                            }
+                        })
+                        if(noTicketCount > 0) {
+                            noTicketMember = noTicketMember.substring(0, noTicketMember.length - 2);
+                            alert(noTicketMember + "님이 티켓을 갖고있지 않습니다.");
+                            return false;
+                        }else{
+                            console.log("티켓 모두 갖고있음.")
+                        }
+
+                        let noAcceptMember = "";
+                        let noAcceptCount = 0;
+                        console.log("accept 성공!!")
+                        response.forEach(member => {
+                            if(member.acceptStatus === "NO"){
+                                noAcceptMember += member.memberId+", ";
+                                noAcceptCount++;
+                            }
+                        })
+
+
+
+
+                        if(noAcceptCount > 0){
+                            noAcceptMember = noAcceptMember.substring(0,noAcceptMember.length-2);
+                            alert(noAcceptMember+"님이 아직 동의하지 않았습니다.");
+
+                            return false;
+                        }else{
+                            let acceptMemberIds = "";
+                            response.forEach(member => {
+                                acceptMemberIds += member.memberId+", ";
+                            })
+                            acceptMemberIds = acceptMemberIds.substring(0,acceptMemberIds.length-2);
+                            let memberIdsInput = document.querySelector('input[name=memberIds]');
+                            memberIdsInput.value = acceptMemberIds;
+                            document.querySelector("form").submit();
+                            console.log("모두 동의하였습니다.")
+                            return true;
+                        }
+
+                    },
+                    error:function(){
+                        console.log("accept 오류")
+                    }
+                })
+            }
+
+            //
+            function testOpen(roomNo, roomWriter, movieNo , title, posterUrl, cinemaNo, cinemaName, cinemaLocationCode, cinemaAddress, roomCategory){
+                let popupW = 500;
+                let popupH = 600;
+                let left = Math.ceil((window.screen.width - popupW)/2);
+                let top = Math.ceil((window.screen.height - popupH)/2);
+                if(memberId === roomWriter){
+                    // 쿼리스트링 정보 포함하여 팝업창 열기
+                    window.open(`/chat/finalSelectInfo?roomNo=${roomNo}&roomWriter=${encodeURIComponent(roomWriter)}&movieNo=${movieNo}&title=${encodeURIComponent(title)}&posterUrl=${posterUrl}&cinemaNo=${cinemaNo}&cinemaName=${cinemaName}&cinemaLocationCode=${cinemaLocationCode}&cinemaAddress=${cinemaAddress}&roomCategory=${roomCategory}`
+                        , "popupWindow", `width=500,height=600,left=${left},top=${top}`);
+                }else{
+                    alert("방장만 선택이 가능합니다.")
+                }
+
+
+            }
+
+
+
+
+
 
         </script>
     </body>
