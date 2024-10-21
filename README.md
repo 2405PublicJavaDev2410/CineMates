@@ -18,7 +18,10 @@
 ![Naver Maps](https://img.shields.io/badge/Naver%20Maps-03C75A?style=for-the-badge&logo=Naver&logoColor=white)
 
 # 2. 브랜치 전략
-
+## Git Flow 방식
+- 팀원 각자의 브랜치를 만들어 개발 진행
+- 기능 구현이 완료되면 Main 브랜치에 병합
+  ![git_flow](https://github.com/2405PublicJavaDev/sulgilddara/blob/main/img/github_flow.png?raw=true)
 # 3. 프로젝트 구조
 
 # 4. 프로젝트 역할 분담
