@@ -26,6 +26,7 @@
 </head>
 
 <body>
+<div class="hidden">
 <div class="payment-container">
   <div class="reserveInfo">
     <div class="reserveInfo_1">
@@ -55,7 +56,7 @@
   </div>
   <button id="pay-button" onclick="goPay()" >결제하기</button>
 </div>
-
+</div>
 <input id="reservationNo" name="reservationNo" th:value="${rDTO.reservationNo}" type="hidden">
 <input id="reservationVisitor" name="reservationVisitor" th:value="${rDTO.reservationVisitor}" type="hidden">
 <input id="reservationSeat" name="reservationSeat" th:value="${rDTO.reservationSeat}" type="hidden">
