@@ -10,11 +10,9 @@ import java.util.Map;
 
 @Mapper
 public interface ReservationMapper {
-    List<ReservationDTO> showReservationPage();
 
     void insertReservationInfo(Map<String, Object> reserveInfo);
 
-    List<ReservationDTO> showReservedSeats();
 
     List<String> selectCinemas(String address);
 
@@ -26,7 +24,6 @@ public interface ReservationMapper {
 
     MemberDTO selectMemberInfo(String memberId);
 
-    Map<String, Integer> getReservationCounts();
 
     List<String> selectCinemaName();
 

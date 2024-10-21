@@ -1,3 +1,6 @@
+*{
+    font-family: 'NEXON Lv1 Gothic OTF', serif;
+}
 .container {
     width: 100%;
     background-color: #444;
@@ -24,10 +27,28 @@ body {
     margin: 0 auto;
     height: 500px;
     background-color: #fff;
-    border: 1px solid #ddd;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+/* payment*/
+.payment-methods {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-bottom: 1px solid #ddd;
+}
 
+.payment-method-btn {
+    padding: 10px 20px;
+    margin-right: 10px;
+    background-color: #ed1c24;
+    border: 1px solid #ccc;
+    color: #fff;
+}
+
+.payment, .payment_pay, .payment_1 {
+    padding: 10px 0 10px 10px;
+    border-bottom: 1px solid #ddd;
+}
+/* reserve */
 .reserveInfo {
     display: flex;
     padding: 20px;
@@ -56,28 +77,9 @@ body {
     flex: 2;
 }
 
-.payment-methods {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-bottom: 1px solid #ddd;
-}
 
-.payment-method-btn {
-    padding: 10px 20px;
-    margin-right: 10px;
-    background-color: #ed1c24;
-    border: 1px solid #ccc;
-    color: #fff;
-    cursor: pointer;
-}
-
-.payment, .payment_pay, .payment_1 {
-    padding: 10px 0 10px 10px;
-    border-bottom: 1px solid #ddd;
-}
-
-
-#ticket-btn, #credit-btn {
+/* else */
+#ticket-btn {
     border-radius: 3px;
 
 }

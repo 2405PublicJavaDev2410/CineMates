@@ -178,9 +178,9 @@ public class MyPageController {
         System.out.println("응답" + response);
 
         if (response != null && !response.isEmpty()) {
-            return ResponseEntity.ok(response); // 200 OK와 함께 리스트 반환
+            return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.noContent().build(); // 204 No Content
+            return ResponseEntity.noContent().build();
         }
     }
 

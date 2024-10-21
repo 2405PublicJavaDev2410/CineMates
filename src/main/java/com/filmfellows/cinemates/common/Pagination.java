@@ -31,12 +31,22 @@ public class Pagination {
         makePagination();
     }
 
+//    public void makePagination() {
+//        maxPage = (int) Math.ceil((double) totalCount / boardLimit);
+//        startNavi = ((currentPage - 1) / naviLimit) * naviLimit + 1;
+//        endNavi = startNavi + naviLimit - 1;
+//        endNavi = (endNavi > maxPage) ? maxPage : endNavi;
+//
+//        prevPage = (startNavi > 1) ? startNavi - 1 : 1;
+//        nextPage = (endNavi < maxPage) ? endNavi + 1 : maxPage;
+//    }
     public void makePagination() {
         maxPage = (int) Math.ceil((double) totalCount / boardLimit);
         startNavi = ((currentPage - 1) / naviLimit) * naviLimit + 1;
         endNavi = startNavi + naviLimit - 1;
-        endNavi = (endNavi > maxPage) ? maxPage : endNavi;
-
+        if (endNavi > maxPage) {
+            endNavi = maxPage;
+        }
         prevPage = (startNavi > 1) ? startNavi - 1 : 1;
         nextPage = (endNavi < maxPage) ? endNavi + 1 : maxPage;
     }

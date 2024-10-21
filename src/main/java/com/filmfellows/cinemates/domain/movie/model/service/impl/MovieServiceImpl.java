@@ -41,8 +41,6 @@ public class MovieServiceImpl implements MovieService {
         if (movieDTO.getTrailers() != null) {
             for (MovieDTO.TrailerDTO trailer : movieDTO.getTrailers()) {
                     movieMapper.insertTrailer(movieNo, trailer);
-//                if (trailer.getTrailerUrl() != null && !trailer.getTrailerUrl().isEmpty()) {
-//                }
             }
         }
         // 스틸컷 처리
@@ -50,8 +48,6 @@ public class MovieServiceImpl implements MovieService {
         if (movieDTO.getStillcuts() != null) {
             for (MovieDTO.StillcutDTO stillcut : movieDTO.getStillcuts()) {
                     movieMapper.insertStillcut(movieNo, stillcut);
-//                if (stillcut.getStillcutUrl() != null && !stillcut.getStillcutUrl().isEmpty()) {
-//                }
             }
         }
 
@@ -97,26 +93,9 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<MovieListDTO> getComingSoonMovies() {
-        return movieMapper.selectComingSoonMovies();
-    }
-
-    @Override
-    public List<MovieListDTO> getNowShowingMovies() {
-        return movieMapper.selectNowShowingMovies();
-    }
-
-    @Override
     public List<MovieListDTO> getMoviesByStatusAndSort(String status, int page, int size, String sortBy) {
         int offset = page * size;
         return movieMapper.selectMoviesByStatusAndSort(status, offset, size, sortBy);
-    }
-
-
-    @Override
-    public List<MovieDTO.StillcutDTO> selectStillcutsPaginated(Long movieNo, int page, int size) {
-        int offset = page * size;
-        return movieMapper.selectStillcutsPaginated(movieNo, offset, size);
     }
 
     @Override
@@ -127,12 +106,6 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public int addReview(Review addReview) {
-//        ReviewDTO existingReview = movieMapper.selectMyReview(addReview.getMovieNo(), addReview.getMemberId());
-//        if (existingReview != null) {
-//            return false; // 중복된 리뷰가 있음
-//        }
-//        movieMapper.insertReview(addReview);
-//        return true; // 리뷰 추가 성공
         int result = movieMapper.insertReview(addReview);
         return result;
     }

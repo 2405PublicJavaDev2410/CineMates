@@ -14,18 +14,27 @@ document.addEventListener('DOMContentLoaded', function() {
         checkbox.addEventListener('change', updateTotalPrice);
     });
 
-    document.querySelectorAll('.quantity-btn').forEach(btn => {
+    document.querySelectorAll('.cart-quantity-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             let cartNo = this.getAttribute('data-cart-no');
             let productNo = this.getAttribute('data-product-no');
-            let change = this.classList.contains('decrease') ? -1 : 1;
+            let change = this.classList.contains('decrease') ? -1 : 1; // decrease는 -1, increase는 +1
             updateQuantity(cartNo, productNo, change);
+        });
+    });
+
+
+    document.querySelectorAll('.cart-btn-delete').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            let cartNo = this.getAttribute('data-cart-no');
+            let productNo = this.getAttribute('data-product-no');
+            removeItem(cartNo, productNo);
         });
     });
 });
 
 function updateQuantity(cartNo, productNo, change) {
-    let quantityElement = document.getElementById(`quantity-${cartNo}${productNo}`);
+    let quantityElement = document.getElementById(`quantity${cartNo}${productNo}`);
     let currentQuantity = parseInt(quantityElement.textContent);
     let newQuantity = currentQuantity + parseInt(change);
 
@@ -69,8 +78,9 @@ function removeItem(cartNo, productNo) {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // 성공적으로 삭제되면 페이지를 새로고침합니다
-                    location.reload();
+                    let itemElement = document.querySelector(`[data-cart-no="${cartNo}"][data-product-no="${productNo}"]`).closest('.cart-item');
+                    itemElement.remove();
+                    updateTotalPrice();
                 } else {
                     alert('항목 삭제에 실패했습니다.');
                 }
@@ -83,9 +93,10 @@ function removeItem(cartNo, productNo) {
 }
 
 function updateItemTotal(cartNo, productNo) {
-    let quantityElement = document.getElementById(`quantity-${cartNo}${productNo}`);
-    let priceElement = quantityElement.closest('tr').querySelector('td:nth-child(4)');
-    let totalElement = document.getElementById(`total-${cartNo}${productNo}`);
+    let quantityElement = document.getElementById(`quantity${cartNo}${productNo}`);
+    let itemElement = quantityElement.closest('.cart-item');
+    let priceElement = itemElement.querySelector('.cart-product-info div span:nth-child(2)');
+    let totalElement = itemElement.querySelector('.cart-product-total');
 
     let quantity = parseInt(quantityElement.textContent);
     let price = parseInt(priceElement.getAttribute('data-price'));
@@ -101,14 +112,14 @@ function updateTotalPrice() {
 
     checkboxes.forEach(checkbox => {
         if (checkbox.checked) {
-            let row = checkbox.closest('tr');
-            let quantityElement = row.querySelector('td:nth-child(3) span');
-            let priceElement = row.querySelector('td:nth-child(4)');
-            let discountElement = row.querySelector('td:nth-child(5)');
+            let itemElement = checkbox.closest('.cart-item');
+            let quantityElement = itemElement.querySelector('.cart-product-quantity span');
+            let priceElement = itemElement.querySelector('.cart-product-info div span:nth-child(2)');
+            let discountElement = itemElement.querySelector('.cart-product-discount');
 
             let quantity = parseInt(quantityElement.textContent);
             let price = parseInt(priceElement.getAttribute('data-price'));
-            let discount = parseInt(discountElement.getAttribute('data-discount') || '0');
+            let discount = parseInt(discountElement ? discountElement.getAttribute('data-discount') : '0');
 
             totalAmount += price * quantity;
             totalDiscount += discount * quantity;
@@ -122,59 +133,17 @@ function updateTotalPrice() {
     document.getElementById('finalPrice').textContent = finalPrice.toLocaleString() + '원';
 }
 
-function deleteSelected() {
-    let selectedItems = Array.from(document.getElementsByName('selectedItems'))
-        .filter(checkbox => checkbox.checked)
-        .map(checkbox => checkbox.value);
-
-    if (selectedItems.length === 0) {
-        alert('삭제할 상품을 선택해주세요.');
-        return;
-    }
-
-    if (confirm('선택한 상품을 삭제하시겠습니까?')) {
-        fetch('/store/cart/delete', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ cartNos: selectedItems })
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    location.reload();
-                } else {
-                    alert('상품 삭제에 실패했습니다.');
-                }
-            });
-    }
-}
-
-function clearCart() {
-    if (confirm('장바구니를 비우시겠습니까?')) {
-        fetch('/store/cart/clear', {
-            method: 'POST'
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    location.reload();
-                } else {
-                    alert('장바구니 비우기에 실패했습니다.');
-                }
-            });
-    }
-}
-
 function orderSelected() {
-    let selectedItems = Array.from(document.getElementsByName('selectedItems'))
-        .filter(checkbox => checkbox.checked)
+    let selectedItems = Array.from(document.querySelectorAll('input[name="selectedItems"]:checked'))
         .map(checkbox => {
-            let row = checkbox.closest('tr');
-            let quantity = parseInt(row.querySelector('td:nth-child(3) span').textContent);
+            let item = checkbox.closest('.cart-item');
+            let cartNo = item.getAttribute('data-cart-no');
+            let productNo = item.getAttribute('data-product-no');
+            let quantityElement = item.querySelector('.cart-product-quantity span');
+            let quantity = parseInt(quantityElement.textContent);
             return {
-                productNo: checkbox.value,
+                cartNo: cartNo,
+                productNo: productNo,
                 quantity: quantity
             };
         });

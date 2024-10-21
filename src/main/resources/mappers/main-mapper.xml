@@ -1,6 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.filmfellows.cinemates.domain.main.model.mapper.MainMapper">
+<!--    <select id="selectBoxOfficeList" resultType="com.filmfellows.cinemates.app.main.dto.boxOfficeDTO">-->
+<!--        WITH BOOKABLE_MOVIES AS (-->
+<!--            SELECT m.MOVIE_NO, m.TITLE, m.POSTER_URL,-->
+<!--                   COALESCE(SUM(r.RESERVATION_VISITOR), 0) AS VISITOR_COUNT-->
+<!--            FROM MOVIE_TBL m-->
+<!--                     LEFT JOIN RESERVATION_TBL r ON m.MOVIE_NO = r.MOVIE_NO-->
+<!--            WHERE m.IS_BOOKABLE = 'Y'-->
+<!--            GROUP BY m.MOVIE_NO, m.TITLE, m.POSTER_URL-->
+<!--        ),-->
+<!--             TOTAL_VISITORS AS (-->
+<!--                 SELECT SUM(VISITOR_COUNT) AS TOTAL_COUNT-->
+<!--                 FROM BOOKABLE_MOVIES-->
+<!--             ),-->
+<!--             RANKED_MOVIES AS (-->
+<!--                 SELECT-->
+<!--                     bm.MOVIE_NO AS movieNo,-->
+<!--                     bm.TITLE AS title,-->
+<!--                     bm.POSTER_URL AS posterUrl,-->
+<!--                     bm.VISITOR_COUNT AS visitorCount,-->
+<!--                     tv.TOTAL_COUNT AS totalCount,-->
+<!--                     CASE-->
+<!--                         WHEN tv.TOTAL_COUNT > 0 THEN-->
+<!--                             TO_CHAR(ROUND((bm.VISITOR_COUNT / tv.TOTAL_COUNT) * 100, 2), 'FM999990.00') || '%'-->
+<!--                         ELSE '0.00%'-->
+<!--                         END AS reservationRate,-->
+<!--                     ROW_NUMBER() OVER (ORDER BY (bm.VISITOR_COUNT / NULLIF(tv.TOTAL_COUNT, 0)) DESC) AS rn-->
+<!--                 FROM BOOKABLE_MOVIES bm-->
+<!--                          CROSS JOIN TOTAL_VISITORS tv-->
+<!--                 WHERE bm.VISITOR_COUNT > 0-->
+<!--             )-->
+<!--        SELECT-->
+<!--            movieNo, title, posterUrl, visitorCount, totalCount, reservationRate-->
+<!--        FROM RANKED_MOVIES-->
+<!--        ORDER BY rn ASC-->
+<!--    </select>-->
     <select id="selectBoxOfficeList" resultType="com.filmfellows.cinemates.app.main.dto.boxOfficeDTO">
         WITH BOOKABLE_MOVIES AS (
             SELECT m.MOVIE_NO, m.TITLE, m.POSTER_URL,
@@ -14,6 +49,16 @@
                  SELECT SUM(VISITOR_COUNT) AS TOTAL_COUNT
                  FROM BOOKABLE_MOVIES
              ),
+             MOVIE_RATINGS AS (
+                 SELECT
+                     r.MOVIE_NO,
+                     ROUND(AVG(r.SCORE), 2) AS AVERAGE_SCORE,
+                     COUNT(r.REVIEW_NO) AS REVIEW_COUNT
+                 FROM
+                     REVIEW_TBL r
+                 GROUP BY
+                     r.MOVIE_NO
+             ),
              RANKED_MOVIES AS (
                  SELECT
                      bm.MOVIE_NO AS movieNo,
@@ -26,15 +71,25 @@
                              TO_CHAR(ROUND((bm.VISITOR_COUNT / tv.TOTAL_COUNT) * 100, 2), 'FM999990.00') || '%'
                          ELSE '0.00%'
                          END AS reservationRate,
+                     NVL(mr.AVERAGE_SCORE, 0) AS averageScore,
+                     NVL(mr.REVIEW_COUNT, 0) AS reviewCount,
                      ROW_NUMBER() OVER (ORDER BY (bm.VISITOR_COUNT / NULLIF(tv.TOTAL_COUNT, 0)) DESC) AS rn
                  FROM BOOKABLE_MOVIES bm
                           CROSS JOIN TOTAL_VISITORS tv
+                          LEFT JOIN MOVIE_RATINGS mr ON bm.MOVIE_NO = mr.MOVIE_NO
                  WHERE bm.VISITOR_COUNT > 0
              )
         SELECT
-            movieNo, title, posterUrl, visitorCount, totalCount, reservationRate
+            movieNo,
+            title,
+            posterUrl,
+            visitorCount,
+            totalCount,
+            reservationRate,
+            averageScore,
+            reviewCount
         FROM RANKED_MOVIES
-        ORDER BY rn ASC
+        ORDER BY rn ASC, averageScore DESC
     </select>
     <select id="selectBannerList" resultType="BannerDTO">
         SELECT *

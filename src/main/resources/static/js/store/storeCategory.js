@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
             addToCart(productNo);
         });
     });
-     const buyNowButtons = document.querySelectorAll('.buy-now');
+     const buyNowButtons = document.querySelectorAll('.category-buy-now');
      buyNowButtons.forEach(button => {
          button.addEventListener('click', function(e) {
              e.preventDefault();

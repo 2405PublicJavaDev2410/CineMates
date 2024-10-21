@@ -60,4 +60,6 @@ public class MianServiceImpl implements MainService {
     public List<ChatRoomDTO> getChatRoomList() {
         return mainMapper.selectChatRoomList();
     }
+
+//
 }

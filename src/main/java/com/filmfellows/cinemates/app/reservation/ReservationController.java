@@ -27,7 +27,7 @@ public class ReservationController {
     @Autowired
     ReservationService rService;
 
-// 예매 페이지
+    // 예매 페이지
     @GetMapping("/Ticketing")
     public String showShowTimePage(Model model, HttpSession session, String title, Integer movieNo) {
         System.out.println("title : " + title);
@@ -64,11 +64,11 @@ public class ReservationController {
         model.addAttribute("lList", lList);
         return "pages/reservation/showtime";
     }
-
+// 좌석 / 인원 페이지
     @PostMapping("/Ticketing/PersonSeat")
     public String showPersonSeatPage(@ModelAttribute ReservationDTO rDTO, @RequestParam String reservationSeat, Model model, HttpSession session,
                                      @RequestParam String title,
-                                     @RequestParam(value="prevPage", required = false) String prevPage,
+                                     @RequestParam(value = "prevPage", required = false) String prevPage,
                                      @RequestParam(value = "memberIds", required = false) String memberIdList) {
         String memberId = (String) session.getAttribute("memberId");
         System.out.println("memberId : " + memberId);
@@ -78,10 +78,9 @@ public class ReservationController {
         rDTO.setMemberId(memberId);
         ShowInfoDTO sDTO = rService.selectMoviePoster(title);
         System.out.println("영화 포스터: " + sDTO);
-        //테스트용 리스트
-//        memberIdList = ("test8,MEM001,admin1");
-        // memberIdList가 null이 아니고 비어있지 않을 때만 처리
-        if(prevPage != null && "chatRoom".equals(prevPage)) {
+
+// memberIdList가 null이 아니고 비어있지 않을 때만 처리
+        if (prevPage != null && "chatRoom".equals(prevPage)) {
             if (memberIdList != null && !memberIdList.isEmpty()) {
                 List<String> memberIds = Arrays.asList(memberIdList.split(","));
                 System.out.println("ReservationController: " + memberIds);
@@ -98,7 +97,7 @@ public class ReservationController {
             }
         }
 
-        // JSON 문자열을 Map으로 변환
+// JSON 문자열을 Map으로 변환
         ObjectMapper mapper = new ObjectMapper();
         Map<Integer, List<String>> reservedSeats;
         try {
@@ -108,10 +107,10 @@ public class ReservationController {
             e.printStackTrace();
             reservedSeats = new HashMap<>();
         }
-
+ // 아이디의 티켓 확인하는 로직
         Integer ticketCount = rService.selectTicketCount(memberId);
         rDTO.setTicketCount(ticketCount);
-        // 예약된 좌석 정보를 모델에 추가
+// 예약된 좌석 정보를 모델에 추가
         model.addAttribute("reservationSeat", reservedSeats);
         model.addAttribute("sDTO", sDTO);
         System.out.println("rDTO 보여줘라 " + rDTO);
@@ -119,7 +118,7 @@ public class ReservationController {
         return "pages/reservation/personSeat";
     }
 
-
+// 예약번호 생성하는 랜덤문자열 메소드
     private static String generateRandomString(int length) {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < length; i++) {
@@ -129,10 +128,10 @@ public class ReservationController {
         return builder.toString();
     }
 
+// AJAX 요청 극장 조회
     @GetMapping("/getCinemas")
     public ResponseEntity<List<String>> selectCinemas(
             @RequestParam String cinemaAddress
-//            @RequestParam Integer cinemaLocationCode
     ) {
         List<String> addresses = Arrays.asList(cinemaAddress.split("/"));
         List<String> allCinemas = new ArrayList<>();
@@ -141,10 +140,10 @@ public class ReservationController {
             allCinemas.addAll(cinemas);
             System.out.println(cinemas);
         }
-//        List<String>address = rService.selectCinemasByCode(cinemaLocationCode);
         return ResponseEntity.ok(allCinemas);
     }
 
+// AJAX 요청 영화 조회
     @GetMapping("/getMovies")
     public ResponseEntity<List<String>> selectMovies(@RequestParam String cinemaName) {
         System.out.println("영화 이름" + cinemaName);
@@ -153,6 +152,7 @@ public class ReservationController {
         return ResponseEntity.ok(mList);
     }
 
+// AJAX 요청 상영시간 조회
     @GetMapping("/getShowtimes")
     public ResponseEntity<Map<String, Object>> selectShowInfo(
             @RequestParam String cinemaName,

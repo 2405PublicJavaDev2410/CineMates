@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const pageSize = 10;
     let hasMoreReviews = true;
 
-    // 리뷰 작성 버튼 이벤트
+    // 관람평 작성 버튼 이벤트
     reviewsTab.addEventListener('click', function(e) {
         if (e.target.classList.contains('review-write-button')) {
             checkLoginAndReview();
@@ -26,12 +26,12 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // 리뷰 작성 가능
+                    // 관람평 작성 가능
                     toggleReviewForm();
                 } else {
-                    // 이미 리뷰를 작성했거나 다른 이유로 작성 불가
+                    // 이미 관람평를 작성했거나 다른 이유로 작성 불가
                     alert(data.message);
-                    if (data.message === "이미 이 영화에 대한 리뷰를 작성하셨습니다.") {
+                    if (data.message === "이미 이 영화에 대한 관람평를 작성하셨습니다.") {
                         // document.querySelector('.review-write-button').style.display = 'none';
                     }
                 }
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const reviewForm = document.querySelector('#reviewForm');
         const reviewWriteButton = document.querySelector('.review-write-button');
         reviewForm.style.display = reviewForm.style.display === 'none' ? 'block' : 'none';
-        reviewWriteButton.textContent = reviewForm.style.display === 'none' ? '리뷰 작성' : '작성 취소';
+        reviewWriteButton.textContent = reviewForm.style.display === 'none' ? '관람평 작성' : '작성 취소';
     }
 
 
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        // 리뷰 추가 성공 시 첫 페이지 리뷰를 다시 로드
+                        // 관람평 추가 성공 시 첫 페이지 관람평를 다시 로드
                         currentPage = 0;
                         fetchReviews(currentPage, false);
 
@@ -83,20 +83,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
                         alert(data.message);
                     } else {
-                        if (data.message === "이미 이 영화에 대한 리뷰를 작성하셨습니다.") {
-                            // 이미 리뷰를 작성한 경우
+                        if (data.message === "이미 이 영화에 대한 관람평를 작성하셨습니다.") {
+                            // 이미 관람평를 작성한 경우
                             alert(data.message);
                             toggleReviewForm();
                             document.querySelector('.review-write-button').style.display = 'none';
                         } else {
                             // 기타 오류
-                            alert(data.message || '리뷰 등록에 실패했습니다. 다시 시도해주세요.');
+                            alert(data.message || '관람평 등록에 실패했습니다. 다시 시도해주세요.');
                         }
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('리뷰 등록 중 오류가 발생했습니다.');
+                    alert('관람평 등록 중 오류가 발생했습니다.');
                 });
         }
     });
@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="username-myReview">
                     <input type="hidden" name="reviewNo" value="${review.reviewNo}">
                     <span class="review-username">${review.memberId}</span>
-                    ${isMyReview ? '<span class="isMyReview">나의 리뷰</span>' : ''}
+                    ${isMyReview ? '<span class="isMyReview">나의 관람평</span>' : ''}
                 </div>
                 <span class="review-date">${review.regDate}</span>
                 <div class="review-stars">${getStars(review.score)}</div>
@@ -191,21 +191,21 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function deleteReview(reviewNo) {
-        if (confirm('정말로 이 리뷰를 삭제하시겠습니까?')) {
+        if (confirm('정말로 이 관람평를 삭제하시겠습니까?')) {
             fetch(`/removeReview/${reviewNo}`, { method: 'DELETE' })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        alert('리뷰가 삭제되었습니다.');
-                        // 리뷰 목록 새로고침
+                        alert('관람평가 삭제되었습니다.');
+                        // 관람평 목록 새로고침
                         fetchReviews(currentPage, false);
                     } else {
-                        alert('리뷰 삭제에 실패했습니다.');
+                        alert('관람평 삭제에 실패했습니다.');
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('리뷰 삭제 중 오류가 발생했습니다.');
+                    alert('관람평 삭제 중 오류가 발생했습니다.');
                 });
         }
     }
