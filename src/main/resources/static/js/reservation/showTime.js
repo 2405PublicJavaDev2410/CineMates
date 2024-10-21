@@ -362,36 +362,3 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 });
-
-//
-//         $.ajax({
-//             url: '/getMovies',
-//             method: 'GET',
-//             data: {cinemaName: cinemaName},
-//             success: function (response) {
-//                 var movie = $('#movie-List');
-//                 movie.empty();
-//
-//                 $.each(response, function (index, item) {
-//                     movie.append('<li><a href="#none">' + item + '</a></li>');
-//                 });
-//                 console.log("잘 전달 됨");
-//             },
-//             error: function (xhr, status, error) {
-//                 console.error("AJAX 요청 실패: ", error);
-//             }
-//         });
-//     });
-//
-//     // 영화 선택 시 selected 클래스 추가
-//     $('#movie-List').on('click', 'a', function (e) {
-//         e.preventDefault();
-//         var title = $(this).text();
-//         $(this).parent().addClass('selected').siblings().removeClass('selected');
-//         $('#title').val(title);
-//         selectedMovie = title;
-//
-//     });
-// });
-//
-//

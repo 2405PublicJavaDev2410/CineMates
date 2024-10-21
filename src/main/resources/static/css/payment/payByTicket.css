@@ -24,7 +24,6 @@ body {
     margin: 0 auto;
     height: 500px;
     background-color: #fff;
-    border: 1px solid #ddd;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 /* payment*/
@@ -40,7 +39,6 @@ body {
     background-color: #ed1c24;
     border: 1px solid #ccc;
     color: #fff;
-    cursor: pointer;
 }
 
 .payment, .payment_pay, .payment_1 {
@@ -78,7 +76,7 @@ body {
 
 
 /* else */
-#ticket-btn, #credit-btn {
+#ticket-btn {
     border-radius: 3px;
 
 }
