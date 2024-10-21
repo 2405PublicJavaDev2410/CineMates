@@ -25,6 +25,7 @@
     font-family: 'GmarketSansMedium', serif;
     font-size: 28px;
     font-weight: bold;
+    border-bottom: 2px solid #E12C25;
 }
 #remove-info {
     margin-bottom: 10px;

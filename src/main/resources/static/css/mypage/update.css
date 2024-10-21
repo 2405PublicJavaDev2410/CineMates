@@ -19,12 +19,13 @@
 .update-form {
     font-family: 'NEXON Lv1 Gothic OTF', serif;
     margin-left: 40px;
-    padding: 20px;
+    padding: 20px 0 20px 20px;
 }
 #update-title {
     font-family: 'GmarketSansMedium', serif;
     font-size: 28px;
     font-weight: bold;
+    border-bottom: 2px solid #E12C25;
 }
 #member-section {
     width: 740px;

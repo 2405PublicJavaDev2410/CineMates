@@ -8,7 +8,7 @@ function loginAdmin() {
         dataType: 'text',
         success: function(data) {
             if(data === 'success') {
-                window.location.href= '/';
+                window.location.href= '/admin/banner';
             }else if(data === 'fail') {
                 alert("관리자 계정만 접속할 수 있습니다!");
             }

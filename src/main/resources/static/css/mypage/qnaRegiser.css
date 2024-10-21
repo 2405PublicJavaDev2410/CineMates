@@ -27,6 +27,8 @@
     font-family: 'GmarketSansMedium', serif;
     font-size: 28px;
     font-weight: bold;
+    width: 740px;
+    border-bottom: 2px solid #E12C25;
 }
 #new-qna-info pre {
     font-family: 'NEXON Lv1 Gothic OTF', serif;

@@ -20,12 +20,13 @@
 .search-reserve-form {
     font-family: 'NEXON Lv1 Gothic OTF', serif;
     margin-left: 40px;
-    padding: 20px;
+    padding: 20px 0 20px 20px;
 }
 #reserve-title {
     font-family: 'GmarketSansMedium', serif;
     font-size: 28px;
     font-weight: bold;
+    border-bottom: 2px solid #E12C25;
 }
 #reserve-search-section {
     padding: 30px 20px;
@@ -105,7 +106,7 @@
     height: 42px;
     float: right;
     font-size: 16px;
-    border-radius: 8px;
+    border-radius: 5px;
     margin-top: 10px;
     letter-spacing: 0;
 }

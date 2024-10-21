@@ -30,6 +30,7 @@
     font-family: 'GmarketSansMedium', serif;
     font-size: 28px;
     font-weight: bold;
+    border-bottom: 2px solid #E12C25;
 }
 #new-qna-btn {
     display: block;

@@ -32,6 +32,7 @@
     font-family: 'GmarketSansMedium', serif;
     font-size: 28px;
     font-weight: bold;
+    border-bottom: 2px solid #E12C25;
 }
 .form-group {
     margin-bottom: 15px;
