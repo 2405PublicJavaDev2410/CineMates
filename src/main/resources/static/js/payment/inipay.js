@@ -61,7 +61,7 @@ function PayMethod(method) {
         payment3.style.width='100%';
         payment3.style.height='148px';
         paymentbtn.style.position='relative';
-        paymentbtn.style.top='88px';
+        paymentbtn.style.top='97px';
 
     }
     if(method ==='credit'){
