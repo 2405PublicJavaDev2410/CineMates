@@ -38,24 +38,27 @@ public class StoreController {
 
     @GetMapping("/{category}")
     public String showCategoryProducts(@PathVariable String category, Model model) {
-        List<String> allCategories = Arrays.asList("기프트카드", "영화관람권", "콤보", "팝콘", "스낵", "음료");
+        List<String> categories = Arrays.asList("기프트카드", "영화관람권", "콤보", "팝콘", "스낵", "음료");
         List<Product> products = sService.getProductsByCategory(category);
         model.addAttribute("products", products);
         model.addAttribute("category", category);
-        model.addAttribute("allCategories", allCategories);
+        model.addAttribute("categories", categories);
         return "store/storeCategory";
     }
 
     @GetMapping("/product/{productNo}")
     public String getProductDetail(@PathVariable int productNo, Model model) {
+        List<String> categories = Arrays.asList("기프트카드", "영화관람권", "콤보", "팝콘", "스낵", "음료");
         Product product = sService.getProductDetail(productNo);
         model.addAttribute("product", product);
+        model.addAttribute("categories", categories);
         return "store/product-detail";
     }
 
     @GetMapping("/cart")
     public String showCart(Model model, HttpSession session) {
         String memberId = (String) session.getAttribute("memberId");
+        List<String> categories = Arrays.asList("기프트카드", "영화관람권", "콤보", "팝콘", "스낵", "음료");
         List<Cart> cartItems = sService.getCartItems(memberId);
         int totalAmount = 0;
         int totalDiscount = 0;
@@ -70,6 +73,7 @@ public class StoreController {
             totalDiscount += itemTotalDiscount;
             finalPrice += (itemTotalPrice - itemTotalDiscount);
         }
+        model.addAttribute("categories", categories);
         model.addAttribute("cartItems", cartItems);
         model.addAttribute("totalAmount", totalAmount);
         model.addAttribute("totalDiscount", totalDiscount);
@@ -148,7 +152,7 @@ public class StoreController {
         }
     }
 
-    @GetMapping("/gift/{productNo}")
+    @GetMapping("/gift/new/{productNo}")
     public String showGiftForProduct(@PathVariable int productNo, Model model, HttpSession session) {
         String memberId = (String) session.getAttribute("memberId");
         if (memberId == null) {
@@ -186,7 +190,7 @@ public class StoreController {
         return "redirect:/store/gift/confirm/" + savedGift.getGiftNo();
     }
 
-    @GetMapping("/gift/{giftNo}")
+    @GetMapping("/gift/confirm/{giftNo}")
     public String confirmGift(@PathVariable int giftNo, Model model, HttpSession session) {
         String memberId = (String) session.getAttribute("memberId");
         if (memberId == null) {
@@ -242,6 +246,7 @@ public class StoreController {
             , Model model, HttpSession session) {
         // 로그인한 회원 정보 가져오기
         String memberId = (String) session.getAttribute("memberId");
+        List<String> categories = Arrays.asList("기프트카드", "영화관람권", "콤보", "팝콘", "스낵", "음료");
         if (memberId == null) {
             return "redirect:/login";
         }
@@ -254,6 +259,7 @@ public class StoreController {
         }
 
         Member member = sService.getMemberById(memberId);
+        model.addAttribute("categories", categories);
         model.addAttribute("member", member);  // 회원 정보 모델에 추가
         model.addAttribute("purchase", purchase);
         return "store/purchase";

@@ -98,6 +98,7 @@
     <select id="getTotalQnaCount" resultType="_int">
         SELECT COUNT(*)
         FROM QNA_TBL
+        WHERE MEMBER_ID != 'admin1'
     </select>
     <!-- 내 문의 총 개수 조회 -->
     <select id="getTotalQnaCountById" resultType="_int">

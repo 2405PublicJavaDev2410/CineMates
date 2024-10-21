@@ -62,10 +62,13 @@ public class AdminMyPageController {
      * [관리자] 문의 상세조회 페이지 이동
      */
     @GetMapping("/admin/qna-detail/{qnaNo}")
-    public String showQnaDetail(@PathVariable("qnaNo") Integer qnaNo, Model model) {
+    public String showQnaDetail(@PathVariable("qnaNo") Integer qnaNo, Model model,
+                                @RequestParam(value = "cp", required = false, defaultValue = "1") Integer currentPage) {
         Qna qna = myService.selectOneQnaByNo(qnaNo);
         QnaFile qnaFile = myService.selectQnaFileByNo(qnaNo);
         model.addAttribute("qna", qna);
+        model.addAttribute("cp", currentPage);
+        System.out.println("현재 페이지 : " + currentPage);
         if(qna.getParentQnaNo() == null) {
             Qna reply = myService.selectOneReplyByNo(qnaNo);
             if(reply != null) {

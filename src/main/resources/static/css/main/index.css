@@ -181,9 +181,10 @@ main {
     font-family: 'NEXON Lv1 Gothic OTF', serif;
 }
 
-/*.char-room-link:hover {*/
-/*    filter: brightness(50%);*/
-/*}*/
+.chat-room-link:hover {
+    /*filter: brightness(50%);*/
+    color: black; !important;
+}
 
 .movie-info-review {
     display: flex;

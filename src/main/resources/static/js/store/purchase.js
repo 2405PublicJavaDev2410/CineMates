@@ -18,7 +18,8 @@ function requestPay() {
         return;
     }
 
-    var payMethod = document.getElementById("payMethod").value;
+    /*var payMethod = document.getElementById("payMethod").value;*/
+    var payMethod = document.querySelector('input[name="payment"]:checked').value;
 
     IMP.request_pay({
         pg: "html5_inicis",

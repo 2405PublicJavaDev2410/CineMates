@@ -61,7 +61,7 @@
                 <div class="chat-list-card-slider">
                     <div class="chat-list-card-wrapper">
                         <div class="chat-list-card-container" th:each="room : ${cList}">
-                            <a class="char-room-link" th:href="@{/chat/room/{roomNo}(roomNo=${room.roomNo})}">
+                            <a class="chat-room-link" th:href="@{/chat/room/{roomNo}(roomNo=${room.roomNo})}">
                                 <div class="card">
                                     <div class="image">
                                         <img th:src="${room.posterUrl}" th:alt="${room.title}">
