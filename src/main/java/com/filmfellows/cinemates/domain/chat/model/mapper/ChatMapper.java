@@ -209,7 +209,14 @@ public interface ChatMapper {
     /**
      * 담당자 : 이충무
      * 기능 : TOP5 채팅방 리스트 조회
-     * @return String
+     * @return List<ChatRoom>
      */
     List<ChatRoom> selectChatRoomListByTop();
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : 인원수별 채팅방 리스트 조회
+     * @return List<ChatRoom>
+     */
+    List<ChatRoom> selectChatRoomListByRank();
 }

@@ -219,8 +219,16 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public Map<String, Object> selectChatRoomListByTop() {
-        List<ChatRoom> chatRoomListByTop = cMapper.selectChatRoomListByTop();
+    public Map<String, Object> selectChatRoomListByTop(String status) {
+
+        List<ChatRoom> chatRoomListByTop = null;
+
+        if(status.equals("top5")){
+            chatRoomListByTop = cMapper.selectChatRoomListByTop();
+        }else if(status.equals("joinCountRank")){
+            chatRoomListByTop = cMapper.selectChatRoomListByRank();
+        }
+
 
         // 채팅방 개설 상대 시간 계산
         List<RelativeTime> relativeTimeList = new ArrayList<>();
@@ -240,6 +248,9 @@ public class ChatServiceImpl implements ChatService {
             String recentChatContent = cMapper.selectRecentChatContent(item.getRoomNo());
             item.setRecentContent(recentChatContent);
         }
+
+
+
         Map<String, Object> map = new HashMap<>();
 
 

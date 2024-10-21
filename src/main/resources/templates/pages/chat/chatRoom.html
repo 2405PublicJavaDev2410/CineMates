@@ -452,6 +452,8 @@
             let memberId = /*[[${session.memberId}]]*/; // 사용자 이름 입력받기
             let firstOrJoin = /*[[${firstOrJoin}]]*/;
             const socketUrl = `ws://localhost:9000/ws/chat`;
+            // const hongbinUrl = `ws://192.168.60.216:9000/ws/chat`;
+
             let socket = null;
 
             // 새로고침시에 재연결
@@ -496,7 +498,8 @@
                     if(message.messageType === 'WAIT'){
                         confirmOnOffStatus();
                     }else if(message.messageType === 'JOIN'){
-                        console.log("onmessage 로 join 받은겨 만겨")
+                        console.log("onmessage 로 join 받은겨 만겨");
+                        updateUserList("", message.memberId);
                         confirmOnOffStatus();
                     } else{
                         if(memberId !== message.memberId){
@@ -924,9 +927,9 @@
                         }else{
                             let acceptMemberIds = "";
                             response.forEach(member => {
-                                acceptMemberIds += member.memberId+", ";
+                                acceptMemberIds += member.memberId+",";
                             })
-                            acceptMemberIds = acceptMemberIds.substring(0,acceptMemberIds.length-2);
+                            acceptMemberIds = acceptMemberIds.substring(0,acceptMemberIds.length-1);
                             let memberIdsInput = document.querySelector('input[name=memberIds]');
                             memberIdsInput.value = acceptMemberIds;
                             document.querySelector("form").submit();

@@ -290,7 +290,12 @@ main {
 
 .chat-list-card-container {
     width: 100%;
+    transition: all 200ms;
 }
+.chat-list-card-container:hover{
+    transform:scale(1.03);
+}
+
 
 /* 카드 스타일 */
 .chat-list-card .card {
@@ -349,5 +354,7 @@ main {
 }
 
 
-
+.joinCountBox{
+    /*position: absolute;*/
+}
 

@@ -26,20 +26,29 @@ import java.util.Map;
 public class MainController {
 
     private final MainService mainService;
+    private final ChatService cService;
 
     @GetMapping("/")
     public String showMain(Model model) {
         List<boxOfficeDTO> bList = mainService.getBoxOfficeList();
         List<BannerDTO> bannerList = mainService.getMainBannerList();
-        List<ChatRoomDTO> cList = mainService.getChatRoomList();
+//        List<ChatRoomDTO> cList = mainService.getChatRoomList();
+
+
+
+        // 태그 리스트 조회
+        List<ChatTag> tagList = cService.selectChatTagList("default");
+        // 참여인원별 채팅방 조회 및 상대시간 조회
+        Map<String, Object> map = cService.selectChatRoomListByTop("joinCountRank");
+
+
+        model.addAttribute("tagList", tagList);
+        model.addAttribute("chatRoomList", map.get("chatRoomListByTop"));
+        model.addAttribute("relativeTimeList", map.get("relativeTimeList"));
+
         model.addAttribute("bList", bList);
         model.addAttribute("bannerList", bannerList);
-        model.addAttribute("cList", cList);
-
-
-
-
-
+//      model.addAttribute("cList", cList);
 
         return "pages/main/index";
     }

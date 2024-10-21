@@ -7,6 +7,11 @@
 <head>
     <link rel="stylesheet" href="/css/main/index.css">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+<!--    채팅방 이동-->
+    <script crossorigin="anonymous" src="/js/chat/listMenuBtn.js" defer></script>
+    <style>
+
+    </style>
 </head>
 <body>
 <div layout:fragment="content">
@@ -52,8 +57,9 @@
                 <span class="slider-prev"><i class="fi fi-rr-angle-left"></i></span>
                 <div class="chat-list-card-slider">
                     <div class="chat-list-card-wrapper">
-                        <div class="chat-list-card-container" th:each="room : ${cList}">
-                            <a class="char-room-link" th:href="@{/chat/room/{roomNo}(roomNo=${room.roomNo})}">
+                        <div class="chat-list-card-container" th:each="room : ${chatRoomList}">
+
+                            <a class="chat-room-link" href="javascript:void(0)" th:onclick="joinChatRoom([[${room.roomNo}]], [[${room.roomWriter}]], [[${room.movieNo}]],[[${room.title}]], [[${room.posterUrl}]], [[${room.cinemaNo}]],[[${room.cinemaName}]], [[${room.cinemaLocationCode}]], [[${room.cinemaAddress}]], [[${room.roomCategory}]]);">
                                 <div class="card">
                                     <div class="image">
                                         <img th:src="${room.posterUrl}" th:alt="${room.title}">
@@ -61,12 +67,29 @@
                                     <div class="info">
                                         <div class="tags">
                                             <span th:text="${room.title}"></span>
+                                            <div class="chatTagList" style="margin-top: 3px;">
+                                                <span th:each="tag : ${tagList}" th:if="${tag.roomNo == room.roomNo}" th:text="'#'+${tag.tagName}+' '"></span>
+                                            </div>
                                         </div>
-                                        <h3 th:text="${room.roomName}"></h3>
+
+                                        <h3 style="font-size: 20px; font-weight:bold" th:text="${#strings.length(room.roomName) > 15 ? room.roomName.substring(0, 12) + ' . . .' : room.roomName}"></h3>
+
                                         <p th:if="${room.roomCategory == 'reservation'}" th:text="'모집방'"></p>
                                         <p th:if="${room.roomCategory == 'talk'}" th:text="'소통방'"></p>
                                         <p th:text="${room.cinemaAddress} + ' / ' + ${room.cinemaName}"></p>
-                                        <p th:text="${room.roomDate} + ' 개설'"></p>
+                                        <div style="display: flex; justify-content: space-between; font-size: 14px;font-family: 'NEXON Lv1 Gothic OTF', serif;color: #555555">
+                                            <th:block th:each="rTime : ${relativeTimeList}" >
+                                                <p class="itemCard-roomDate" th:if="${room.roomDate == rTime.roomDate}" th:text="'개설일 : '+${rTime.relativeTime}"></p>
+                                            </th:block>
+                                            <div class="joinCountBox">
+                                                <th:block th:if="${room.joinCount == null}">
+                                                    <div style="" th:text="'1명 참여중'"></div>
+                                                </th:block>
+                                                <th:block th:if="${room.joinCount != null}">
+                                                    <div style="" th:text="${room.joinCount}+'명 참여중'"></div>
+                                                </th:block>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </a>
