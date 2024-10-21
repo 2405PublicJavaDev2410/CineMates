@@ -84,7 +84,8 @@
         JOIN MOVIE_TBL movie ON chat.MOVIE_NO = movie.MOVIE_NO
         JOIN CINEMA_TBL cinema ON chat.CINEMA_NO = cinema.CINEMA_NO
         LEFT JOIN PROFILE_IMG_TBL profile ON chat.ROOM_WRITER = profile.MEMBER_ID
-        WHERE chat.ROOM_WRITER = #{writer}
+        LEFT JOIN CHAT_JOIN_TBL chatJoin ON chat.ROOM_NO = chatJoin.ROOM_NO
+        WHERE chatJoin.MEMBER_ID = #{writer}
 
         ORDER BY chat.ROOM_DATE DESC
     </select>
@@ -159,18 +160,18 @@
     </select>
 
     <select id="getMyTotalCount" resultType="_int">
-        SELECT COUNT(*) FROM CHAT_ROOM_TBL WHERE ROOM_WRITER = #{writer}
+        SELECT COUNT(*) FROM CHAT_JOIN_TBL WHERE MEMBER_ID = #{writer}
     </select>
 
 
     <select id="selectChatJoinList" resultType="ChatJoinProfile">
         SELECT MEMBER_ID, ROOM_NO, FILE_RENAME, FILE_PATH
         FROM CHAT_JOIN_TBL
-        JOIN PROFILE_IMG_TBL USING(MEMBER_ID) WHERE ROOM_NO=#{roomNo}
+        LEFT JOIN PROFILE_IMG_TBL USING(MEMBER_ID) WHERE ROOM_NO=#{roomNo}
     </select>
 
     <insert id="insertChatJoin">
-        INSERT INTO CHAT_JOIN_TBL VALUES(#{roomNo}, #{memberId})
+        INSERT INTO CHAT_JOIN_TBL VALUES(#{roomNo}, #{memberId}, DEFAULT, DEFAULT)
     </insert>
 
     <insert id="insertChatMessage">
@@ -202,10 +203,106 @@
 
     <select id="selectChatMessageList" resultType="chatMessageAndProfile">
         SELECT * FROM CHAT_TBL
-            JOIN PROFILE_IMG_TBL USING(MEMBER_ID)
+           LEFT JOIN PROFILE_IMG_TBL USING(MEMBER_ID)
             WHERE ROOM_NO = #{roomNo} AND
             CHAT_DATE >= #{myJoinDate}
         ORDER BY CHAT_DATE ASC
     </select>
 
+    <delete id="deleteMemberJoinByRoom">
+        DELETE FROM CHAT_JOIN_TBL WHERE MEMBER_ID=#{memberId} AND ROOM_NO=#{roomNo}
+    </delete>
+
+    <select id="checkOnOffStatus" resultType="ChatJoinProfile">
+        SELECT * FROM CHAT_JOIN_TBL WHERE ROOM_NO = #{roomNo}
+    </select>
+
+    <update id="updateOnOffStatus">
+        UPDATE CHAT_JOIN_TBL SET STATUS = #{onOffStatus} WHERE ROOM_NO = #{roomNo} AND MEMBER_ID = #{memberId}
+    </update>
+
+    <delete id="deleteChatRoom">
+        DELETE FROM CHAT_ROOM_TBL WHERE ROOM_NO = #{roomNo}
+    </delete>
+
+    <delete id="deleteMessageOfChatRoom">
+        DELETE FROM CHAT_TBL WHERE ROOM_NO = #{roomNo}
+    </delete>
+
+    <update id="updateAcceptStatus">
+        UPDATE CHAT_JOIN_TBL SET ACCEPT_STATUS = #{acceptStatus} WHERE ROOM_NO = #{roomNo} AND MEMBER_ID = #{memberId}
+    </update>
+
+<!--    극장별 상영관 리스트-->
+    <select id="selectScreenByCinema" resultType="finalReserveInfoByTicket">
+        SELECT DISTINCT c.SCREEN_NO, c.SCREEN_NAME
+        FROM MOVIE_TBL a
+                 JOIN SHOWTIME_TBL b ON b.MOVIE_NO = a.MOVIE_NO
+                 JOIN SCREEN_TBL c ON b.SCREEN_NO = c.SCREEN_NO
+                 JOIN CINEMA_TBL d ON c.CINEMA_NO = d.CINEMA_NO
+        WHERE d.CINEMA_NO = #{cinemaNo} AND a.MOVIE_NO = #{movieNo}
+        ORDER BY c.SCREEN_NO ASC
+    </select>
+
+<!--    날짜별 상영시간 리스트-->
+    <select id="selectShowtimeByScreen" resultType="finalReserveInfoByTicket">
+        SELECT c.SCREEN_NO, c.SCREEN_NAME, b.SHOWTIME_NO, b.SHOWTIME_TIME
+        FROM MOVIE_TBL a
+        JOIN SHOWTIME_TBL b ON b.MOVIE_NO = a.MOVIE_NO
+        JOIN SCREEN_TBL c ON b.SCREEN_NO = c.SCREEN_NO
+        JOIN CINEMA_TBL d ON c.CINEMA_NO = d.CINEMA_NO
+        WHERE d.CINEMA_NO = #{cinemaNo} AND a.MOVIE_NO = #{movieNo}
+        AND b.SHOWTIME_START &lt;=  #{selectedDate} AND b.SHOWTIME_END &gt;= #{selectedDate}
+        ORDER BY c.SCREEN_NO ASC, b.SHOWTIME_TIME ASC
+    </select>
+
+<!--    동의 여부 체크 리스트-->
+    <select id="selectAcceptAll" resultType="ChatJoin">
+        SELECT * FROM CHAT_JOIN_TBL
+        LEFT JOIN MEMBER_TBL USING(MEMBER_ID)
+        WHERE ROOM_NO = #{roomNo}
+    </select>
+
+    <select id="selectJoinCountByRoomNo" resultType="_int">
+        SELECT COUNT(*) FROM CHAT_JOIN_TBL
+        WHERE ROOM_NO = #{roomNo}
+        GROUP BY ROOM_NO
+    </select>
+
+<!--    공지 제외한 최근 대화 내용-->
+    <select id="selectRecentChatContent" resultType="string">
+        SELECT * FROM (
+              SELECT CHAT_CONTENT
+              FROM CHAT_TBL
+              WHERE ROOM_NO = #{roomNo}
+                AND CHAT_CONTENT NOT LIKE '%' || '님이 대화방에 참여했습니다' || '%'
+                AND CHAT_CONTENT NOT LIKE '%' || '님이 대화방을 나갔습니다' || '%'
+              ORDER BY CHAT_DATE DESC
+                      )
+        WHERE ROWNUM = 1
+    </select>
+
+<!--    top5 채팅방 리스트-->
+    <select id="selectChatRoomListByTop" resultType="ChatRoom">
+        SELECT * FROM (
+        SELECT chat.ROOM_NO, chat.ROOM_NAME, chat.ROOM_WRITER, chat.ROOM_DATE, chat.ROOM_CATEGORY,
+        chat.MOVIE_NO, movie.TITLE, movie.POSTER_URL,
+        chat.CINEMA_LOCATION_CODE,
+        SUBSTR(cinema.CINEMA_ADDRESS, 1, INSTR(cinema.CINEMA_ADDRESS, ' ') - 1) AS CINEMA_ADDRESS,
+        cinema.CINEMA_NO, cinema.CINEMA_NAME,
+        profile.FILE_RENAME, profile.FILE_PATH,
+        COUNT(cj.MEMBER_ID) AS MEMBER_COUNT
+        FROM CHAT_ROOM_TBL chat
+        JOIN MOVIE_TBL movie ON chat.MOVIE_NO = movie.MOVIE_NO
+        JOIN CINEMA_TBL cinema ON chat.CINEMA_NO = cinema.CINEMA_NO
+        LEFT JOIN PROFILE_IMG_TBL profile ON chat.ROOM_WRITER = profile.MEMBER_ID
+        LEFT JOIN CHAT_JOIN_TBL cj ON chat.ROOM_NO = cj.ROOM_NO
+        GROUP BY chat.ROOM_NO, chat.ROOM_NAME, chat.ROOM_WRITER, chat.ROOM_DATE, chat.ROOM_CATEGORY,
+        chat.MOVIE_NO, movie.TITLE, movie.POSTER_URL,
+        chat.CINEMA_LOCATION_CODE, cinema.CINEMA_ADDRESS,
+        cinema.CINEMA_NO, cinema.CINEMA_NAME,
+        profile.FILE_RENAME, profile.FILE_PATH
+        ORDER BY MEMBER_COUNT DESC, ROOM_DATE DESC )
+        WHERE ROWNUM &lt;= 5
+    </select>
 </mapper>

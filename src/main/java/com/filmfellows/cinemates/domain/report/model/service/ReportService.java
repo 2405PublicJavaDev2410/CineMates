@@ -100,4 +100,11 @@ public interface ReportService {
 
      */
     int deletechating(int reportWriteno);
+    /**
+     * 신고 중복 체크
+     * pram reportWriteno
+     * return result
+
+     */
+    int overlapreport(int writeno, String category);
 }
