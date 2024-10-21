@@ -46,12 +46,12 @@ public class AuthenticationFilter implements Filter {
                 String role = (String) session.getAttribute("role");
 
                 if(role == null) {
-                    res.sendRedirect(req.getContextPath() + "/login");
+                    res.sendRedirect(req.getContextPath() + "/");
                     return;
                 }
 
                 if(path.equals("/admin/") && !role.equals("ADMIN")) {
-                    res.sendRedirect(req.getContextPath() + "/login");
+                    res.sendRedirect(req.getContextPath() + "/");
                     return;
                 }
             }
