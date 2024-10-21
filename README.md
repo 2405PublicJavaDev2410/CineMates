@@ -6,6 +6,7 @@
 사용자들이 영화를 통해 새로운 친구를 만나고, 함께 영화를 즐길 수 
 있는 커뮤니티를 구축하는 데 중점을 둔다는 의미를 전달합니다.
 - - -
+
 # 1. 개발환경<br>
 ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
 ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
@@ -63,4 +64,4 @@
     - 
   ## 김창호:
     - 
-```
+    
