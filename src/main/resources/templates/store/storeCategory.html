@@ -1,50 +1,44 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/defaultLayout}"
+      layout:fragment="Content">
 <head>
     <meta charset="UTF-8">
-    <title>스토어 카테고리</title>
+    <title>CINEMATES-StoreCategory</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/store/storeCategory.css}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-    <style>
-        .store-main { width: 980px; margin: 0 auto; }
-        .store-title { font-size: 24px; font-weight: bold; margin-bottom: 10px; }
-        .store-subtitle { font-size: 14px; color: #666; margin-bottom: 20px; }
-        .category-nav { margin-bottom: 30px; }
-        .category-nav a { margin-right: 20px; text-decoration: none; color: #333; }
-        .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-        .product-item { text-align: center; position: relative; }
-        .product-image-container { position: relative; width: 200px; height: 200px; margin: 0 auto; overflow: hidden; }
-        .product-image { width: 100%; height: 100%; object-fit: cover; }
-        .product-icons { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: none; background-color: rgba(0,0,0,0.7); padding: 10px; border-radius: 5px; }
-        .product-icons a, .product-icons button { display: inline-block; margin: 0 5px; color: white; text-decoration: none; font-size: 16px; background: none; border: none; cursor: pointer; }
-        .product-item:hover .product-icons { display: block; }
-        .product-name { font-weight: bold; margin: 10px 0; }
-        .product-price { color: #333; margin-bottom: 10px; }
-    </style>
 </head>
 <body>
-<main class="store-main" role="main">
-    <h2 class="store-title">스토어</h2>
-    <p class="store-subtitle">영화, 모두에게 즐거운 경험</p>
+<main class="category-main" role="main">
+    <div class="store-content">
+        <h2 class="category-title">스토어</h2>
+        <store-nav>
+            <a th:each="category : ${categories}" th:href="@{'/store/' + ${category}}" th:text="${category}"></a>
+            <a class="store-cart-link" th:href="@{/store/cart}">장바구니</a>
+        </store-nav>
+    </div>
 
-    <nav class="category-nav">
-        <a th:each="cat : ${allCategories}" th:href="@{'/store/' + ${cat}}" th:text="${cat}"></a>
-    </nav>
-
-    <h3 th:text="${category}"></h3>
-
-    <div class="product-grid">
-        <div class="product-item" th:each="product : ${products}">
-            <div class="product-image-container">
-                <img class="product-image" th:src="${product.imageUrl}" th:alt="${product.productName}">
-                <div class="product-icons">
-                    <button class="cart-icon" th:data-product-no="${product.productNo}">장바구니 담기</button>
-                    <a th:href="@{/store/gift/{productNo}(productNo=${product.productNo})}">선물하기</a>
-                        <button class="buy-now" th:data-product-no="${product.productNo}">구매하기</button>
+    <div class="category-product-grid">
+        <div class="category-product-item" th:each="product : ${products}">
+            <div class="category-product-image-container">
+                <img class="category-product-image" th:src="${product.imageUrl}" th:alt="${product.productName}">
+                <div class="category-product-icons">
+                    <button class="cart-icon" th:data-product-no="${product.productNo}">
+                        <i class="fas fa-shopping-cart"></i>
+                    </button>
+                    <a th:href="@{/store/gift/{productNo}(productNo=${product.productNo})}" class="gift-icon">
+                        <i class="fas fa-gift"></i>
+                    </a>
+                    <button class="category-buy-now" th:data-product-no="${product.productNo}">
+                        <i class="fas fa-credit-card"></i>
+                    </button>
                 </div>
             </div>
-            <h4 class="product-name" th:text="${product.productName}"></h4>
-            <p class="product-price" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + '원'"></p>
+            <h4 class="category-product-name" th:text="${product.productName}"></h4>
+            <p class="category-product-price"
+               th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + '원'"></p>
         </div>
     </div>
 </main>

@@ -5,6 +5,8 @@ import com.filmfellows.cinemates.domain.store.model.vo.PurchaseItem;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 @Mapper
 public interface PurchaseMapper {
     Purchase selectPurchaseDetails(int purchaseNo);
