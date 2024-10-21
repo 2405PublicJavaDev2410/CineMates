@@ -1,7 +1,9 @@
 main {
     /*background-color: black;*/
 }
-
+.view-all-btn:hover {
+    background-color: #E12C25;
+}
 .container {
     width: 100%;
     margin: 0 auto;
