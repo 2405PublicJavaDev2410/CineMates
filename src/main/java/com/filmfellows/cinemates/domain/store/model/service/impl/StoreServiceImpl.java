@@ -199,7 +199,7 @@ public class StoreServiceImpl implements StoreService {
             cMapper.clearCart(memberId);
         } else {
             for (Map<String, Object> item : items) {
-                int productNo = (int) item.get("productNo");
+                int productNo = Integer.parseInt((String) item.get("productNo"));
                 int quantity = (int) item.get("quantity");
                 Product product = pMapper.selectProductDetail(productNo);
 

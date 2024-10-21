@@ -90,7 +90,7 @@
 
             <div class="tab-content hidden" id="reviewsTab" >
                 <div class="review-section">
-                        <button class="review-write-button">리뷰 작성</button>
+                        <button class="review-write-button">관람평 작성</button>
                     <form id="reviewForm" class="review-form" action="/addReview" method="post" onsubmit="return false;">
                         <input type="hidden" id="movieNo" name="movieNo" th:value="${movie?.movieNo}">
                         <div class="review-form-content">
@@ -107,8 +107,8 @@
                                     <input type="radio" id="1-star" name="score" value="1" required/>
                                     <label for="1-star">★</label>
                                 </div>
-                                <textarea class="review-textarea" placeholder="리뷰를 작성해주세요" name="reviewContent" required></textarea>
-                                <button type="submit" class="submit-review">리뷰 등록</button>
+                                <textarea class="review-textarea" placeholder="관람평를 작성해주세요" name="reviewContent" required></textarea>
+                                <button type="submit" class="submit-review">관람평 등록</button>
                             </div>
                         </div>
                     </form>
@@ -125,7 +125,7 @@
 <!--                                        <div class="username-myReview">-->
 <!--                                            <input type="hidden" name="reviewNo" th:value="${myReview.reviewNo}">-->
 <!--                                            <span class="review-username" th:text="${myReview.memberId}"></span>-->
-<!--                                            <span class="my-review">나의 리뷰</span>-->
+<!--                                            <span class="my-review">나의 관람평</span>-->
 <!--                                        </div>-->
 <!--                                        <span class="review-date" th:text="${myReview.regDate}"></span>-->
 <!--                                        <div th:if="${myReview.score} == '5'">-->

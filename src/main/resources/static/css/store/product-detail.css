@@ -1,0 +1,164 @@
+/* 기본 스타일 */
+body {
+    font-family: 'NEXON Lv1 Gothic OTF';
+    background-color: #fff;
+    color: #333;
+}
+
+main.store-detail {
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: calc(100vh - 310px);
+    padding-bottom: 20px;
+}
+
+/* storeMain 페이지에서 사용하는 카테고리와 장바구니 내비게이션 스타일 */
+store-nav {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+store-nav a {
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+    padding: 10px;
+    font-family: 'GmarketSansMedium', serif;
+}
+
+store-nav a:hover {
+    color: #e5101d; /* CGV의 빨간색 강조 */
+}
+
+.store-cart-link {
+    position: relative;
+    font-weight: bold;
+    color: #e5101d;
+}
+
+.detail-product-title {
+    margin-top: 20px;
+}
+
+/* 상품 정보 전체 레이아웃 */
+.detail-product-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+/* 상품 이미지 스타일 */
+.detail-product-image img {
+    max-width: 400px;
+    height: auto;
+    display: block;
+}
+
+/* 상품 정보 및 구매 옵션 */
+.detail-product-details {
+    flex: 1;
+}
+
+.detail-product-details p {
+    font-size: 16px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+/* 가격 텍스트 강조 */
+.detail-product-details p span {
+    font-size: 20px;
+    font-weight: bold;
+    color: #e5101d;
+}
+
+/* 수량 선택 버튼 */
+.quantity-selector {
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+}
+
+.quantity-btn {
+    padding: 5px 15px;
+    font-size: 18px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+}
+
+.quantity-btn:hover {
+    background-color: #ddd;
+}
+
+#quantity {
+    text-align: center;
+    width: 50px;
+    border: 1px solid #ddd;
+    margin: 0 10px;
+}
+
+/* 구매금액 강조 */
+#totalPrice {
+    font-size: 22px;
+    font-weight: bold;
+    color: #e5101d;
+    margin-top: 10px;
+}
+
+/* 버튼 스타일 */
+.detail-action-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.detail-action-buttons button,
+.detail-action-buttons a {
+    flex: 1;
+    padding: 15px 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background-color: #333;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.detail-action-buttons button:hover,
+.detail-action-buttons a:hover {
+    background-color: #e5101d;
+}
+
+/* 장바구니 아이콘 스타일 */
+#addToCart {
+    background-color: #e5101d;
+}
+
+#addToCart:hover {
+    background-color: #b00c15;
+}
+
+/* 구매하기 버튼 스타일 */
+#buyButton {
+    background-color: #333;
+}
+
+#buyButton:hover {
+    background-color: #e5101d;
+}
+
+/* 선물하기 버튼 스타일 */
+#giftButton {
+    background-color: #666;
+}
+
+#giftButton:hover {
+    background-color: #333;
+}

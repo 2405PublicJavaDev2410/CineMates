@@ -1,0 +1,189 @@
+body {
+    font-family: 'NEXON Lv1 Gothic OTF';
+    background-color: #fff;
+    color: #333;
+}
+
+main.store-gift {
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: calc(100vh - 310px);
+    padding-bottom: 20px;
+}
+
+/* storeMain 페이지에서 사용하는 카테고리와 장바구니 내비게이션 스타일 */
+store-nav {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+store-nav a {
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+    padding: 10px;
+    font-family: 'GmarketSansMedium', serif;
+}
+
+store-nav a:hover {
+    color: #e5101d; /* CGV의 빨간색 강조 */
+}
+
+.cart-steps {
+    display: flex;
+    justify-content: center; /* 가운데 정렬 */
+    align-items: center;
+    padding: 20px 0;
+    font-size: 24px;
+}
+
+.cart-steps .step {
+    padding: 10px 20px;
+    color: #666;
+    text-align: center;
+}
+
+.cart-steps .step-active {
+    color: #e5101d; /* 활성화된 스텝 빨간색 강조 */
+    font-weight: bold;
+}
+
+.cart-steps .step-divider {
+    padding: 0 10px;
+    color: #999;
+}
+
+.cart-steps .step:before {
+    content: attr(data-step);
+    margin-right: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* 구매 상품 정보 */
+.gift-product-info {
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+    margin-bottom: 30px;
+}
+
+.gift-product-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.gift-product-image img {
+    width: 120px;
+    height: auto;
+}
+
+.gift-product-details {
+    flex: 1;
+    padding-left: 20px;
+}
+
+.gift-product-details h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.gift-product-details p {
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+/* 선물 메시지 입력 */
+.gift-message {
+    margin-bottom: 30px;
+}
+
+.gift-message select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.gift-message textarea {
+    width: 100%;
+    height: 60px;
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    resize: none;
+}
+
+/* 선물 받는 분 정보 */
+.gift-recipient-info {
+    margin-bottom: 30px;
+}
+
+.gift-recipient-form {
+    display: flex;
+    gap: 15px;
+}
+
+.gift-recipient-form input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+}
+
+.gift-recipient-form button {
+    padding: 10px 20px;
+    background-color: #e5101d;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.gift-recipient-form button:hover {
+    background-color: #d40e0e;
+}
+
+/* 결제 금액 */
+.gift-price-summary {
+    text-align: right;
+}
+
+.gift-price-summary p {
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+.gift-price-summary span {
+    font-weight: bold;
+    color: #e5101d;
+}
+
+/* 액션 버튼 */
+.gift-action-buttons {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.gift-action-buttons button {
+    padding: 10px 30px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 0 10px;
+}
+
+.gift-action-buttons button:hover {
+    background-color: #e5101d;
+}

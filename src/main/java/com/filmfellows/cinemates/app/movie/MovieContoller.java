@@ -25,6 +25,9 @@ public class MovieContoller {
 
     private final MovieService movieService;
 
+    /**
+     * [사용자] 영화 리스트 페이지
+     */
     @GetMapping("/movie-list")
     public Object showMovieList(@RequestParam(required = false, defaultValue = "NOW SHOWING") String status,
                             Model model,
@@ -60,6 +63,9 @@ public class MovieContoller {
         }
     }
 
+    /**
+     * [사용자] 영화 정보 페이지
+     */
     @GetMapping("/movie-detail/{movieNo}")
     public Object showMovieDetail(@PathVariable Long movieNo, Model model,
                                   HttpServletRequest request,
@@ -106,7 +112,9 @@ public class MovieContoller {
         }
     }
 
-
+    /**
+     * [사용자] 영화에 리뷰 등록
+     */
     @PostMapping("/addReview")
     @ResponseBody
     public ResponseEntity<?> addReview(@RequestBody Review review, HttpSession session) {
@@ -123,13 +131,7 @@ public class MovieContoller {
         addReview.setReviewContent(review.getReviewContent());
 
         log.info(addReview.toString());
-//        boolean success = movieService.addReview(addReview);
         int result = movieService.addReview(addReview);
-//        if (success) {
-//            return ResponseEntity.ok(Map.of("success", true, "message", "리뷰가 성공적으로 추가되었습니다."));
-//        } else {
-//            return ResponseEntity.ok(Map.of("success", false, "message", "이미 이 영화에 대한 리뷰를 작성하셨습니다."));
-//        }
         try {
             if (result > 0) {
                 return ResponseEntity.ok(Map.of("success", true, "message", "리뷰가 성공적으로 등록되었습니다."));
@@ -143,6 +145,9 @@ public class MovieContoller {
         }
     }
 
+    /**
+     * [사용자] 리뷰 삭제
+     */
     @DeleteMapping("/removeReview/{reviewNo}")
     @ResponseBody
     public ResponseEntity<?> removeReview(HttpSession session, @PathVariable int reviewNo) {
@@ -160,6 +165,9 @@ public class MovieContoller {
         }
     }
 
+    /**
+     * [사용자] 리뷰 작성시 로그인 확인, 중복 작성 확인
+     */
     @GetMapping("/checkLoginAndReview")
     @ResponseBody
     public ResponseEntity<?> checkLoginAndReview(HttpSession session, Long movieNo) {

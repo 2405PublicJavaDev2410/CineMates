@@ -9,10 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 public interface MovieService {
-
-
-
     List<MovieDTO> selectMovieDetail(Long movieNo);
+
     void updateMovie(MovieDTO movieDTO);
 
     void insertMovie(MovieDTO movie);
@@ -20,17 +18,12 @@ public interface MovieService {
     List<Movie> selectSearchMovie(Map<String, String> paramMap);
 
     List<Movie> selectMovieList(RowBounds rowBounds, Integer currentPage);
+
     int totalMovieCount();
 
     List<MovieReservationRateDTO> getMovieReservationRates();
 
-    List<MovieListDTO> getComingSoonMovies();
-
-    List<MovieListDTO> getNowShowingMovies();
-
     List<MovieListDTO> getMoviesByStatusAndSort(String status, int page, int size, String sortBy);
-
-    List<MovieDTO.StillcutDTO> selectStillcutsPaginated(Long movieNo, int page, int size);
 
     List<ReviewDTO> getReviewByMovieNo(Long movieNo, int page, int size);
 

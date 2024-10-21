@@ -12,6 +12,5 @@ public class QnaFile {
     private String fileName;
     private String fileRename;
     private String filePath;
-    private String webPath;
     private int qnaNo;
 }

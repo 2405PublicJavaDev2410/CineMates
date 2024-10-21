@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const backButton = document.getElementById('back-button');
     const nextButton = document.getElementById('next-button');
 
-    document.getElementById('giftForm').addEventListener('submit', function(e) {
+    document.getElementById('gift').addEventListener('submit', function(e) {
         e.preventDefault();
         if (validateInputs()) {
             const formData = new FormData(this);

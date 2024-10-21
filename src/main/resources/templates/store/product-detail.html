@@ -1,23 +1,32 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/defaultLayout}"
+      layout:fragment="Content">
 <head>
     <meta charset="UTF-8">
-<!--    <meta name="_csrf" th:content="${_csrf.token}"/>
-    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>-->
     <title th:text="${product.productName} + ' - CGV 스토어'">상품 상세 - CGV 스토어</title>
-    <!--<link rel="stylesheet" th:href="@{/css/store/productDetail.css}">-->
+    <link rel="stylesheet" th:href="@{/css/store/product-detail.css}">
 </head>
 <body>
-<main role="main">
-    <section class="product-detail">
-        <h1 class="product-title" th:text="${product.productName}">상품명</h1>
+<main class="store-detail">
+    <div class="store-content">
+        <store-nav>
+            <a th:each="category : ${categories}" th:href="@{'/store/' + ${category}}" th:text="${category}"></a>
+            <a class="store-cart-link" th:href="@{/store/cart}">장바구니</a>
+        </store-nav>
+    </div>
 
-        <div class="product-info">
-            <div class="product-image">
+    <section class="detail-product-detail">
+        <h1 class="detail-product-title" th:text="${product.productName}">상품명</h1>
+
+        <div class="detail-product-info">
+            <div class="detail-product-image">
                 <img th:src="${product.imageUrl}" th:alt="${product.productName}">
             </div>
 
-            <div class="product-details">
+            <div class="detail-product-details">
                 <p>가격: <span th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + '원'"></span></p>
                 <p>상품구성: <span th:text="${product.description}"></span></p>
                 <p>상품번호: <span th:text="${product.productNo}"></span></p>
@@ -32,7 +41,7 @@
 
                     <p>총 구매금액: <span id="totalPrice" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + '원'"></span></p>
 
-                    <div class="action-buttons">
+                    <div class="detail-action-buttons">
                         <button type="button" id="addToCart" th:data-product-no="${product.productNo}">장바구니</button>
                         <a id="giftButton" href="/store/gift/${product.productNo}" th:data-product-no="${product.productNo}">선물하기</a>
                         <button type="button" id="buyButton" th:data-product-no="${product.productNo}">구매하기</button>

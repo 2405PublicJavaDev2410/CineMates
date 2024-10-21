@@ -47,9 +47,6 @@ public class MemberController {
      */
     @GetMapping("/login")
     public String showLogin(Model model, HttpSession session) {
-        if (session != null) {
-            session.invalidate();
-        }
         String state = UUID.randomUUID().toString();
         String naverLoginUrl = String.format("https://nid.naver.com/oauth2.0/authorize?client_id=%s&redirect_uri=%s&response_type=code&state=%s",
                 naverApi.getNaverClientId(), naverApi.getNaverRedirectUri(), state);

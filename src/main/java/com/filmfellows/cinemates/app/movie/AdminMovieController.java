@@ -87,22 +87,7 @@ public class AdminMovieController {
      */
     @PostMapping("admin/insert-movie")
     public String insertMovie(MovieDTO movieDTO) {
-        MovieDTO movie = new MovieDTO();
-        movie.setTitle(movieDTO.getTitle());
-        movie.setPosterUrl(movieDTO.getPosterUrl());
-        movie.setReleaseDate(movieDTO.getReleaseDate());
-        movie.setRunningTime(movieDTO.getRunningTime());
-        movie.setRating(movieDTO.getRating());
-        movie.setSynopsis(movieDTO.getSynopsis());
-        movie.setDirector(movieDTO.getDirector());
-        movie.setActors(movieDTO.getActors());
-        movie.setGenre(movieDTO.getGenre());
-        movie.setProductionCountry(movieDTO.getProductionCountry());
-        movie.setScreeningStatus(movieDTO.getScreeningStatus());
-        movie.setIsBookable(movieDTO.getIsBookable());
-        movie.setTrailers(movieDTO.getTrailers());
-        movie.setStillcuts(movieDTO.getStillcuts());
-        movieService.insertMovie(movie);
+        movieService.insertMovie(movieDTO);
         return "redirect:/admin/movie-list";
     }
 
@@ -115,6 +100,9 @@ public class AdminMovieController {
         return "redirect:/admin/movie-detail/" + movieDTO.getMovieNo();
     }
 
+    /**
+     * [관리자] 영화 삭제
+     */
     @GetMapping("/removeMovie")
     public String removeMovie(Long movieNo) {
         movieService.removeMovie(movieNo);

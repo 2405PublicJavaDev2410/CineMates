@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{common/layout/defaultLayout}"
@@ -32,7 +33,7 @@
 		</div>
 		<h1>극   장</h1><br><br>
 		<h1>[[${cinema.cinemaName}]]</h1><br>
-			
+
 		<div id="searchmap"></div><div><button th:onclick="parking([[${cinema.cinemaNo}]],[[${cinema.cinemaAddress}]])">위치/길찾기</button></div><br>
 		<div id="cinemamain">
 		<br><br><br><br><br><br><br><br><br><br><br>
