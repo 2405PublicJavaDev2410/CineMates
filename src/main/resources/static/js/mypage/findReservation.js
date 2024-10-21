@@ -39,7 +39,7 @@ const OneResultInfo = (rsv) => {
         <button type="button" 
                 class="common-primary-btn"
                 id="cancel-rsv-btn" 
-                th:onclick="cancelReservation(${rsv.reservationNo})">예매취소</button>
+                onclick="cancelPay()">예매취소</button>
     `;
     document.querySelector('#movie-info').innerHTML = rsvContents;
 }

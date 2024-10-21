@@ -32,6 +32,7 @@
     font-family: 'GmarketSansMedium', serif;
     font-size: 28px;
     font-weight: bold;
+    border-bottom: 2px solid #E12C25;
 }
 .form-group {
     margin-bottom: 15px;
@@ -105,15 +106,18 @@
 }
 #result-table tbody td {
     padding: 12px;
-    font-size: 14px;
+    font-size: 16px;
     border-bottom: 1px solid #dddddd;
 }
 .product-link {
     cursor: pointer;
+    margin: 0 80px;
+    display: flex;
+    align-items: center;
 }
 .product-image {
-    width: 50px;
-    height: 50px;
+    width: 80px;
+    height: 80px;
     object-fit: cover;
     margin-right: 10px;
 }

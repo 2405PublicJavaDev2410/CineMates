@@ -56,6 +56,19 @@
             MEMBER_ID = #{memberId}
     </select>
 
+    <!-- 구매 내역 조회(마이페이지) -->
+    <select id="selectOrderList">
+        SELECT PRODUCT_NO, PURCHASE_DATE, IMAGE_URL, PRODUCT_NAME, FINAL_AMOUNT
+        FROM PRODUCT_TBL pr
+            JOIN PURCHASE_ITEM_TBL pi USING (PRODUCT_NO)
+            JOIN PURCHASE_TBL pu USING (PURCHASE_NO)
+        WHERE MEMBER_ID = #{memberId}
+            AND PURCHASE_DATE
+                BETWEEN TO_TIMESTAMP(#{startDate}, 'YYYY-MM-DD')
+                AND TO_TIMESTAMP(#{endDate}, 'YYYY-MM-DD')
+        ORDER BY PURCHASE_DATE DESC
+    </select>
+
     <select id="selectMemberById" parameterType="string" resultType="Member">
         SELECT * FROM MEMBER_TBL WHERE MEMBER_ID = #{memberId}
     </select>

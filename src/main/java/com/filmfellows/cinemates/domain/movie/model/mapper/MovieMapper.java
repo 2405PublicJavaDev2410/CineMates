@@ -1,10 +1,6 @@
 package com.filmfellows.cinemates.domain.movie.model.mapper;
 
-import com.filmfellows.cinemates.app.main.dto.boxOfficeDTO;
-import com.filmfellows.cinemates.app.movie.dto.MovieDTO;
-import com.filmfellows.cinemates.app.movie.dto.MovieListDTO;
-import com.filmfellows.cinemates.app.movie.dto.MovieReservationRateDTO;
-import com.filmfellows.cinemates.app.movie.dto.ReviewDTO;
+import com.filmfellows.cinemates.app.movie.dto.*;
 import com.filmfellows.cinemates.domain.movie.model.vo.Movie;
 import com.filmfellows.cinemates.domain.movie.model.vo.Review;
 import org.apache.ibatis.annotations.Mapper;
@@ -54,11 +50,15 @@ public interface MovieMapper {
                                           @Param("offset") int offset,
                                           @Param("size") int size);
 
-    void insertReview(Review addReview);
+    int insertReview(Review addReview);
 
     int selectReviewCountByMovieNo(Long movieNo);
 
     void deleteReview(String memberId, int reviewNo);
 
     ReviewDTO selectMyReview(Long movieNo, String memberId);
+
+    void deleteMovie(Long movieNo);
+
+    List<MovieBannerDTO> selectMovieBanner();
 }

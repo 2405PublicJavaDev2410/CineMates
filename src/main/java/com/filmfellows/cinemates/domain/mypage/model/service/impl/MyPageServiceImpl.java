@@ -1,12 +1,15 @@
 package com.filmfellows.cinemates.domain.mypage.model.service.impl;
 
 import com.filmfellows.cinemates.app.mypage.dto.QnaDTO;
+import com.filmfellows.cinemates.app.mypage.dto.myOrderRequest;
+import com.filmfellows.cinemates.app.mypage.dto.myOrderResponse;
 import com.filmfellows.cinemates.common.utility.Util;
 import com.filmfellows.cinemates.domain.member.model.vo.ProfileImg;
 import com.filmfellows.cinemates.domain.mypage.model.mapper.MyPageMapper;
 import com.filmfellows.cinemates.domain.mypage.model.service.MyPageService;
 import com.filmfellows.cinemates.domain.mypage.model.vo.Qna;
 import com.filmfellows.cinemates.domain.mypage.model.vo.QnaFile;
+import com.filmfellows.cinemates.domain.store.model.mapper.PurchaseMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.RowBounds;
@@ -25,10 +28,11 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class MyPageServiceImpl implements MyPageService {
     private final MyPageMapper myMapper;
+    private final PurchaseMapper pMapper;
 
     @Override
-    public String selectOrderList() {
-        return "";
+    public List<myOrderResponse> selectOrderList(myOrderRequest request) {
+        return pMapper.selectOrderList(request);
     }
 
     @Override

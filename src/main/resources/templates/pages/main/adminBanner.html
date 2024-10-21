@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/adminLayout}"
+      layout:fragment="Content">
+<head>
+  <link rel="stylesheet" href="/css/main/adminBanner.css">
+</head>
+<body>
+<div layout:fragment="content">
+  <main>
+    <h1>배너 리스트</h1>
+    <div class="register-container">
+      <div class="register-section">
+        <button type="button" class="register-btn" onclick="goInsert();">등록</button>
+      </div>
+    </div>
+    <div class="banner-list-area">
+      <table class="common-table">
+        <colgroup>
+          <col style="width: 10%" />
+          <col style="width: 60%" />
+          <col style="width: 20%" />
+          <col style="width: 10%" />
+        </colgroup>
+        <thead>
+        <tr>
+          <th>번호</th>
+          <th>제목</th>
+          <th>페이지타입</th>
+          <th>게시상태</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="banner : ${bList}">
+          <td th:text="${banner.bannerNo}"></td>
+          <td>
+            <a th:href="@{/admin/banner-detail/{bannerNo}(bannerNo=${banner.bannerNo})}">
+              <span th:text="${banner.bannerTitle}"></span>
+            </a>
+          </td>
+          <td th:text="${banner.pageType}"></td>
+          <td th:text="${banner.isActive}"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+</div>
+  </main>
+
+<th:block layout:fragment="script">
+<!--  <script type="text/javascript" src="/js/movie/movieDetail.js"></script>-->
+</th:block>
+<script th:inline="javascript">
+
+  function goInsert() {
+    location.href = "/admin/insert-banner"
+  }
+</script>
+
+</body>
+</html>

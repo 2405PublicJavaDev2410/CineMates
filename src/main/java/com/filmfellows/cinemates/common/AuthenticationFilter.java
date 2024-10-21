@@ -32,6 +32,12 @@ public class AuthenticationFilter implements Filter {
             return;
         }
 
+        // 채팅방 리스트 페이지는 제외
+        if(uri.startsWith("/chat/list") || uri.startsWith("/chat/search")) {
+            chain.doFilter(req, res);
+            return;
+        }
+
         // 필터 걸어야 하는 경로
         String[] protectedPaths = {"/admin/", "/my-page/", "/Ticketing/", "/chat/"};
 

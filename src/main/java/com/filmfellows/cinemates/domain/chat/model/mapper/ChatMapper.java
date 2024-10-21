@@ -1,8 +1,8 @@
 package com.filmfellows.cinemates.domain.chat.model.mapper;
 
-import com.filmfellows.cinemates.app.chat.dto.ChatRoomMovie;
-import com.filmfellows.cinemates.app.chat.dto.CinemaInfoByRegion;
-import com.filmfellows.cinemates.app.chat.dto.RegionAndCinemaCount;
+import com.filmfellows.cinemates.app.chat.dto.*;
+import com.filmfellows.cinemates.domain.chat.model.vo.ChatJoin;
+import com.filmfellows.cinemates.domain.chat.model.vo.ChatMessage;
 import com.filmfellows.cinemates.domain.chat.model.vo.ChatRoom;
 import com.filmfellows.cinemates.domain.chat.model.vo.ChatTag;
 import com.filmfellows.cinemates.domain.member.model.vo.ProfileImg;
@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Mapper
@@ -92,4 +93,123 @@ public interface ChatMapper {
      * @return int
      */
     int getMyTotalCount(String writer);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : 채팅방 참여 인원 조회 mapper
+     * @return List<ChatJoinProfile> 참여 인원 리스트
+     */
+    List<ChatJoinProfile> selectChatJoinList(Integer roomNo);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : 채팅방 참여
+     * @return int
+     */
+    int insertChatJoin(Integer roomNo, String memberId);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : 채팅 저장 mapper
+     * @return int
+     */
+    int insertChatMessage(ChatMessage chatMessage);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : 채팅방 최초 입장 날짜 조회 mapper
+     * @return Timestamp
+     */
+    Timestamp selectMyJoinDate(String memberId, Integer roomNo);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : 채팅 기록 조회
+     * @return List<chatMessageAndProfile>
+     */
+    List<chatMessageAndProfile> selectChatMessageList(Timestamp myJoinDate, Integer roomNo);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : 채팅방 나가기
+     * @return Timestamp
+     */
+    void deleteMemberJoinByRoom(Integer roomNo, String memberId);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : onOff 체크
+     * @return String
+     */
+    List<ChatJoinProfile> checkOnOffStatus(Integer roomNo);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : onOff 상태 업데이트
+     * @return void
+     */
+    void updateOnOffStatus(Integer roomNo, String memberId, String onOffStatus);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : 채팅방 삭제
+     * @return String
+     */
+    int deleteChatRoom(Integer roomNo);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : 채팅방 삭제 시 내용도 삭제
+     * @return String
+     */
+    int deleteMessageOfChatRoom(Integer roomNo);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : 예매 동의 여부 업데이트
+     * @return String
+     */
+    int updateAcceptStatus(Integer roomNo, String memberId, String acceptStatus);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : 극장별 상영관 리스트
+     * @return String
+     */
+    List<finalReserveInfoByTicket> selectScreenByCinema(Integer cinemaNo, Integer movieNo);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : 날짜별 상영시간
+     * @return String
+     */
+    List<finalReserveInfoByTicket> selectShowtimeByScreen(Integer cinemaNo, Integer movieNo, String selectedDate);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : 예매 동의 여부 체크 리스트
+     * @return String
+     */
+    List<ChatJoin> selectAcceptAll(Integer roomNo);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : 채팅방 참여인원 수 조회
+     * @return Integer
+     */
+    Integer selectJoinCountByRoomNo(Integer roomNo);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : 최근 대화 내용 조회
+     * @return String
+     */
+    String selectRecentChatContent(Integer roomNo);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : TOP5 채팅방 리스트 조회
+     * @return String
+     */
+    List<ChatRoom> selectChatRoomListByTop();
 }

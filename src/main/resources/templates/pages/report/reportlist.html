@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{common/layout/defaultLayout}"
+      layout:decorate="~{common/layout/adminLayout}"
       layout:fragment="Content">
 <link rel="stylesheet" href="/css/report/reportadmin.css">
 
@@ -62,9 +62,12 @@
     }
     function report(a,b,c){
         console.log(b);
+        console.log(a);
+        console.log(c);
         if(b>=2){
             openDatePopup(a,c);
         }else{
+            console.log(b);
             location.href="/admin/reportid"+a+"?reportNo="+c;
         }
         function openDatePopup(a,b) {

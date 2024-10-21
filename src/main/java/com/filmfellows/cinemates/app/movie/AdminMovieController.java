@@ -86,7 +86,7 @@ public class AdminMovieController {
      * [관리자] 영화 등록
      */
     @PostMapping("admin/insert-movie")
-    public String InsertMovie(MovieDTO movieDTO) {
+    public String insertMovie(MovieDTO movieDTO) {
         MovieDTO movie = new MovieDTO();
         movie.setTitle(movieDTO.getTitle());
         movie.setPosterUrl(movieDTO.getPosterUrl());
@@ -113,6 +113,12 @@ public class AdminMovieController {
     public String updateMovieInfo(@ModelAttribute MovieDTO movieDTO) {
         movieService.updateMovie(movieDTO);
         return "redirect:/admin/movie-detail/" + movieDTO.getMovieNo();
+    }
+
+    @GetMapping("/removeMovie")
+    public String removeMovie(Long movieNo) {
+        movieService.removeMovie(movieNo);
+        return "redirect:/admin/movie-list";
     }
 
     /**

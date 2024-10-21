@@ -14,19 +14,34 @@
         <!-- 폴리필 (구버젼 브라우저 지원) -->
         <script src="https://unpkg.com/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
         <link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+
+<!--        scroll-bar script-->
+        <script crossorigin="anonymous" src="/js/chat/chatScroll.js" defer></script>
         <title>채팅방 개설</title>
         <!-- inline CSS 영역-->
         <style th:inline="css" type="text/css">
+            *{
+                font-family: "NEXON Lv1 Gothic OTF", serif;
+            }
+            h1{
+                font-family: 'GmarketSansMedium', sans-serif;
+            }
             .container{
                 width: 100%;
             }
-            .createChat-main{
+            .createChat-main {
                 width: 100%;
-                background-color: black;
+                position: relative;
+                background: rgb(71, 71, 71);
             }
+
             .inner{
                 width: 1200px;
-                margin: 0   auto;
+                margin: 0 auto;
+                padding: 40px 0;
+            }
+            .inner-bottom{
+
             }
 
             .createChat-title{
@@ -197,7 +212,7 @@
         /*  채팅방 정보  */
             .chatRoom-info{
                 font-size: 25px;
-                width: 80%;
+                width: 100%;
                 /*margin: 0 auto;*/
             }
             .charRoom-info-nameBox{
@@ -429,8 +444,8 @@
                             // $("#div_overlay").fadeIn(); // 부드럽게
                             // $("#div_ajax_load_image").fadeIn(); // 부드럽게
                         } else {
-                            $('.createChat-content').append('<div id="div_overlay" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:9998; background-color:rgba(0, 0, 0, 0.7); "></div>');
-                            $('body').append('<div id="div_ajax_load_image" style="position:absolute; top:' + top + 'px; left:' + left + 'px; width:' + width + 'px; height:' + height + 'px; z-index:9999;  filter:alpha(opacity=50); opacity:alpha*0.5; margin:auto; padding:0; "><img src="/img/chat/loading.gif" style="width:50px; height:50px;"></div>');
+                            $('.createChat-content').append('<div id="div_overlay" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:990; background-color:rgba(0, 0, 0, 0.7); "></div>');
+                            $('body').append('<div id="div_ajax_load_image" style="position:absolute; top:' + top + 'px; left:' + left + 'px; width:' + width + 'px; height:' + height + 'px; z-index:991;  filter:alpha(opacity=50); opacity:alpha*0.5; margin:auto; padding:0; "><img src="/img/chat/loading.gif" style="width:50px; height:50px;"></div>');
                         }
                     },
                     complete: function () {
@@ -488,8 +503,8 @@
                             // $("#div_overlay").fadeIn(); // 부드럽게
                             // $("#div_ajax_load_image").fadeIn(); // 부드럽게
                         } else {
-                            $('.createChat-content').append('<div id="div_overlay" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:9998; background-color:rgba(0, 0, 0, 0.7); "></div>');
-                            $('body').append('<div id="div_ajax_load_image" style="position:absolute; top:' + top + 'px; left:' + left + 'px; width:' + width + 'px; height:' + height + 'px; z-index:9999;  filter:alpha(opacity=50); opacity:alpha*0.5; margin:auto; padding:0; "><img src="/img/chat/loading.gif" style="width:50px; height:50px;"></div>');
+                            $('.createChat-content').append('<div id="div_overlay" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:990; background-color:rgba(0, 0, 0, 0.7); "></div>');
+                            $('body').append('<div id="div_ajax_load_image" style="position:absolute; top:' + top + 'px; left:' + left + 'px; width:' + width + 'px; height:' + height + 'px; z-index:991;  filter:alpha(opacity=50); opacity:alpha*0.5; margin:auto; padding:0; "><img src="/img/chat/loading.gif" style="width:50px; height:50px;"></div>');
                         }
                     },
                     complete: function () {
@@ -637,7 +652,7 @@
                 <!--        날짜선택-->
                 <!--        시간선택-->
         </div>
-        <div class="inner">
+        <div class="inner inner-bottom">
             <div style="font-weight: bold; font-size: 30px; margin: 20px 0">채팅방 정보 입력</div>
 
 
@@ -664,7 +679,9 @@
                 <!--        극장선택-->
                 <input type="hidden" name="cinemaNo">
 
-                <button class="common-primary-btn" id="create-room-btn" type="submit" onclick="hiddenValueInitialAndSubmit();">완료</button>
+                <div style="display: flex;justify-content: end">
+                    <button class="common-primary-btn" id="create-room-btn" type="submit" onclick="hiddenValueInitialAndSubmit();">완료</button>
+                </div>
 
             </form>
         </div>

@@ -1,5 +1,7 @@
 package com.filmfellows.cinemates.domain.store.model.mapper;
 
+import com.filmfellows.cinemates.app.mypage.dto.myOrderRequest;
+import com.filmfellows.cinemates.app.mypage.dto.myOrderResponse;
 import com.filmfellows.cinemates.domain.store.model.vo.Purchase;
 import com.filmfellows.cinemates.domain.store.model.vo.PurchaseItem;
 import org.apache.ibatis.annotations.Mapper;
@@ -20,4 +22,6 @@ public interface PurchaseMapper {
     int getTicketCount(String memberId);
 
     void updateTicketCount(String memberId, int newTicketCount);
+
+    List<myOrderResponse> selectOrderList(myOrderRequest request);
 }

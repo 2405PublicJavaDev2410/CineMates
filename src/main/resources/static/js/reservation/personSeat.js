@@ -1,11 +1,14 @@
-// let visitorCount = /*[[${rDTO.reservationVisitor}]]*/ 0;
 const countInput = document.getElementById('countInput');
 const adult = document.getElementById('adultReserved');
 const child = document.getElementById('childReserved');
 const senior = document.getElementById('seniorReserved');
 const selectedSeatsInput = document.getElementById('selectedSeatsInput');
-const maxVisitorCount = memberIds.length !== 0 ? memberIds.length : Infinity;
+const validMemberIds = Array.isArray(memberIds) ? memberIds : [];
+const maxVisitorCount = validMemberIds.length !== 0 ? validMemberIds.length : Infinity;
 
+
+
+// 나이 별 인원 선택
 function count(value, resultClass) {
     const resultElement = document.querySelector('.' + resultClass);
     let currentCount = parseInt(resultElement.innerText);
@@ -58,70 +61,155 @@ function updatePlusButtonStates() {
 
 
 // 페이지 로드 시 초기 상태 설정
-document.addEventListener('DOMContentLoaded', updatePlusButtonStates);
+document.addEventListener('DOMContentLoaded', function() {
+    updatePlusButtonStates();
+    initializeSeatMap();
+    updateTotalPrice();
+});
 
-// const rDTO = /*[[${rDTO}]]*/ {};
-// const reservedSeatsMap = /*[[${reservationSeat}]]*/ {};
+
 const reservedSeats = reservedSeatsMap[rDTO.showtimeNo] || [];
 console.log(reservedSeats);
-const rows = 5;
-const seatsPerRow = 10;
+const rows = 8; // A부터 H까지 8행
+const seatsPerRow = 23; // 1부터 23까지 23열
 const seats = Array(rows * seatsPerRow).fill(false);
 let selectedSeats = [];
 
+const ADULT_PRICE = 15000;
+const CHILD_PRICE = 13000;
+const SENIOR_PRICE = 7000;
 function initializeSeatMap() {
     const seatMap = document.getElementById('seatMap');
-    // 기존 좌석 요소들을 모두 제거
     seatMap.innerHTML = '';
 
-    for (let i = 0; i < seats.length; i++) {
-        const seat = document.createElement('div');
-        seat.className = 'seat';
-        seat.innerText = i + 1;
+    for (let i = 0; i < rows; i++) {
+        const rowLabel = String.fromCharCode(65 + i); // A부터 시작하는 행 라벨
 
-        if (reservedSeats.includes(i + 1)) {
-            seat.classList.add('reserved');
-            seats[i] = true; // 예매된 좌석 표시
-        } else {
-            seat.onclick = () => toggleSeat(i);
+        const rowDiv = document.createElement('div');
+        rowDiv.className = 'row';
+
+        const labelSpan = document.createElement('span');
+        labelSpan.className = 'row-label';
+        labelSpan.innerText = rowLabel;
+        rowDiv.appendChild(labelSpan);
+
+        for (let j = 0; j < seatsPerRow; j++) {
+            const seatNumber = j + 1;
+            const seatId = `${rowLabel}${seatNumber}`;
+            const seat = document.createElement('a');
+            seat.href = '#';
+            seat.className = 'seat';
+            seat.innerText = seatNumber;
+            seat.setAttribute('data-seat', seatId);
+
+            // 예약 불가능한 좌석 처리
+            if ((i < 2 && j < 4) || (i < 9 && j > 17) || (j > 18)) {
+                seat.classList.add('unavailable');
+            } else if (reservedSeats.includes(seatId)) {
+                seat.classList.add('reserved');
+            } else {
+                seat.onclick = (e) => {
+                    e.preventDefault();
+                    toggleSeat(i * seatsPerRow + j, seatId);
+                };
+            }
+
+            rowDiv.appendChild(seat);
         }
 
-        seatMap.appendChild(seat);
-        if ((i + 1) % seatsPerRow === 0) {
-            seatMap.appendChild(document.createElement('br'));
-        }
+        seatMap.appendChild(rowDiv);
     }
 }
 
-function toggleSeat(index) {
-    if (seats[index]) {
+function toggleSeat(index, seatId) {
+    const seatElement = document.querySelector(`[data-seat="${seatId}"]`);
+
+    if (seatElement.classList.contains('reserved')) {
         alert("이미 예약된 좌석입니다.");
-        return; // 이미 예약된 좌석은 선택 불가
+        return;
     }
 
-    const maxSeats = parseInt(visitorCount);
-    const seatElement = document.getElementsByClassName('seat')[index];
+    const totalSelectedCount = getTotalSelectedCount();
 
-    if (selectedSeats.includes(index)) {
-        selectedSeats = selectedSeats.filter(seatIndex => seatIndex !== index);
+    if (selectedSeats.includes(seatId)) {
+        selectedSeats = selectedSeats.filter(id => id !== seatId);
         seatElement.classList.remove('selected');
-    } else if (selectedSeats.length < maxSeats) {
-        selectedSeats.push(index);
+    } else if (selectedSeats.length < totalSelectedCount) {
+        selectedSeats.push(seatId);
         seatElement.classList.add('selected');
     } else {
-        alert(`최대 ${maxSeats}개의 좌석만 선택할 수 있습니다.`);
+        alert(`선택한 인원 수만큼만 좌석을 선택할 수 있습니다.`);
         return;
     }
     updateSelectedSeatsInput();
+    updateTotalPrice();
 }
 
 function updateSelectedSeatsInput() {
-    selectedSeatsInput.value = selectedSeats.map(index => index + 1).join(',');
-    setMessage(`선택된 좌석: ${selectedSeatsInput.value}`);
+    const selectedSeatsString = selectedSeats.join(',');
+    console.log("선택된 좌석:", selectedSeatsString);
+
+    // hidden input 필드 업데이트
+    document.getElementById('selectedSeatsInput').value = selectedSeatsString;
+
+    // rDTO 객체 업데이트 (JavaScript에서 rDTO를 사용한다고 가정)
+    if (typeof rDTO !== 'undefined') {
+        rDTO.selectSeat = selectedSeatsString;
+    }
 }
 
-// 페이지 로드 시 좌석 맵 초기화
-document.addEventListener('DOMContentLoaded', initializeSeatMap);
+function getTotalSelectedCount() {
+    const adultCount = parseInt(document.querySelector('.result').innerHTML) || 0;
+    const childCount = parseInt(document.querySelector('.result1').innerHTML) || 0;
+    const seniorCount = parseInt(document.querySelector('.result2').innerHTML) || 0;
+    return adultCount + childCount + seniorCount;
+}
+
+function updateTotalPrice() {
+    const adultCount = parseInt(document.querySelector('.result').innerHTML) || 0;
+    const childCount = parseInt(document.querySelector('.result1').innerHTML) || 0;
+    const seniorCount = parseInt(document.querySelector('.result2').innerHTML) || 0;
+
+    const totalPrice = (ADULT_PRICE * adultCount) + (CHILD_PRICE * childCount) + (SENIOR_PRICE * seniorCount);
+
+    const totalPriceText = document.querySelector('.how-much-Pay Strong');
+    totalPriceText.innerHTML = `총금액: ${totalPrice.toLocaleString()}원`;
+    document.getElementById('totalPrice').value = totalPrice;
+
+}
+
+// 인원 선택 버튼에 이벤트 리스너 추가
+document.querySelectorAll('.plus-button, .minus-button').forEach(button => {
+    button.addEventListener('click', function() {
+        setTimeout(updateTotalPrice, 0);  // DOM 업데이트 후 실행되도록 setTimeout 사용
+    });
+});
+
+// 예약하기 버튼 이벤트 리스너
+document.getElementById('reserve-button').addEventListener('click', function(e) {
+    e.preventDefault();
+    const totalSelectedCount = getTotalSelectedCount();
+    if (selectedSeats.length !== totalSelectedCount) {
+        alert('선택한 인원 수만큼 좌석을 선택해주세요.');
+        return;
+    }
+
+    // 선택된 좌석 정보를 hidden input에 설정
+    document.getElementById('selectedSeatsInput').value = selectedSeats.join(',');
+
+    // 성인, 아동, 노인 예약 수 업데이트
+    document.getElementById('adultReserved').value = document.querySelector('.result').innerHTML;
+    document.getElementById('childReserved').value = document.querySelector('.result1').innerHTML;
+    document.getElementById('seniorReserved').value = document.querySelector('.result2').innerHTML;
+
+    // 총 예약 인원 업데이트
+    document.getElementById('countInput').value = totalSelectedCount;
+
+    console.log('예약 처리:', selectedSeats);
+
+    // 폼 제출
+    document.querySelector('form').submit();
+});
 
 function setMessage(msg) {
     document.getElementById('message').innerText = msg;

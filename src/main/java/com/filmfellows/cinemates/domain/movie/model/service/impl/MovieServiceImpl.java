@@ -1,10 +1,6 @@
 package com.filmfellows.cinemates.domain.movie.model.service.impl;
 
-import com.filmfellows.cinemates.app.main.dto.boxOfficeDTO;
-import com.filmfellows.cinemates.app.movie.dto.MovieDTO;
-import com.filmfellows.cinemates.app.movie.dto.MovieListDTO;
-import com.filmfellows.cinemates.app.movie.dto.MovieReservationRateDTO;
-import com.filmfellows.cinemates.app.movie.dto.ReviewDTO;
+import com.filmfellows.cinemates.app.movie.dto.*;
 import com.filmfellows.cinemates.domain.movie.model.mapper.MovieMapper;
 import com.filmfellows.cinemates.domain.movie.model.service.MovieService;
 import com.filmfellows.cinemates.domain.movie.model.vo.Movie;
@@ -130,13 +126,15 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public boolean addReview(Review addReview) {
-        ReviewDTO existingReview = movieMapper.selectMyReview(addReview.getMovieNo(), addReview.getMemberId());
-        if (existingReview != null) {
-            return false; // 중복된 리뷰가 있음
-        }
-        movieMapper.insertReview(addReview);
-        return true; // 리뷰 추가 성공
+    public int addReview(Review addReview) {
+//        ReviewDTO existingReview = movieMapper.selectMyReview(addReview.getMovieNo(), addReview.getMemberId());
+//        if (existingReview != null) {
+//            return false; // 중복된 리뷰가 있음
+//        }
+//        movieMapper.insertReview(addReview);
+//        return true; // 리뷰 추가 성공
+        int result = movieMapper.insertReview(addReview);
+        return result;
     }
 
     @Override
@@ -152,6 +150,16 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public ReviewDTO getMyReview(Long movieNo, String memberId) {
         return movieMapper.selectMyReview(movieNo, memberId);
+    }
+
+    @Override
+    public void removeMovie(Long movieNo) {
+        movieMapper.deleteMovie(movieNo);
+    }
+
+    @Override
+    public List<MovieBannerDTO> getMovieBanner() {
+        return movieMapper.selectMovieBanner();
     }
 
 

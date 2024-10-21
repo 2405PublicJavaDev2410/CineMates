@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="/css/common.css">
+    <style>
+        *{
+            font-family: "NEXON Lv1 Gothic OTF", serif;
+        }
+        #screenList-container{
+            text-align: start;
+            min-height: 400px;
+        }
+        .screenName{
+            font-size: 22px;
+            margin: 10px;
+        }
+        .showTimeFlex{
+            display: inline-flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .showtimeTime{
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 5px;
+            box-shadow: 0 2px 2px 2px rgb(162, 162, 162);
+            transition: all 200ms;
+            cursor: pointer;
+        }
+        .showtimeTime:hover{
+            box-shadow: 0 2px 2px 2px rgb(78, 78, 78);
+        }
+        .showtimeTime:active{
+            box-shadow: 0 1px 1px 1px rgb(78, 78, 78);
+            transform:translateY(2px);
+        }
+
+        #popUp-container{
+            width: 80%;
+            height: 90%;
+            margin: 20px auto 0;
+        }
+
+        #selectedBtn{
+            text-align: center;
+            width: 80px;
+            height: 40px;
+            color: white;
+            background-color: #EA4E4A;
+            font-size: 20px;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: all 200ms;
+        }
+        #selectedBtn:hover, #selectedBtn:active{
+            opacity: 1;
+        }
+        #selectedBtn:active{
+            transform: scale(0.95);
+        }
+
+        #datePicker{
+            border-radius: 10px;
+            border:none;
+            box-shadow: 0 1px 1px 1px rgb(175, 175, 175);
+        }
+    </style>
+</head>
+<body>
+    <div id="popUp-container">
+        <h1>상영관 선택</h1>
+
+        <input style="display: block; width:50%; height: 50px; font-size: 20px; padding-left: 15px; margin:20px 0" type="date" id="datePicker" name="dateName">
+
+
+        <div id="screenList-container">
+            <div style="width: 70%;" th:each="screenList:${screenListByCinema}">
+                <div class="screenName" th:text="${screenList.screenName}">
+                </div>
+                <div class="showTimeFlex">
+                    <div th:if="${screenList.screenNo == showtime.screenNo}" th:each="showtime:${showtimeByScreen}" onclick="selectShowtime(this);">
+                        <input type="hidden" th:value="${showtime.screenNo}">
+                        <input type="hidden" th:value="${showtime.screenName}">
+                        <input type="hidden" th:value="${showtime.showtimeNo}">
+                        <input type="hidden" th:value="${showtime.showtimeTime}">
+                        <div th:id="${showtime.showtimeNo}" class="showtimeTime" th:text="${showtime.showtimeTime}"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+    <div style="width:80%; margin: 0 auto; display: flex;justify-content: end;">
+        <button type="button" id="selectedBtn">초기화</button>
+    </div>
+
+
+    <script th:inline="javascript">
+        let datePicker = document.querySelector('#datePicker');
+        // 현재 날짜 구하기
+        const today = new Date();
+
+        // 내일 날짜 구하기
+        const tomorrow = new Date();
+        tomorrow.setDate(today.getDate() + 1);
+
+        // 한달 후 날짜 구하기
+        const twoWeeksFromNow = new Date();
+        twoWeeksFromNow.setDate(today.getDate() + 30);
+
+        // 날짜를 YYYY-MM-DD 형식으로 변환
+        const formatDate = (date) => {
+            return date.toISOString().split('T')[0];
+        }
+
+        // min 및 max 속성 설정
+        document.getElementById("datePicker").setAttribute("min", formatDate(tomorrow));
+        document.getElementById("datePicker").setAttribute("max", formatDate(twoWeeksFromNow));
+
+
+        // 상영관 선택시 부모창에 입력값 전달됨
+        function selectShowtime(div){
+            // child window document
+            let date = document.querySelector('#datePicker');
+            let screenNo = div.children[0].value;
+            let screenName = div.children[1].value;
+            let showtimeNo = div.children[2].value;
+            let showtimeTime = div.children[3].value;
+
+            // parent window document
+            let reservationDateInput = opener.document.querySelector('input[name=reservationDate]');
+            let screenNoInput = opener.document.querySelector('input[name=screenNo]');
+            let showtimeNoInput = opener.document.querySelector('input[name=showtimeNo]');
+            let showtimeTimeInput = opener.document.querySelector('input[name=showtimeTime]');
+            let screenNameInput = opener.document.querySelector('input[name=screenName]');
+
+            let reservationDateText = opener.document.querySelector('#reservationDate');
+            let showtimeTimeText = opener.document.querySelector('#showtimeTime');
+            let screenNameText = opener.document.querySelector('#screenName');
+
+            if (confirm(`${screenName}의 ${showtimeTime}으로 결정하시겠습니까?`)){
+                reservationDateInput.value= date.value;
+                screenNoInput.value = screenNo;
+                showtimeNoInput.value = showtimeNo;
+                showtimeTimeInput.value = showtimeTime;
+                screenNameInput.value = screenName;
+
+                reservationDateText.innerText = date.value;
+                showtimeTimeText.innerText = showtimeTime;
+                screenNameText.innerText = screenName;
+
+
+                window.close();
+            }
+        }
+
+
+        let selectedBtn = document.querySelector('#selectedBtn');
+
+
+        selectedBtn.addEventListener('click', ()=>{
+            // child window document
+
+            // parent window document
+            let reservationDateInput = opener.document.querySelector('input[name=reservationDate]');
+            let screenNoInput = opener.document.querySelector('input[name=screenNo]');
+            let showtimeNoInput = opener.document.querySelector('input[name=showtimeNo]');
+            let showtimeTimeInput = opener.document.querySelector('input[name=showtimeTime]');
+            let screenNameInput = opener.document.querySelector('input[name=screenName]');
+
+            let reservationDateText = opener.document.querySelector('#reservationDate');
+            let showtimeTimeText = opener.document.querySelector('#showtimeTime');
+            let screenNameText = opener.document.querySelector('#screenName');
+
+            if (confirm("선택한 내용을 초기화하시겠습니까?")){
+                reservationDateInput.value= "";
+                screenNoInput.value = "";
+                showtimeNoInput.value = "";
+                showtimeTimeInput.value = "";
+                screenNameInput.value = "";
+                opener.document.querySelector('input[name=reservationSeat]').value = "";
+
+                reservationDateText.innerText = "";
+                showtimeTimeText.innerText = "";
+                screenNameText.innerText = "";
+
+
+                window.close();
+            }
+
+            window.close();
+        })
+
+        datePicker.addEventListener('change',(e)=>{
+            let selectedDate = e.target.value;
+            let movieNo = /*[[${chatRoom.movieNo}]]*/;
+            let cinemaNo = /*[[${chatRoom.cinemaNo}]]*/;
+
+
+            $.ajax({
+                url:"/chat/selectScreenByCinema",
+                data:{
+                    selectedDate:selectedDate,
+                    movieNo:movieNo,
+                    cinemaNo:cinemaNo
+                },
+                type:"post",
+                success:function(response){
+                    $('#screenList-container').replaceWith(response);
+                    getShowtimes(selectedDate);
+                    console.log(response);
+                },
+                error:function(){
+
+                }
+            })
+        });
+
+
+        function getShowtimes(date) {
+            let title = /*[[${chatRoom.title}]]*/;
+            let cinemaName = /*[[${chatRoom.cinemaName}]]*/;
+            $.ajax({
+                url: '/getShowtimes',
+                method: 'GET',
+                data: {
+                    reservationDate: date,
+                    title: title,
+                    cinemaName: cinemaName
+                },
+                success: function (response) {
+                    if (response && response.showInfoList && Array.isArray(response.showInfoList)) {
+                        // displayShowtimes(response.showInfoList, date);
+                        // 예약된 좌석 정보를 저장
+                        opener.document.querySelector('input[name=reservationSeat]').value = JSON.stringify(response.reservationSeat);
+                        console.log(opener.document.querySelector('input[name=reservationSeat]'))
+                    }
+                },
+                error: function () {
+
+                }
+            });
+        }
+
+
+    </script>
+</body>
+</html>

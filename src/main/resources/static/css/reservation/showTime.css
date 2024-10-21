@@ -64,9 +64,9 @@ li {
     padding:3px;
 }
 #region-list .selected{
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /*box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);*/
     font-weight: bold;
-    background: #fff url(https://www.lottecinema.co.kr/NLCHS/Content/images/icon/check.png) no-repeat 200px 2px;
+    background: url(https://www.lottecinema.co.kr/NLCHS/Content/images/icon/check.png) no-repeat 200px 2px;
 }
 
 /*영화관*/
@@ -113,8 +113,8 @@ li {
 }
 
 #movie-List .selected {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
+    /*box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);*/
+    /*background-color: #fff;*/
     font-weight: bold;
 }
 #movie-List .selected .movie-running-time::after{

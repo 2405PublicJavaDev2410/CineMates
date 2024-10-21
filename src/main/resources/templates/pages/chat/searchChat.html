@@ -20,6 +20,7 @@
         <link rel="stylesheet" href="/css/chat/searchList.css">
         <!-- script src-->
         <script crossorigin="anonymous" src="/js/chat/listMenuBtn.js" defer></script>
+        <script crossorigin="anonymous" src="/js/chat/chatReport.js" defer></script>
 
         <!-- inline CSS 영역-->
         <style th:inline="css" type="text/css">
@@ -233,15 +234,21 @@
                                         <span th:each="tag : ${tagList}" th:if="${tag.roomNo == chatRoom.roomNo}" th:text="'#'+${tag.tagName}+' '"></span>
                                     </div>
                                     <div style="display: flex">
-                                        <div style="margin-right: 50px">참여인원: 00명 참여중 | 1시간전</div>
+                                        <th:block th:if="${chatRoom.joinCount == null}">
+                                            <div style="margin-right: 50px" th:text="'1명 참여중'"></div>
+                                        </th:block>
+                                        <th:block th:if="${chatRoom.joinCount != null}">
+                                            <div style="margin-right: 50px" th:text="${chatRoom.joinCount}+'명 참여중'"></div>
+                                        </th:block>
+<!--                                        <div style="margin-right: 50px" th:text="'참여인원: '+${chatRoom.joinCount}+'명 참여중'"></div>-->
                                         <div th:text="${chatRoom.title}+' ('+${chatRoom.cinemaAddress}+' / '+${chatRoom.cinemaName}+')'"></div>
                                     </div>
                                 </div>
                             </div>
 
                             <div style="position: relative;">
-                                <div class="report-btn">신고</div>
-                                <div class="joinBtn" onclick="joinChatRoom();">참여</div>
+                                <div class="report-btn" th:onclick="report([[${chatRoom.roomNo}]],[[${chatRoom.roomWriter}]]);">신고</div>
+                                <div class="joinBtn" th:onclick="joinChatRoom([[${chatRoom.roomNo}]], [[${chatRoom.roomWriter}]], [[${chatRoom.movieNo}]],[[${chatRoom.title}]], [[${chatRoom.posterUrl}]], [[${chatRoom.cinemaNo}]],[[${chatRoom.cinemaName}]], [[${chatRoom.cinemaLocationCode}]], [[${chatRoom.cinemaAddress}]], [[${chatRoom.roomCategory}]]);">참여</div>
                             </div>
                         </div>
                         <!--                        <div th:text="'채팅방 생성 날짜 : '+${chatRoom.roomDate}"></div>-->

@@ -325,4 +325,11 @@
     <select id="selectMyReview" resultType="com.filmfellows.cinemates.app.movie.dto.ReviewDTO">
         SELECT * FROM REVIEW_TBL WHERE MOVIE_NO = #{movieNo} AND MEMBER_ID = #{memberId} ORDER BY REG_DATE DESC
     </select>
+    <delete id="deleteMovie">
+        DELETE FROM MOVIE_TBL WHERE MOVIE_NO = #{movieNo}
+    </delete>
+
+    <select id="selectMovieBanner" resultType="BannerDTO">
+        SELECT * FROM BANNERS_TBL WHERE PAGE_TYPE = 'MOVIE_LIST'
+    </select>
 </mapper>

@@ -16,6 +16,10 @@ public class ChatRoom {
     private String roomName;
     private Timestamp roomDate;
     private String roomCategory;
+    
+    private Integer joinCount; // 참여인원수
+    private String recentContent; // 최근 대화내용
+    
 
     // 채팅방의 영화정보
     private Integer movieNo;
@@ -32,6 +36,6 @@ public class ChatRoom {
 
 
 
-    // screenNo, movieNo, showtimeTime, showTimeNo, title, screenName, cinemaName, cinemaNo, reservationDate(상영날짜) 보내야됨!!!
+    // screenNo, movieNo, showtimeTime, showTimeNo, title, screenName, cinemaName, cinemaNo, reservationDate(상영날짜), cinemaLocationCode 보내야됨!!!
 
 }

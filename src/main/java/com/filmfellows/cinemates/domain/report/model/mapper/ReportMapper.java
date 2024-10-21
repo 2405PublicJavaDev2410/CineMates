@@ -34,4 +34,6 @@ public interface ReportMapper {
     int countreportlist2();
 
     int deletechating(int reportWriteno);
+
+    int overlapreport(int writeno, String category);
 }

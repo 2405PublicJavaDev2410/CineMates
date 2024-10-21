@@ -99,4 +99,10 @@ public class ReportServiceImpl implements ReportService {
         int result=mapper.deletechating(reportWriteno);
         return result;
     }
+
+    @Override
+    public int overlapreport(int writeno, String category) {
+        int count=mapper.overlapreport(writeno,category);
+        return count;
+    }
 }

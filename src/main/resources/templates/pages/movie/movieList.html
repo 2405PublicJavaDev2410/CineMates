@@ -8,23 +8,12 @@
 <link rel="stylesheet" href="/css/movie/movieList.css">
 <body>
 <div layout:fragment="content">
-    <!-- 여기에 기존의 main 태그 내용을 넣습니다 -->
     <div class="banner-wrapper">
         <div class="banner-container">
-            <div class="banner active">
-                <img src="/img/movie/banner/AmazonBullseye_19204202.jpg" alt="배너 1" />
-            </div>
-            <div class="banner">
-                <img src="/img/movie/banner/GrandMa_1920420.jpg" alt="배너 2" />
-            </div>
-            <div class="banner">
-                <img src="/img/movie/banner/MyLovelyPartner_19204203.jpg" alt="배너 3" />
-            </div>
-            <div class="banner">
-                <img src="/img/movie/banner/MyPet_1920420.jpg" alt="배너 4" />
-            </div>
-            <div class="banner">
-                <img src="/img/movie/banner/MyPet_1920420.jpg" alt="배너 5" />
+            <div class="banner active" th:each="banner : ${bList}">
+                <a th:href="${banner.linkUrl}">
+                    <img th:src="${banner.bannerUrl}" th:alt="${banner.bannerTitle}" />
+                </a>
             </div>
         </div>
         <div class="banner-nav prev">&#10094;</div>
@@ -75,7 +64,6 @@
     </div>
 </div>
 <th:block layout:fragment="script">
-    <!--     여기에 기존의 script 내용을 넣습니다-->
     <script type="text/javascript" src="/js/movie/movieList.js"></script>
 </th:block>
 
