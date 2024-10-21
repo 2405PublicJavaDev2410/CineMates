@@ -51,19 +51,19 @@ h1{
 }
 /* 검색, 내 채팅방, 전체 메뉴 버튼*/
 .listMenuContainer {
-    margin: 0 auto;
+    margin: 50px auto 0;
     display: flex;
     width: 90%;
-    height: 50px;
-    font-size: 20px;
+    height: 40px;
+    font-size: 16px;
 }
 
 .listMenu-item {
     user-select: none;
-    width: 120px;
     height: 100%;
+    padding: 0 20px;
     text-align: center;
-    line-height: 50px;
+    line-height: 40px;
     background-color: #ececec;
     border-radius: 100px;
     transition: all 200ms;
@@ -139,7 +139,7 @@ h1{
     width: 90%;
     min-height: 300px;
     max-height: 1000px;
-    margin: 0 auto;
+    margin: 0 auto 50px;
     border-radius: 20px;
     box-shadow: 0 2px 2px 2px rgb(162, 162, 162);
     /*transition: max-height 500ms, min-height 500ms;*/
@@ -201,7 +201,7 @@ h1{
 }
 
 .result-history{
-    width: 1200px;
+    width: 90%;
     margin: 20px auto;
 
 }
@@ -215,7 +215,7 @@ h1{
 }
 
 .list-item {
-    width: 70%;
+    width: 80%;
     height: 120px;
     background-color: white;
     padding: 15px;
@@ -319,9 +319,6 @@ h1{
 
 
 .report-btn{
-    position: absolute;
-    /*top: 10px;*/
-    right: 10px;
     user-select: none;
     cursor: pointer;
     color: #6e6e6e;

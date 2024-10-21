@@ -237,19 +237,22 @@
                    item.addEventListener('mouseover',()=>{
                        let itemCardTitles = document.querySelectorAll('.itemCard-title');
                        let itemCardRecentContents = document.querySelectorAll('.itemCard-recentContent');
-                       let itemCardRoomDates = document.querySelectorAll('.itemCard-roomDate');
+                       // let itemCardRoomDates = document.querySelectorAll('.itemCard-roomDate');
+                       let itemCardMemberProfile = document.querySelectorAll('.card-member-profile');
+                       let itemCardRoomWriter = document.querySelectorAll('.info-roomWriter')
 
-
-                           itemCardTitles[index].style.display="block";
-                           itemCardRecentContents[index].style.display="block";
-                           itemCardRoomDates[index].style.display="block";
-
+                       itemCardTitles[index].style.display="block";
+                       itemCardRecentContents[index].style.display="block";
+                       // itemCardRoomDates[index].style.display="block";
+                       itemCardMemberProfile[index].style.display="block";
+                       itemCardRoomWriter[index].style.display="block";
 
                        item.addEventListener('mouseout',()=>{
-                               itemCardTitles[index].style.display="none";
-                               itemCardRecentContents[index].style.display="none";
-                               itemCardRoomDates[index].style.display="none";
-
+                           itemCardTitles[index].style.display="none";
+                           itemCardRecentContents[index].style.display="none";
+                           // itemCardRoomDates[index].style.display="none";
+                           itemCardMemberProfile[index].style.display="none";
+                           itemCardRoomWriter[index].style.display="none";
                        });
                    });
 
@@ -260,7 +263,6 @@
 
                    item.addEventListener('mouseover',()=>{
                        item.classList.add('visible');
-                        console.log("hi")
                        item.addEventListener('mouseout',()=>{
                            item.classList.remove('visible');
                            item.classList.remove('visible');
@@ -309,8 +311,8 @@
 
             <h1 class="page-title">전체 채팅방</h1>
 
-            <div style="display: flex; justify-content: end; margin: 30px 20px 10px ; padding-bottom: 10px; border-bottom: 2px solid #2c3e50">
-                <div class="createRoom-modal-btn" id="chatNavigation">채팅방 만들기</div>
+            <div style="display: flex; justify-content: end; margin: 0 20px 10px ; padding-bottom: 10px; border-bottom: 2px solid #2c3e50">
+                <div class="createRoom-modal-btn" id="chatNavigation"><i class="fa-solid fa-pencil" style="margin-right: 2px;"></i>채팅방 만들기</div>
             </div>
             <div id="modalWrap"> <!-- 모달 창을 감싸는 div -->
 
@@ -384,7 +386,10 @@
 
 <!--                                            <div style="margin-right: 50px" th:text="'참여인원: '+${chatRoom.joinCount}+'명 참여중'"></div>-->
                                             <div th:text="${chatRoom.title}+' ('+${chatRoom.cinemaAddress}+' / '+${chatRoom.cinemaName}+')'"></div>
-                                            <div class="report-btn list-report-btn" th:onclick="report([[${chatRoom.roomNo}]],[[${chatRoom.roomWriter}]]);">신고</div>
+                                            <div class="list-report-btn" style="display: flex;gap: 3px;">
+                                                <img style="width: 15px; height: 15px" src="/img/siren.png" alt="">
+                                                <div class="report-btn" th:onclick="report([[${chatRoom.roomNo}]],[[${chatRoom.roomWriter}]]);">신고</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -396,12 +401,6 @@
 
                             <!--                        <div>방장 이미지</div>-->
 
-                            <!--                        <div th:text="'채팅방 생성 날짜 : '+${chatRoom.roomDate}"></div>-->
-                            <!--                        <div>채팅방 최근채팅내용</div>-->
-
-                            <!--                        <div th:text="'영화이름 : '+${chatRoom.movieNo}"></div>-->
-                            <!--                        <div th:text="'지역 : '+${chatRoom.cinemaLocationCode}"></div>-->
-                            <!--                        <div th:text="'극장 : '+${chatRoom.cinemaNo}"></div>-->
                         </div>
 
 
@@ -415,14 +414,17 @@
                                 <div class="card-mouseover-text" th:if="${chatRoom.roomCategory == 'reservation'}" th:text="'모집방'"></div>
                                 <div class="card-mouseover-text" th:if="${chatRoom.roomCategory == 'talk'}" th:text="'소통방'"></div>
                                 <div class="card-mouseover-text joinBtn" th:onclick="joinChatRoom([[${chatRoom.roomNo}]],[[${chatRoom.roomWriter}]],[[${chatRoom.movieNo}]],[[${chatRoom.title}]], [[${chatRoom.posterUrl}]], [[${chatRoom.cinemaNo}]],[[${chatRoom.cinemaName}]], [[${chatRoom.cinemaLocationCode}]], [[${chatRoom.cinemaAddress}]], [[${chatRoom.roomCategory}]]);">참여하기</div>
-                                <div class="report-btn card-report-btn" th:onclick="report([[${chatRoom.roomNo}]],[[${chatRoom.roomWriter}]]);">신고</div>
+                                <div class="card-report-btn" style="display: flex;gap: 3px;">
+                                    <img style="width: 15px; height: 15px" src="/img/siren.png" alt="">
+                                    <div class="report-btn" th:onclick="report([[${chatRoom.roomNo}]],[[${chatRoom.roomWriter}]]);">신고</div>
+                                </div>
                             </div>
                             <div th:style="'width:100%; height: 400px; background-image: url('+${chatRoom.posterUrl}+'); background-position: center; background-size: cover; border-radius:20px;'">
                             </div>
 
                             <div class="toCard-item-info">
                                 <div class="itemCard-title" th:text="'< '+${chatRoom.title}+' >'"></div>
-                                <div style="font-size: 25px; font-weight:bold" th:text="${#strings.length(chatRoom.roomName) > 15 ? chatRoom.roomName.substring(0, 15) + ' . . .' : chatRoom.roomName}"></div>
+                                <div style="font-size: 22px; font-weight:bold" th:text="${#strings.length(chatRoom.roomName) > 12 ? chatRoom.roomName.substring(0, 12) + ' ...' : chatRoom.roomName}"></div>
 
                                 <th:block th:if="${chatRoom.recentContent == null}">
                                     <div class="itemCard-recentContent" th:text="'아직 대화한 내용이 없습니다'"></div>
@@ -431,20 +433,42 @@
                                     <div class="itemCard-recentContent" th:text="${chatRoom.recentContent}"></div>
                                 </th:block>
 
-                                <div>
-                                    <span th:each="tag : ${tagList}" th:if="${tag.roomNo == chatRoom.roomNo}" th:text="'#'+${tag.tagName}+' '"></span>
+                                <div style="display: inline-flex; gap: 5px;">
+                                    <span class="room-tag" style="font-size: 14px;" th:each="tag : ${tagList}" th:if="${tag.roomNo == chatRoom.roomNo}" th:text="'#'+${tag.tagName}+' '"></span>
                                 </div>
-                                <th:block th:if="${chatRoom.joinCount == null}">
-                                    <div style="" th:text="'1명 참여중'"></div>
-                                </th:block>
-                                <th:block th:if="${chatRoom.joinCount != null}">
-                                    <div style="" th:text="${chatRoom.joinCount}+'명 참여중'"></div>
-                                </th:block>
 
-                                <div th:text="${chatRoom.cinemaAddress}+' / '+${chatRoom.cinemaName}"></div>
-                                <th:block th:each="rTime : ${relativeTimeList}">
-                                    <div class="itemCard-roomDate" th:if="${chatRoom.roomDate == rTime.roomDate}" th:text="'개설일 : '+${rTime.relativeTime}"></div>
-                                </th:block>
+                                <div style="display: flex; height: 40px; gap: 10px">
+                                    <div class="card-member-profile" style="width: 40px; height:40px; border-radius: 30%; display: none;">
+                                        <th:block th:if="${chatRoom.filePath == null}">
+                                            <img alt="프로필" src="/img/default_profile.png" style="width: 100%; height: 100%; border-radius: 30%;">
+                                        </th:block>
+                                        <th:block th:if="${chatRoom.filePath != null}">
+                                            <img th:src="@{|${chatRoom.filePath}${chatRoom.fileRename}|}" alt="프로필" style="width: 100%; height: 100%; border-radius: 30%;">
+                                        </th:block>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; justify-content: space-between">
+                                        <div class="info-roomWriter" th:text="${chatRoom.roomWriter}" style="display: none"></div>
+                                        <div>
+                                            <th:block th:if="${chatRoom.joinCount == null}">
+                                                <div style="" th:text="'1명 참여중'"></div>
+                                            </th:block>
+                                            <th:block th:if="${chatRoom.joinCount != null}">
+                                                <div style="" th:text="${chatRoom.joinCount}+'명 참여중'"></div>
+                                            </th:block>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+                                <div style="display: flex; flex-direction: column; gap: 3px;">
+                                    <div th:text="${chatRoom.cinemaAddress}+' / '+${chatRoom.cinemaName}"></div>
+                                    <th:block th:each="rTime : ${relativeTimeList}">
+                                        <div class="itemCard-roomDate" th:if="${chatRoom.roomDate == rTime.roomDate}" th:text="'개설일 : '+${rTime.relativeTime}"></div>
+                                    </th:block>
+                                </div>
+
 
                             </div>
 
@@ -482,15 +506,11 @@
 
 
         </div>
-
-
-
-        <br><br><br>
-        <div>최근참여많은방을 추천해요</div>
-        <div>이런주제는 어때요?</div>
-        <div>태그들</div>
-        <div>최근 대화 많은 방</div>
-
+<!--        <br><br><br>-->
+<!--        <div>최근참여많은방을 추천해요</div>-->
+<!--        <div>이런주제는 어때요?</div>-->
+<!--        <div>태그들</div>-->
+<!--        <div>최근 대화 많은 방</div>-->
 
     </body>
 </html>
