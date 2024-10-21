@@ -240,7 +240,7 @@ public class ChatController {
         // DTO -> VO
         ChatRoom chatRoom = new ChatRoom(null, roomWriter,
                 revAndChatInfo.getRoomName(),
-                null,revAndChatInfo.getRoomCategory(), revAndChatInfo.getMovieNo(), null, null,
+                null,revAndChatInfo.getRoomCategory(), null, null, revAndChatInfo.getMovieNo(), null, null,
                 revAndChatInfo.getCinemaLocationCode(), null, revAndChatInfo.getCinemaNo(), null, null, null
         );
 
@@ -360,6 +360,8 @@ public class ChatController {
         // delete면 삭제하기
         if("delete".equals(status)){
             cService.deleteMemberJoinByRoom(roomNo, memberId);
+
+            System.out.println("삭제됫나~~~~~~~~~~~~~~~~~~~");
         }
         List<ChatJoinProfile> chatJoinList = cService.selectChatJoinList(roomNo);
         // 채팅방에 참여한 리스트 조회 ( 프로필 이미지까지 )
@@ -491,5 +493,35 @@ public class ChatController {
         System.out.println("ChatJoin         " + chatJoinAccept);
 
         return chatJoinAccept;
+    }
+
+
+
+    @GetMapping("/chat/test")
+    public String showTest(Model model){
+        // 전체 프로필 정보 조회 -> 채팅방 정보에 출력
+//        List<ProfileImg> profileList = cService.selectProfileList();
+//        List<String> profileMemberIdList = new ArrayList<>();
+//        for(ProfileImg profileItem : profileList){
+//            profileMemberIdList.add(profileItem.getMemberId());
+//        }
+
+        // 채팅방 태그 조회
+        List<ChatTag> tagList = cService.selectChatTagList("default");
+
+        //top5 채팅방 조회
+        Map<String, Object> map = cService.selectChatRoomListByTop();
+
+
+
+
+
+
+
+//        model.addAttribute("profileList", profileList);
+        model.addAttribute("tagList", tagList);
+        model.addAttribute("chatRoomList", map.get("chatRoomListByTop"));
+        model.addAttribute("relativeTimeList", map.get("relativeTimeList"));
+        return "pages/chat/test";
     }
 }

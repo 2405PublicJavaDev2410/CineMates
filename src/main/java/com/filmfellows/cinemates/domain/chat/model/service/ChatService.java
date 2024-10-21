@@ -168,4 +168,11 @@ public interface ChatService {
      * @return String
      */
     List<ChatJoin> selectAcceptAll(Integer roomNo);
+
+    /**
+     * 담당자 : 이충무
+     * 기능 : TOP5 채팅방 리스트 조회
+     * @return String
+     */
+    Map<String, Object> selectChatRoomListByTop();
 }

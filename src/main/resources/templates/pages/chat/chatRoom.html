@@ -16,6 +16,9 @@
             /**{*/
             /*    font-family: "NEXON Lv1 Gothic OTF", serif;*/
             /*}*/
+            button{
+                font-family: "NEXON Lv1 Gothic OTF", serif;
+            }
             .chat-room-container{
                 display: flex;
                 justify-content: space-around;
@@ -43,6 +46,7 @@
                 z-index: 1;
             }
             .chat-screen{
+                font-family: "NEXON Lv1 Gothic OTF", serif;
                 width: 45%;
                 height: 800px;
                 display: flex;
@@ -68,6 +72,7 @@
                 height: 120px;
             }
             .message-input-box > textarea{
+                font-family: "NEXON Lv1 Gothic OTF", serif;
                 width: 100%;
                 height: 65%;
                 outline: none;
@@ -401,7 +406,7 @@
             </div>
         </div>
         <div>
-            <div style="width: 100%; display: flex; justify-content: space-between; padding-right: 25px">
+            <div style="font-family: 'NEXON Lv1 Gothic OTF', serif; width: 100%; display: flex; justify-content: space-between; padding-right: 25px">
                 <h1>영화예매 진행에 동의하십니까?</h1>
                 <th:block th:if="${session.memberId == chatRoom.roomWriter}">
                     <button id="delete-btn" type="button" onclick="deleteChatRoom()">채팅방 삭제</button>
@@ -410,7 +415,7 @@
                     <button id="leave-btn" type="button" onclick="if(confirm('채팅방을 정말 나가시겠습니까? 나갈 경우 이전의 대화기록을 확인할 수 없습니다.')) leaveChatRoom();">나가기</button>
                 </th:block>
             </div>
-            <div style="display: inline-flex; flex-direction: column; align-items: end">
+            <div style="font-family: 'NEXON Lv1 Gothic OTF', serif; display: inline-flex; flex-direction: column; align-items: end">
                 <div style="margin: 30px 0;">방장이 예매의 다음 절차를 진행하려면 대화에 참여한 모든 회원의 동의가 필요합니다</div>
                 <label style="font-size: 18px; font-weight: bold" id="acceptCheck">
                     동의함
@@ -598,6 +603,11 @@
                        mainScreen.appendChild(otherChatBoxDiv);
                    }
                }else {
+                   if(message.messageType === "LEAVE"){
+                       message.chatContent = "님이 대화방을 나갔습니다";
+                   }else if(message.messageType === "FIRST"){
+                       message.chatContent = "님이 대화방에 참여했습니다";
+                   }
                    let noticeBoxDiv = document.createElement('div');
                    noticeBoxDiv.setAttribute("class", "notice-box");
                    noticeBoxDiv.innerHTML = `
@@ -616,7 +626,7 @@
                 const leaveMessage = {
                     messageType: 'LEAVE',
                     memberId: memberId,
-                    roomNo: roomNo,
+                    roomNo: roomNo
                 };
 
                 if (socket.readyState === WebSocket.OPEN) {
@@ -624,11 +634,12 @@
                     socket.send(JSON.stringify(leaveMessage));
                     // db 저장
                     saveMessage(leaveMessage);
-
                 }
 
                 // list로 이동
                 location.href= '/chat/list';
+
+
             }
 
             // 다른 페이지로 이동 시 "WAIT" 메시지 전송
@@ -689,7 +700,7 @@
                         if (!response.ok) {
                             throw new Error('메시지 저장 중 에러 발생');
                         }
-                        return response.json(); // 응답을 json 형태로 변환
+                        return response.text(); // 응답을 text 형태로 변환
                     })
                     .then(data => {
                         console.log('메시지가 DB에 저장되었습니다:', data);
@@ -721,7 +732,7 @@
 
             // ajax userList 업데이트
             function updateUserList(status, memberId){
-                let roomWriter = /*[[${chatRoom.roomWriter}]]*/
+                let roomWriter = /*[[${chatRoom.roomWriter}]]*/;
                 $.ajax({
                     url:"/chat/getUserListAndDelete",
                     data:{
