@@ -103,13 +103,14 @@ h1.page-title {
     align-items: center;
     text-align: center;
     line-height: 45px;
+    margin-bottom:10px;
 }
 
 .listSwitch-btn {
-    width: 110px;
+    width: 90px;
     height: 100%;
     background-color: #ececec;
-    font-size: 18px;
+    font-size: 16px;
     border: none;
     border-radius: 10px;
     transition: all 200ms;
@@ -125,7 +126,7 @@ h1.page-title {
 .listSwitch-btn:hover {
     transform: scale(1.05);
     color: white;
-    font-size: 20px;
+    font-size: 17px;
     font-weight: bold;
     background-color: #EA4E4A;
 }
@@ -133,7 +134,7 @@ h1.page-title {
 #toCard-btn.active, #toList-btn.active {
     transform: scale(1.05);
     color: white;
-    font-size: 20px;
+    font-size: 17px;
     font-weight: bold;
     background-color: #EA4E4A;
 }
@@ -245,6 +246,8 @@ h1.page-title {
     height: 90px;
     margin-right: 20px;
     position: relative;
+    border-radius: 40%;
+    background-color: white;
 }
 
 .chatRoomName {
@@ -254,6 +257,8 @@ h1.page-title {
 
 .chatTagList {
     color: #6e6e6e;
+    display: inline-flex;
+    gap: 5px;
 }
 
 .flex-item-chatInfoBox {
@@ -402,4 +407,11 @@ h1.page-title {
 }
 #chatNavigation:active{
     transform: scale(0.95);
+}
+
+.room-tag{
+    background-color: #d8d8d8;
+    padding: 5px;
+    border-radius: 5px;
+    color: black;
 }

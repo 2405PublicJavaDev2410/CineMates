@@ -309,7 +309,7 @@
 
             <h1 class="page-title">전체 채팅방</h1>
 
-            <div style="display: flex; justify-content: end; margin: 30px 20px; padding-bottom: 10px; border-bottom: 2px solid #2c3e50">
+            <div style="display: flex; justify-content: end; margin: 30px 20px 10px ; padding-bottom: 10px; border-bottom: 2px solid #2c3e50">
                 <div class="createRoom-modal-btn" id="chatNavigation">채팅방 만들기</div>
             </div>
             <div id="modalWrap"> <!-- 모달 창을 감싸는 div -->
@@ -358,7 +358,7 @@
                             <div class="itemBtnFlexContainer">
                                 <div class="item-flex-container">
                                     <div class="flex-item-memberProfile">
-                                        <div style="position: absolute; top: -12px; right: 0; font-size: 45px; transform: rotate(40deg);; color: rgba(255,227,73,0.91)" th:if="${session.memberId != null and chatRoom.roomWriter != null and session.memberId.trim() == chatRoom.roomWriter.trim()}"><i class="fa-solid fa-crown"></i></div>
+                                        <div style="position: absolute; top: -20px; right: -10px; font-size: 45px; transform: rotate(40deg);; color: rgba(255,227,73,0.91)" th:if="${session.memberId != null and chatRoom.roomWriter != null and session.memberId.trim() == chatRoom.roomWriter.trim()}"><i class="fa-solid fa-crown"></i></div>
                                         <th:block th:if="${chatRoom.filePath == null}">
                                             <img alt="프로필" src="/img/default_profile.png" style="width: 100%; height: 100%; border-radius: 30%;">
                                         </th:block>
@@ -370,8 +370,8 @@
                                     <div class="flex-item-chatInfoBox">
                                         <div class="chatRoomName" th:text="${chatRoom.roomName}"></div>
 
-                                        <div class="chatTagList">태그 :
-                                            <span th:each="tag : ${tagList}" th:if="${tag.roomNo == chatRoom.roomNo}" th:text="'#'+${tag.tagName}+' '"></span>
+                                        <div class="chatTagList" >
+                                            <span class="room-tag" th:each="tag : ${tagList}" th:if="${tag.roomNo == chatRoom.roomNo}" th:text="'#'+${tag.tagName}+' '"></span>
                                         </div>
                                         <div style="display: flex">
 

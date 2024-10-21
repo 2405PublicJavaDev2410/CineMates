@@ -230,8 +230,8 @@
                                 <div class="flex-item-chatInfoBox">
                                     <div class="chatRoomName" th:text="${chatRoom.roomName}"></div>
 
-                                    <div class="chatTagList">태그 :
-                                        <span th:each="tag : ${tagList}" th:if="${tag.roomNo == chatRoom.roomNo}" th:text="'#'+${tag.tagName}+' '"></span>
+                                    <div class="chatTagList">
+                                        <span class="room-tag" th:each="tag : ${tagList}" th:if="${tag.roomNo == chatRoom.roomNo}" th:text="'#'+${tag.tagName}+' '"></span>
                                     </div>
                                     <div style="display: flex">
                                         <th:block th:if="${chatRoom.joinCount == null}">

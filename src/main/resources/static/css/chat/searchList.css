@@ -239,6 +239,7 @@ h1{
 
 /* list형 fade-in 스타일 */
 .list-item.fade-in {
+    box-shadow: 0 2px 2px 2px rgb(162, 162, 162);
     visibility: visible; /* 0.5초 후에 보이게 */
     opacity: 1;
     transform: translateY(0);
@@ -258,22 +259,26 @@ h1{
     justify-content: left;
     width: 100%;
     height: 100%;
-    font-size: 20px;
+    font-size: 16px;
 }
 
 .flex-item-memberProfile {
     width: 90px;
     height: 90px;
     margin-right: 20px;
+    border-radius: 40%;
+    background-color: white;
 }
 
 .chatRoomName {
-    font-size: 25px;
-    /*font-weight: bold;*/
+    font-size: 22px;
+    font-weight: bold;
 }
 
 .chatTagList {
     color: #6e6e6e;
+    display: inline-flex;
+    gap: 5px;
 }
 
 .flex-item-chatInfoBox {
@@ -326,4 +331,11 @@ h1{
 .report-btn:hover{
     color: #EA4E4A;
     font-weight: bold;
+}
+
+.room-tag{
+    background-color: #d8d8d8;
+    padding: 5px;
+    border-radius: 5px;
+    color: black;
 }
