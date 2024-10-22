@@ -238,6 +238,7 @@
     width: 100%;
     display: block;
     border-radius: 8px;
+    cursor: pointer;
 }
 
 .load-more-container {
