@@ -204,7 +204,7 @@ public class ChatController {
         // 내가 입장한 이후의 채팅기록
         List<chatMessageAndProfile> chatMessageList = cService.selectChatMessageList(myJoinDate, chatRoom.getRoomNo());
 
-
+        System.out.println("chatMessageListtttt"+chatMessageList);
 
         model.addAttribute("chatMessageList", chatMessageList);
         model.addAttribute("chatJoinList", chatJoinList);
@@ -363,7 +363,7 @@ public class ChatController {
         List<ChatJoinProfile> chatJoinList = cService.selectChatJoinList(roomNo);
         // 채팅방에 참여한 리스트 조회 ( 프로필 이미지까지 )
 
-
+        System.out.println("??? : "+ chatJoinList);
 
         model.addAttribute("chatJoinList", chatJoinList);
         model.addAttribute("roomWriter", roomWriter);

@@ -358,7 +358,7 @@
             <div class="chat-screen">
                 <div id="user-list-container">
                     <div th:id="${joinList.getMemberId()}" th:each="joinList:${chatJoinList}" style="display: flex; flex-direction: column;align-items: center; position: relative">
-                        <div style="position: absolute; top: -8px; left: 40px; font-size: 24px; transform: rotate(40deg);; color: rgba(255,227,73,0.91)" th:if="${chatRoom.roomWriter != null && chatRoom.roomWriter == joinList.memberId}"><i class="fa-solid fa-crown"></i></div>
+                        <div style="position: absolute; top: -8px; left: 40px; font-size: 24px; transform: rotate(40deg);; color: rgba(255,227,73,0.91)" th:if="${roomWriter != null && roomWriter == joinList.memberId}"><i class="fa-solid fa-crown"></i></div>
                         <th:block th:if="${joinList.filePath == null}">
                             <img alt="프로필" src="/img/default_profile.png" style="width: 60px; height: 60px; border-radius: 50%;">
                         </th:block>
@@ -450,8 +450,8 @@
             let roomNo = /*[[${chatRoom.roomNo}]]*/; // 방번호
             let memberId = /*[[${session.memberId}]]*/; // 사용자 이름 입력받기
             let firstOrJoin = /*[[${firstOrJoin}]]*/;
-            const socketUrl = `ws://localhost:9000/ws/chat`;
-            // const hongbinUrl = `ws://192.168.60.216:9000/ws/chat`;
+            // const socketUrl = `ws://localhost:9000/ws/chat`;
+            const userUrl = `ws://192.168.35.11:9000/ws/chat`;
 
             let socket = null;
 
@@ -459,7 +459,7 @@
             webSocketConnect();
 
             function webSocketConnect(){
-                socket = new WebSocket(socketUrl);
+                socket = new WebSocket(userUrl);
 
                 socket.onopen = function() {
                     let messageType = firstOrJoin;
