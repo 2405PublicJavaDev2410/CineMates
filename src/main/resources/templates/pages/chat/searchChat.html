@@ -220,7 +220,7 @@
 
                                 <div class="flex-item-memberProfile">
                                     <th:block th:if="${chatRoom.filePath == null}">
-                                        <img alt="프로필" src="/img/chat/defaultProfile2.png" style="width: 100%; height: 100%; border-radius: 30%;">
+                                        <img alt="프로필" src="/img/default_profile.png" style="width: 100%; height: 100%; border-radius: 30%;">
                                     </th:block>
                                     <th:block th:if="${chatRoom.filePath != null}">
                                         <img th:src="@{|${chatRoom.filePath}${chatRoom.fileRename}|}" alt="프로필" style="width: 100%; height: 100%; border-radius: 30%;">
@@ -230,8 +230,8 @@
                                 <div class="flex-item-chatInfoBox">
                                     <div class="chatRoomName" th:text="${chatRoom.roomName}"></div>
 
-                                    <div class="chatTagList">태그 :
-                                        <span th:each="tag : ${tagList}" th:if="${tag.roomNo == chatRoom.roomNo}" th:text="'#'+${tag.tagName}+' '"></span>
+                                    <div class="chatTagList">
+                                        <span class="room-tag" th:each="tag : ${tagList}" th:if="${tag.roomNo == chatRoom.roomNo}" th:text="'#'+${tag.tagName}+' '"></span>
                                     </div>
                                     <div style="display: flex">
                                         <th:block th:if="${chatRoom.joinCount == null}">
@@ -241,13 +241,19 @@
                                             <div style="margin-right: 50px" th:text="${chatRoom.joinCount}+'명 참여중'"></div>
                                         </th:block>
 <!--                                        <div style="margin-right: 50px" th:text="'참여인원: '+${chatRoom.joinCount}+'명 참여중'"></div>-->
-                                        <div th:text="${chatRoom.title}+' ('+${chatRoom.cinemaAddress}+' / '+${chatRoom.cinemaName}+')'"></div>
+                                        <div style="display: flex;">
+                                            <div th:text="${chatRoom.title}+' ('+${chatRoom.cinemaAddress}+' / '+${chatRoom.cinemaName}+')'"></div>
+                                            <div class="list-report-btn" style="display: flex;gap: 3px; margin-left: 5px;">
+                                                <img style="width: 15px; height: 15px" src="/img/siren.png" alt="">
+                                                <div class="report-btn" th:onclick="report([[${chatRoom.roomNo}]],[[${chatRoom.roomWriter}]]);">신고</div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
 
-                            <div style="position: relative;">
-                                <div class="report-btn" th:onclick="report([[${chatRoom.roomNo}]],[[${chatRoom.roomWriter}]]);">신고</div>
+                            <div>
                                 <div class="joinBtn" th:onclick="joinChatRoom([[${chatRoom.roomNo}]], [[${chatRoom.roomWriter}]], [[${chatRoom.movieNo}]],[[${chatRoom.title}]], [[${chatRoom.posterUrl}]], [[${chatRoom.cinemaNo}]],[[${chatRoom.cinemaName}]], [[${chatRoom.cinemaLocationCode}]], [[${chatRoom.cinemaAddress}]], [[${chatRoom.roomCategory}]]);">참여</div>
                             </div>
                         </div>
@@ -283,9 +289,9 @@
 
 
 
-        <h1 style="width: 90%; margin:0 auto;">
-           소통중인 채팅방
-        </h1>
+<!--        <h1 style="width: 90%; margin:0 auto;">-->
+<!--           소통중인 채팅방-->
+<!--        </h1>-->
 
     </body>
 </html>

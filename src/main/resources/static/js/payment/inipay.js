@@ -19,23 +19,25 @@ var reservationData = {
     adultReserved: document.getElementById('adultReserved').value,
     childReserved: document.getElementById('childReserved').value,
     seniorReserved: document.getElementById('seniorReserved').value,
-    selectSeat : document.getElementById('selectSeat').value
+    selectSeat: document.getElementById('selectSeat').value,
+    totalPrice: document.getElementById('totalPrice').value
 };
 let selectedPaymentMethod = '';
 var reservedSeatCount = 0;
 
 // 페이지 로드 시 실행
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // 예약한 좌석 수 계산
     const seatInfo = document.querySelector('.reserveInfo_2 strong').textContent;
     reservedSeatCount = seatInfo.split(',').length;
 
     // 총 상품 금액 가져오기
     const formattedPrice = parseInt(totalPrice).toLocaleString('ko-KR');
-    document.getElementById('productPrice').textContent = '상품 금액: ' + formattedPrice  + '원';
+    document.getElementById('productPrice').textContent = '상품 금액: ' + formattedPrice + '원';
     // 초기 결제 금액 설정
     updateFinalPrice(0);
 });
+
 // 결제 방식 선택 로직
 function PayMethod(method) {
     selectedPaymentMethod = method;
@@ -58,27 +60,29 @@ function PayMethod(method) {
         payment.style.display = 'none';
         payment1.style.display = 'none';
         payment2.style.display = 'none';
-        payment3.style.width='100%';
-        payment3.style.height='148px';
-        paymentbtn.style.position='relative';
-        paymentbtn.style.top='97px';
+        payment3.style.width = '100%';
+        payment3.style.height = '148px';
+        paymentbtn.style.position = 'relative';
+        paymentbtn.style.top = '97px';
 
     }
-    if(method ==='credit'){
-        payment.style.display ='block';
-        payment1.style.display ='block';
-        payment2.style.display ='block';
-        payment3.style.display ='block';
+    if (method === 'credit') {
+        payment.style.display = 'block';
+        payment1.style.display = 'block';
+        payment2.style.display = 'block';
+        payment3.style.display = 'block';
 
     }
     // 결제하기 버튼 상태 업데이트
     updatePayButtonState();
 }
+
 //  결제 금액 최신화
 function updateFinalPrice() {
     const finalPrice = Math.max(0, totalPrice);
     document.getElementById('finalPrice').textContent = `결제 금액: ${finalPrice.toLocaleString()}원`;
 }
+
 // 결제 방식에 따른 결제 버튼 활성화
 function updatePayButtonState() {
     const payButton = document.getElementById('pay-btn');
@@ -98,6 +102,7 @@ function processPayment() {
         alert('결제 방식을 선택해주세요.');
     }
 }
+
 // 관람권 결제 로직
 function goPay() {
     if (confirm("결제 하시겠습니까?")) {
@@ -107,21 +112,27 @@ function goPay() {
                 url: "/payment/ticket",
                 data: {
                     memberId: memberId,
-                    ticketCount:ticketCount
+                    ticketCount: ticketCount
                 },
                 type: "POST",
                 dataType: "json",
                 success: function (response) {
                     console.log("Updated members:", response);
                     alert("결제가 완료되었습니다!");
+                    swal({
+                        title: "예매번호는" + reservationData.reservationNo + "입니다",
+                        icon: "success",
+                        closeOnClickOutside: false
+                    }).then(function () {
                     location.href = '/';
+                    });
                     // 여기서 기존의 결제 로직을 실행합니다.
                     var rsp = {
                         success: true,
                         imp_uid: 'movieTicket_' + new Date().getTime(),
                         merchant_uid: 'merchant_' + new Date().getTime(),
                         name: reservationData.title,
-                        amount: 100,
+                        amount: totalPrice,
                         buyer_email: reservationData.buyer_email,
                         buyer_name: reservationData.buyer_name,
                         buyer_tel: reservationData.buyer_tel,
@@ -185,14 +196,14 @@ function goPay() {
                     alert("결제 중 오류가 발생했습니다");
                 }
             });
-        }
-        else{
+        } else {
             alert("관람권이 부족합니다");
         }
     } else {
         console.log("결제가 취소되었습니다.");
     }
 }
+
 // 신용카드 결제 로직
 var IMP = window.IMP;
 
@@ -206,7 +217,7 @@ function requestPay() {
         merchant_uid: 'merchant_' + new Date().getTime(),
         name: reservationData.title,
         // amount: 15000 * reservationData.adultReserved + 13000 * reservationData.childReserved + 7000 * reservationData.seniorReserved,
-        amount: 100,
+        amount: totalPrice,
         buyer_email: reservationData.buyer_email,
         buyer_name: reservationData.buyer_name,
         buyer_tel: reservationData.buyer_tel,
@@ -224,7 +235,13 @@ function requestPay() {
                 })
             }).done(function (data) {
                 alert("결제가 완료되었습니다!");
-                location.href = '/';
+                swal({
+                    title: "예매번호는" + reservationData.reservationNo + "입니다",
+                    icon: "success",
+                    closeOnClickOutside: false
+                }).then(function () {
+                    location.href = '/';
+                });
                 console.log(data);
                 // buyerInfo만 확인 imp_uid ,merchant_uid , name , amount 까지는 고정 나머지는 없으면 삭제 .
                 var buyerInfo = {

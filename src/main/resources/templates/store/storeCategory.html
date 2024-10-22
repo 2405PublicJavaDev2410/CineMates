@@ -13,7 +13,6 @@
 <body>
 <main class="category-main" role="main">
     <div class="store-content">
-        <h2 class="category-title">스토어</h2>
         <store-nav>
             <a th:each="category : ${categories}" th:href="@{'/store/' + ${category}}" th:text="${category}"></a>
             <a class="store-cart-link" th:href="@{/store/cart}">장바구니</a>

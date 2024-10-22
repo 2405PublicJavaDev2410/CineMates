@@ -88,7 +88,7 @@ store-nav a:hover {
 
 .purchase-item-header {
     display: grid;
-    grid-template-columns: 1fr 150px 100px 150px;
+    grid-template-columns: 0.8fr 150px 0.2fr 100px 150px;
     padding: 10px 0;
     border-bottom: 2px solid #ddd;
     font-weight: bold;
@@ -96,10 +96,13 @@ store-nav a:hover {
 }
 
 .purchase-item {
+    margin-left: 40px;
+    margin-top: 15px;
     display: grid;
-    grid-template-columns: 1fr 150px 100px 150px;
+    grid-template-columns: 0.8fr 150px 0.2fr 100px 150px;
     gap: 10px;
     padding: 10px 0;
+    text-align: center;
     border-bottom: 1px solid #ddd;
 }
 
@@ -111,9 +114,18 @@ store-nav a:hover {
     font-weight: bold;
 }
 
-.item-price,
-.item-quantity,
+.item-price {
+    margin-left: 30px;
+    text-align: center;
+}
+
+.item-quantity {
+    margin-left: 20px;
+    text-align: center;
+}
+
 .item-total {
+    margin-left: 20px;
     text-align: center;
 }
 

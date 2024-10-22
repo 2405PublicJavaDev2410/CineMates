@@ -1,3 +1,4 @@
+/* 기본 스타일 */
 body {
     font-family: 'NEXON Lv1 Gothic OTF';
     background-color: #fff;
@@ -29,6 +30,12 @@ store-nav a {
 
 store-nav a:hover {
     color: #e5101d; /* CGV의 빨간색 강조 */
+}
+
+.store-cart-link {
+    position: relative;
+    font-weight: bold;
+    color: #e5101d;
 }
 
 .cart-steps {
@@ -154,17 +161,42 @@ store-nav a:hover {
 
 /* 결제 금액 */
 .gift-price-summary {
-    text-align: right;
+    padding: 40px;
+    display: grid;
+    grid-template-columns: 1fr 20px 1fr 20px 1fr;
+    justify-items: center;
+    align-items: center;
+    font-size: 18px;
+    row-gap: 20px;
 }
 
-.gift-price-summary p {
-    margin: 10px 0;
-    font-size: 16px;
+.gift-price-summary .price-label {
+    font-weight: bold;
+    color: #333;
 }
 
-.gift-price-summary span {
+.gift-price-summary .price-value {
     font-weight: bold;
     color: #e5101d;
+    font-size: 20px;
+}
+
+/* 가격 아이콘 스타일 */
+.gift-price-summary .price-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #999;
+    font-size: 20px;
+    color: #333;
+}
+
+.gift-price-summary .price-icon.red {
+    color: #e5101d;
+    border-color: #e5101d;
 }
 
 /* 액션 버튼 */
