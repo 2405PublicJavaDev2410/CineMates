@@ -293,10 +293,7 @@ public class ChatController {
         return "redirect:/chat/list";
     }
 
-    @GetMapping("/chat/navigation")
-    public String showNavi(){
-        return "pages/chat/navigation";
-    }
+
 
 
 //    ajax - 영화, 지역 조건 들어간 극장 리스트
@@ -497,26 +494,26 @@ public class ChatController {
 
 
 
-    @GetMapping("/chat/test")
-    public String showTest(Model model){
-        // 전체 프로필 정보 조회 -> 채팅방 정보에 출력
-//        List<ProfileImg> profileList = cService.selectProfileList();
-//        List<String> profileMemberIdList = new ArrayList<>();
-//        for(ProfileImg profileItem : profileList){
-//            profileMemberIdList.add(profileItem.getMemberId());
-//        }
-
-        // 채팅방 태그 조회
-        List<ChatTag> tagList = cService.selectChatTagList("default");
-
-        //top5 채팅방 조회
-        Map<String, Object> map = cService.selectChatRoomListByTop("top5");
-
-
-//        model.addAttribute("profileList", profileList);
-        model.addAttribute("tagList", tagList);
-        model.addAttribute("chatRoomList", map.get("chatRoomListByTop"));
-        model.addAttribute("relativeTimeList", map.get("relativeTimeList"));
-        return "pages/chat/test";
-    }
+//    @GetMapping("/chat/test")
+//    public String showTest(Model model){
+//        // 전체 프로필 정보 조회 -> 채팅방 정보에 출력
+////        List<ProfileImg> profileList = cService.selectProfileList();
+////        List<String> profileMemberIdList = new ArrayList<>();
+////        for(ProfileImg profileItem : profileList){
+////            profileMemberIdList.add(profileItem.getMemberId());
+////        }
+//
+//        // 채팅방 태그 조회
+//        List<ChatTag> tagList = cService.selectChatTagList("default");
+//
+//        //top5 채팅방 조회
+//        Map<String, Object> map = cService.selectChatRoomListByTop("top5");
+//
+//
+////        model.addAttribute("profileList", profileList);
+//        model.addAttribute("tagList", tagList);
+//        model.addAttribute("chatRoomList", map.get("chatRoomListByTop"));
+//        model.addAttribute("relativeTimeList", map.get("relativeTimeList"));
+//        return "pages/chat/test";
+//    }
 }
