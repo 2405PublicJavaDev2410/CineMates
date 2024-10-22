@@ -12,8 +12,10 @@
 <body>
 <main class="store-gift" role="main">
     <div class="store-content">
+        <store-nav>
         <a th:each="category : ${categories}" th:href="@{'/store/' + ${category}}" th:text="${category}"></a>
         <a class="store-cart-link" th:href="@{/store/cart}">장바구니</a>
+        </store-nav>
     </div>
 
     <div class="cart-steps">
@@ -65,12 +67,21 @@
         </section>
 
         <section class="section gift-price-summary">
-            <h2>결제 금액</h2>
-            <div class="gift-price-details">
+            <div class="price-label">총 상품 금액</div>
+            <div class="price-icon">-</div>
+            <div class="price-label">총 할인 금액</div>
+            <div class="price-icon red">=</div>
+            <div class="price-label">총 결제 예정금액</div>
+            <div class="price-value" id="total-price" th:text="${#numbers.formatDecimal(gift.totalAmount, 0, 'COMMA', 0, 'POINT')} + '원'"></div>
+            <div class="price-icon">-</div>
+            <div class="price-value" id="discount-amount" th:text="${#numbers.formatDecimal(gift.totalDiscountAmount, 0, 'COMMA', 0, 'POINT')} + '원'"></div>
+            <div class="price-icon red">=</div>
+            <div class="price-value" id="final-price" th:text="${#numbers.formatDecimal(gift.finalAmount, 0, 'COMMA', 0, 'POINT')} + '원'"></div>
+            <!--<div class="gift-price-details">
                 <p>총 상품 금액: <span id="total-price" th:text="${#numbers.formatDecimal(gift.totalAmount, 0, 'COMMA', 0, 'POINT')} + '원'"></span></p>
                 <p>총 할인 금액: <span id="discount-amount" th:text="${#numbers.formatDecimal(gift.totalDiscountAmount, 0, 'COMMA', 0, 'POINT')} + '원'"></span></p>
                 <p>총 결제 예정금액: <span id="final-price" th:text="${#numbers.formatDecimal(gift.finalAmount, 0, 'COMMA', 0, 'POINT')} + '원'"></span></p>
-            </div>
+            </div>-->
         </section>
 
         <div class="gift-action-buttons">

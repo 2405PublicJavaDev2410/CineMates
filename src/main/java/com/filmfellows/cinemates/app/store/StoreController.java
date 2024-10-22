@@ -21,6 +21,7 @@ public class StoreController {
 
     private final StoreService sService;
 
+    // 스토어 메인 페이지
     @GetMapping("/main")
     public String showStoreMain(Model model) {
         List<String> categories = Arrays.asList("기프트카드", "영화관람권", "콤보", "팝콘", "스낵", "음료");
@@ -36,6 +37,7 @@ public class StoreController {
         return "store/storeMain";
     }
 
+    // 스토어 카테고리 페이지
     @GetMapping("/{category}")
     public String showCategoryProducts(@PathVariable String category, Model model) {
         List<String> categories = Arrays.asList("기프트카드", "영화관람권", "콤보", "팝콘", "스낵", "음료");
@@ -46,6 +48,7 @@ public class StoreController {
         return "store/storeCategory";
     }
 
+    // 스토어 상세 페이지
     @GetMapping("/product/{productNo}")
     public String getProductDetail(@PathVariable int productNo, Model model) {
         List<String> categories = Arrays.asList("기프트카드", "영화관람권", "콤보", "팝콘", "스낵", "음료");
@@ -55,6 +58,7 @@ public class StoreController {
         return "store/product-detail";
     }
 
+    // 장바구니 페이지
     @GetMapping("/cart")
     public String showCart(Model model, HttpSession session) {
         String memberId = (String) session.getAttribute("memberId");
@@ -81,6 +85,7 @@ public class StoreController {
         return "store/cart";
     }
 
+    // 장바구니에 상품 추가(로그인 필요)
     @PostMapping("/cart/insert")
     @ResponseBody
     public ResponseEntity<?> insertToCart(@RequestBody Map<String, Object> cartData, HttpSession session) {
@@ -109,6 +114,7 @@ public class StoreController {
         }
     }
 
+    // 장바구니 상품 수량 업데이트
     @PostMapping("/cart/update")
     @ResponseBody
     public ResponseEntity<?> updateCart(@RequestBody Map<String, Integer> cartData) {
@@ -124,6 +130,7 @@ public class StoreController {
         }
     }
 
+    // 장바구니에서 특정 상품 삭제
     @PostMapping("cart/delete")
     @ResponseBody
     public ResponseEntity<?> deleteFromCart(@RequestBody Map<String, Integer> request) {
@@ -140,19 +147,8 @@ public class StoreController {
         }
     }
 
-    @PostMapping("cart/clear")
-    @ResponseBody
-    public ResponseEntity<?> clearCart(HttpSession session) {
-        String memberId = (String) session.getAttribute("memberId");
-        boolean success = sService.clearCart(memberId);
-        if(success) {
-            return ResponseEntity.ok().body(Map.of("success", true, "message", "장바구니가 비워졌습니다."));
-        } else {
-            return ResponseEntity.badRequest().body(Map.of("success", false, "message", "장바구니 비우기에 실패했습니다."));
-        }
-    }
-
-    @GetMapping("/gift/new/{productNo}")
+    // 특정 상품 선물하기위한 페이지
+    @GetMapping("/gift/{productNo}")
     public String showGiftForProduct(@PathVariable int productNo, Model model, HttpSession session) {
         String memberId = (String) session.getAttribute("memberId");
         if (memberId == null) {
@@ -165,17 +161,21 @@ public class StoreController {
         return "store/gift";
     }
 
+    // 선물하기 준비 페이지
     @GetMapping("/gift/prepare")
     public String prepareGift(Model model, HttpSession session) {
         Gift gift = (Gift) session.getAttribute("giftInfo");
+        List<String> categories = Arrays.asList("기프트카드", "영화관람권", "콤보", "팝콘", "스낵", "음료");
         if (gift == null) {
             return "redirect:/store/main";
         }
 
         model.addAttribute("gift", gift);
+        model.addAttribute("categories", categories);
         return "store/gift";
     }
 
+    // 선물 정보 저장
     @PostMapping("/gift/submit")
     public String submitGift(@ModelAttribute Gift gift, HttpSession session) {
         String memberId = (String) session.getAttribute("memberId");
@@ -190,6 +190,7 @@ public class StoreController {
         return "redirect:/store/gift/confirm/" + savedGift.getGiftNo();
     }
 
+    // 선물 확인 페이지 표시
     @GetMapping("/gift/confirm/{giftNo}")
     public String confirmGift(@PathVariable int giftNo, Model model, HttpSession session) {
         String memberId = (String) session.getAttribute("memberId");
@@ -226,9 +227,9 @@ public class StoreController {
         }
     }
 
-    // 선물하기 결제완료 후 선물 완료여부 업데이트
+    // 선물하기 결제 완료 처리
     @PostMapping("/complete-payment")
-    public String completePayment(@RequestParam("giftNo") int giftNo) {
+    public String completeGiftPayment(@RequestParam("giftNo") int giftNo) {
         try {
             // 결제 처리 로직
 
@@ -241,6 +242,7 @@ public class StoreController {
         }
     }
 
+    // 구매 페이지
     @RequestMapping(value="/purchase/{purchaseNo}/{productNo}/{quantity}", method={RequestMethod.GET, RequestMethod.POST})
     public String showPurchase(@PathVariable int productNo
             , @PathVariable int quantity
@@ -270,6 +272,7 @@ public class StoreController {
         return "store/purchase";
     }
 
+    // 구매 or 선물하기 프로세스
     @PostMapping("/purchase/initiate")
     public ResponseEntity<?> initiatePurchase(@RequestBody Map<String, Object> request, HttpSession session) {
         String memberId = (String) session.getAttribute("memberId");
@@ -300,6 +303,7 @@ public class StoreController {
         }
     }
 
+    // 구매 정보 업데이트
     @PostMapping("/purchase/update")
     @ResponseBody
     public ResponseEntity<?> updatePurchase(@RequestBody Purchase purchase, HttpSession session) {
@@ -311,8 +315,9 @@ public class StoreController {
         return ResponseEntity.ok("구매 정보가 업데이트되었습니다.");
     }
 
+    // 일반 구매 결제 완료 처리(티켓인 경우 회원의 보유 티켓 수량 증가)
     @PostMapping("/payment/complete")
-    public ResponseEntity<String> completePayment(@RequestBody Map<String, Object> request, HttpSession session) {
+    public ResponseEntity<String> completePurchasePayment(@RequestBody Map<String, Object> request, HttpSession session) {
         try {
             String memberId = (String) session.getAttribute("memberId");
             if (memberId == null) {

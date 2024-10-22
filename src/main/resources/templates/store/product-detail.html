@@ -29,7 +29,7 @@
             <div class="detail-product-details">
                 <p>가격: <span th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + '원'"></span></p>
                 <p>상품구성: <span th:text="${product.description}"></span></p>
-                <p>상품번호: <span th:text="${product.productNo}"></span></p>
+                <input type="hidden" th:hidden="${product.productNo}">
 
                 <form id="purchaseForm" th:action="@{'/store/purchase/initiate'}" method="post">
                     <input type="hidden" name="productNo" th:value="${product.productNo}">

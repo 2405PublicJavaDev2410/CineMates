@@ -63,10 +63,23 @@
         </div>
     </div>
 
-    <div class="cart-summary">
+<!--    <div class="cart-summary">
         <p>총 상품금액: <span id="totalAmount">0원</span></p>
         <p>총 할인금액: <span id="totalDiscount">0원</span></p>
         <p>결제 예정금액: <span id="finalPrice">0원</span></p>
+    </div>-->
+
+    <div class="cart-summary">
+        <div class="price-label">총 상품 금액</div>
+        <div class="price-icon">-</div>
+        <div class="price-label">총 할인 금액</div>
+        <div class="price-icon red">=</div>
+        <div class="price-label">총 결제 예정금액</div>
+        <div class="price-value" id="totalAmount"></div>
+        <div class="price-icon">-</div>
+        <div class="price-value" id="totalDiscount"></div>
+        <div class="price-icon red">=</div>
+        <div class="price-value" id="finalPrice"></div>
     </div>
 
     <div class="cart-actions">

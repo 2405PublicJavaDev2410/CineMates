@@ -46,7 +46,7 @@ function requestPay() {
                 contentType: "application/json"
             }).done(function (data) {
                 alert("결제가 완료되었습니다.");
-                window.location.href = "/store/payment/result/" + rsp.merchant_uid;
+                window.location.href = "/store/payment/complete/";
             });
         } else {
             // 결제 실패 시 로직
