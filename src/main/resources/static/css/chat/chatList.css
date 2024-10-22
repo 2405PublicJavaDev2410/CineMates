@@ -259,6 +259,7 @@ h1.page-title {
 .chatTagList {
     color: #6e6e6e;
     display: inline-flex;
+    flex-wrap: wrap;
     gap: 10px;
 }
 

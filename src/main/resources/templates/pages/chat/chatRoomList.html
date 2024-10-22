@@ -433,7 +433,7 @@
                                     <div class="itemCard-recentContent" th:text="${chatRoom.recentContent}"></div>
                                 </th:block>
 
-                                <div style="display: inline-flex; gap: 5px;">
+                                <div style="display: inline-flex; gap: 5px; flex-wrap: wrap">
                                     <span class="room-tag" style="font-size: 14px;" th:each="tag : ${tagList}" th:if="${tag.roomNo == chatRoom.roomNo}" th:text="'#'+${tag.tagName}+' '"></span>
                                 </div>
 
