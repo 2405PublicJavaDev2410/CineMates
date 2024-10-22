@@ -6,7 +6,7 @@
 h1.page-title {
     font-family: 'GmarketSansMedium', sans-serif;
     text-align: center;
-    margin: 30px;
+    margin: 0 30px;
 }
 
 /* 페이징 처리 */
@@ -46,6 +46,7 @@ h1.page-title {
 }
 
 .chatRoomList-main {
+    margin-top: 50px;
     width: 100%;
 }
 
@@ -62,17 +63,17 @@ h1.page-title {
     margin: 0 auto;
     display: flex;
     width: 90%;
-    height: 50px;
-    font-size: 20px;
+    height: 40px;
+    font-size: 16px;
 }
 
 .listMenu-item {
     user-select: none;
     /*width: 120px;*/
-    padding: 0 30px;
+    padding: 0 20px;
     height: 100%;
     text-align: center;
-    line-height: 50px;
+    line-height: 40px;
     background-color: #ececec;
     border-radius: 100px;
     transition: all 200ms;
@@ -103,13 +104,14 @@ h1.page-title {
     align-items: center;
     text-align: center;
     line-height: 45px;
+    margin-bottom:10px;
 }
 
 .listSwitch-btn {
-    width: 110px;
+    width: 90px;
     height: 100%;
     background-color: #ececec;
-    font-size: 18px;
+    font-size: 16px;
     border: none;
     border-radius: 10px;
     transition: all 200ms;
@@ -125,7 +127,7 @@ h1.page-title {
 .listSwitch-btn:hover {
     transform: scale(1.05);
     color: white;
-    font-size: 20px;
+    font-size: 17px;
     font-weight: bold;
     background-color: #EA4E4A;
 }
@@ -133,7 +135,7 @@ h1.page-title {
 #toCard-btn.active, #toList-btn.active {
     transform: scale(1.05);
     color: white;
-    font-size: 20px;
+    font-size: 17px;
     font-weight: bold;
     background-color: #EA4E4A;
 }
@@ -164,16 +166,15 @@ h1.page-title {
 
 /* list형 기본 스타일 */
 .list-item {
-    width: 90%;
-    height: 150px;
+    width: 70%;
+    height: 120px;
     background-color: white;
     padding: 15px;
     border-radius: 15px;
     /*transition: opacity 0.5s ease, transform 0.5s ease;*/
     opacity: 1;
     /*transform: scale(1);*/
-    margin: 0 auto;
-    margin-bottom: 20px;
+    margin: 0 auto 20px;
 
     visibility: visible; /* 처음엔 숨겨져 있음 */
     transform: translateY(20px);
@@ -188,6 +189,7 @@ h1.page-title {
 
 /* list형 fade-in 스타일 */
 .list-item.fade-in {
+    box-shadow: 0 2px 2px 2px rgb(162, 162, 162);
     visibility: visible; /* 0.5초 후에 보이게 */
     opacity: 1;
     transform: translateY(0);
@@ -204,8 +206,8 @@ h1.page-title {
 
 /* card형 기본 스타일 */
 .card-item {
-    width: 30%;
-    height: 500px;
+    width: 25%;
+    height: 400px;
     background-color: #ffe5b4;
     /*padding: 20px;*/
     border-radius: 20px;
@@ -237,23 +239,28 @@ h1.page-title {
     justify-content: left;
     width: 100%;
     height: 100%;
-    font-size: 20px;
+    font-size: 16px;
 }
 
 .flex-item-memberProfile {
-    width: 120px;
-    height: 120px;
+    width: 90px;
+    height: 90px;
     margin-right: 20px;
     position: relative;
+    border-radius: 40%;
+    background-color: white;
 }
 
 .chatRoomName {
-    font-size: 25px;
-    /*font-weight: bold;*/
+    font-size: 22px;
+    font-weight: bold;
 }
 
 .chatTagList {
     color: #6e6e6e;
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .flex-item-chatInfoBox {
@@ -263,6 +270,7 @@ h1.page-title {
 }
 
 .itemBtnFlexContainer {
+    height: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -289,7 +297,7 @@ h1.page-title {
 .card-report-btn{
     position: absolute;
     right: 10px;
-    bottom:60px;
+    bottom:40%;
     color: white;
 }
 
@@ -315,18 +323,20 @@ h1.page-title {
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 30%;
-    background-color: #fff8dc;
+    height: 40%;
+    background-color: black;
+    opacity: 0.8;
+    color: white;
     border-radius: 20px;
-    transition: all 300ms;
+    transition: all 300ms ease-in;
     z-index: 5;
 }
 
 .toCard-item-info:hover {
-    height: 70%;
+    height: 100%;
 }
 
-.itemCard-title, .itemCard-recentContent, .itemCard-roomDate {
+.itemCard-title, .itemCard-recentContent{
     display: none;
 }
 .itemCard-recentContent{
@@ -336,7 +346,7 @@ h1.page-title {
 .card-mouseover {
     user-select: none;
     width: 100%;
-    height: 80%;
+    height: 100%;
     border-radius: 20px;
     z-index: 3;
     background-color: black;
@@ -383,22 +393,26 @@ h1.page-title {
 #chatNavigation{
     text-align: center;
     width: 130px;
-    height: 50px;
-    color: white;
-    background-color: #466288;
-    font-size: 20px;
+    height: 30px;
+    color: black;
+    font-size: 16px;
     line-height: 50px;
     font-weight: bold;
     border: none;
-    border-radius: 10px;
     cursor: pointer;
-    opacity: 0.8;
     transition: all 200ms;
 }
 
 #chatNavigation:hover{
-    opacity: 1;
+    color: #EA4E4A;
 }
 #chatNavigation:active{
     transform: scale(0.95);
+}
+
+.room-tag{
+    background-color: #d8d8d8;
+    padding: 5px;
+    border-radius: 5px;
+    color: black;
 }

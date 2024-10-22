@@ -358,8 +358,7 @@
             <div class="chat-screen">
                 <div id="user-list-container">
                     <div th:id="${joinList.getMemberId()}" th:each="joinList:${chatJoinList}" style="display: flex; flex-direction: column;align-items: center; position: relative">
-
-                        <div style="position: absolute; top: -8px; left: 40px; font-size: 24px; transform: rotate(40deg);; color: rgba(255,227,73,0.91)" th:if="${chatRoom.roomWriter == joinList.memberId}"><i class="fa-solid fa-crown"></i></div>
+                        <div style="position: absolute; top: -8px; left: 40px; font-size: 24px; transform: rotate(40deg);; color: rgba(255,227,73,0.91)" th:if="${chatRoom.roomWriter != null && chatRoom.roomWriter == joinList.memberId}"><i class="fa-solid fa-crown"></i></div>
                         <th:block th:if="${joinList.filePath == null}">
                             <img alt="프로필" src="/img/default_profile.png" style="width: 60px; height: 60px; border-radius: 50%;">
                         </th:block>
@@ -452,6 +451,8 @@
             let memberId = /*[[${session.memberId}]]*/; // 사용자 이름 입력받기
             let firstOrJoin = /*[[${firstOrJoin}]]*/;
             const socketUrl = `ws://localhost:9000/ws/chat`;
+            // const hongbinUrl = `ws://192.168.60.216:9000/ws/chat`;
+
             let socket = null;
 
             // 새로고침시에 재연결
@@ -496,7 +497,8 @@
                     if(message.messageType === 'WAIT'){
                         confirmOnOffStatus();
                     }else if(message.messageType === 'JOIN'){
-                        console.log("onmessage 로 join 받은겨 만겨")
+                        console.log("onmessage 로 join 받은겨 만겨");
+                        updateUserList("", message.memberId);
                         confirmOnOffStatus();
                     } else{
                         if(memberId !== message.memberId){
@@ -924,9 +926,9 @@
                         }else{
                             let acceptMemberIds = "";
                             response.forEach(member => {
-                                acceptMemberIds += member.memberId+", ";
+                                acceptMemberIds += member.memberId+",";
                             })
-                            acceptMemberIds = acceptMemberIds.substring(0,acceptMemberIds.length-2);
+                            acceptMemberIds = acceptMemberIds.substring(0,acceptMemberIds.length-1);
                             let memberIdsInput = document.querySelector('input[name=memberIds]');
                             memberIdsInput.value = acceptMemberIds;
                             document.querySelector("form").submit();

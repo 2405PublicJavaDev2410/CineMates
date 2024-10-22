@@ -1,9 +1,11 @@
 #dibody{
     text-align: center;
+    font-family: 'NEXON Lv1 Gothic OTF';
 }
 label{
     display: inline-block;
     width: 300px;
+    font-size: 18px;
 }
 #etc2{
     width: 300px;
@@ -15,7 +17,7 @@ button {
     width: 30%;
     height: 54px;
     background-color: #EA4E4A;
-    font-family: 'NEXON Lv1 Gothic OTF', serif;
+    font-family: 'NEXON Lv1 Gothic OTF';
     font-size: 18px;
     letter-spacing: 2px;
     color: white;

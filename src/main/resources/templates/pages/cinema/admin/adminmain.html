@@ -29,7 +29,7 @@
 
 		<div  id="divmain" >
 		<br>
-			<div th:each="cinema:${cList}"><a style="background: none; color: #E12C25; padding: 0; margin: 10px; border: none; text-decoration: underline; cursor: pointer;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo})}">[[${cinema.cinemaName}]]</a></div>
+			<div th:each="cinema:${cList}"><a style="background: none; color: #EA4E4A; padding: 0; margin: 10px; border: none; font-size: 20px; cursor: pointer;" th:href="@{/cinema/location(locationcode=${cinema.cinemaLocationCode},cinemaNo=${cinema.cinemaNo})}">[[${cinema.cinemaName}]]</a></div>
 		</div>
 
 		<br>

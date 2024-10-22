@@ -174,5 +174,5 @@ public interface ChatService {
      * 기능 : TOP5 채팅방 리스트 조회
      * @return String
      */
-    Map<String, Object> selectChatRoomListByTop();
+    Map<String, Object> selectChatRoomListByTop(String status);
 }

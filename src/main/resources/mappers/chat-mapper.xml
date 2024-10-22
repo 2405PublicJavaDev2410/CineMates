@@ -6,7 +6,7 @@
 <mapper namespace="com.filmfellows.cinemates.domain.chat.model.mapper.ChatMapper">
 <!--   현재 상영중인 영화 리스트 조회 -->
     <select id="selectMovieAll" resultType="ChatRoomMovie">
-        SELECT * FROM MOVIE_TBL WHERE SCREENING_STATUS = 'NOW SHOWING'
+        SELECT * FROM MOVIE_TBL WHERE IS_BOOKABLE = 'Y'
     </select>
 
 <!--   지역별 극장 리스트 조회 -->
@@ -304,5 +304,27 @@
         profile.FILE_RENAME, profile.FILE_PATH
         ORDER BY MEMBER_COUNT DESC, ROOM_DATE DESC )
         WHERE ROWNUM &lt;= 5
+    </select>
+
+
+    <select id="selectChatRoomListByRank">
+        SELECT chat.ROOM_NO, chat.ROOM_NAME, chat.ROOM_WRITER, chat.ROOM_DATE, chat.ROOM_CATEGORY,
+             chat.MOVIE_NO, movie.TITLE, movie.POSTER_URL,
+             chat.CINEMA_LOCATION_CODE,
+             SUBSTR(cinema.CINEMA_ADDRESS, 1, INSTR(cinema.CINEMA_ADDRESS, ' ') - 1) AS CINEMA_ADDRESS,
+             cinema.CINEMA_NO, cinema.CINEMA_NAME,
+             profile.FILE_RENAME, profile.FILE_PATH,
+             COUNT(cj.MEMBER_ID) AS MEMBER_COUNT
+        FROM CHAT_ROOM_TBL chat
+               JOIN MOVIE_TBL movie ON chat.MOVIE_NO = movie.MOVIE_NO
+               JOIN CINEMA_TBL cinema ON chat.CINEMA_NO = cinema.CINEMA_NO
+               LEFT JOIN PROFILE_IMG_TBL profile ON chat.ROOM_WRITER = profile.MEMBER_ID
+               LEFT JOIN CHAT_JOIN_TBL cj ON chat.ROOM_NO = cj.ROOM_NO
+        GROUP BY chat.ROOM_NO, chat.ROOM_NAME, chat.ROOM_WRITER, chat.ROOM_DATE, chat.ROOM_CATEGORY,
+               chat.MOVIE_NO, movie.TITLE, movie.POSTER_URL,
+               chat.CINEMA_LOCATION_CODE, cinema.CINEMA_ADDRESS,
+               cinema.CINEMA_NO, cinema.CINEMA_NAME,
+               profile.FILE_RENAME, profile.FILE_PATH
+        ORDER BY MEMBER_COUNT DESC, ROOM_DATE DESC
     </select>
 </mapper>
