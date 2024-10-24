@@ -10,14 +10,14 @@
 
 # 1. 개발환경<br>
 ![Oracle](https://img.shields.io/badge/Oracle-F80000?style=for-the-badge&logo=oracle&logoColor=white)
-![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
-![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)<br>
-![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)<br>
-![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
-![IntelliJ IDEA](https://img.shields.io/badge/IntelliJIDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white)
-![Thymeleaf](https://img.shields.io/badge/Thymeleaf-%23005C0F.svg?style=for-the-badge&logo=Thymeleaf&logoColor=white)
+![java  ](https://img.shields.io/badge/java  -%23ED8B00.svg  ?style=for-the-badge&logo=openjdk&logoColor=white)
+![Spring](https://img.shields.io/badge/spring-%236DB33F.svg  ?style=for-the-badge&logo=spring&logoColor=white)<br>
+![html      5](https://img.shields.io/badge/html      5-%23E34F26.svg  ?style=for-the-badge&logo=html      5&logoColor=white)
+![CSS3](https://img.shields.io/badge/css3-%231572B6.svg  ?style=for-the-badge&logo=css3&logoColor=white)
+![java  Script](https://img.shields.io/badge/java  script-%23323330.svg  ?style=for-the-badge&logo=java  script&logoColor=%23F7DF1E)<br>
+![GitHub](https://img.shields.io/badge/github-%23121011.svg  ?style=for-the-badge&logo=github&logoColor=white)
+![IntelliJ IDEA](https://img.shields.io/badge/IntelliJIDEA-000000.svg  ?style=for-the-badge&logo=intellij-idea&logoColor=white)
+![Thymeleaf](https://img.shields.io/badge/Thymeleaf-%23005C0F.svg  ?style=for-the-badge&logo=Thymeleaf&logoColor=white)
 ![Slack](https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white)<br>
 ![Kakao](https://img.shields.io/badge/Kakao-FFCD00?style=for-the-badge&logo=Kakao&logoColor=black)
 ![Naver Maps](https://img.shields.io/badge/Naver%20Maps-03C75A?style=for-the-badge&logo=Naver&logoColor=white)
@@ -26,16 +26,1493 @@
 ## Git Flow 방식
 - 팀원 각자의 브랜치를 만들어 개발 진행
 - 기능 구현이 완료되면 Main 브랜치에 병합
-  ![git_flow](https://github.com/2405PublicJavaDev/sulgilddara/blob/main/img/github_flow.png?raw=true)
+  ![git_flow](https://github.com/2405Publicjava  Dev/sulgilddara/blob/main/img/github_flow.png  ?raw=true)
 # 3. 프로젝트 구조
+C:.
+│  .gitignore  
+│  build.gradle  
+│  gradlew  
+│  gradlew.bat  
+│  README.md  
+│  settings.gradle  
+│    
+├─.gradle  
+│  │  file-system.probe  
+│  │    
+│  ├─8.10.2  
+│  │  │  gc.properties  
+│  │  │  
+│  │  ├─checksums  
+│  │  │      checksums.lock  
+│  │  │      md5-checksums.bin  
+│  │  │      sha1-checksums.bin  
+│  │  │  
+│  │  ├─dependencies-accessors  
+│  │  │      gc.properties  
+│  │  │  
+│  │  ├─executionHistory  
+│  │  │      executionHistory.bin  
+│  │  │      executionHistory.lock  
+│  │  │  
+│  │  ├─expanded  
+│  │  ├─fileChanges  
+│  │  │      last-build.bin  
+│  │  │  
+│  │  ├─fileHashes  
+│  │  │      fileHashes.bin  
+│  │  │      fileHashes.lock  
+│  │  │      resourceHashesCache.bin  
+│  │  │  
+│  │  └─vcsMetadata  
+│  ├─buildOutputCleanup  
+│  │      buildOutputCleanup.lock  
+│  │      cache.properties  
+│  │      outputFiles.bin  
+│  │  
+│  └─vcs-1  
+│          gc.properties  
+│  
+├─.idea  
+│  │  .gitignore  
+│  │  compiler.xml  
+│  │  dataSources.local.xml  
+│  │  dataSources.xml  
+│  │  gradle.xml  
+│  │  jarRepositories.xml  
+│  │  misc.xml    
+│  │  modules.xml      
+│  │  vcs.xml    
+│  │  workspace.xml    
+│  │    
+│  ├─dataSources    
+│  ├─inspectionProfiles    
+│  │      Project_Default.xml    
+│  │  
+│  └─modules  
+│          cinemates.main.iml  
+│  
+├─build  
+│  ├─classes  
+│  │  └─java    
+│  │      └─main  
+│  │          └─com  
+│  │              └─filmfellows  
+│  │                  └─cinemates  
+│  │                      │  CineMatesApplication.class  
+│  │                      │  
+│  │                      ├─app  
+│  │                      │  ├─chat  
+│  │                      │  │  │  ChatController$1.class  
+│  │                      │  │  │  ChatController$2.class  
+│  │                      │  │  │  ChatController.class  
+│  │                      │  │  │  
+│  │                      │  │  └─dto  
+│  │                      │  │          ChatJoinProfile.class  
+│  │                      │  │          chatMessageAndProfile$chatMessageAndProfileBuilder.class  
+│  │                      │  │          chatMessageAndProfile$MessageType.class  
+│  │                      │  │          chatMessageAndProfile.class  
+│  │                      │  │          ChatRoomMovie.class  
+│  │                      │  │          CinemaInfoByRegion.class  
+│  │                      │  │          finalReserveInfoByTicket.class  
+│  │                      │  │          RegionAndCinemaCount.class  
+│  │                      │  │          RelativeTime.class  
+│  │                      │  │          ReservationInfoAndChatInfo.class  
+│  │                      │  │  
+│  │                      │  ├─cinema  
+│  │                      │  │      AdminCinemaController.class  
+│  │                      │  │      CinemaController.class  
+│  │                      │  │  
+│  │                      │  ├─main  
+│  │                      │  │  │  AdminMainController.class  
+│  │                      │  │  │  MainController.class  
+│  │                      │  │  │
+│  │                      │  │  └─dto  
+│  │                      │  │          BannerDTO.class  
+│  │                      │  │          boxOfficeDTO.class  
+│  │                      │  │          ChatRoomDTO.class  
+│  │                      │  │  
+│  │                      │  ├─member  
+│  │                      │  │  │  AdminLoginController.class  
+│  │                      │  │  │  MemberController.class  
+│  │                      │  │  │
+│  │                      │  │  └─dto  
+│  │                      │  │          CodeVerifyRequest.class  
+│  │                      │  │          EmailVerifyRequest.class  
+│  │                      │  │          FindIdRequest.class  
+│  │                      │  │          FindIdResponse.class  
+│  │                      │  │          FindPwRequest.class  
+│  │                      │  │          LoginRequest.class  
+│  │                      │  │          ModifyRequest.class  
+│  │                      │  │          RegisterNewPwRequest.class  
+│  │                      │  │          RegisterRequest.class  
+│  │                      │  │          RemoveRequest.class  
+│  │                      │  │  
+│  │                      │  ├─movie  
+│  │                      │  │  │  AdminMovieController.class  
+│  │                      │  │  │  MovieContoller.class  
+│  │                      │  │  │  
+│  │                      │  │  └─dto    
+│  │                      │  │          MovieBannerDTO.class  
+│  │                      │  │          MovieDTO$StillcutDTO.class  
+│  │                      │  │          MovieDTO$TrailerDTO.class  
+│  │                      │  │          MovieDTO.class  
+│  │                      │  │          MovieListDTO.class  
+│  │                      │  │          MovieReservationRateDTO.class  
+│  │                      │  │          ReviewDTO.class  
+│  │                      │  │  
+│  │                      │  ├─mypage  
+│  │                      │  │  │  AdminMyPageController.class  
+│  │                      │  │  │  MyPageController.class  
+│  │                      │  │  │  
+│  │                      │  │  └─dto  
+│  │                      │  │          myOrderRequest.class  
+│  │                      │  │          myOrderResponse.class  
+│  │                      │  │          myReservationRequest.class  
+│  │                      │  │          myReservationResponse.class  
+│  │                      │  │          QnaDTO.class  
+│  │                      │  │          RegisterQnaRequest.class  
+│  │                      │  │          RegisterReplyRequest.class  
+│  │                      │  │  
+│  │                      │  ├─payment  
+│  │                      │  │      PaymentController.class  
+│  │                      │  │  
+│  │                      │  ├─productadmin  
+│  │                      │  │      ProductadminController.class  
+│  │                      │  │  
+│  │                      │  ├─report  
+│  │                      │  │      AdminReportController.class  
+│  │                      │  │      ReportController.class  
+│  │                      │  │  
+│  │                      │  ├─reservation  
+│  │                      │  │      ReservationController$1.class  
+│  │                      │  │      ReservationController.class  
+│  │                      │  │  
+│  │                      │  ├─store  
+│  │                      │  │      StoreController.class  
+│  │                      │  │      StorePayController.class  
+│  │                      │  │  
+│  │                      │  └─test  
+│  │                      │          testController.class  
+│  │                      │  
+│  │                      ├─common  
+│  │                      │  │  AuthenticationFilter.class  
+│  │                      │  │  MemberProfileInterceptor.class  
+│  │                      │  │  Pagination.class  
+│  │                      │  │  Validation.class  
+│  │                      │  │  
+│  │                      │  ├─config  
+│  │                      │  │      FileConfig.class  
+│  │                      │  │      WebConfig.class  
+│  │                      │  │  
+│  │                      │  ├─exception  
+│  │                      │  │      PaymentException.class  
+│  │                      │  │  
+│  │                      │  └─utility  
+│  │                      │          Util.class  
+│  │                      │  
+│  │                      └─domain  
+│  │                          ├─chat  
+│  │                          │  └─model  
+│  │                          │      ├─mapper  
+│  │                          │      │      ChatMapper.class  
+│  │                          │      │
+│  │                          │      ├─service  
+│  │                          │      │      ChatService.class  
+│  │                          │      │
+│  │                          │      ├─serviceImpl  
+│  │                          │      │      ChatServiceImpl.class  
+│  │                          │      │  
+│  │                          │      └─vo  
+│  │                          │              ChatJoin.class  
+│  │                          │              ChatMessage$ChatMessageBuilder.class  
+│  │                          │              ChatMessage$MessageType.class  
+│  │                          │              ChatMessage.class  
+│  │                          │              ChatRoom.class  
+│  │                          │              ChatTag.class  
+│  │                          │              ChatTimeUtils.class  
+│  │                          │              WebSocketChatHandler.class  
+│  │                          │              WebSocketConfig.class  
+│  │                          │  
+│  │                          ├─cinema  
+│  │                          │  └─model  
+│  │                          │      ├─mapper  
+│  │                          │      │      CinemaMapper.class  
+│  │                          │      │    
+│  │                          │      ├─service  
+│  │                          │      │  │  CinemaService.class  
+│  │                          │      │  │  
+│  │                          │      │  └─impl  
+│  │                          │      │          CinemaServiceImpl.class  
+│  │                          │      │  
+│  │                          │      └─vo  
+│  │                          │              Cinema.class  
+│  │                          │              Screen.class  
+│  │                          │              Showtime.class  
+│  │                          │  
+│  │                          ├─emailverification  
+│  │                          │  └─model  
+│  │                          │      ├─mapper  
+│  │                          │      │      EmailVerificationMapper.class  
+│  │                          │      │  
+│  │                          │      ├─service  
+│  │                          │      │  │  EmailVerificationService.class  
+│  │                          │      │  │  
+│  │                          │      │  └─impl  
+│  │                          │      │          EmailVerificationServiceImpl.class  
+│  │                          │      │  
+│  │                          │      └─vo  
+│  │                          │              PwResetToken.class  
+│  │                          │  
+│  │                          ├─main  
+│  │                          │  └─model  
+│  │                          │      ├─mapper  
+│  │                          │      │      MainMapper.class  
+│  │                          │      │  
+│  │                          │      ├─service  
+│  │                          │      │  │  MainService.class  
+│  │                          │      │  │  
+│  │                          │      │  └─impl  
+│  │                          │      │          MianServiceImpl.class  
+│  │                          │      │  
+│  │                          │      └─vo  
+│  │                          │              Banner.class  
+│  │                          │  
+│  │                          ├─member  
+│  │                          │  └─model  
+│  │                          │      ├─mapper  
+│  │                          │      │      MemberMapper.class  
+│  │                          │      │  
+│  │                          │      ├─service  
+│  │                          │      │  │  MemberService.class  
+│  │                          │      │  │  
+│  │                          │      │  └─impl  
+│  │                          │      │          MemberServiceImpl.class  
+│  │                          │      │  
+│  │                          │      └─vo  
+│  │                          │              Member.class  
+│  │                          │              MemberProfile.class  
+│  │                          │              ProfileImg.class  
+│  │                          │  
+│  │                          ├─movie  
+│  │                          │  └─model  
+│  │                          │      ├─mapper  
+│  │                          │      │      MovieMapper.class  
+│  │                          │      │  
+│  │                          │      ├─service  
+│  │                          │      │  │  MovieService.class  
+│  │                          │      │  │  
+│  │                          │      │  └─impl  
+│  │                          │      │          MovieServiceImpl.class  
+│  │                          │      │  
+│  │                          │      └─vo  
+│  │                          │              Movie.class  
+│  │                          │              MovieStillcut.class  
+│  │                          │              MovieTrailer.class  
+│  │                          │              Review.class  
+│  │                          │  
+│  │                          ├─mypage  
+│  │                          │  └─model  
+│  │                          │      ├─mapper  
+│  │                          │      │      MyPageMapper.class  
+│  │                          │      │  
+│  │                          │      ├─service  
+│  │                          │      │  │  MyPageService.class  
+│  │                          │      │  │  
+│  │                          │      │  └─impl  
+│  │                          │      │          MyPageServiceImpl.class  
+│  │                          │      │  
+│  │                          │      └─vo  
+│  │                          │              Qna.class  
+│  │                          │              QnaFile.class  
+│  │                          │  
+│  │                          ├─payment  
+│  │                          │  └─model  
+│  │                          │      ├─mapper  
+│  │                          │      │      PaymentMapper.class  
+│  │                          │      │  
+│  │                          │      ├─service  
+│  │                          │      │      PaymentService.class  
+│  │                          │      │  
+│  │                          │      └─vo  
+│  │                          │              PaymentInfo.class  
+│  │                          │  
+│  │                          ├─productadmin  
+│  │                          │  └─model  
+│  │                          │      ├─mapper  
+│  │                          │      │      ProductadminMapper.class  
+│  │                          │      │  
+│  │                          │      ├─service  
+│  │                          │      │  │  ProductAdminService.class  
+│  │                          │      │  │  
+│  │                          │      │  └─impl  
+│  │                          │      │          ProductadminServiceImpl.class  
+│  │                          │      │  
+│  │                          │      └─vo  
+│  │                          │              Product2.class  
+│  │                          │  
+│  │                          ├─report  
+│  │                          │  └─model  
+│  │                          │      ├─mapper  
+│  │                          │      │      ReportMapper.class  
+│  │                          │      │  
+│  │                          │      ├─service  
+│  │                          │      │  │  ReportService.class  
+│  │                          │      │  │  
+│  │                          │      │  └─impl  
+│  │                          │      │          ReportServiceImpl.class  
+│  │                          │      │  
+│  │                          │      └─vo  
+│  │                          │              Report.class  
+│  │                          │  
+│  │                          ├─reservation  
+│  │                          │  └─model  
+│  │                          │      ├─mapper  
+│  │                          │      │      ReservationMapper.class  
+│  │                          │      │  
+│  │                          │      ├─Service  
+│  │                          │      │  │  ReservationService.class  
+│  │                          │      │  │  
+│  │                          │      │  └─Impl  
+│  │                          │      │          ReservationServiceImpl.class  
+│  │                          │      │  
+│  │                          │      └─vo  
+│  │                          │              ChatToReserveDTO.class  
+│  │                          │              LocationUtil.class  
+│  │                          │              MemberDTO.class  
+│  │                          │              Reservation.class  
+│  │                          │              ReservationDTO.class  
+│  │                          │              SearchLocationCodeDTO.class  
+│  │                          │              SearchMovieDTO.class  
+│  │                          │              ShowInfoDTO.class  
+│  │                          │  
+│  │                          ├─snsLogin  
+│  │                          │  └─model  
+│  │                          │      ├─service  
+│  │                          │      │  │  KakaoApiService.class  
+│  │                          │      │  │  NaverApiService.class  
+│  │                          │      │  │  
+│  │                          │      │  └─impl  
+│  │                          │      │          KakaoApiServiceImpl.class  
+│  │                          │      │          NaverApiServiceImpl.class  
+│  │                          │      │  
+│  │                          │      └─vo  
+│  │                          │              KakaoApi.class  
+│  │                          │              NaverApi.class  
+│  │                          │              SnsProfile.class  
+│  │                          │  
+│  │                          └─store  
+│  │                              └─model  
+│  │                                  ├─mapper  
+│  │                                  │      CartMapper.class  
+│  │                                  │      GiftMapper.class  
+│  │                                  │      ProductMapper.class  
+│  │                                  │      PurchaseMapper.class  
+│  │                                  │      StorePayMapper.class  
+│  │                                  │  
+│  │                                  ├─service  
+│  │                                  │  │  StorePayService.class  
+│  │                                  │  │  StoreService.class  
+│  │                                  │  │  
+│  │                                  │  └─impl  
+│  │                                  │          StoreServiceImpl.class  
+│  │                                  │  
+│  │                                  └─vo  
+│  │                                          Cart.class  
+│  │                                          Gift.class  
+│  │                                          GiftItem.class  
+│  │                                          Product.class  
+│  │                                          Purchase.class  
+│  │                                          PurchaseItem.class  
+│  │                                          StorePayment.class  
+│  │  
+│  ├─generated  
+│  │  └─sources  
+│  │      ├─annotationProcessor  
+│  │      │  └─java    
+│  │      │      └─main  
+│  │      └─headers  
+│  │          └─java    
+│  │              └─main  
+│  ├─resources  
+│  │  └─main  
+│  │      │  application.properties  
+│  │      │  application.zip  
+│  │      │  
+│  │      ├─mappers  
+│  │      │      cart-mapper.xml  
+│  │      │      chat-mapper.xml  
+│  │      │      cinema-mapper.xml  
+│  │      │      emailverification-mapper.xml  
+│  │      │      gift-mapper.xml  
+│  │      │      main-mapper.xml  
+│  │      │      member-mapper.xml  
+│  │      │      movie-mapper.xml    
+│  │      │      payment-mapper.xml  
+│  │      │      product-mapper.xml  
+│  │      │      productadmin-mapper.xml  
+│  │      │      purchase-mapper.xml  
+│  │      │      qna-mapper.xml  
+│  │      │      report-mapper.xml  
+│  │      │      reservation-mapper.xml  
+│  │      │      storePayment-mapper.xml  
+│  │      │  
+│  │      ├─static  
+│  │      │  │  favicon.ico  
+│  │      │  │  kakao_login.png  
+│  │      │  │  naver_login.png  
+│  │      │  │  
+│  │      │  ├─css  
+│  │      │  │  │  common.css  
+│  │      │  │  │  footer.css  
+│  │      │  │  │  header.css  
+│  │      │  │  │  
+│  │      │  │  ├─chat  
+│  │      │  │  │      chatList.css  
+│  │      │  │  │      chatRoom.css  
+│  │      │  │  │      createForm.css  
+│  │      │  │  │      finalReservationWindow.css  
+│  │      │  │  │      modalNavi.css  
+│  │      │  │  │      searchList.css  
+│  │      │  │  │  
+│  │      │  │  ├─cinema  
+│  │      │  │  │      cinemaadmin.css  
+│  │      │  │  │      cinemamain.css  
+│  │      │  │  │      insert.css  
+│  │      │  │  │      parking.css  
+│  │      │  │  │      screenadmin.css  
+│  │      │  │  │      showtimeadmin.css  
+│  │      │  │  │      update.css  
+│  │      │  │  │  
+│  │      │  │  ├─main  
+│  │      │  │  │      adminBanner.css  
+│  │      │  │  │      adminBannerDetail.css  
+│  │      │  │  │      adminInsertBanner.css  
+│  │      │  │  │      index.css  
+│  │      │  │  │  
+│  │      │  │  ├─member  
+│  │      │  │  │      adminLogin.css  
+│  │      │  │  │      findInfo.css  
+│  │      │  │  │      login.css  
+│  │      │  │  │      register.css  
+│  │      │  │  │      resetPassword.css  
+│  │      │  │  │  
+│  │      │  │  ├─movie  
+│  │      │  │  │      adminInsertMovie.css  
+│  │      │  │  │      adminMovieDetail.css  
+│  │      │  │  │      adminMovieList.css  
+│  │      │  │  │      movieDetail.css  
+│  │      │  │  │      movieList.css  
+│  │      │  │  │  
+│  │      │  │  ├─mypage  
+│  │      │  │  │      adminQnaDetail.css  
+│  │      │  │  │      adminQnaList.css  
+│  │      │  │  │      findReservation.css  
+│  │      │  │  │      mySideBar.css  
+│  │      │  │  │      orderList.css  
+│  │      │  │  │      qnaDetail.css  
+│  │      │  │  │      qnaList.css  
+│  │      │  │  │      qnaRegiser.css  
+│  │      │  │  │      remove.css  
+│  │      │  │  │      update.css  
+│  │      │  │  │  
+│  │      │  │  ├─payment  
+│  │      │  │  │      inipay.css  
+│  │      │  │  │      payByTicket.css  
+│  │      │  │  │  
+│  │      │  │  ├─productadmin  
+│  │      │  │  │      productadmin.css  
+│  │      │  │  │  
+│  │      │  │  ├─report  
+│  │      │  │  │      report.css  
+│  │      │  │  │      reportadmin.css  
+│  │      │  │  │      reportdate.css  
+│  │      │  │  │  
+│  │      │  │  ├─reservation  
+│  │      │  │  │      personSeat.css  
+│  │      │  │  │      showTime.css  
+│  │      │  │  │  
+│  │      │  │  └─store  
+│  │      │  │          cart.css  
+│  │      │  │          gift.css  
+│  │      │  │          product-detail.css  
+│  │      │  │          purchase.css  
+│  │      │  │          storeCategory.css  
+│  │      │  │          storeMain.css  
+│  │      │  │  
+│  │      │  ├─img  
+│  │      │  │  │  default_profile.png  
+│  │      │  │  │  footer_logo.png  
+│  │      │  │  │  login.png  
+│  │      │  │  │  logo.png  
+│  │      │  │  │  siren.png  
+│  │      │  │  │  
+│  │      │  │  ├─chat  
+│  │      │  │  │      12.jpg  
+│  │      │  │  │      15.jpg  
+│  │      │  │  │      19.jpg  
+│  │      │  │  │      all.jpg  
+│  │      │  │  │      defaultProfile2.png  
+│  │      │  │  │      loading.gif
+│  │      │  │  │      noResult.png  
+│  │      │  │  │      NOT RATED.jpg  
+│  │      │  │  │      talk.png  
+│  │      │  │  │      ticket.png  
+│  │      │  │  │      together.jpg  
+│  │      │  │  │  
+│  │      │  │  ├─main  
+│  │      │  │  │      21626_301_1.mp4
+│  │      │  │  │  
+│  │      │  │  ├─movie  
+│  │      │  │  │  │  imageNull.png  
+│  │      │  │  │  │  play-icon.png  
+│  │      │  │  │  │  포스터1.jpg  
+│  │      │  │  │  │  포스터2.jpg  
+│  │      │  │  │  │  
+│  │      │  │  │  └─banner  
+│  │      │  │  │          AmazonBullseye_19204202.jpg  
+│  │      │  │  │          GrandMa_1920420.jpg  
+│  │      │  │  │          MyLovelyPartner_19204203.jpg  
+│  │      │  │  │          MyPet_1920420.jpg  
+│  │      │  │  │          TwilightOfTheWarriors_1920420.jpg  
+│  │      │  │  │  
+│  │      │  │  └─reservation  
+│  │      │  │          All.svg    
+│  │      │  │          check.png  
+│  │      │  │          only12.svg  
+│  │      │  │          only15.svg  
+│  │      │  │          only19.svg  
+│  │      │  │  
+│  │      │  ├─js  
+│  │      │  │  │  header.js  
+│  │      │  │  │  
+│  │      │  │  ├─chat  
+│  │      │  │  │      chatReport.js  
+│  │      │  │  │      chatRoom.js  
+│  │      │  │  │      chatRoomList.js  
+│  │      │  │  │      chatScroll.js  
+│  │      │  │  │      createForm.js  
+│  │      │  │  │      finalReservationWindow.js  
+│  │      │  │  │      listMenuBtn.js  
+│  │      │  │  │      modalNavi.js  
+│  │      │  │  │      searchChatList.js  
+│  │      │  │  │  
+│  │      │  │  ├─common  
+│  │      │  │  │      scroll.js  
+│  │      │  │  │  
+│  │      │  │  ├─main  
+│  │      │  │  │      index.js  
+│  │      │  │  │  
+│  │      │  │  ├─member  
+│  │      │  │  │      adminLogin.js  
+│  │      │  │  │      findInfo.js  
+│  │      │  │  │      login.js  
+│  │      │  │  │      register.js  
+│  │      │  │  │      resetPassword.js  
+│  │      │  │  │  
+│  │      │  │  ├─movie  
+│  │      │  │  │      movieDetail.js  
+│  │      │  │  │      movieList.js  
+│  │      │  │  │  
+│  │      │  │  ├─mypage  
+│  │      │  │  │      adminQnaDetail.js  
+│  │      │  │  │      findReservation.js  
+│  │      │  │  │      orderList.js  
+│  │      │  │  │      qnaDetail.js  
+│  │      │  │  │      qnaList.js  
+│  │      │  │  │      qnaRegister.js  
+│  │      │  │  │      remove.js  
+│  │      │  │  │      update.js  
+│  │      │  │  │  
+│  │      │  │  ├─payment  
+│  │      │  │  │      inipay.js  
+│  │      │  │  │      payByTicket.js  
+│  │      │  │  │  
+│  │      │  │  ├─reservation  
+│  │      │  │  │      personSeat.js  
+│  │      │  │  │      showTime.js  
+│  │      │  │  │  
+│  │      │  │  └─store  
+│  │      │  │          cart.js  
+│  │      │  │          gift.js  
+│  │      │  │          product-detail.js  
+│  │      │  │          purchase.js  
+│  │      │  │          storeCategory.js  
+│  │      │  │          storeMain.js  
+│  │      │  │  
+│  │      │  └─lib  
+│  │      │          config.js  
+│  │      │  
+│  │      └─templates  
+│  │          │  index.html      
+│  │          │  
+│  │          ├─common  
+│  │          │  ├─fragments  
+│  │          │  │      admin-header.html      
+│  │          │  │      config.html      
+│  │          │  │      footer.html      
+│  │          │  │      header.html      
+│  │          │  │  
+│  │          │  └─layout  
+│  │          │          adminLayout.html      
+│  │          │          defaultLayout.html      
+│  │          │  
+│  │          ├─pages  
+│  │          │  ├─chat  
+│  │          │  │      chatRoom.html      
+│  │          │  │      chatRoomList.html      
+│  │          │  │      createChatForm.html      
+│  │          │  │      finalReservationInfoSelect.html      
+│  │          │  │      searchChat.html      
+│  │          │  │  
+│  │          │  ├─cinema  
+│  │          │  │  │  main.html      
+│  │          │  │  │  
+│  │          │  │  ├─admin  
+│  │          │  │  │      adminlist.html      
+│  │          │  │  │      adminmain.html      
+│  │          │  │  │      adminshowtime.html      
+│  │          │  │  │      failed.html      
+│  │          │  │  │      failmessage.html      
+│  │          │  │  │      insert.html      
+│  │          │  │  │      insertscreen.html      
+│  │          │  │  │      showscreen.html      
+│  │          │  │  │      showtimeinsert.html      
+│  │          │  │  │      sucess.html      
+│  │          │  │  │      update.html      
+│  │          │  │  │      updatescreen.html      
+│  │          │  │  │      updateshowtime.html      
+│  │          │  │  │  
+│  │          │  │  └─parking  
+│  │          │  │          1.html      
+│  │          │  │          10.html      
+│  │          │  │          11.html      
+│  │          │  │          12.html      
+│  │          │  │          13.html      
+│  │          │  │          14.html      
+│  │          │  │          15.html      
+│  │          │  │          16.html      
+│  │          │  │          17.html      
+│  │          │  │          18.html      
+│  │          │  │          19.html      
+│  │          │  │          2.html      
+│  │          │  │          20.html      
+│  │          │  │          21.html      
+│  │          │  │          22.html      
+│  │          │  │          23.html      
+│  │          │  │          24.html      
+│  │          │  │          25.html      
+│  │          │  │          26.html      
+│  │          │  │          27.html      
+│  │          │  │          28.html      
+│  │          │  │          29.html      
+│  │          │  │          3.html      
+│  │          │  │          30.html      
+│  │          │  │          31.html      
+│  │          │  │          32.html      
+│  │          │  │          33.html      
+│  │          │  │          34.html      
+│  │          │  │          35.html      
+│  │          │  │          36.html      
+│  │          │  │          37.html      
+│  │          │  │          38.html      
+│  │          │  │          39.html      
+│  │          │  │          4.html      
+│  │          │  │          40.html      
+│  │          │  │          5.html      
+│  │          │  │          6.html      
+│  │          │  │          7.html      
+│  │          │  │          8.html      
+│  │          │  │          81.html      
+│  │          │  │          9.html      
+│  │          │  │  
+│  │          │  ├─main  
+│  │          │  │      adminBanner.html      
+│  │          │  │      adminBannerDetail.html      
+│  │          │  │      adminInsertBanner.html      
+│  │          │  │      index.html      
+│  │          │  │  
+│  │          │  ├─member  
+│  │          │  │      adminLogin.html      
+│  │          │  │      findInfo.html      
+│  │          │  │      login.html      
+│  │          │  │      register.html      
+│  │          │  │      resetPassword.html      
+│  │          │  │  
+│  │          │  ├─movie  
+│  │          │  │      adminInsertMovie.html      
+│  │          │  │      adminMovieDetail.html      
+│  │          │  │      adminMovieList.html      
+│  │          │  │      adminSearchList.html      
+│  │          │  │      movieDetail.html      
+│  │          │  │      movieList.html      
+│  │          │  │  
+│  │          │  ├─mypage  
+│  │          │  │      adminQnaDetail.html      
+│  │          │  │      adminQnaList.html      
+│  │          │  │      adminQnaSearchList.html      
+│  │          │  │      findReservation.html      
+│  │          │  │      mySideBar.html      
+│  │          │  │      orderList.html      
+│  │          │  │      qnaDetail.html      
+│  │          │  │      qnaList.html      
+│  │          │  │      qnaRegister.html      
+│  │          │  │      qnaSearchList.html      
+│  │          │  │      remove.html      
+│  │          │  │      update.html      
+│  │          │  │  
+│  │          │  ├─payment  
+│  │          │  │      inipay.html      
+│  │          │  │      payByTicket.html      
+│  │          │  │  
+│  │          │  ├─productadmin  
+│  │          │  │      insertproduct.html      
+│  │          │  │      productadmin.html      
+│  │          │  │      updateproduct.html      
+│  │          │  │    
+│  │          │  ├─report  
+│  │          │  │      date.html      
+│  │          │  │      report.html      
+│  │          │  │      reportlist.html      
+│  │          │  │      reportlist2.html      
+│  │          │  │  
+│  │          │  ├─reservation  
+│  │          │  │      personSeat.html      
+│  │          │  │      selectReservationInfo.html      
+│  │          │  │      showTime.html      
+│  │          │  │  
+│  │          │  └─test  
+│  │          │          testPage.html      
+│  │          │  
+│  │          └─store  
+│  │                  cart.html      
+│  │                  gift.html      
+│  │                  payment-complete.html      
+│  │                  product-detail.html      
+│  │                  purchase.html      
+│  │                  storeCategory.html      
+│  │                  storeMain.html      
+│  │                  storePayment.html      
+│  │  
+│  └─tmp  
+│      └─compilejava  
+│          │  previous-compilation-data.bin  
+│          │  
+│          └─compileTransaction  
+│              ├─backup-dir  
+│              └─stash-dir  
+│                      ChatController$1.class  .uniqueId2  
+│                      ChatController$2.class  .uniqueId1  
+│                      ChatController.class  .uniqueId0  
+│  
+├─gradle  
+│  └─wrapper  
+│          gradle-wrapper.jar  
+│          gradle-wrapper.properties  
+│
+└─src  
+    ├─main  
+    │  ├─java    
+    │  │  └─com  
+    │  │      └─filmfellows  
+    │  │          └─cinemates  
+    │  │              │  CineMatesApplication.java  
+    │  │              │  
+    │  │              ├─app  
+    │  │              │  ├─chat  
+    │  │              │  │  │  ChatController.java  
+    │  │              │  │  │  
+    │  │              │  │  └─dto  
+    │  │              │  │          ChatJoinProfile.java  
+    │  │              │  │          chatMessageAndProfile.java  
+    │  │              │  │          ChatRoomMovie.java  
+    │  │              │  │          CinemaInfoByRegion.java  
+    │  │              │  │          finalReserveInfoByTicket.java  
+    │  │              │  │          RegionAndCinemaCount.java  
+    │  │              │  │          RelativeTime.java  
+    │  │              │  │          ReservationInfoAndChatInfo.java  
+    │  │              │  │  
+    │  │              │  ├─cinema  
+    │  │              │  │      AdminCinemaController.java  
+    │  │              │  │      CinemaController.java  
+    │  │              │  │  
+    │  │              │  ├─main  
+    │  │              │  │  │  AdminMainController.java  
+    │  │              │  │  │  MainController.java  
+    │  │              │  │  │  
+    │  │              │  │  └─dto  
+    │  │              │  │          BannerDTO.java  
+    │  │              │  │          boxOfficeDTO.java  
+    │  │              │  │          ChatRoomDTO.java  
+    │  │              │  │  
+    │  │              │  ├─member  
+    │  │              │  │  │  AdminLoginController.java  
+    │  │              │  │  │  MemberController.java  
+    │  │              │  │  │  
+    │  │              │  │  └─dto  
+    │  │              │  │          CodeVerifyRequest.java  
+    │  │              │  │          EmailVerifyRequest.java  
+    │  │              │  │          FindIdRequest.java  
+    │  │              │  │          FindIdResponse.java  
+    │  │              │  │          FindPwRequest.java  
+    │  │              │  │          LoginRequest.java  
+    │  │              │  │          ModifyRequest.java  
+    │  │              │  │          RegisterNewPwRequest.java  
+    │  │              │  │          RegisterRequest.java  
+    │  │              │  │          RemoveRequest.java  
+    │  │              │  │  
+    │  │              │  ├─movie  
+    │  │              │  │  │  AdminMovieController.java  
+    │  │              │  │  │  MovieContoller.java  
+    │  │              │  │  │  
+    │  │              │  │  └─dto  
+    │  │              │  │          MovieBannerDTO.java  
+    │  │              │  │          MovieDTO.java  
+    │  │              │  │          MovieListDTO.java  
+    │  │              │  │          MovieReservationRateDTO.java  
+    │  │              │  │          ReviewDTO.java  
+    │  │              │  │  
+    │  │              │  ├─mypage  
+    │  │              │  │  │  AdminMyPageController.java  
+    │  │              │  │  │  MyPageController.java  
+    │  │              │  │  │  
+    │  │              │  │  └─dto  
+    │  │              │  │          myOrderRequest.java  
+    │  │              │  │          myOrderResponse.java  
+    │  │              │  │          myReservationRequest.java  
+    │  │              │  │          myReservationResponse.java  
+    │  │              │  │          QnaDTO.java  
+    │  │              │  │          RegisterQnaRequest.java  
+    │  │              │  │          RegisterReplyRequest.java  
+    │  │              │  │    
+    │  │              │  ├─payment  
+    │  │              │  │      PaymentController.java  
+    │  │              │  │  
+    │  │              │  ├─productadmin  
+    │  │              │  │      ProductadminController.java  
+    │  │              │  │  
+    │  │              │  ├─report  
+    │  │              │  │      AdminReportController.java  
+    │  │              │  │      ReportController.java  
+    │  │              │  │  
+    │  │              │  ├─reservation  
+    │  │              │  │      ReservationController.java  
+    │  │              │  │  
+    │  │              │  ├─store  
+    │  │              │  │      StoreController.java  
+    │  │              │  │      StorePayController.java  
+    │  │              │  │  
+    │  │              │  └─test  
+    │  │              │          testController.java  
+    │  │              │  
+    │  │              ├─common  
+    │  │              │  │  AuthenticationFilter.java  
+    │  │              │  │  MemberProfileInterceptor.java  
+    │  │              │  │  Pagination.java  
+    │  │              │  │  Validation.java  
+    │  │              │  │  
+    │  │              │  ├─config  
+    │  │              │  │      FileConfig.java  
+    │  │              │  │      WebConfig.java  
+    │  │              │  │  
+    │  │              │  ├─exception  
+    │  │              │  │      PaymentException.java  
+    │  │              │  │  
+    │  │              │  └─utility  
+    │  │              │          Util.java  
+    │  │              │  
+    │  │              └─domain  
+    │  │                  ├─chat  
+    │  │                  │  └─model  
+    │  │                  │      ├─mapper  
+    │  │                  │      │      ChatMapper.java  
+    │  │                  │      │  
+    │  │                  │      ├─service  
+    │  │                  │      │      ChatService.java  
+    │  │                  │      │  
+    │  │                  │      ├─serviceImpl  
+    │  │                  │      │      ChatServiceImpl.java  
+    │  │                  │      │  
+    │  │                  │      └─vo  
+    │  │                  │              ChatJoin.java  
+    │  │                  │              ChatMessage.java  
+    │  │                  │              ChatRoom.java  
+    │  │                  │              ChatTag.java  
+    │  │                  │              ChatTimeUtils.java  
+    │  │                  │              WebSocketChatHandler.java  
+    │  │                  │              WebSocketConfig.java  
+    │  │                  │  
+    │  │                  ├─cinema  
+    │  │                  │  └─model  
+    │  │                  │      ├─mapper  
+    │  │                  │      │      CinemaMapper.java  
+    │  │                  │      │  
+    │  │                  │      ├─service  
+    │  │                  │      │  │  CinemaService.java  
+    │  │                  │      │  │  
+    │  │                  │      │  └─impl  
+    │  │                  │      │          CinemaServiceImpl.java    
+    │  │                  │      │  
+    │  │                  │      └─vo  
+    │  │                  │              Cinema.java  
+    │  │                  │              Screen.java  
+    │  │                  │              Showtime.java  
+    │  │                  │  
+    │  │                  ├─emailverification  
+    │  │                  │  └─model  
+    │  │                  │      ├─mapper  
+    │  │                  │      │      EmailVerificationMapper.java  
+    │  │                  │      │  
+    │  │                  │      ├─service  
+    │  │                  │      │  │  EmailVerificationService.java  
+    │  │                  │      │  │  
+    │  │                  │      │  └─impl  
+    │  │                  │      │          EmailVerificationServiceImpl.java  
+    │  │                  │      │  
+    │  │                  │      └─vo  
+    │  │                  │              PwResetToken.java  
+    │  │                  │    
+    │  │                  ├─main  
+    │  │                  │  └─model  
+    │  │                  │      ├─mapper  
+    │  │                  │      │      MainMapper.java  
+    │  │                  │      │  
+    │  │                  │      ├─service  
+    │  │                  │      │  │  MainService.java  
+    │  │                  │      │  │  
+    │  │                  │      │  └─impl  
+    │  │                  │      │          MianServiceImpl.java  
+    │  │                  │      │  
+    │  │                  │      └─vo  
+    │  │                  │              Banner.java  
+    │  │                  │  
+    │  │                  ├─member  
+    │  │                  │  └─model  
+    │  │                  │      ├─mapper  
+    │  │                  │      │      MemberMapper.java  
+    │  │                  │      │  
+    │  │                  │      ├─service  
+    │  │                  │      │  │  MemberService.java  
+    │  │                  │      │  │  
+    │  │                  │      │  └─impl  
+    │  │                  │      │          MemberServiceImpl.java  
+    │  │                  │      │  
+    │  │                  │      └─vo  
+    │  │                  │              Member.java  
+    │  │                  │              MemberProfile.java  
+    │  │                  │              ProfileImg.java  
+    │  │                  │  
+    │  │                  ├─movie    
+    │  │                  │  └─model  
+    │  │                  │      ├─mapper  
+    │  │                  │      │      MovieMapper.java    
+    │  │                  │      │  
+    │  │                  │      ├─service  
+    │  │                  │      │  │  MovieService.java  
+    │  │                  │      │  │  
+    │  │                  │      │  └─impl  
+    │  │                  │      │          MovieServiceImpl.java  
+    │  │                  │      │  
+    │  │                  │      └─vo  
+    │  │                  │              Movie.java  
+    │  │                  │              MovieStillcut.java  
+    │  │                  │              MovieTrailer.java  
+    │  │                  │              Review.java  
+    │  │                  │  
+    │  │                  ├─mypage  
+    │  │                  │  └─model  
+    │  │                  │      ├─mapper  
+    │  │                  │      │      MyPageMapper.java  
+    │  │                  │      │  
+    │  │                  │      ├─service  
+    │  │                  │      │  │  MyPageService.java  
+    │  │                  │      │  │  
+    │  │                  │      │  └─impl  
+    │  │                  │      │          MyPageServiceImpl.java  
+    │  │                  │      │  
+    │  │                  │      └─vo  
+    │  │                  │              Qna.java  
+    │  │                  │              QnaFile.java  
+    │  │                  │  
+    │  │                  ├─payment  
+    │  │                  │  └─model  
+    │  │                  │      ├─mapper  
+    │  │                  │      │      PaymentMapper.java  
+    │  │                  │      │  
+    │  │                  │      ├─service  
+    │  │                  │      │      PaymentService.java  
+    │  │                  │      │  
+    │  │                  │      └─vo  
+    │  │                  │              PaymentInfo.java  
+    │  │                  │  
+    │  │                  ├─productadmin  
+    │  │                  │  └─model  
+    │  │                  │      ├─mapper  
+    │  │                  │      │      ProductadminMapper.java  
+    │  │                  │      │  
+    │  │                  │      ├─service  
+    │  │                  │      │  │  ProductAdminService.java  
+    │  │                  │      │  │  
+    │  │                  │      │  └─impl
+    │  │                  │      │          ProductadminServiceImpl.java  
+    │  │                  │      │  
+    │  │                  │      └─vo  
+    │  │                  │              Product2.java  
+    │  │                  │  
+    │  │                  ├─report  
+    │  │                  │  └─model  
+    │  │                  │      ├─mapper  
+    │  │                  │      │      ReportMapper.java  
+    │  │                  │      │  
+    │  │                  │      ├─service  
+    │  │                  │      │  │  ReportService.java  
+    │  │                  │      │  │  
+    │  │                  │      │  └─impl  
+    │  │                  │      │          ReportServiceImpl.java  
+    │  │                  │      │  
+    │  │                  │      └─vo  
+    │  │                  │              Report.java  
+    │  │                  │  
+    │  │                  ├─reservation  
+    │  │                  │  └─model  
+    │  │                  │      ├─mapper  
+    │  │                  │      │      ReservationMapper.java  
+    │  │                  │      │  
+    │  │                  │      ├─Service  
+    │  │                  │      │  │  ReservationService.java  
+    │  │                  │      │  │  
+    │  │                  │      │  └─Impl  
+    │  │                  │      │          ReservationServiceImpl.java  
+    │  │                  │      │  
+    │  │                  │      └─vo  
+    │  │                  │              ChatToReserveDTO.java  
+    │  │                  │              LocationUtil.java  
+    │  │                  │              MemberDTO.java  
+    │  │                  │              Reservation.java  
+    │  │                  │              ReservationDTO.java  
+    │  │                  │              SearchLocationCodeDTO.java  
+    │  │                  │              SearchMovieDTO.java  
+    │  │                  │              ShowInfoDTO.java  
+    │  │                  │  
+    │  │                  ├─snsLogin  
+    │  │                  │  └─model  
+    │  │                  │      ├─service  
+    │  │                  │      │  │  KakaoApiService.java  
+    │  │                  │      │  │  NaverApiService.java  
+    │  │                  │      │  │  
+    │  │                  │      │  └─impl  
+    │  │                  │      │          KakaoApiServiceImpl.java  
+    │  │                  │      │          NaverApiServiceImpl.java  
+    │  │                  │      │  
+    │  │                  │      └─vo  
+    │  │                  │              KakaoApi.java  
+    │  │                  │              NaverApi.java  
+    │  │                  │              SnsProfile.java  
+    │  │                  │  
+    │  │                  └─store  
+    │  │                      └─model  
+    │  │                          ├─mapper  
+    │  │                          │      CartMapper.java  
+    │  │                          │      GiftMapper.java  
+    │  │                          │      ProductMapper.java  
+    │  │                          │      PurchaseMapper.java  
+    │  │                          │      StorePayMapper.java  
+    │  │                          │  
+    │  │                          ├─service  
+    │  │                          │  │  StorePayService.java  
+    │  │                          │  │  StoreService.java  
+    │  │                          │  │  
+    │  │                          │  └─impl  
+    │  │                          │          StoreServiceImpl.java  
+    │  │                          │  
+    │  │                          └─vo  
+    │  │                                  Cart.java  
+    │  │                                  Gift.java  
+    │  │                                  GiftItem.java  
+    │  │                                  Product.java  
+    │  │                                  Purchase.java  
+    │  │                                  PurchaseItem.java  
+    │  │                                  StorePayment.java  
+    │  │  
+    │  └─resources  
+    │      │  application.properties  
+    │      │  application.zip  
+    │      │  
+    │      ├─mappers  
+    │      │      cart-mapper.xml  
+    │      │      chat-mapper.xml  
+    │      │      cinema-mapper.xml  
+    │      │      emailverification-mapper.xml  
+    │      │      gift-mapper.xml  
+    │      │      main-mapper.xml  
+    │      │      member-mapper.xml  
+    │      │      movie-mapper.xml  
+    │      │      payment-mapper.xml  
+    │      │      product-mapper.xml  
+    │      │      productadmin-mapper.xml  
+    │      │      purchase-mapper.xml  
+    │      │      qna-mapper.xml  
+    │      │      report-mapper.xml  
+    │      │      reservation-mapper.xml  
+    │      │      storePayment-mapper.xml  
+    │      │  
+    │      ├─static  
+    │      │  │  favicon.ico  
+    │      │  │  kakao_login.png  
+    │      │  │  naver_login.png  
+    │      │  │  
+    │      │  ├─css  
+    │      │  │  │  common.css  
+    │      │  │  │  footer.css  
+    │      │  │  │  header.css  
+    │      │  │  │  
+    │      │  │  ├─chat  
+    │      │  │  │      chatList.css  
+    │      │  │  │      chatRoom.css  
+    │      │  │  │      createForm.css  
+    │      │  │  │      finalReservationWindow.css  
+    │      │  │  │      modalNavi.css  
+    │      │  │  │      searchList.css  
+    │      │  │  │  
+    │      │  │  ├─cinema  
+    │      │  │  │      cinemaadmin.css  
+    │      │  │  │      cinemamain.css  
+    │      │  │  │      insert.css  
+    │      │  │  │      parking.css  
+    │      │  │  │      screenadmin.css  
+    │      │  │  │      showtimeadmin.css  
+    │      │  │  │      update.css  
+    │      │  │  │  
+    │      │  │  ├─main  
+    │      │  │  │      adminBanner.css  
+    │      │  │  │      adminBannerDetail.css  
+    │      │  │  │      adminInsertBanner.css  
+    │      │  │  │      index.css  
+    │      │  │  │  
+    │      │  │  ├─member  
+    │      │  │  │      adminLogin.css  
+    │      │  │  │      findInfo.css  
+    │      │  │  │      login.css  
+    │      │  │  │      register.css  
+    │      │  │  │      resetPassword.css  
+    │      │  │  │  
+    │      │  │  ├─movie  
+    │      │  │  │      adminInsertMovie.css  
+    │      │  │  │      adminMovieDetail.css  
+    │      │  │  │      adminMovieList.css  
+    │      │  │  │      movieDetail.css  
+    │      │  │  │      movieList.css  
+    │      │  │  │  
+    │      │  │  ├─mypage  
+    │      │  │  │      adminQnaDetail.css  
+    │      │  │  │      adminQnaList.css  
+    │      │  │  │      findReservation.css  
+    │      │  │  │      mySideBar.css  
+    │      │  │  │      orderList.css  
+    │      │  │  │      qnaDetail.css  
+    │      │  │  │      qnaList.css  
+    │      │  │  │      qnaRegiser.css  
+    │      │  │  │      remove.css  
+    │      │  │  │      update.css  
+    │      │  │  │  
+    │      │  │  ├─payment  
+    │      │  │  │      inipay.css  
+    │      │  │  │      payByTicket.css  
+    │      │  │  │  
+    │      │  │  ├─productadmin  
+    │      │  │  │      productadmin.css  
+    │      │  │  │  
+    │      │  │  ├─report  
+    │      │  │  │      report.css  
+    │      │  │  │      reportadmin.css  
+    │      │  │  │      reportdate.css  
+    │      │  │  │  
+    │      │  │  ├─reservation  
+    │      │  │  │      personSeat.css  
+    │      │  │  │      showTime.css  
+    │      │  │  │  
+    │      │  │  └─store  
+    │      │  │          cart.css  
+    │      │  │          gift.css  
+    │      │  │          product-detail.css  
+    │      │  │          purchase.css  
+    │      │  │          storeCategory.css  
+    │      │  │          storeMain.css  
+    │      │  │  
+    │      │  ├─img  
+    │      │  │  │  default_profile.png  
+    │      │  │  │  footer_logo.png  
+    │      │  │  │  login.png  
+    │      │  │  │  logo.png  
+    │      │  │  │  siren.png  
+    │      │  │  │  
+    │      │  │  ├─chat  
+    │      │  │  │      12.jpg  
+    │      │  │  │      15.jpg  
+    │      │  │  │      19.jpg  
+    │      │  │  │      all.jpg  
+    │      │  │  │      defaultProfile2.png  
+    │      │  │  │      loading.gif
+    │      │  │  │      noResult.png  
+    │      │  │  │      NOT RATED.jpg  
+    │      │  │  │      talk.png  
+    │      │  │  │      ticket.png  
+    │      │  │  │      together.jpg  
+    │      │  │  │  
+    │      │  │  ├─main  
+    │      │  │  │      21626_301_1.mp4
+    │      │  │  │  
+    │      │  │  ├─movie  
+    │      │  │  │  │  imageNull.png  
+    │      │  │  │  │  play-icon.png  
+    │      │  │  │  │  포스터1.jpg  
+    │      │  │  │  │  포스터2.jpg  
+    │      │  │  │  │  
+    │      │  │  │  └─banner  
+    │      │  │  │          AmazonBullseye_19204202.jpg  
+    │      │  │  │          GrandMa_1920420.jpg  
+    │      │  │  │          MyLovelyPartner_19204203.jpg  
+    │      │  │  │          MyPet_1920420.jpg  
+    │      │  │  │          TwilightOfTheWarriors_1920420.jpg  
+    │      │  │  │  
+    │      │  │  └─reservation  
+    │      │  │          All.svg  
+    │      │  │          check.png  
+    │      │  │          only12.svg  
+    │      │  │          only15.svg  
+    │      │  │          only19.svg  
+    │      │  │  
+    │      │  ├─js  
+    │      │  │  │  header.js  
+    │      │  │  │  
+    │      │  │  ├─chat  
+    │      │  │  │      chatReport.js  
+    │      │  │  │      chatRoom.js  
+    │      │  │  │      chatRoomList.js  
+    │      │  │  │      chatScroll.js  
+    │      │  │  │      createForm.js  
+    │      │  │  │      finalReservationWindow.js  
+    │      │  │  │      listMenuBtn.js  
+    │      │  │  │      modalNavi.js  
+    │      │  │  │      searchChatList.js  
+    │      │  │  │  
+    │      │  │  ├─common  
+    │      │  │  │      scroll.js  
+    │      │  │  │  
+    │      │  │  ├─main  
+    │      │  │  │      index.js  
+    │      │  │  │  
+    │      │  │  ├─member  
+    │      │  │  │      adminLogin.js  
+    │      │  │  │      findInfo.js  
+    │      │  │  │      login.js  
+    │      │  │  │      register.js  
+    │      │  │  │      resetPassword.js  
+    │      │  │  │  
+    │      │  │  ├─movie  
+    │      │  │  │      movieDetail.js  
+    │      │  │  │      movieList.js  
+    │      │  │  │  
+    │      │  │  ├─mypage  
+    │      │  │  │      adminQnaDetail.js  
+    │      │  │  │      findReservation.js  
+    │      │  │  │      orderList.js  
+    │      │  │  │      qnaDetail.js  
+    │      │  │  │      qnaList.js  
+    │      │  │  │      qnaRegister.js  
+    │      │  │  │      remove.js  
+    │      │  │  │      update.js  
+    │      │  │  │  
+    │      │  │  ├─payment  
+    │      │  │  │      inipay.js  
+    │      │  │  │      payByTicket.js  
+    │      │  │  │  
+    │      │  │  ├─reservation  
+    │      │  │  │      personSeat.js  
+    │      │  │  │      showTime.js  
+    │      │  │  │  
+    │      │  │  └─store  
+    │      │  │          cart.js  
+    │      │  │          gift.js  
+    │      │  │          product-detail.js  
+    │      │  │          purchase.js  
+    │      │  │          storeCategory.js  
+    │      │  │          storeMain.js  
+    │      │  │  
+    │      │  └─lib  
+    │      │          config.js  
+    │      │  
+    │      └─templates  
+    │          │  index.html      
+    │          │  
+    │          ├─common  
+    │          │  ├─fragments  
+    │          │  │      admin-header.html      
+    │          │  │      config.html      
+    │          │  │      footer.html      
+    │          │  │      header.html      
+    │          │  │  
+    │          │  └─layout  
+    │          │          adminLayout.html      
+    │          │          defaultLayout.html      
+    │          │  
+    │          ├─pages  
+    │          │  ├─chat  
+    │          │  │      chatRoom.html      
+    │          │  │      chatRoomList.html      
+    │          │  │      createChatForm.html      
+    │          │  │      finalReservationInfoSelect.html      
+    │          │  │      searchChat.html      
+    │          │  │  
+    │          │  ├─cinema  
+    │          │  │  │  main.html      
+    │          │  │  │  
+    │          │  │  ├─admin  
+    │          │  │  │      adminlist.html      
+    │          │  │  │      adminmain.html      
+    │          │  │  │      adminshowtime.html      
+    │          │  │  │      failed.html      
+    │          │  │  │      failmessage.html      
+    │          │  │  │      insert.html      
+    │          │  │  │      insertscreen.html      
+    │          │  │  │      showscreen.html      
+    │          │  │  │      showtimeinsert.html      
+    │          │  │  │      sucess.html      
+    │          │  │  │      update.html      
+    │          │  │  │      updatescreen.html      
+    │          │  │  │      updateshowtime.html      
+    │          │  │  │  
+    │          │  │  └─parking  
+    │          │  │          1.html      
+    │          │  │          10.html      
+    │          │  │          11.html      
+    │          │  │          12.html      
+    │          │  │          13.html      
+    │          │  │          14.html      
+    │          │  │          15.html      
+    │          │  │          16.html      
+    │          │  │          17.html      
+    │          │  │          18.html      
+    │          │  │          19.html      
+    │          │  │          2.html      
+    │          │  │          20.html      
+    │          │  │          21.html      
+    │          │  │          22.html      
+    │          │  │          23.html      
+    │          │  │          24.html      
+    │          │  │          25.html      
+    │          │  │          26.html      
+    │          │  │          27.html      
+    │          │  │          28.html      
+    │          │  │          29.html      
+    │          │  │          3.html      
+    │          │  │          30.html      
+    │          │  │          31.html      
+    │          │  │          32.html      
+    │          │  │          33.html      
+    │          │  │          34.html      
+    │          │  │          35.html      
+    │          │  │          36.html      
+    │          │  │          37.html      
+    │          │  │          38.html      
+    │          │  │          39.html      
+    │          │  │          4.html      
+    │          │  │          40.html      
+    │          │  │          5.html      
+    │          │  │          6.html      
+    │          │  │          7.html      
+    │          │  │          8.html      
+    │          │  │          81.html      
+    │          │  │          9.html      
+    │          │  │  
+    │          │  ├─main  
+    │          │  │      adminBanner.html      
+    │          │  │      adminBannerDetail.html      
+    │          │  │      adminInsertBanner.html      
+    │          │  │      index.html      
+    │          │  │  
+    │          │  ├─member  
+    │          │  │      adminLogin.html      
+    │          │  │      findInfo.html      
+    │          │  │      login.html      
+    │          │  │      register.html      
+    │          │  │      resetPassword.html      
+    │          │  │  
+    │          │  ├─movie  
+    │          │  │      adminInsertMovie.html      
+    │          │  │      adminMovieDetail.html      
+    │          │  │      adminMovieList.html      
+    │          │  │      adminSearchList.html      
+    │          │  │      movieDetail.html      
+    │          │  │      movieList.html      
+    │          │  │  
+    │          │  ├─mypage  
+    │          │  │      adminQnaDetail.html      
+    │          │  │      adminQnaList.html      
+    │          │  │      adminQnaSearchList.html      
+    │          │  │      findReservation.html      
+    │          │  │      mySideBar.html      
+    │          │  │      orderList.html      
+    │          │  │      qnaDetail.html      
+    │          │  │      qnaList.html        
+    │          │  │      qnaRegister.html        
+    │          │  │      qnaSearchList.html        
+    │          │  │      remove.html        
+    │          │  │      update.html        
+    │          │  │    
+    │          │  ├─payment    
+    │          │  │      inipay.html        
+    │          │  │      payByTicket.html        
+    │          │  │    
+    │          │  ├─productadmin  
+    │          │  │      insertproduct.html        
+    │          │  │      productadmin.html        
+    │          │  │      updateproduct.html        
+    │          │  │  
+    │          │  ├─report  
+    │          │  │      date.html        
+    │          │  │      report.html        
+    │          │  │      reportlist.html        
+    │          │  │      reportlist2.html        
+    │          │  │    
+    │          │  ├─reservation  
+    │          │  │      personSeat.html        
+    │          │  │      selectReservationInfo.html        
+    │          │  │      showTime.html        
+    │          │  │  
+    │          │  └─test  
+    │          │          testPage.html        
+    │          │  
+    │          └─store  
+    │                  cart.html          
+    │                  gift.html        
+    │                  payment-complete.html        
+    │                  product-detail.html        
+    │                  purchase.html        
+    │                  storeCategory.html        
+    │                  storeMain.html        
+    │                  storePayment.html        
+    │  
+    ├─sqlworksheet  
+    │  ├─member  
+    │  │      MEMBER.sql  
+    │  │  
+    │  └─resetpwtoken    
+    │          PW_RESET_TOKEN.sql  
+    │  
+    └─test  
+        └─java    
+            └─com  
+                └─filmfellows  
+                    └─cinemates  
+                            CineMatesApplicationTests.java    
 
 # 4. 프로젝트 역할 분담
-  ## 이충무:
-    
-  ## 조홍빈:
-  - 예매: 사용자가 원하는 극장을 선택하고, 상영 시간과 좌석을 빠르게 선택할 수 있는 인터페이스 구현. 결제 페이지로 연결하여 예매 완료 후  예매번호를 발급.
-  영화 및 극장 상세페이지에서의 예매: 영화 상세페이지 , 극장 상세페이지, 커뮤니티 페이지에서 예매 가능한 좌석 정보와 상영시간을 제공하고, 예매 과정을 간소화.
-  - 결제: 입력된 예매 정보에 따른 결제를 진행할 수 있는 시스템 구현 . 영화 관람권 결제와 신용카드&간편결제 두가지 방식으로 빠른 온라인 결제 기능 활성화
+## 이충무:
+- 커뮤니티 : 채팅방 개설, 웹소켓 활용한 채팅, 예매 정보 선택 후 예매페이지 이동, 채팅방 리스트 전체, 내채팅방, 검색 페이지 구현 (목록, 카드형 전환)
+## 조홍빈:
+- 예매: 사용자가 원하는 극장을 선택하고, 상영 시간과 좌석을 빠르게 선택할 수 있는 인터페이스 구현. 결제 페이지로 연결하여 예매 완료 후  예매번호를 발급.
+영화 및 극장 상세페이지에서의 예매: 영화 상세페이지 , 극장 상세페이지, 커뮤니티 페이지에서 예매 가능한 좌석 정보와 상영시간을 제공하고, 예매 과정을 간소화.
+- 결제: 입력된 예매 정보에 따른 결제를 진행할 수 있는 시스템 구현 . 영화 관람권 결제와 신용카드&간편결제 두가지 방식으로 빠른 온라인 결제 기능 활성화
 ## 엄태운:
 * 회원 가입, 로그인, 회원 정보 수정 등 회원 관련 기능 개발
 * 예매 조회, 구매내역 조회, 1:1 문의 기능 등 마이페이지 활동 내역 관리
@@ -51,13 +1528,46 @@
 ![image](https://github.com/user-attachments/assets/c26fcb5b-3348-4ecd-81b8-d820c8c84c13)
 
 # 6. 페이지별 기능
-  ## 이충무:
-    - 
-  ## 조홍빈:
-  ### [예매]
-  - 원하는 영화,상영지역,영화관,예매날짜,상영관과 상영시간을 선택할 수 있습니다. 
-  - 좌석/인원 버튼 클릭 시 다음 페이지로 이동합니다.
-  ![예매GIF](https://github.com/user-attachments/assets/93e5d7b8-1cab-470a-b173-24f661d2addb)
+## 이충무:
+### [채팅방 조회]
+#### 전체
+- 개설된 채팅방을 페이지당 9개씩 볼 수 있습니다.
+- 목록형, 카드형 전환이 가능합니다.
+#### 검색
+- 검색결과를 페이지당 5개씩 볼 수 있습니다.
+- 목록형으로 확인 가능합니다.
+- 검색창으로 검색 시 채팅방이름, 영화, 지역 중 선택하여 검색어를 뒤에 추가해 검색이 가능합니다.
+- 가장 많이 등록된 태그 리스트가 조회되며, 각 태그 클릭 시 해당 태그를 사용한 채팅방 검색 결과가 조회됩니다.
+#### 내 채팅방
+- 목록, 카드형 전환이 가능합니다.
+- 내가 만든 채팅방 또는 내가 참여한 채팅방 리스트가 조회되며 색으로 이를 구분할 수 있습니다.
+
+### [채팅방 개설]
+- 채팅방 개설 시 카테고리를 선택할 수 있습니다.
+- 채팅방 개설 시 예매가능한 영화리스트, 해당 영화를 상영하는 지역의 극장 리스트가 조회되며 이를 선택합니다.
+- 채팅방 이름, 태그를 등록해 최종적으로 채팅방을 개설합니다.
+
+### [채팅]
+#### 일반 참여자
+- 각 채팅방의 참여버튼을 눌러 참여가 가능합니다. (로그인 시 가능)
+- 채팅방에 들어가면 채팅방에 참여한 유저들의 프로필을 볼 수 있습니다.
+- 최초 입장 시 "..님이 입장했습니다." 의 메세지가 공지됩니다.
+- 채팅방 나가기 버튼을 눌러 나갈 시 "..님이 나갔습니다."의 메세지가 공지됩니다.
+- 채팅방을 나갈 시 다른 사용자는 대화내용을 확인 가능하지만 나간 사용자는 다시 입장 시 이전 기록을 확인할 수 없습니다.
+- 채팅방 페이지에 접속 시 프로필 이미지가 투명해집니다.
+- 채팅방 페이지에 접속 시 프로필 이미지가 불투명해집니다.
+- 예매 동의여부를 체크할 수 있습니다. 이를 체크해야 방장이 예매 진행이 가능합니다.
+#### 방장
+- 일반 참여자와 기능은 동일하되 채팅방 삭제, 상영날짜 선택, 예매하기 기능을 추가적으로 사용할 수 있습니다.
+- 채팅방에서 대화 후에 상영선택을 눌러 영화를 보기로 한 날짜를 조회하고 시간대를 선택합니다.
+- 모든 참여자가 영화관람권을 1개이상, 예매동의하기 버튼을 눌렀을 시 예매하기 버튼을 눌러 예매 (좌석 선택) 페이지로 이동 가능합니다.
+- 채팅방 삭제 시 모든 채팅, 채팅방 정보가 삭제됩니다.
+
+## 조홍빈:
+### [예매]
+- 원하는 영화,상영지역,영화관,예매날짜,상영관과 상영시간을 선택할 수 있습니다. 
+- 좌석/인원 버튼 클릭 시 다음 페이지로 이동합니다.
+![예매GIF](https://github.com/user-attachments/assets/93e5d7b8-1cab-470a-b173-24f661d2addb)
 
 ### [인원/좌석]
 - 선택한 영화에 대한 정보 그리고 상영한 정보에 대해 표시합니다.
