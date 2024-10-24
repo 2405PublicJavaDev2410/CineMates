@@ -1,0 +1,294 @@
+@import url('https://fonts.googleapis.com/css2?family=Moul&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IM+Fell+French+Canon:ital@0;1&family=Moul&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
+/**{*/
+/*    font-family: "NEXON Lv1 Gothic OTF", serif;*/
+/*}*/
+button{
+    font-family: "NEXON Lv1 Gothic OTF", serif;
+}
+.chat-room-container{
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0 50px;
+}
+.reservation-info-background{
+    width: 45%;
+    height: 800px;
+    position: relative;
+}
+.reservation-info-box{
+    width: 88%;
+    height: 600px; /* background 높이에 맞춤 */
+    margin: 20px auto 0;
+    border: 3px solid #d3c5a8;
+    position: relative;
+    z-index: 3;
+}
+.ticket-img{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+.chat-screen{
+    font-family: "NEXON Lv1 Gothic OTF", serif;
+    width: 45%;
+    height: 800px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    box-shadow: 0 5px 5px 5px rgb(162, 162, 162);
+}
+.chat-screen #user-list-container{
+    width: 100%;
+    height: 100px;
+    display: flex;
+    gap: 15px;
+    padding: 10px;
+}
+.chat-screen .main-screen{
+    width: 100%;
+    height:580px;
+    background-color: #ececec;
+    overflow-y: scroll;
+}
+.chat-screen .message-input-box{
+    width: 100%;
+    height: 120px;
+}
+.message-input-box > textarea{
+    font-family: "NEXON Lv1 Gothic OTF", serif;
+    width: 100%;
+    height: 65%;
+    outline: none;
+    border: none;
+    resize:none;
+    padding: 5px;
+    font-size: 16px;
+
+}
+.message-input-box  button{
+    font-size: 16px;
+    width: 45px;
+    height: 35px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    background-color: #EA4E4A;
+    font-weight: bold;
+    margin-right: 5px;
+
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 2fr 0.5fr 1fr;
+
+}
+
+.grid-item {
+    border: 3px solid #d3c5a8;
+    text-align: center;
+    font-family: "Black Han Sans", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.grid-title {
+    grid-column: 1 / 3;
+    grid-row: 1;
+}
+
+.grid-movieImg {
+    grid-column: 1 / 3;
+    grid-row: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.grid-date {
+    grid-column: 1;
+    grid-row: 3;
+}
+
+.grid-time {
+    grid-column: 2;
+    grid-row: 3;
+}
+
+.grid-region {
+    grid-column: 1;
+    grid-row: 4;
+}
+
+.grid-screen {
+    grid-column: 2;
+    grid-row: 4;
+}
+.grid-item-name{
+    text-align: center;
+    /*font-family: "Moul", serif;*/
+    font-family: "IM Fell French Canon", serif;
+    font-size: 30px;
+    margin-top: 10px;
+    color: #d3c5a8;
+}
+
+.notice-box{
+    width: 100%;
+    position: relative;
+    margin: 10px 0;
+    text-align: center;
+}
+.notice-message{
+    display: inline-block;
+    border-radius: 15px;
+    margin: 0 auto;
+    background-color: #373737;
+    opacity: 0.6;
+    font-weight: bold;
+    padding: 10px;
+    max-width: 80%;
+    word-wrap: break-word;
+    color: white;
+}
+.my-chat-box{
+    width: 100%;
+    margin: 10px 0;
+    position: relative;
+    display: flex;
+    justify-content: end;
+    align-items: end;
+}
+.my-chat-date{
+    display: inline-block;
+    margin-right: 5px;
+}
+.my-chat-message{
+    display: inline-block;
+    /*border-radius: 0% 30% 30% 30%;*/
+    border-radius: 15px 0 15px 15px;
+    background-color: #ff7874;
+    font-weight: bold;
+    padding: 10px;
+    max-width: 60%;
+    word-wrap: break-word;
+    margin-right: 10px;
+}
+.other-chat-box{
+    width: 100%;
+    margin: 10px 0;
+    position: relative;
+    display: flex;
+    justify-content: start;
+    align-items: end;
+}
+.other-chat-name{
+}
+.other-chat-profile{
+    width: 50px;
+    height: 50px;
+    border-radius: 40px;
+    margin-left: 5px;
+    align-self: flex-start;
+}
+.other-chat-date{
+    display: inline-block;
+    margin-left: 5px;
+}
+.other-chat-message{
+    display: inline-block;
+    border-radius: 0 15px 15px 15px;
+    background-color: #8faccf;
+    font-weight: bold;
+    padding: 10px;
+    width: 100%;
+    word-wrap: break-word;
+}
+
+
+#ticket-title{
+    font-family: "Moul", serif;
+    text-align: center;
+    position: relative;
+    z-index: 3;
+    font-size: 40px;
+    color: #b25651;
+    margin: 40px auto 0;
+    width: 70%;
+    background-color: #d3c5a8;
+}
+
+#select-reservationInfo-btn{
+    padding: 10px;
+    font-size: 25px;
+    margin-right: 45px;
+    color: #d3c5a8;
+    background-color: #b25651;
+    border: none;
+    box-shadow: 0 2px 2px 2px rgb(0, 0, 0);
+    font-family: "NEXON Lv1 Gothic OTF", serif;
+    cursor:pointer;
+}
+
+#select-reservationInfo-btn:active{
+    color: black;
+    transform:translateY(2px);
+    box-shadow: 0 1px 1px 1px rgb(0, 0, 0);
+}
+
+#resv-btn{
+    margin: 20px 0 50px 520px;
+    text-align: center;
+    width: 100px;
+    height: 40px;
+    color: white;
+    background-color: #EA4E4A;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: all 200ms;
+}
+#resv-btn:hover, #resv-btn:active, #leave-btn:hover, #delete-btn:hover{
+    opacity: 1;
+}
+#resv-btn:active, #leave-btn:active, #delete-btn:active{
+    transform: scale(0.95);
+}
+
+#delete-btn{
+    text-align: center;
+    width: 120px;
+    height: 40px;
+    color: white;
+    background-color: #EA4E4A;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: all 200ms;
+}
+#leave-btn{
+    text-align: center;
+    width: 100px;
+    height: 40px;
+    color: white;
+    background-color: #EA4E4A;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: all 200ms;
+}

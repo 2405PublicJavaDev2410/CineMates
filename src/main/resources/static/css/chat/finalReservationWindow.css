@@ -1,0 +1,65 @@
+*{
+    font-family: "NEXON Lv1 Gothic OTF", serif;
+}
+#screenList-container{
+    text-align: start;
+    min-height: 400px;
+}
+.screenName{
+    font-size: 22px;
+    margin: 10px;
+}
+.showTimeFlex{
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.showtimeTime{
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 18px;
+    border-radius: 5px;
+    box-shadow: 0 2px 2px 2px rgb(162, 162, 162);
+    transition: all 200ms;
+    cursor: pointer;
+}
+.showtimeTime:hover{
+    box-shadow: 0 2px 2px 2px rgb(78, 78, 78);
+}
+.showtimeTime:active{
+    box-shadow: 0 1px 1px 1px rgb(78, 78, 78);
+    transform:translateY(2px);
+}
+
+#popUp-container{
+    width: 80%;
+    height: 90%;
+    margin: 20px auto 0;
+}
+
+#selectedBtn{
+    text-align: center;
+    width: 80px;
+    height: 40px;
+    color: white;
+    background-color: #EA4E4A;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: all 200ms;
+}
+#selectedBtn:hover, #selectedBtn:active{
+    opacity: 1;
+}
+#selectedBtn:active{
+    transform: scale(0.95);
+}
+
+#datePicker{
+    border-radius: 10px;
+    border:none;
+    box-shadow: 0 1px 1px 1px rgb(175, 175, 175);
+}

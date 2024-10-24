@@ -1,0 +1,256 @@
+* {
+    font-family: "NEXON Lv1 Gothic OTF", serif;
+}
+
+h1 {
+    font-family: 'GmarketSansMedium', sans-serif;
+}
+
+.container {
+    width: 100%;
+}
+
+.createChat-main {
+    width: 100%;
+    position: relative;
+    background: rgb(71, 71, 71);
+}
+
+.inner {
+    width: 1200px;
+    margin: 0 auto;
+    padding: 40px 0;
+}
+
+.inner-bottom {
+
+}
+
+.createChat-title {
+    display: flex;
+    width: 100%;
+}
+
+.createChat-content {
+    width: 100%;
+    height: 800px;
+    background-color: #ececec;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    user-select: none;
+    position: relative;
+}
+
+.list-title {
+    width: 100%;
+    height: 60px;
+    font-weight: 500;
+    color: white;
+    font-size: 25px;
+    background-color: black;
+    line-height: 60px;
+    text-align: center;
+}
+
+#movie-list-container {
+    width: 50%;
+    height: 100%;
+    background-color: white;
+    overflow-y: scroll;
+    position: relative;
+}
+
+/* scroll custom */
+#movie-list-container::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    background-color: #F5F5F5;
+}
+
+#movie-list-container::-webkit-scrollbar {
+    width: 12px;
+    background-color: #F5F5F5;
+}
+
+#movie-list-container::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+    background-color: #225FAE;
+}
+
+/* scroll-custom  */
+
+#region-list-container {
+    width: 25%;
+    height: 100%;
+    /*background-color: #ececec;*/
+    background-color: white;
+}
+
+#cinema-list-container {
+    width: 25%;
+    height: 100%;
+    /*background-color:#ececec;*/
+    background-color: white;
+}
+
+.movie-item-content {
+    display: flex;
+    /*margin: 15px;*/
+    position: relative;
+    /*border: 3px solid #EA4E4A;*/
+    padding: 15px;
+    cursor: pointer;
+}
+
+.selectedMovie {
+    border: 3px solid #EA4E4A;
+    padding: 12px;
+    background-color: white;
+}
+
+.selectedMovie .movie-title {
+    color: #EA4E4A;
+}
+
+.movie-img {
+    width: 150px;
+    height: 200px;
+    border-radius: 20px;
+    background-color: gray;
+    margin-right: 20px;
+}
+
+.movie-img img {
+    width: 150px;
+    height: 200px;
+}
+
+.check-icon {
+    opacity: 0;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    color: #EA4E4A;
+    font-size: 30px
+}
+
+.check-icon.checked {
+    opacity: 1;
+}
+
+
+/*지역선택*/
+.regionBox {
+    font-size: 20px;
+    width: 100%;
+    height: 70px;
+    line-height: 70px;
+    cursor: pointer;
+    padding-left: 20px;
+    position: relative;
+}
+
+.checkedRegion {
+    border: 3px solid #EA4E4A;
+    /*background-color:#ececec;*/
+    color: #EA4E4A;
+    font-weight: bold;
+}
+
+.region-check-icon {
+    opacity: 0;
+    position: absolute;
+    right: 20px;
+    top: -4px;
+    color: #EA4E4A;
+    font-size: 30px;
+}
+
+.region-check-icon.checked {
+    opacity: 1;
+}
+
+
+/* 극장선택 */
+.cinemaBox {
+    font-size: 20px;
+    width: 100%;
+    height: 70px;
+    line-height: 70px;
+    cursor: pointer;
+    padding-left: 20px;
+    position: relative;
+}
+
+.checkedCinema {
+    border: 3px solid #EA4E4A;
+    /*background-color:#ececec;*/
+    color: #EA4E4A;
+    font-weight: bold;
+}
+
+.cinema-check-icon {
+    opacity: 0;
+    position: absolute;
+    right: 20px;
+    top: -4px;
+    color: #EA4E4A;
+    font-size: 30px;
+}
+
+.cinema-check-icon.checked {
+    opacity: 1;
+}
+
+/*  채팅방 정보  */
+.chatRoom-info {
+    font-size: 25px;
+    width: 100%;
+    /*margin: 0 auto;*/
+}
+
+.charRoom-info-nameBox {
+    display: flex;
+    border-bottom: 2px solid gray;
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+.charRoom-info-nameBox input {
+    font-size: 25px;
+    border: none;
+    width: 93%;
+    outline: none;
+    padding-left: 17px;
+}
+
+.charRoom-info-nameBox:focus-within {
+    border-bottom: 2px solid black;
+}
+
+/*   태그 css*/
+.tagify {
+    border: none;
+    border-bottom: 2px solid gray;
+    min-width: 100%;
+    font-size: 20px;
+}
+
+#create-room-btn {
+    width: 100px;
+    margin: 20px;
+}
+
+.movie-rating-img {
+    margin-right: 10px;
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+    background-size: cover;
+}
+
+.container {
+    width: 100%;
+}
