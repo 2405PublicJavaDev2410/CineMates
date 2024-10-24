@@ -10,14 +10,14 @@
 
 # 1. 개발환경<br>
 ![Oracle](https://img.shields.io/badge/Oracle-F80000?style=for-the-badge&logo=oracle&logoColor=white)
-![java  ](https://img.shields.io/badge/java  -%23ED8B00.svg  ?style=for-the-badge&logo=openjdk&logoColor=white)
-![Spring](https://img.shields.io/badge/spring-%236DB33F.svg  ?style=for-the-badge&logo=spring&logoColor=white)<br>
-![html      5](https://img.shields.io/badge/html      5-%23E34F26.svg  ?style=for-the-badge&logo=html      5&logoColor=white)
-![CSS3](https://img.shields.io/badge/css3-%231572B6.svg  ?style=for-the-badge&logo=css3&logoColor=white)
-![java  Script](https://img.shields.io/badge/java  script-%23323330.svg  ?style=for-the-badge&logo=java  script&logoColor=%23F7DF1E)<br>
-![GitHub](https://img.shields.io/badge/github-%23121011.svg  ?style=for-the-badge&logo=github&logoColor=white)
-![IntelliJ IDEA](https://img.shields.io/badge/IntelliJIDEA-000000.svg  ?style=for-the-badge&logo=intellij-idea&logoColor=white)
-![Thymeleaf](https://img.shields.io/badge/Thymeleaf-%23005C0F.svg  ?style=for-the-badge&logo=Thymeleaf&logoColor=white)
+![java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
+![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)<br>
+![html5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
+![java  Script](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)<br>
+![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
+![IntelliJ IDEA](https://img.shields.io/badge/IntelliJIDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white)
+![Thymeleaf](https://img.shields.io/badge/Thymeleaf-%23005C0F.svg?style=for-the-badge&logo=Thymeleaf&logoColor=white)
 ![Slack](https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white)<br>
 ![Kakao](https://img.shields.io/badge/Kakao-FFCD00?style=for-the-badge&logo=Kakao&logoColor=black)
 ![Naver Maps](https://img.shields.io/badge/Naver%20Maps-03C75A?style=for-the-badge&logo=Naver&logoColor=white)
@@ -26,7 +26,7 @@
 ## Git Flow 방식
 - 팀원 각자의 브랜치를 만들어 개발 진행
 - 기능 구현이 완료되면 Main 브랜치에 병합
-  ![git_flow](https://github.com/2405Publicjava  Dev/sulgilddara/blob/main/img/github_flow.png  ?raw=true)
+  ![git_flow](https://github.com/2405PublicjavaDev/sulgilddara/blob/main/img/github_flow.png?raw=true)
 # 3. 프로젝트 구조
 C:.
 │  .gitignore  
@@ -1531,23 +1531,29 @@ C:.
 ## 이충무:
 ### [채팅방 조회]
 #### 전체
+![전체](https://github.com/user-attachments/assets/b848a7cd-7f25-4382-84db-76daffc1776e)
 - 개설된 채팅방을 페이지당 9개씩 볼 수 있습니다.
 - 목록형, 카드형 전환이 가능합니다.
 #### 검색
+![검색](https://github.com/user-attachments/assets/5a9e5363-0391-4653-9722-94eeac7be171)
 - 검색결과를 페이지당 5개씩 볼 수 있습니다.
 - 목록형으로 확인 가능합니다.
 - 검색창으로 검색 시 채팅방이름, 영화, 지역 중 선택하여 검색어를 뒤에 추가해 검색이 가능합니다.
 - 가장 많이 등록된 태그 리스트가 조회되며, 각 태그 클릭 시 해당 태그를 사용한 채팅방 검색 결과가 조회됩니다.
 #### 내 채팅방
+![내 채팅방](https://github.com/user-attachments/assets/5aac98f4-0d58-45c4-9ae3-872aff8fc0a8)
 - 목록, 카드형 전환이 가능합니다.
 - 내가 만든 채팅방 또는 내가 참여한 채팅방 리스트가 조회되며 색으로 이를 구분할 수 있습니다.
 
 ### [채팅방 개설]
+![채팅방 개설](https://github.com/user-attachments/assets/bf9a8e1e-883a-4e75-9ead-495f28bc0bba)
 - 채팅방 개설 시 카테고리를 선택할 수 있습니다.
 - 채팅방 개설 시 예매가능한 영화리스트, 해당 영화를 상영하는 지역의 극장 리스트가 조회되며 이를 선택합니다.
 - 채팅방 이름, 태그를 등록해 최종적으로 채팅방을 개설합니다.
 
 ### [채팅]
+![예매전 채팅](https://github.com/user-attachments/assets/c5ea6349-0980-483e-a52d-9355d5371251)
+![채팅방 기능 및 예매](https://github.com/user-attachments/assets/4925d631-ebd0-4840-8b5e-3cfd37cd12c0)
 #### 일반 참여자
 - 각 채팅방의 참여버튼을 눌러 참여가 가능합니다. (로그인 시 가능)
 - 채팅방에 들어가면 채팅방에 참여한 유저들의 프로필을 볼 수 있습니다.
