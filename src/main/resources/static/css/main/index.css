@@ -1,13 +1,16 @@
 main {
     /*background-color: black;*/
 }
+
 .view-all-btn:hover {
     background-color: #E12C25;
 }
+
 .container {
     width: 100%;
     margin: 0 auto;
 }
+
 .main-banner {
     width: 100%;
     position: relative;
@@ -15,12 +18,14 @@ main {
     background-color: black;
     margin: 0 auto 40px;
 }
+
 .video-container {
     margin: 0 auto;
     position: relative;
     width: 1200px;
     overflow: visible; /* 변경: overflow를 visible로 설정 */
 }
+
 .main-banner video {
     width: 100%;
     height: 100%;
@@ -44,19 +49,22 @@ main {
             rgb(0, 0, 0) 0%,
             rgba(0, 0, 0, 0.76) 50%,
             rgba(0, 0, 0, 0) 100%
-            );
+    );
 }
+
 .banner-title {
     font-size: 2.5em;
     margin-bottom: 0.5em;
     font-family: 'GmarketSansMedium', serif;
     /*font-family: 'NEXON Lv1 Gothic OTF', serif;*/
 }
+
 .banner-subTitle {
     font-size: 1.5em;
     margin-bottom: 10px;
     font-family: 'NEXON Lv1 Gothic OTF', serif;
 }
+
 .linkBtn {
     width: 90px;
     height: 30px;
@@ -70,6 +78,7 @@ main {
     font-weight: bold;
     cursor: pointer;
 }
+
 .linkR {
     margin-left: 8px;
 }
@@ -80,6 +89,7 @@ main {
     width: 1200px;
     margin: 30px auto 50px;
 }
+
 .box-office-header {
     display: flex;
     justify-content: center;
@@ -87,12 +97,14 @@ main {
     margin-bottom: 20px;
     position: relative;
 }
+
 .box-office h2 {
     font-size: 1.8em;
     color: #000000;
     font-family: 'GmarketSansMedium', serif;
     font-weight: bold;
 }
+
 .view-all-btn {
     position: absolute;
     right: 0;
@@ -104,20 +116,24 @@ main {
     cursor: pointer;
     font-family: 'NEXON Lv1 Gothic OTF', serif;
 }
+
 .movie-slider-container {
     position: relative;
     width: 1200px; /* 버튼 공간을 위해 너비 증가 */
     /*margin: 0 auto; !* 중앙 정렬 *!*/
 }
+
 .movie-slider {
     width: 1200px;
     overflow: hidden;
     /*margin: 0 auto; !* 중앙 정렬 *!*/
 }
+
 .movie-list {
     display: flex;
     transition: transform 0.5s ease;
 }
+
 .movie-item {
     width: 220px;
     margin-right: 25px;
@@ -144,8 +160,9 @@ main {
     border-radius: 5px;
     font-family: 'GmarketSansMedium', serif;
     font-style: italic;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
+
 .slider-control {
     position: absolute;
     top: 50%;
@@ -155,12 +172,15 @@ main {
     font-size: 50px;
     z-index: 10;
 }
+
 #prevBtn {
     left: -60px; /* 왼쪽으로 이동 */
 }
+
 #nextBtn {
     right: -60px; /* 오른쪽으로 이동 */
 }
+
 .slider-control:hover {
     color: #D54946;
 }
@@ -177,6 +197,7 @@ main {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
 .movie-info {
     font-size: 0.9em;
     color: #666;
@@ -185,7 +206,8 @@ main {
 
 .chat-room-link:hover {
     /*filter: brightness(50%);*/
-    color: black; !important;
+    color: black;
+!important;
 }
 
 .movie-info-review {
@@ -198,6 +220,7 @@ main {
     color: #666;
     font-family: 'NEXON Lv1 Gothic OTF', serif;
 }
+
 .and {
     font-size: 0.9em;
     color: #9f9f9f;
@@ -206,19 +229,16 @@ main {
     margin-left: 5px;
 }
 
-.star{
+.star {
     color: #ffd700;
     font-size: 0.9em;
     font-family: 'NEXON Lv1 Gothic OTF', serif;
     margin-right: 3px;
 }
 
-.starAndReview{
+.starAndReview {
     display: flex;
 }
-
-
-
 
 
 .chat-list-card {
@@ -265,6 +285,7 @@ main {
 
 .chat-list-card .tags {
     margin-bottom: 5px;
+    width: 100%;
 }
 
 .chat-list-card .tags span {
@@ -308,7 +329,7 @@ main {
 .chat-list-card-slider {
     /*width: 100%;*/
     /*overflow: visible;*/
-    width: 1230px;  /* 리스트 자체의 너비 */
+    width: 1230px; /* 리스트 자체의 너비 */
     /*overflow: hidden;*/
 }
 
@@ -329,8 +350,9 @@ main {
     width: 100%;
     transition: all 200ms;
 }
-.chat-list-card-container:hover{
-    transform:scale(1.03);
+
+.chat-list-card-container:hover {
+    transform: scale(1.03);
 }
 
 
@@ -341,8 +363,8 @@ main {
     border-radius: 10px;
     width: 100%;
     /*height: 180px;*/
-    min-height: 180px;  /* 최소 높이 설정 */
-    height: auto;  /* 내용에 따라 높이 자동 조절 */
+    min-height: 180px; /* 최소 높이 설정 */
+    height: auto; /* 내용에 따라 높이 자동 조절 */
     box-shadow: 0 2px 10px #0000001a;
     /*overflow: hidden;*/
 }
@@ -383,6 +405,7 @@ main {
     width: 1200px;
     margin: 0 auto 20px;
 }
+
 .chat-room-header h2 {
     font-size: 1.8em;
     color: #000000;
@@ -391,7 +414,23 @@ main {
 }
 
 
-.joinCountBox{
+.joinCountBox {
     /*position: absolute;*/
 }
 
+.chatTagList {
+    display: inline-flex;
+    width: 234px;
+    flex-wrap: nowrap; /* 줄바꿈 방지 */
+    overflow-x: auto; /* 가로 스크롤 허용 */
+    /*gap: 8px; !* 해시태그 사이 간격 *!*/
+}
+.chatTagList span{
+    display: inline-block;
+    white-space: nowrap;
+}
+
+/* Chrome, Safari, Opera에서 스크롤바 숨기기 */
+.chatTagList::-webkit-scrollbar {
+    display: none;
+}

@@ -75,12 +75,12 @@
                                     <div class="info">
                                         <div class="tags">
                                             <span th:text="${room.title}"></span>
-                                            <div class="chatTagList" style="margin-top: 3px;">
+                                            <div class="chatTagList" style="margin-top: 3px;" title="shift + 마우스휠">
                                                 <span th:each="tag : ${tagList}" th:if="${tag.roomNo == room.roomNo}" th:text="'#'+${tag.tagName}+' '"></span>
                                             </div>
                                         </div>
 
-                                        <h3 style="font-size: 20px; font-weight:bold" th:text="${#strings.length(room.roomName) > 15 ? room.roomName.substring(0, 12) + ' . . .' : room.roomName}"></h3>
+                                        <h3 style="font-size: 20px; font-weight:bold" th:text="${#strings.length(room.roomName) > 12 ? room.roomName.substring(0, 12) + ' . . .' : room.roomName}"></h3>
 
                                         <p th:if="${room.roomCategory == 'reservation'}" th:text="'모집방'"></p>
                                         <p th:if="${room.roomCategory == 'talk'}" th:text="'소통방'"></p>
