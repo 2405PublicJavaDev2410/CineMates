@@ -33,7 +33,14 @@ function goPay() {
             dataType: "json",
             success: function (response) {
                 console.log("Updated members:", response);
-                location.href='/';
+                alert("결제가 완료되었습니다!");
+                swal({
+                    title: "예매번호는" + reservationData.reservationNo + "입니다",
+                    icon: "success",
+                    closeOnClickOutside: false
+                }).then(function () {
+                    location.href = '/';
+                });
                 if (response.length > 0) {
 
                     // 여기서 기존의 결제 로직을 실행합니다.
@@ -49,7 +56,6 @@ function goPay() {
                         pay_method: 'movieTicket'
                     };
 
-                    alert("결제가 완료되었습니다!");
                     console.log(rsp);
 
                     var buyerInfo = {

@@ -7,6 +7,8 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <link href="./css/payment/inipay.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css">
+
     <!-- inline CSS 영역-->
     <style th:inline="css" type="text/css">
     </style>
@@ -20,6 +22,7 @@
         var reservedSeatCount = /*[[${rDTO.selectSeat}]]*/ [];
         /*]]>*/
     </script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script crossOrigin="anonymous" defer src="/js/payment/inipay.js"></script>
     <script crossorigin="anonymous" src="/js/payment/payByTicket.js"></script>
     <script
@@ -100,5 +103,6 @@
 <input id="childReserved" name="adultReserved" th:value="${rDTO.childReserved}" type="hidden">
 <input id="seniorReserved" name="adultReserved" th:value="${rDTO.seniorReserved}" type="hidden">
 <input id="selectSeat" name="selectSeat" th:value="${rDTO.selectSeat}" type="hidden">
+<input id="totalPrice" name="totalPrice" th:value="${rDTO.totalPrice}" type="hidden">
 </body>
 </html>

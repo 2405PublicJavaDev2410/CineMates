@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     verifyRecipientBtn.addEventListener('click', function() {
         // AJAX를 사용하여 서버에 수신자 확인 요청
-        fetch('/store/gift/verify-recipient', {
+        fetch('/store/gift/set-recipient', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

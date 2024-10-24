@@ -142,3 +142,27 @@ body {
     height: 100%;
     padding:30px 0 30px 0;
 }
+.swal-button {
+    background-color: #ed1c24;
+    color: #fff;
+    border: none;
+    box-shadow: none;
+    border-radius: 5px;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 10px 24px;
+    margin: 0;
+    cursor: pointer;
+}
+.swal-button:not([disabled]):hover{
+    background-color: #ed1c24;
+    color: #fff;
+    border: none;
+    box-shadow: none;
+    border-radius: 5px;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 10px 24px;
+    margin: 0;
+    cursor: pointer;
+}

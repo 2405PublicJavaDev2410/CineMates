@@ -353,9 +353,59 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // 이미지 클릭 시 확대/축소 토글
-    modalImage.onclick = function() {
-        this.classList.toggle('zoomed');
+});
+
+
+// 스틸컷 모달
+document.addEventListener('DOMContentLoaded', function() {
+    const stillList = document.getElementById('stillList');
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImage');
+    const closeBtn = document.querySelector('.close');
+
+    // 스틸컷 이미지 클릭 이벤트
+    if (stillList) {
+        stillList.addEventListener('click', function(e) {
+            const stillItem = e.target.closest('.still-item');
+            if (stillItem) {
+                const imageUrl = stillItem.getAttribute('data-stillcut-url');
+                if (imageUrl) {
+                    modal.style.display = 'block';
+                    modalImg.src = imageUrl;
+                    // 스크롤 방지
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+        });
+    }
+
+    // 모달 닫기 버튼 클릭 이벤트
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            closeModal();
+        });
+    }
+
+    // 모달 바깥 영역 클릭 시 닫기
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+
+    // ESC 키 누르면 모달 닫기
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+    });
+
+    // 모달 닫기 함수
+    function closeModal() {
+        modal.style.display = 'none';
+        modalImg.src = '';
+        // 스크롤 다시 활성화
+        document.body.style.overflow = 'auto';
     }
 });
 

@@ -82,7 +82,7 @@
                     <span class="total-count" th:text="'(' + ${totalStillcuts} + ')'"></span>
                 </div>
                 <div class="still-list" id="stillList" th:if="${not #lists.isEmpty(movie?.stillcuts)}">
-                    <div class="still-item" th:each="stillcut : ${movie?.stillcuts}">
+                    <div class="still-item" th:each="stillcut : ${movie?.stillcuts}" th:data-stillcut-url="${stillcut?.stillcutUrl}">
                         <img th:src="${stillcut?.stillcutUrl}" th:alt="${movie?.title} + '스틸컷'" />
                     </div>
                 </div>

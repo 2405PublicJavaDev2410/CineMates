@@ -87,6 +87,25 @@
                 form.submit();
             }
         }
+        document.addEventListener('DOMContentLoaded', function() {
+            const bannerUrlInput = document.querySelector('input[name="bannerUrl"]');
+            const bannerImage = document.querySelector('.bannerUrl img');
+            const bannerVideo = document.querySelector('.bannerUrl video');
+
+            bannerUrlInput.addEventListener('input', function() {
+                const newUrl = this.value;
+
+                // 이미지와 비디오 소스 모두 업데이트
+                bannerImage.src = newUrl;
+                bannerVideo.src = newUrl;
+            });
+        });
+
+
+        // // 페이지 로드 시 이미지 미리보기 초기화
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     updateBannerPreview();
+        // });
 
         function goBack() {
             if(confirm("정보 수정을 취소하시겠습니까?")) {

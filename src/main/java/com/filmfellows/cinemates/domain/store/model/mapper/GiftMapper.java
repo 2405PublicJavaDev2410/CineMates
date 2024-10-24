@@ -14,8 +14,6 @@ public interface GiftMapper {
 
     int insertGift(Gift gift);
 
-    Gift selectOneByGiftNo(int giftNo);
-
     // 선물받는 회원 정보 조회
     Member findMemberByNameAndPhone(@Param("name") String name, @Param("phone") String phone);
 
