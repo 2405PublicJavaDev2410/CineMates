@@ -188,38 +188,42 @@
 * 소셜 회원은 비밀번호 입력 없이 탈퇴가 가능합니다.
 ![remove](https://github.com/user-attachments/assets/e99547e1-b5d9-4850-8a21-2386a44f3c32)
 
-  ## 이경학:
-    ## [메인페이지]
+## 이경학:
+## [메인페이지]
 ### 배너
 -   배너 등록 시 페이지 타입: 메인 페이지, 게시상태: 게시를 선택한 영상 배너만 랜덤으로 자동 재생
--   배너의 상세 보기 클릭 시 해당 영화의 상세페이지로 이동
-   ![메인-1 배너](https://github.com/user-attachments/assets/285724c8-4fa3-4b60-8b6d-c8b01e958de2)
+-   배너의 상세 보기 클릭 시 해당 영화의 상세페이지로 이동  
+![메인-1 배너](https://github.com/user-attachments/assets/285724c8-4fa3-4b60-8b6d-c8b01e958de2)
 
 ### 무비차트
 -   무비 차트는 현재 1건이라도 예약이 있는 영화의 출력
 -   예매율 순으로 출력하며 포스터, 영화명, 예매율, 평점을 출력
 -   포스터 클릭 시 해당 영화 상세페이지로 이동
 -   슬라이더 버튼 클릭 시 다음 영화를 확인
--   전체 보기 버튼 클릭 시 영화 리스트 페이지로 이동
-  ![메인-2 무비차트](https://github.com/user-attachments/assets/14d8aaca-6dd3-40c7-a643-9cf2122cd5b9)
+-   전체 보기 버튼 클릭 시 영화 리스트 페이지로 이동  
+![메인-2 무비차트](https://github.com/user-attachments/assets/14d8aaca-6dd3-40c7-a643-9cf2122cd5b9)
 
 ### 커뮤니티
--   ?
-   ![메인-커뮤니티](https://github.com/user-attachments/assets/4aacdb11-37f7-4a29-8c8a-c30c7bc063ae)
+-   현재 개설된 채팅방의 리스트를 참여한인원수순으로 정렬하여 출력
+-   '<','>'버튼을 눌러 전체 리스트 확인 가능
+-   각 채팅방의 이름, 태그, 내용, 인원수, 예매예정정보 등 확인가능
+-   태그의 경우 'shift'+ 마우스 휠로 전체 태그 확인 가능
+-   클릭 시 채팅방 입장 가능  
+![메인-커뮤니티](https://github.com/user-attachments/assets/4aacdb11-37f7-4a29-8c8a-c30c7bc063ae)
 
 ---
 ## [영화페이지]
 ### 배너
 -   배너 등록 시 페이지 타입: 영화 리스트, 게시상태: 게시를 선택한 이미지 배너만 출력하며 5초마다 다음 배너로 넘어갑니다.
--   배너 클릭 시 해당 영화 상세페이지로 이동
-    <img width="1678" alt="영화-1 영화_배너" src="https://github.com/user-attachments/assets/00cb675e-b4f2-4606-8f6f-bbaba45a0af7">
+-   배너 클릭 시 해당 영화 상세페이지로 이동  
+<img width="1678" alt="영화-1 영화_배너" src="https://github.com/user-attachments/assets/00cb675e-b4f2-4606-8f6f-bbaba45a0af7">
 
 ### 영화 리스트
 -   현재 상영작 : 현재 상영 중인 영화 리스트를 확인할 수 있으며 예매율 순, 관람평 많은 순으로 정렬
 -   상영 예정작 : 상영 예정작인 영화 리스트를 확인할 수 있으며 개봉일 순, 예매율 순으로 정렬
 -   영화는 영화 포스터, 영화명, 예매율, 개봉일을 출력
 -   영화 포스터, 영화명 클릭 시 해당 영화의 상세정보 페이지로 이동
--   영화 리스트는 20개씩 출력하며 더 보기 버튼 클릭 시 다음 영화 20개 출력
+-   영화 리스트는 20개씩 출력하며 더 보기 버튼 클릭 시 다음 영화 20개 출력  
 <img width="1678" alt="영화-2 리스트" src="https://github.com/user-attachments/assets/b61ab7c8-efcd-44a3-97bf-8716126c8935">
 <img width="1678" alt="영화-3 리스트_더보기" src="https://github.com/user-attachments/assets/9d234c3e-c00e-49f0-8d7b-85839ab4befb">
 
@@ -227,32 +231,32 @@
 -   상단에서 영화 포스터, 영화명, 개봉 날짜, 관람등급, 러닝타임, 줄거리를 출력
 -   영화예매 버튼 클릭 시 해당 영화 선택하여 예매 페이지로 이동
 -   상세정보 탭 상단에서 영화정보(감독, 장르, 제작 국가, 출연자)를 출력
--   영화 포스터 클릭 시 모달창으로 출력
--   <img width="1678" alt="영화-4  상세정보1" src="https://github.com/user-attachments/assets/749e96b9-262c-4c4f-ba77-0260a836536f">
+-   영화 포스터 클릭 시 모달창으로 출력  
+<img width="1678" alt="영화-4  상세정보1" src="https://github.com/user-attachments/assets/749e96b9-262c-4c4f-ba77-0260a836536f">
 <img width="1678" alt="영화-5 포스터 모달" src="https://github.com/user-attachments/assets/f6080eb6-03f9-4aa3-be6d-e64b40a34ec3">
 
--   상세정보 탭 하단에서 트레일러(총개수), 스틸컷(총개수)을 출력
-    <img width="1678" alt="영화-6 상세정보2_트레일러, 스틸컷" src="https://github.com/user-attachments/assets/3410024e-d1ec-4f3f-abd7-b84f441cc0d4">
+-   상세정보 탭 하단에서 트레일러(총개수), 스틸컷(총개수)을 출력  
+<img width="1678" alt="영화-6 상세정보2_트레일러, 스틸컷" src="https://github.com/user-attachments/assets/3410024e-d1ec-4f3f-abd7-b84f441cc0d4">
 
 -   스틸컷은 개수가 3개가 넘을 시 슬라이더 버튼 생성
--   트레일러 클릭 시 해당 트레일러 모 들창으로 재생
--   <img width="1678" alt="영화-7 트레일러 모달" src="https://github.com/user-attachments/assets/2186cc55-d8e4-4fec-8c38-2e98a4bab79e">
+-   트레일러 클릭 시 해당 트레일러 모 들창으로 재생  
+<img width="1678" alt="영화-7 트레일러 모달" src="https://github.com/user-attachments/assets/2186cc55-d8e4-4fec-8c38-2e98a4bab79e">
 
--   스틸컷 클릭 시 해당 스틸컷 모 들창으로 출력
-   <img width="1678" alt="영화-8 스틸컷 모달" src="https://github.com/user-attachments/assets/51d5ea9d-d28d-48e2-9946-5af084e85fd8">
+-   스틸컷 클릭 시 해당 스틸컷 모 들창으로 출력  
+<img width="1678" alt="영화-8 스틸컷 모달" src="https://github.com/user-attachments/assets/51d5ea9d-d28d-48e2-9946-5af084e85fd8">
 
 ### 영화 관람평
--   관람평 섹션에서 리스트 출력 및 관람평 작성, 삭제, 신고 기능 제공
-    <img width="1678" alt="관람평-1 관람평 섹션" src="https://github.com/user-attachments/assets/e7baf0f6-383d-4574-973d-60cd7b538357">
+-   관람평 섹션에서 리스트 출력 및 관람평 작성, 삭제, 신고 기능 제공  
+<img width="1678" alt="관람평-1 관람평 섹션" src="https://github.com/user-attachments/assets/e7baf0f6-383d-4574-973d-60cd7b538357">
 
 -   로그인 후 관람평 작성 버튼 클릭 시 작성창 생성
 -   별점, 관람평 작성 기능
--   로그인 아이디의 관람평은 리스트 상단에 고정
-    <img width="1678" alt="관람평-2 관람평 작성창" src="https://github.com/user-attachments/assets/c10851f5-c0b6-47a3-a5e6-947278bf1ed6">
+-   로그인 아이디의 관람평은 리스트 상단에 고정  
+<img width="1678" alt="관람평-2 관람평 작성창" src="https://github.com/user-attachments/assets/c10851f5-c0b6-47a3-a5e6-947278bf1ed6">
 
 -   관람평 버튼 클릭 시 로그인, 중복 작성 확인하여 메시지 전달
--   한 아이디로 한 영화에 하나의 관람평만 작성 가능
-    <img width="1678" alt="관람평-3 관람평 중복" src="https://github.com/user-attachments/assets/b108b3f5-c45f-44d9-ab9b-de6f1d1cbf89">
+-   한 아이디로 한 영화에 하나의 관람평만 작성 가능  
+<img width="1678" alt="관람평-3 관람평 중복" src="https://github.com/user-attachments/assets/b108b3f5-c45f-44d9-ab9b-de6f1d1cbf89">
 
 ---
 ## [관리자 - 배너]
@@ -260,22 +264,22 @@
 -   DB에 저장한 배너 리스트
 -   배너 번호, 제목, 페이지 타입, 게시상태 출력
 -   등록 버튼 클릭 시 등록 페이지로 이동
--   배너 제목 클릭 시 배너 상세페이지로 이동
-    <img width="1678" alt="어드민(배너)-1 배너 리스트" src="https://github.com/user-attachments/assets/0db513a2-696e-4cfc-9ec5-eaf51bfb6060">
+-   배너 제목 클릭 시 배너 상세페이지로 이동  
+<img width="1678" alt="어드민(배너)-1 배너 리스트" src="https://github.com/user-attachments/assets/0db513a2-696e-4cfc-9ec5-eaf51bfb6060">
 
 ### 배너 등록
 -   배너 등록 페이지
 -   제목, 내용, 배너 Url, 링크 Url, 시작 날짜, 종료 날짜, 페이지 타입, 게시상태를 입력
 -   배너 Url 확장자에 따라 영상, 이미지로 확인 가능
 -   페이지 타입 : 메인 페이지, 영화 페이지, 기타로 나누어 해당 페이지에서 선택하여 사용
--   게시 상태 : 게시, 기게 시로 나누어 게시를 선택한 배너만 해당 페이지에서 사용
-    <img width="1678" alt="어드민(배너)-2 배너 등록" src="https://github.com/user-attachments/assets/6f1c06da-04d9-44f7-bf09-4e29ea25a53c">
+-   게시 상태 : 게시, 기게 시로 나누어 게시를 선택한 배너만 해당 페이지에서 사용  
+<img width="1678" alt="어드민(배너)-2 배너 등록" src="https://github.com/user-attachments/assets/6f1c06da-04d9-44f7-bf09-4e29ea25a53c">
 
 ### 배너 상세정보
 -   현재 등록한 배너의 상세정보
 -   각 정보를 수정 후 수정 버튼을 통해 정보 수정
--   삭제 버튼을 통해 배너 삭제
-    <img width="1678" alt="어드민(배너)-3 배너 상세정보" src="https://github.com/user-attachments/assets/fb98caa5-982a-43bb-91fc-9cd028b9ad31">
+-   삭제 버튼을 통해 배너 삭제  
+<img width="1678" alt="어드민(배너)-3 배너 상세정보" src="https://github.com/user-attachments/assets/fb98caa5-982a-43bb-91fc-9cd028b9ad31">
 
 ---
 ## [관리자 - 영화]
@@ -283,35 +287,33 @@
 -   DB에 저장한 영화 리스트
 -   영화 번호, 영화명으로 검색 기능
 -   등록 버튼 클릭 시 등록 페이지로 이동
--   각 영화의 영화 번호, 영화명, 개봉일, 상영 상태 정보를 리스트로 출력
+-   각 영화의 영화 번호, 영화명, 개봉일, 상영 상태 정보를 리스트로 출력  
    <img width="1678" alt="어드민(영화)1 영화 리스트" src="https://github.com/user-attachments/assets/f9ce7bd7-3b1e-40e9-b8dc-c52946aa78ed">
 
 ### 영화 등록
 -   영화 등록 페이지
 -   영화명, 포스터 URl, 개봉일, 상영시간, 줄거리, 감독, 배우, 장르 등 영화 기본 정보 입력
--   입력한 포스터 Url 이미지 미리 보기
-   <img width="1678" alt="어드민(영화)2 영화 등록" src="https://github.com/user-attachments/assets/1a8bb890-5336-4dcf-9167-f0e6c2030ce1">
+-   입력한 포스터 Url 이미지 미리 보기  
+<img width="1678" alt="어드민(영화)2 영화 등록" src="https://github.com/user-attachments/assets/1a8bb890-5336-4dcf-9167-f0e6c2030ce1">
 <img width="1678" alt="어드민(영화)3 영화 등록2" src="https://github.com/user-attachments/assets/52c32d9b-b9b0-4495-86b2-0c4860773121">
-
-
 
 -   트레일러, 스틸컷 등록
 -   추가 버튼을 통해 개수에 맞게 추가
--   등록 버튼을 통해 DB에 저장
-    <img width="1678" alt="어드민(영화)4 영화등록3" src="https://github.com/user-attachments/assets/e727c70a-2ced-40ac-9a49-373ab4bceb5c">
+-   등록 버튼을 통해 DB에 저장  
+<img width="1678" alt="어드민(영화)4 영화등록3" src="https://github.com/user-attachments/assets/e727c70a-2ced-40ac-9a49-373ab4bceb5c">
 
 ### 영화 상세정보
 -   DB에 저장한 영화 정보 출력 및 수정
 -   트레일러, 스틸컷 개별로 삭제
 -   수정 버튼을 통해 수정한 영화정보 DB에 저장
--   삭제 버튼을 통해 해당 영화정보 삭제
--   <img width="1678" alt="어드민(영화)5 영화정보" src="https://github.com/user-attachments/assets/ba39d7ea-f14c-4208-899b-3bf04810a589"><img width="1678" alt="어드민(영화)6 영화정보2" src="https://github.com/user-attachments/assets/10474c96-db4f-4541-a0a2-ac73558eadbe">
+-   삭제 버튼을 통해 해당 영화정보 삭제  
+<img width="1678" alt="어드민(영화)5 영화정보" src="https://github.com/user-attachments/assets/ba39d7ea-f14c-4208-899b-3bf04810a589"><img width="1678" alt="어드민(영화)6 영화정보2" src="https://github.com/user-attachments/assets/10474c96-db4f-4541-a0a2-ac73558eadbe">
 <img width="1678" alt="어드민(영화)7 영화정보3" src="https://github.com/user-attachments/assets/6f812a02-b7b4-4f4e-a927-f277f3d52bc8">
 
 
   ## 오준석:
   ### 1. 극장 메인페이지
-  #### 1-1 극장 선택
+  #### 1-1 극장 선택  
   ![image](https://github.com/user-attachments/assets/a5feaba7-607b-48d5-bc04-ab8537b302a1)
   
   - 지역을 8개로 분리하여 극장을 보여줄수있도록 하였읍니다.
