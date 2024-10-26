@@ -53,7 +53,7 @@ spring.datasource.password
 - 기능 구현이 완료되면 Main 브랜치에 병합
   ![git_flow](https://github.com/2405PublicjavaDev/sulgilddara/blob/main/img/github_flow.png?raw=true)
 # 3. 프로젝트 구조
-[프로젝트 구조.pdf](https://github.com/user-attachments/files/17508497/default.pdf)
+[프로젝트 구조.pdf](https://drive.google.com/file/d/1lwLuWGSMfjwM2YgLqrmAGD-ZfIrVWclo/view?usp=drive_link)
 
 
 # 4. 프로젝트 역할 분담
@@ -537,14 +537,14 @@ spring.datasource.password
     
 
 # 프로젝트 산출문서
-- 기획보고서
-- 요구사항정의서
-- 유스케이스
-- 플로우차트
-- 와이어프레임
-- DB설계
-- 클래스다이어그램
-- 시퀀스다이어그램
-- 최종보고서
-- 프로젝트 소스 DB
-- 시연영상
+- [기획보고서](https://drive.google.com/file/d/1zmlLlAvjEHByIqxdafzQ3brXmyMWo1Pl/view?usp=drive_link)
+- [요구사항정의서](https://drive.google.com/file/d/1gopBSi8KLJ7o8G4nVCCDeCaaqtlZquct/view?usp=drive_link)
+- [유스케이스](https://drive.google.com/file/d/11imN-Glc4-F73_jlR9IcxM4QpCwAFRwk/view?usp=drive_link)
+- [플로우차트](https://drive.google.com/file/d/1QVI0XxaPNqr_eKIUhrhuHpM5X4b2mqj3/view?usp=drive_link)
+- [와이어프레임](https://drive.google.com/file/d/13e1SDS0ujRu1-wQsKOyIBDxZscVZ9QWn/view?usp=drive_link)
+- [DB설계](https://drive.google.com/file/d/1lYzPPW7NMoYqwMKj-_RXIMMwh1MkR7W2/view?usp=drive_link)
+- [클래스다이어그램](https://drive.google.com/file/d/1lU738zT3upczDJ_K__dI7PqHUHj0BdnG/view?usp=drive_link)
+- [시퀀스다이어그램](https://drive.google.com/file/d/13dKNco1NhcAMn02R_Hjo1pD0evCRaz0O/view?usp=drive_link)
+- [최종보고서](https://drive.google.com/file/d/1eIGkXeRiLTYgLwmWrCcE-XK6hb1tQLXa/view?usp=drive_link)
+- [프로젝트 소스 DB](https://drive.google.com/file/d/1Xm6fRjywto54dU5G0n4-KvlnRUqk8l3q/view?usp=drive_link)
+- [시연영상](https://drive.google.com/file/d/1CUb1aQXgcP6aWBiLkZVQzyxJcOnpcQN-/view?usp=drive_link)
