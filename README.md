@@ -31,7 +31,7 @@ spring.datasource.password
 계정 생성 후 권한 부여 및 테이블 생성
 
 테이블, 시퀀스 생성 및 데이터 삽입 스크립트
-
+- [CineMates.sql](https://drive.google.com/file/d/1Xm6fRjywto54dU5G0n4-KvlnRUqk8l3q/view?usp=drive_link)
 
 # 1. 기술스택
 ![Oracle](https://img.shields.io/badge/Oracle-F80000?style=for-the-badge&logo=oracle&logoColor=white)
