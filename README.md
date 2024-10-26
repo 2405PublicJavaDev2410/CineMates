@@ -1,14 +1,39 @@
 
 - - -
 ***FilmFellows README***
-
-프로젝트 명 : CineMates
-영화 예매와 사람들 간의 연결을 중심으로 한 프로젝트를 상징합니다. 
-사용자들이 영화를 통해 새로운 친구를 만나고, 함께 영화를 즐길 수 
-있는 커뮤니티를 구축하는 데 중점을 둔다는 의미를 전달합니다.
+# 0. CineMates
+![image](https://github.com/user-attachments/assets/7ca3ee07-d56b-4d44-b814-18f39b548499)
+# 영화 예매와 사람들 간의 연결을 중심으로 한 사이트
+## 프로젝트명
+![image](https://github.com/user-attachments/assets/36d486b8-b8e7-41b0-833c-e8a3a32f4d59)
+## 팀소개
+![image](https://github.com/user-attachments/assets/68b5917d-9218-4bee-850d-1c6450deec5e)
+## 팀원소개
+![image](https://github.com/user-attachments/assets/82e1f3fd-0a35-4e33-8cca-93bc3798d8bc)
+## 기획의도
+![image](https://github.com/user-attachments/assets/c90deb35-7e84-44f1-9683-4c886b967972)
+## 차별성
+![image](https://github.com/user-attachments/assets/104f3773-f434-49fe-a618-1fa4f5024c8c)
 - - -
+## 프로젝트 개발환경
+- DB : Oracle 11g xe 버전 이용
+- Intellij IDEA 이용
+## 프로젝트 실행 환경 구축(로컬)
+1. 오라클 11g 설치 및 application.properties의
+```properties
+# Oracle Connection Setting
+spring.datasource.driver-class-name=oracle.jdbc.driver.OracleDriver
+spring.datasource.url=jdbc:oracle:thin:@localhost:1521:xe
+spring.datasource.username
+spring.datasource.password
+```
+를 참고하여 로컬에 db 계정 생성
+계정 생성 후 권한 부여 및 테이블 생성
 
-# 1. 개발환경<br>
+테이블, 시퀀스 생성 및 데이터 삽입 스크립트
+
+
+# 1. 기술스택
 ![Oracle](https://img.shields.io/badge/Oracle-F80000?style=for-the-badge&logo=oracle&logoColor=white)
 ![java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
 ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)<br>
@@ -510,3 +535,16 @@
 ## 김창호:
 - 파이널 프로젝트를 하면서 느낀점은 제가 개발하고자 하는 방향성과 구조에 대해서 깊게 고민하고 이해해야 테이블 셋팅을 원활하게 할 수 있고, 구조가 깔끔해져서 코드를 짜기가 편하다는 것을 느꼈습니다. 프로젝트 기간중 테이블과 VO구조를 여러번 수정하다보니 많은 코드들을 수정해야 했고, 효율적으로 시간을 사용하지 못했던 부분이 있었습니다. 또한 자바스크립트를 이용하는 것의 중요성에 대해서 크게 느꼈고 이 부분에서 약간의 발전이 있었다고 생각합니다. 앞으로 자바스크립트를 좀 더 공부하면 기능을 구현하는 데 있어서 이번 프로젝트보다 원활하게 진행할 수 있을 것 같습니다.
     
+
+# 프로젝트 산출문서
+- 기획보고서
+- 요구사항정의서
+- 유스케이스
+- 플로우차트
+- 와이어프레임
+- DB설계
+- 클래스다이어그램
+- 시퀀스다이어그램
+- 최종보고서
+- 프로젝트 소스 DB
+- 시연영상
