@@ -1,5 +1,4 @@
 // const socketUrl = `ws://localhost:9000/ws/chat`;
-const userUrl = `ws://192.168.35.11:9000/ws/chat`;
 
 let socket = null;
 
